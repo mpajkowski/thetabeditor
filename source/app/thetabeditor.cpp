@@ -1434,10 +1434,10 @@ void TheTabEditor::dropEvent(QDropEvent* event)
 
 QString TheTabEditor::getApplicationName() const
 {
-  QString name = QString("%1 %2 Beta").arg(AppInfo::APPLICATION_NAME, AppInfo::APPLICATION_VERSION);
+  QString name = QString("%1 %2").arg(AppInfo::APPLICATION_NAME, AppInfo::APPLICATION_VERSION);
 
 #ifdef VERSION
-  name += QString(" (v") + BOOST_STRINGIZE(VERSION) + ")";
+  name += QString(" (commit ") + BOOST_STRINGIZE(VERSION) + ")";
 #endif
 
   return name;

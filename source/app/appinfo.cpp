@@ -21,9 +21,9 @@
 #include <QtGlobal>
 
 namespace AppInfo {
-const char* BUG_TRACKER_URL = "https://github.com/powertab/thetabeditor/issues/";
+const char* BUG_TRACKER_URL = "https://github.com/mpajkowski/thetabeditor/issues/";
 const char* APPLICATION_NAME = "The Tab Editor";
-const char* APPLICATION_VERSION = "2.0";
+const char* APPLICATION_VERSION = "0.0.1";
 
 #if defined(Q_OS_WIN)
 const char* ORGANIZATION_NAME = "Power Tab";

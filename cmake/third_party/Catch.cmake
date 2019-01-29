@@ -3,7 +3,7 @@ find_package( Catch )
 if ( CATCH_FOUND )
     set( _catch_dir ${Catch_INCLUDE_DIRS} )
 else ()
-    set( _catch_dir ${THETA_EXTERNAL_DIR}/Catch/single_include )
+    set( _catch_dir ${THETA_EXTERNAL_DIR}/Catch2/single_include/catch2 )
     message( STATUS "Using Catch library from ${_catch_dir}" )
 endif ()
 
