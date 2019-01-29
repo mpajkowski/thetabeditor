@@ -17,16 +17,14 @@
 
 #include "rapidjson_iostreams.h"
 
-namespace Util
-{
-namespace RapidJSON
-{
-    IStreamWrapper::IStreamWrapper(std::istream &stream) : myStream(stream)
-    {
-    }
+namespace Util {
+namespace RapidJSON {
+IStreamWrapper::IStreamWrapper(std::istream& stream)
+  : myStream(stream)
+{}
 
-    OStreamWrapper::OStreamWrapper(std::ostream &stream) : myStream(stream)
-    {
-    }
+OStreamWrapper::OStreamWrapper(std::ostream& stream)
+  : myStream(stream)
+{}
 } // namespace RapidJSON
 } // namespace Util

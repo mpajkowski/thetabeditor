@@ -27,80 +27,79 @@ class ViewOptions;
 class Caret
 {
 public:
-    Caret(Score &score, const ViewOptions &options);
+  Caret(Score& score, const ViewOptions& options);
 
-    ScoreLocation &getLocation();
-    const ScoreLocation &getLocation() const;
+  ScoreLocation& getLocation();
+  const ScoreLocation& getLocation() const;
 
-    /// Returns whether the caret is in playback mode.
-    bool isInPlaybackMode() const;
-    /// Sets whether the caret is in playback mode.
-    void setIsInPlaybackMode(bool set);
+  /// Returns whether the caret is in playback mode.
+  bool isInPlaybackMode() const;
+  /// Sets whether the caret is in playback mode.
+  void setIsInPlaybackMode(bool set);
 
-    /// Moves the caret left or right by the specified offset.
-    void moveHorizontal(int offset);
+  /// Moves the caret left or right by the specified offset.
+  void moveHorizontal(int offset);
 
-    /// Moves the caret up or down to the next string, and wraps around
-    /// if necessary.
-    void moveVertical(int offset);
+  /// Moves the caret up or down to the next string, and wraps around
+  /// if necessary.
+  void moveVertical(int offset);
 
-    /// Moves the caret to the first position in the staff.
-    void moveToStartPosition();
+  /// Moves the caret to the first position in the staff.
+  void moveToStartPosition();
 
-    /// Moves the caret to the last position in the staff.
-    void moveToEndPosition();
+  /// Moves the caret to the last position in the staff.
+  void moveToEndPosition();
 
-    /// Move to the given position index.
-    void moveToPosition(int position);
+  /// Move to the given position index.
+  void moveToPosition(int position);
 
-    /// Moves the caret up/down by the given number of systems.
-    void moveSystem(int offset);
+  /// Moves the caret up/down by the given number of systems.
+  void moveSystem(int offset);
 
-    /// Moves the caret to the first system in the score.
-    void moveToFirstSystem();
+  /// Moves the caret to the first system in the score.
+  void moveToFirstSystem();
 
-    /// Moves the caret to the last system in the score.
-    void moveToLastSystem();
+  /// Moves the caret to the last system in the score.
+  void moveToLastSystem();
 
-    /// Move to the given system index, optionally keeping the same staff index.
-    bool moveToSystem(int system, bool keepStaff);
+  /// Move to the given system index, optionally keeping the same staff index.
+  bool moveToSystem(int system, bool keepStaff);
 
-    /// Moves up or down by the given number of staves.
-    void moveStaff(int offset);
+  /// Moves up or down by the given number of staves.
+  void moveStaff(int offset);
 
-    /// Moves the caret to the next bar after the current position, or to the
-    /// next system if necessary.
-    bool moveToNextBar();
+  /// Moves the caret to the next bar after the current position, or to the
+  /// next system if necessary.
+  bool moveToNextBar();
 
-    /// Moves the caret to the bar before the current position, or to the
-    /// previous system if necessary.
-    void moveToPrevBar();
+  /// Moves the caret to the bar before the current position, or to the
+  /// previous system if necessary.
+  void moveToPrevBar();
 
-    /// Moves to the specified location.
-    void moveToLocation(const ScoreLocation &location);
+  /// Moves to the specified location.
+  void moveToLocation(const ScoreLocation& location);
 
-    /// Ensures that the caret is still at a valid position.
-    void moveToValidPosition();
+  /// Ensures that the caret is still at a valid position.
+  void moveToValidPosition();
 
-    typedef boost::signals2::signal<void()> LocationChangedSlot;
-    boost::signals2::connection subscribeToChanges(
-        const LocationChangedSlot::slot_type &subscriber) const;
+  typedef boost::signals2::signal<void()> LocationChangedSlot;
+  boost::signals2::connection subscribeToChanges(const LocationChangedSlot::slot_type& subscriber) const;
 
 private:
-    /// Move to the specified staff.
-    void moveToStaff(int staff);
+  /// Move to the specified staff.
+  void moveToStaff(int staff);
 
-    /// Returns the last valid position in the system.
-    int getLastPosition() const;
-    /// Returns the last valid system index in the score.
-    int getLastSystemIndex() const;
+  /// Returns the last valid position in the system.
+  int getLastPosition() const;
+  /// Returns the last valid system index in the score.
+  int getLastSystemIndex() const;
 
-    ScoreLocation myLocation;
-    const ViewOptions &myViewOptions;
-    bool myInPlaybackMode;
+  ScoreLocation myLocation;
+  const ViewOptions& myViewOptions;
+  bool myInPlaybackMode;
 
-    /// Send out signals to subscribers whenever the location changes.
-    mutable LocationChangedSlot onLocationChanged;
+  /// Send out signals to subscribers whenever the location changes.
+  mutable LocationChangedSlot onLocationChanged;
 };
 
 #endif

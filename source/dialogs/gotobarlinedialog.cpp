@@ -20,38 +20,35 @@
 
 #include <score/score.h>
 
-GoToBarlineDialog::GoToBarlineDialog(QWidget *parent, const Score &score)
-    : QDialog(parent), ui(new Ui::GoToBarlineDialog)
+GoToBarlineDialog::GoToBarlineDialog(QWidget* parent, const Score& score)
+  : QDialog(parent)
+  , ui(new Ui::GoToBarlineDialog)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    for (int system_index = 0; system_index < score.getSystems().size();
-         ++system_index)
-    {
-        const System &system = score.getSystems()[system_index];
-        // Index all barlines except for the end bar.
-        for (int i = 0; i < system.getBarlines().size() - 1; ++i)
-        {
-            myLocations.push_back(ScoreLocation(
-                score, system_index, 0, system.getBarlines()[i].getPosition()));
-        }
+  for (int system_index = 0; system_index < score.getSystems().size(); ++system_index) {
+    const System& system = score.getSystems()[system_index];
+    // Index all barlines except for the end bar.
+    for (int i = 0; i < system.getBarlines().size() - 1; ++i) {
+      myLocations.push_back(ScoreLocation(score, system_index, 0, system.getBarlines()[i].getPosition()));
     }
+  }
 
-    ui->barlineSpinBox->setValue(1);
-    ui->barlineSpinBox->setMinimum(1);
-    ui->barlineSpinBox->setMaximum(static_cast<int>(myLocations.size()));
+  ui->barlineSpinBox->setValue(1);
+  ui->barlineSpinBox->setMinimum(1);
+  ui->barlineSpinBox->setMaximum(static_cast<int>(myLocations.size()));
 
-    ui->barlineSpinBox->selectAll();
+  ui->barlineSpinBox->selectAll();
 }
 
 GoToBarlineDialog::~GoToBarlineDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 /// Returns the location of the selected barline.
 ScoreLocation GoToBarlineDialog::getLocation() const
 {
-    const int index = ui->barlineSpinBox->value();
-    return myLocations.at(index - 1);
+  const int index = ui->barlineSpinBox->value();
+  return myLocations.at(index - 1);
 }

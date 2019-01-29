@@ -20,40 +20,41 @@
 
 #include <score/tuning.h>
 
-StaffDialog::StaffDialog(QWidget *parent)
-    : QDialog(parent), ui(new Ui::StaffDialog)
+StaffDialog::StaffDialog(QWidget* parent)
+  : QDialog(parent)
+  , ui(new Ui::StaffDialog)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    ui->numberOfStringsSpinBox->setMinimum(Tuning::MIN_STRING_COUNT);
-    ui->numberOfStringsSpinBox->setMaximum(Tuning::MAX_STRING_COUNT);
-    ui->numberOfStringsSpinBox->setValue(6);
+  ui->numberOfStringsSpinBox->setMinimum(Tuning::MIN_STRING_COUNT);
+  ui->numberOfStringsSpinBox->setMaximum(Tuning::MAX_STRING_COUNT);
+  ui->numberOfStringsSpinBox->setValue(6);
 
-    ui->clefTypeComboBox->addItem("Treble");
-    ui->clefTypeComboBox->addItem("Bass");
+  ui->clefTypeComboBox->addItem("Treble");
+  ui->clefTypeComboBox->addItem("Bass");
 }
 
 StaffDialog::~StaffDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 int StaffDialog::getStringCount() const
 {
-    return ui->numberOfStringsSpinBox->value();
+  return ui->numberOfStringsSpinBox->value();
 }
 
 void StaffDialog::setStringCount(int strings)
 {
-    ui->numberOfStringsSpinBox->setValue(strings);
+  ui->numberOfStringsSpinBox->setValue(strings);
 }
 
 Staff::ClefType StaffDialog::getClefType() const
 {
-    return static_cast<Staff::ClefType>(ui->clefTypeComboBox->currentIndex());
+  return static_cast<Staff::ClefType>(ui->clefTypeComboBox->currentIndex());
 }
 
 void StaffDialog::setClefType(Staff::ClefType type)
 {
-    ui->clefTypeComboBox->setCurrentIndex(static_cast<int>(type));
+  ui->clefTypeComboBox->setCurrentIndex(static_cast<int>(type));
 }

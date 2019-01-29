@@ -20,22 +20,22 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemoveTempoMarker::RemoveTempoMarker(const ScoreLocation &location)
-    : myLocation(location),
-      myOriginalTempo(*ScoreUtils::findByPosition(
-          location.getSystem().getTempoMarkers(), location.getPositionIndex()))
+RemoveTempoMarker::RemoveTempoMarker(const ScoreLocation& location)
+  : myLocation(location)
+  , myOriginalTempo(
+      *ScoreUtils::findByPosition(location.getSystem().getTempoMarkers(), location.getPositionIndex()))
 {
-    setText(myOriginalTempo.getMarkerType() == TempoMarker::AlterationOfPace
-                ? QObject::tr("Remove Alteration of Pace")
-                : QObject::tr("Remove Tempo Marker"));
+  setText(myOriginalTempo.getMarkerType() == TempoMarker::AlterationOfPace
+            ? QObject::tr("Remove Alteration of Pace")
+            : QObject::tr("Remove Tempo Marker"));
 }
 
 void RemoveTempoMarker::redo()
 {
-    myLocation.getSystem().removeTempoMarker(myOriginalTempo);
+  myLocation.getSystem().removeTempoMarker(myOriginalTempo);
 }
 
 void RemoveTempoMarker::undo()
 {
-    myLocation.getSystem().insertTempoMarker(myOriginalTempo);
+  myLocation.getSystem().insertTempoMarker(myOriginalTempo);
 }

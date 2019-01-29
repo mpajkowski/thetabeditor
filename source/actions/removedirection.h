@@ -25,14 +25,14 @@
 class RemoveDirection : public QUndoCommand
 {
 public:
-    RemoveDirection(const ScoreLocation &location);
+  RemoveDirection(const ScoreLocation& location);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Direction myOriginalDirection;
+  ScoreLocation myLocation;
+  const Direction myOriginalDirection;
 };
 
 #endif

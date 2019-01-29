@@ -19,71 +19,69 @@
 
 #include <algorithm>
 
-ActivePlayer::ActivePlayer() : myPlayerNumber(-1), myInstrumentNumber(-1)
-{
-}
+ActivePlayer::ActivePlayer()
+  : myPlayerNumber(-1)
+  , myInstrumentNumber(-1)
+{}
 
 ActivePlayer::ActivePlayer(int player, int instrument)
-    : myPlayerNumber(player), myInstrumentNumber(instrument)
-{
-}
+  : myPlayerNumber(player)
+  , myInstrumentNumber(instrument)
+{}
 
-bool ActivePlayer::operator==(const ActivePlayer &other) const
+bool ActivePlayer::operator==(const ActivePlayer& other) const
 {
-    return myPlayerNumber == other.myPlayerNumber &&
-           myInstrumentNumber == other.myInstrumentNumber;
+  return myPlayerNumber == other.myPlayerNumber && myInstrumentNumber == other.myInstrumentNumber;
 }
 
 int ActivePlayer::getPlayerNumber() const
 {
-    return myPlayerNumber;
+  return myPlayerNumber;
 }
 
 int ActivePlayer::getInstrumentNumber() const
 {
-    return myInstrumentNumber;
+  return myInstrumentNumber;
 }
 
-PlayerChange::PlayerChange() : myPosition(0)
-{
-}
+PlayerChange::PlayerChange()
+  : myPosition(0)
+{}
 
-PlayerChange::PlayerChange(int position) : myPosition(position)
-{
-}
+PlayerChange::PlayerChange(int position)
+  : myPosition(position)
+{}
 
-bool PlayerChange::operator==(const PlayerChange &other) const
+bool PlayerChange::operator==(const PlayerChange& other) const
 {
-    return myPosition == other.myPosition &&
-           myActivePlayers == other.myActivePlayers;
+  return myPosition == other.myPosition && myActivePlayers == other.myActivePlayers;
 }
 
 int PlayerChange::getPosition() const
 {
-    return myPosition;
+  return myPosition;
 }
 
 void PlayerChange::setPosition(int position)
 {
-    myPosition = position;
+  myPosition = position;
 }
 
 std::vector<ActivePlayer> PlayerChange::getActivePlayers(int staff) const
 {
-    if (myActivePlayers.find(staff) != myActivePlayers.end())
-        return myActivePlayers.find(staff)->second;
-    else
-        return std::vector<ActivePlayer>();
+  if (myActivePlayers.find(staff) != myActivePlayers.end())
+    return myActivePlayers.find(staff)->second;
+  else
+    return std::vector<ActivePlayer>();
 }
 
-void PlayerChange::insertActivePlayer(int staff, const ActivePlayer &player)
+void PlayerChange::insertActivePlayer(int staff, const ActivePlayer& player)
 {
-    myActivePlayers[staff].push_back(player);
+  myActivePlayers[staff].push_back(player);
 }
 
-void PlayerChange::removeActivePlayer(int staff, const ActivePlayer &player)
+void PlayerChange::removeActivePlayer(int staff, const ActivePlayer& player)
 {
-    std::vector<ActivePlayer> &playerList = myActivePlayers[staff];
-    playerList.erase(std::remove(playerList.begin(), playerList.end(), player),
-                     playerList.end());
+  std::vector<ActivePlayer>& playerList = myActivePlayers[staff];
+  playerList.erase(std::remove(playerList.begin(), playerList.end(), player), playerList.end());
 }

@@ -21,14 +21,14 @@
 
 TEST_CASE("Formats/FileFormat/FileFilterSingle", "Single Extension")
 {
-    FileFormat format("Test Format", std::vector<std::string>(1, "ptb"));
+  FileFormat format("Test Format", std::vector<std::string>(1, "ptb"));
 
-    CHECK(format.fileFilter() == "Test Format (*.ptb)");
+  CHECK(format.fileFilter() == "Test Format (*.ptb)");
 }
 
 TEST_CASE("Formats/FileFormat/FileFilterMulti", "Multiple Extensions")
 {
-    FileFormat format("Test Format", { "gp3", "gp4", "gp5" });
+  FileFormat format("Test Format", { "gp3", "gp4", "gp5" });
 
-    CHECK(format.fileFilter() == "Test Format (*.gp3 *.gp4 *.gp5)");
+  CHECK(format.fileFilter() == "Test Format (*.gp3 *.gp4 *.gp5)");
 }

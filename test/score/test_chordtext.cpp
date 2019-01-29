@@ -22,13 +22,13 @@
 
 TEST_CASE("Score/ChordText/Serialization", "")
 {
-    ChordName name;
-    name.setNoChord(true);
-    name.setBrackets(true);
-    name.setTonicVariation(ChordName::DoubleFlat);
-    name.setTonicKey(ChordName::D);
+  ChordName name;
+  name.setNoChord(true);
+  name.setBrackets(true);
+  name.setTonicVariation(ChordName::DoubleFlat);
+  name.setTonicKey(ChordName::D);
 
-    ChordText text(7, name);
+  ChordText text(7, name);
 
-    Serialization::test("chord_text", text);
+  Serialization::test("chord_text", text);
 }

@@ -17,29 +17,27 @@
 
 #include "editnoteduration.h"
 
-EditNoteDuration::EditNoteDuration(const ScoreLocation &location,
+EditNoteDuration::EditNoteDuration(const ScoreLocation& location,
                                    Position::DurationType duration,
                                    bool forRests)
-    : QUndoCommand(forRests ? QObject::tr("Edit Rest Duration")
-                            : QObject::tr("Edit Note Duration")),
-      myLocation(location),
-      myNewDuration(duration)
+  : QUndoCommand(forRests ? QObject::tr("Edit Rest Duration") : QObject::tr("Edit Note Duration"))
+  , myLocation(location)
+  , myNewDuration(duration)
 {
-    for (const Position *pos : myLocation.getSelectedPositions())
-        myOriginalDurations.push_back(pos->getDurationType());
+  for (const Position* pos : myLocation.getSelectedPositions())
+    myOriginalDurations.push_back(pos->getDurationType());
 }
 
 void EditNoteDuration::redo()
 {
-    for (Position *pos : myLocation.getSelectedPositions())
-        pos->setDurationType(myNewDuration);
+  for (Position* pos : myLocation.getSelectedPositions())
+    pos->setDurationType(myNewDuration);
 }
 
 void EditNoteDuration::undo()
 {
-    std::vector<Position *> selectedPositions =
-        myLocation.getSelectedPositions();
+  std::vector<Position*> selectedPositions = myLocation.getSelectedPositions();
 
-    for (size_t i = 0; i < myOriginalDurations.size(); ++i)
-        selectedPositions[i]->setDurationType(myOriginalDurations[i]);
+  for (size_t i = 0; i < myOriginalDurations.size(); ++i)
+    selectedPositions[i]->setDurationType(myOriginalDurations[i]);
 }

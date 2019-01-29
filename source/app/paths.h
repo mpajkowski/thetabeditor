@@ -20,8 +20,7 @@
 
 class QString;
 
-namespace Paths
-{
+namespace Paths {
 using path = boost::filesystem::path;
 
 /// Return a path to a directory where config files should be written to.
@@ -39,8 +38,8 @@ std::vector<path> getDataDirs();
 path getHomeDir();
 
 /// Convert a QString to a boost::filesystem::path.
-path fromQString(const QString &str);
+path fromQString(const QString& str);
 
 /// Convert a boost::filesystem::path to a QString.
-QString toQString(const path &str);
+QString toQString(const path& str);
 } // namespace Paths

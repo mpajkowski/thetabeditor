@@ -18,20 +18,21 @@
 #include "multibarrestdialog.h"
 #include "ui_multibarrestdialog.h"
 
-MultiBarRestDialog::MultiBarRestDialog(QWidget *parent)
-    : QDialog(parent), ui(new Ui::MultiBarRestDialog)
+MultiBarRestDialog::MultiBarRestDialog(QWidget* parent)
+  : QDialog(parent)
+  , ui(new Ui::MultiBarRestDialog)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    ui->numberOfBarsSpinBox->setMinimum(2);
+  ui->numberOfBarsSpinBox->setMinimum(2);
 }
 
 MultiBarRestDialog::~MultiBarRestDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 int MultiBarRestDialog::getBarCount() const
 {
-    return ui->numberOfBarsSpinBox->value();
+  return ui->numberOfBarsSpinBox->value();
 }

@@ -26,61 +26,61 @@
 class AlternateEnding
 {
 public:
-    enum SpecialAlternateEndings
-    {
-        DaCapo,
-        DalSegno,
-        DalSegnoSegno,
-        NumSpecialAlternateEndings
-    };
+  enum SpecialAlternateEndings
+  {
+    DaCapo,
+    DalSegno,
+    DalSegnoSegno,
+    NumSpecialAlternateEndings
+  };
 
-    AlternateEnding();
-    explicit AlternateEnding(int position);
+  AlternateEnding();
+  explicit AlternateEnding(int position);
 
-    bool operator==(const AlternateEnding &other) const;
+  bool operator==(const AlternateEnding& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the position within the system where the ending is anchored.
-    int getPosition() const;
-    /// Sets the position within the system where the ending is anchored.
-    void setPosition(int position);
+  /// Returns the position within the system where the ending is anchored.
+  int getPosition() const;
+  /// Sets the position within the system where the ending is anchored.
+  void setPosition(int position);
 
-    /// Add a new number to the alternate ending.
-    void addNumber(int number);
-    /// Removes a number from the alternate ending.
-    void removeNumber(int number);
-    /// Returns a list of the alternate ending's numbers.
-    const std::vector<int> &getNumbers() const;
+  /// Add a new number to the alternate ending.
+  void addNumber(int number);
+  /// Removes a number from the alternate ending.
+  void removeNumber(int number);
+  /// Returns a list of the alternate ending's numbers.
+  const std::vector<int>& getNumbers() const;
 
-    bool hasDaCapo() const;
-    void setDaCapo(bool set = true);
-    bool hasDalSegno() const;
-    void setDalSegno(bool set = true);
-    bool hasDalSegnoSegno() const;
-    void setDalSegnoSegno(bool set = true);
+  bool hasDaCapo() const;
+  void setDaCapo(bool set = true);
+  bool hasDalSegno() const;
+  void setDalSegno(bool set = true);
+  bool hasDalSegnoSegno() const;
+  void setDalSegnoSegno(bool set = true);
 
-    /// Minimum valid repeat number.
-    static const int MIN_NUMBER;
-    /// Maximum valid repeat number.
-    static const int MAX_NUMBER;
+  /// Minimum valid repeat number.
+  static const int MIN_NUMBER;
+  /// Maximum valid repeat number.
+  static const int MAX_NUMBER;
 
 private:
-    int myPosition;
-    std::vector<int> myNumbers;
-    std::bitset<NumSpecialAlternateEndings> mySpecialEndings;
+  int myPosition;
+  std::vector<int> myNumbers;
+  std::bitset<NumSpecialAlternateEndings> mySpecialEndings;
 };
 
-template <class Archive>
-void AlternateEnding::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void AlternateEnding::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("position", myPosition);
-    ar("numbers", myNumbers);
-    ar("special_endings", mySpecialEndings);
+  ar("position", myPosition);
+  ar("numbers", myNumbers);
+  ar("special_endings", mySpecialEndings);
 }
 
 /// Gets the alternate ending text (numbers + D.C./D.S./D.S.S.).
-std::ostream &operator<<(std::ostream &os, const AlternateEnding &ending);
+std::ostream& operator<<(std::ostream& os, const AlternateEnding& ending);
 
 #endif

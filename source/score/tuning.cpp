@@ -29,143 +29,137 @@ const int Tuning::MIN_CAPO = 0;
 const int Tuning::MAX_CAPO = 12;
 
 Tuning::Tuning()
-    : myName("Standard"),
-      myMusicNotationOffset(0),
-      myUsesSharps(true),
-      myCapo(0)
+  : myName("Standard")
+  , myMusicNotationOffset(0)
+  , myUsesSharps(true)
+  , myCapo(0)
 {
-    // Initialize to standard tuning.
-    myNotes.push_back(Midi::MIDI_NOTE_E4);
-    myNotes.push_back(Midi::MIDI_NOTE_B3);
-    myNotes.push_back(Midi::MIDI_NOTE_G3);
-    myNotes.push_back(Midi::MIDI_NOTE_D3);
-    myNotes.push_back(Midi::MIDI_NOTE_A2);
-    myNotes.push_back(Midi::MIDI_NOTE_E2);
+  // Initialize to standard tuning.
+  myNotes.push_back(Midi::MIDI_NOTE_E4);
+  myNotes.push_back(Midi::MIDI_NOTE_B3);
+  myNotes.push_back(Midi::MIDI_NOTE_G3);
+  myNotes.push_back(Midi::MIDI_NOTE_D3);
+  myNotes.push_back(Midi::MIDI_NOTE_A2);
+  myNotes.push_back(Midi::MIDI_NOTE_E2);
 }
 
-bool Tuning::operator==(const Tuning &other) const
+bool Tuning::operator==(const Tuning& other) const
 {
-    return myName == other.myName && isSameTuning(other);
+  return myName == other.myName && isSameTuning(other);
 }
 
-bool Tuning::isSameTuning(const Tuning &other) const
+bool Tuning::isSameTuning(const Tuning& other) const
 {
-    return myNotes == other.myNotes &&
-           myMusicNotationOffset == other.myMusicNotationOffset &&
-           myUsesSharps == other.myUsesSharps && myCapo == other.myCapo;
+  return myNotes == other.myNotes && myMusicNotationOffset == other.myMusicNotationOffset &&
+         myUsesSharps == other.myUsesSharps && myCapo == other.myCapo;
 }
 
-const std::string &Tuning::getName() const
+const std::string& Tuning::getName() const
 {
-    return myName;
+  return myName;
 }
 
-void Tuning::setName(const std::string &name)
+void Tuning::setName(const std::string& name)
 {
-    myName = name;
+  myName = name;
 }
 
 bool Tuning::isValidStringCount(int count)
 {
-    return count >= MIN_STRING_COUNT && count <= MAX_STRING_COUNT;
+  return count >= MIN_STRING_COUNT && count <= MAX_STRING_COUNT;
 }
 
 int Tuning::getStringCount() const
 {
-    return static_cast<int>(myNotes.size());
+  return static_cast<int>(myNotes.size());
 }
 
 uint8_t Tuning::getNote(int string, bool includeMusicNotationOffset) const
 {
-    if (string >= getStringCount())
-        throw std::out_of_range("Invalid string number");
+  if (string >= getStringCount())
+    throw std::out_of_range("Invalid string number");
 
-    uint8_t note = myNotes[string];
-    if (includeMusicNotationOffset)
-        note = Midi::offsetMidiNote(note, myMusicNotationOffset);
+  uint8_t note = myNotes[string];
+  if (includeMusicNotationOffset)
+    note = Midi::offsetMidiNote(note, myMusicNotationOffset);
 
-    return note;
+  return note;
 }
 
 std::vector<uint8_t> Tuning::getNotes() const
 {
-    return myNotes;
+  return myNotes;
 }
 
 void Tuning::setNote(int string, uint8_t note)
 {
-    if (string >= getStringCount())
-        throw std::out_of_range("Invalid string number");
-    if (!Midi::isValidMidiNote(note))
-        throw std::out_of_range("Invalid MIDI note");
+  if (string >= getStringCount())
+    throw std::out_of_range("Invalid string number");
+  if (!Midi::isValidMidiNote(note))
+    throw std::out_of_range("Invalid MIDI note");
 
-    myNotes[string] = note;
+  myNotes[string] = note;
 }
 
-void Tuning::setNotes(const std::vector<uint8_t> &notes)
+void Tuning::setNotes(const std::vector<uint8_t>& notes)
 {
-    if (!isValidStringCount(static_cast<int>(notes.size())))
-        throw std::out_of_range("Invalid string count");
+  if (!isValidStringCount(static_cast<int>(notes.size())))
+    throw std::out_of_range("Invalid string count");
 
-    for (auto &note : notes)
-    {
-        if (!Midi::isValidMidiNote(note))
-            throw std::out_of_range("Invalid MIDI note");
-    }
+  for (auto& note : notes) {
+    if (!Midi::isValidMidiNote(note))
+      throw std::out_of_range("Invalid MIDI note");
+  }
 
-    myNotes = notes;
+  myNotes = notes;
 }
 
 int8_t Tuning::getMusicNotationOffset() const
 {
-    return myMusicNotationOffset;
+  return myMusicNotationOffset;
 }
 
 void Tuning::setMusicNotationOffset(int8_t offset)
 {
-    if (offset < MIN_MUSIC_NOTATION_OFFSET ||
-        offset > MAX_MUSIC_NOTATION_OFFSET)
-    {
-        throw std::out_of_range("Invalid music notation offset");
-    }
+  if (offset < MIN_MUSIC_NOTATION_OFFSET || offset > MAX_MUSIC_NOTATION_OFFSET) {
+    throw std::out_of_range("Invalid music notation offset");
+  }
 
-    myMusicNotationOffset = offset;
+  myMusicNotationOffset = offset;
 }
 
 bool Tuning::usesSharps() const
 {
-    return myUsesSharps;
+  return myUsesSharps;
 }
 
 void Tuning::setSharps(bool set)
 {
-    myUsesSharps = set;
+  myUsesSharps = set;
 }
 
 int Tuning::getCapo() const
 {
-    return myCapo;
+  return myCapo;
 }
 
 void Tuning::setCapo(int capo)
 {
-    if (capo > MAX_CAPO)
-        throw std::out_of_range("Invalid capo");
+  if (capo > MAX_CAPO)
+    throw std::out_of_range("Invalid capo");
 
-    myCapo = capo;
+  myCapo = capo;
 }
 
-std::ostream &operator<<(std::ostream &os, const Tuning &t)
+std::ostream& operator<<(std::ostream& os, const Tuning& t)
 {
-    // Go from lowest to highest string
-    for (int i = t.getStringCount(); i > 0; i--)
-    {
-        if (i != t.getStringCount())
-            os << " ";
+  // Go from lowest to highest string
+  for (int i = t.getStringCount(); i > 0; i--) {
+    if (i != t.getStringCount())
+      os << " ";
 
-        os << Midi::getMidiNoteTextSimple(t.getNote(i - 1, false),
-                                          t.usesSharps());
-    }
+    os << Midi::getMidiNoteTextSimple(t.getNote(i - 1, false), t.usesSharps());
+  }
 
-    return os;
+  return os;
 }

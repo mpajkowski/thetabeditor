@@ -20,27 +20,26 @@
 
 #include <QDialog>
 
-namespace Ui
-{
+namespace Ui {
 class TrillDialog;
 }
 
 class TrillDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit TrillDialog(QWidget *parent, int originalFret);
-    ~TrillDialog();
+  explicit TrillDialog(QWidget* parent, int originalFret);
+  ~TrillDialog();
 
-    int getTrilledFret() const;
+  int getTrilledFret() const;
 
 public slots:
-    virtual void accept() override;
+  virtual void accept() override;
 
 private:
-    Ui::TrillDialog *ui;
-    const int myOriginalFret;
+  Ui::TrillDialog* ui;
+  const int myOriginalFret;
 };
 
 #endif

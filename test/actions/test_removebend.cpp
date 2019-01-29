@@ -23,15 +23,15 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/RemoveBend", "")
 {
-    Bend bend(Bend::BendAndHold, 3, 2, 5, Bend::MidPoint, Bend::HighPoint);
-    myLocation.getNote()->setBend(bend);
+  Bend bend(Bend::BendAndHold, 3, 2, 5, Bend::MidPoint, Bend::HighPoint);
+  myLocation.getNote()->setBend(bend);
 
-    RemoveBend action(myLocation);
+  RemoveBend action(myLocation);
 
-    action.redo();
-    REQUIRE(!myLocation.getNote()->hasBend());
+  action.redo();
+  REQUIRE(!myLocation.getNote()->hasBend());
 
-    action.undo();
-    REQUIRE(myLocation.getNote()->hasBend());
-    REQUIRE(myLocation.getNote()->getBend() == bend);
+  action.undo();
+  REQUIRE(myLocation.getNote()->hasBend());
+  REQUIRE(myLocation.getNote()->getBend() == bend);
 }

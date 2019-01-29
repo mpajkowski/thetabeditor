@@ -20,24 +20,23 @@
 
 #include <QDialog>
 
-namespace Ui
-{
+namespace Ui {
 class CrashDialog;
 }
 
 class CrashDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit CrashDialog(const QString &stacktrace, QWidget *parent = 0);
-    ~CrashDialog();
+  explicit CrashDialog(const QString& stacktrace, QWidget* parent = 0);
+  ~CrashDialog();
 
 private slots:
-    void launchBugReport();
+  void launchBugReport();
 
 private:
-    Ui::CrashDialog *ui;
+  Ui::CrashDialog* ui;
 };
 
 #endif

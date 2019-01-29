@@ -33,66 +33,68 @@ class Voice;
 class MidiFile
 {
 public:
-    struct LoadOptions
-    {
-        LoadOptions()
-            : myVibratoStrength(0),
-              myWideVibratoStrength(0),
-              myEnableMetronome(false),
-              myStrongAccentVel(0),
-              myWeakAccentVel(0),
-              myMetronomePreset(0),
-              myRecordPositionChanges(false)
-        {
-        }
+  struct LoadOptions
+  {
+    LoadOptions()
+      : myVibratoStrength(0)
+      , myWideVibratoStrength(0)
+      , myEnableMetronome(false)
+      , myStrongAccentVel(0)
+      , myWeakAccentVel(0)
+      , myMetronomePreset(0)
+      , myRecordPositionChanges(false)
+    {}
 
-        uint8_t myVibratoStrength;
-        uint8_t myWideVibratoStrength;
-        bool myEnableMetronome;
-        uint8_t myStrongAccentVel;
-        uint8_t myWeakAccentVel;
-        uint8_t myMetronomePreset;
-        bool myRecordPositionChanges;
-    };
+    uint8_t myVibratoStrength;
+    uint8_t myWideVibratoStrength;
+    bool myEnableMetronome;
+    uint8_t myStrongAccentVel;
+    uint8_t myWeakAccentVel;
+    uint8_t myMetronomePreset;
+    bool myRecordPositionChanges;
+  };
 
-    MidiFile();
+  MidiFile();
 
-    void load(const Score &score, const LoadOptions &options);
+  void load(const Score& score, const LoadOptions& options);
 
-    int getTicksPerBeat() const
-    {
-        return myTicksPerBeat;
-    }
-    std::vector<MidiEventList> &getTracks()
-    {
-        return myTracks;
-    }
-    const std::vector<MidiEventList> &getTracks() const
-    {
-        return myTracks;
-    }
+  int getTicksPerBeat() const { return myTicksPerBeat; }
+  std::vector<MidiEventList>& getTracks() { return myTracks; }
+  const std::vector<MidiEventList>& getTracks() const { return myTracks; }
 
 private:
-    int generateMetronome(MidiEventList &event_list, int current_tick,
-                          const System &system, const Barline &current_bar,
-                          const Barline &next_bar,
-                          const SystemLocation &location,
-                          const LoadOptions &options);
+  int generateMetronome(MidiEventList& event_list,
+                        int current_tick,
+                        const System& system,
+                        const Barline& current_bar,
+                        const Barline& next_bar,
+                        const SystemLocation& location,
+                        const LoadOptions& options);
 
-    int addTempoEvent(MidiEventList &event_list, int current_tick,
-                      int current_tempo, const System &system, int bar_start,
-                      int bar_end);
+  int addTempoEvent(MidiEventList& event_list,
+                    int current_tick,
+                    int current_tempo,
+                    const System& system,
+                    int bar_start,
+                    int bar_end);
 
-    int addEventsForBar(std::vector<MidiEventList> &tracks,
-                        uint8_t &active_bend, int current_tick,
-                        int current_tempo, const Score &score,
-                        const System &system, int system_index,
-                        const Staff &staff, int staff_index, const Voice &voice,
-                        int voice_index, int bar_start, int bar_end,
-                        const LoadOptions &options);
+  int addEventsForBar(std::vector<MidiEventList>& tracks,
+                      uint8_t& active_bend,
+                      int current_tick,
+                      int current_tempo,
+                      const Score& score,
+                      const System& system,
+                      int system_index,
+                      const Staff& staff,
+                      int staff_index,
+                      const Voice& voice,
+                      int voice_index,
+                      int bar_start,
+                      int bar_end,
+                      const LoadOptions& options);
 
-    int myTicksPerBeat;
-    std::vector<MidiEventList> myTracks;
+  int myTicksPerBeat;
+  std::vector<MidiEventList> myTracks;
 };
 
 #endif

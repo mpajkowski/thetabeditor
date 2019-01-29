@@ -21,8 +21,7 @@
 #include <QWidget>
 #include <score/tuning.h>
 
-namespace Ui
-{
+namespace Ui {
 class MixerItem;
 }
 
@@ -34,23 +33,25 @@ class TuningDictionary;
 class MixerItem : public QWidget
 {
 public:
-    explicit MixerItem(QWidget *parent, int playerIndex, const Player &player,
-                       const TuningDictionary &dictionary,
-                       const PlayerEditPubSub &editPubSub,
-                       const PlayerRemovePubSub &removePubSub);
-    ~MixerItem();
+  explicit MixerItem(QWidget* parent,
+                     int playerIndex,
+                     const Player& player,
+                     const TuningDictionary& dictionary,
+                     const PlayerEditPubSub& editPubSub,
+                     const PlayerRemovePubSub& removePubSub);
+  ~MixerItem();
 
 private:
-    void onPlayerNameEdited();
-    void editTuning();
-    void onEdited(bool undoable);
+  void onPlayerNameEdited();
+  void editTuning();
+  void onEdited(bool undoable);
 
-    Ui::MixerItem *ui;
-    const TuningDictionary &myDictionary;
-    const PlayerEditPubSub &myEditPubSub;
-    const PlayerRemovePubSub &myRemovePubSub;
-    const int myPlayerIndex;
-    Tuning myTuning;
+  Ui::MixerItem* ui;
+  const TuningDictionary& myDictionary;
+  const PlayerEditPubSub& myEditPubSub;
+  const PlayerRemovePubSub& myRemovePubSub;
+  const int myPlayerIndex;
+  Tuning myTuning;
 };
 
 #endif

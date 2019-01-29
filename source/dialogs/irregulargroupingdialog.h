@@ -20,22 +20,21 @@
 
 #include <QDialog>
 
-namespace Ui
-{
+namespace Ui {
 class IrregularGroupingDialog;
 }
 
 class IrregularGroupingDialog : public QDialog
 {
 public:
-    explicit IrregularGroupingDialog(QWidget *parent);
-    ~IrregularGroupingDialog();
+  explicit IrregularGroupingDialog(QWidget* parent);
+  ~IrregularGroupingDialog();
 
-    int getNotesPlayed() const;
-    int getNotesPlayedOver() const;
+  int getNotesPlayed() const;
+  int getNotesPlayedOver() const;
 
 private:
-    Ui::IrregularGroupingDialog *ui;
+  Ui::IrregularGroupingDialog* ui;
 };
 
 #endif

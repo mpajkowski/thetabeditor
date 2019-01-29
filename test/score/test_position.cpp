@@ -22,131 +22,130 @@
 
 TEST_CASE("Score/Position/SimpleProperties", "")
 {
-    Position position;
+  Position position;
 
-    REQUIRE(!position.hasProperty(Position::PalmMuting));
-    position.setProperty(Position::PalmMuting, true);
-    REQUIRE(position.hasProperty(Position::PalmMuting));
+  REQUIRE(!position.hasProperty(Position::PalmMuting));
+  position.setProperty(Position::PalmMuting, true);
+  REQUIRE(position.hasProperty(Position::PalmMuting));
 }
 
 TEST_CASE("Score/Position/MultiBarRest", "")
 {
-    Position position;
+  Position position;
 
-    REQUIRE(!position.hasMultiBarRest());
-    REQUIRE_THROWS(position.getMultiBarRestCount());
+  REQUIRE(!position.hasMultiBarRest());
+  REQUIRE_THROWS(position.getMultiBarRestCount());
 
-    position.setMultiBarRest(7);
-    REQUIRE(position.hasMultiBarRest());
-    REQUIRE(position.getMultiBarRestCount() == 7);
+  position.setMultiBarRest(7);
+  REQUIRE(position.hasMultiBarRest());
+  REQUIRE(position.getMultiBarRestCount() == 7);
 
-    position.clearMultiBarRest();
-    REQUIRE(!position.hasMultiBarRest());
-    REQUIRE_THROWS(position.getMultiBarRestCount());
+  position.clearMultiBarRest();
+  REQUIRE(!position.hasMultiBarRest());
+  REQUIRE_THROWS(position.getMultiBarRestCount());
 }
 
 TEST_CASE("Score/Position/Notes", "")
 {
-    Position position;
-    REQUIRE(position.getNotes().size() == 0);
+  Position position;
+  REQUIRE(position.getNotes().size() == 0);
 
-    Note note1(2, 12), note2(4, 13);
+  Note note1(2, 12), note2(4, 13);
 
-    position.insertNote(note2);
-    position.insertNote(note1);
+  position.insertNote(note2);
+  position.insertNote(note1);
 
-    REQUIRE(position.getNotes().size() == 2);
-    REQUIRE(position.getNotes()[0] == note1);
-    REQUIRE(position.getNotes()[1] == note2);
+  REQUIRE(position.getNotes().size() == 2);
+  REQUIRE(position.getNotes()[0] == note1);
+  REQUIRE(position.getNotes()[1] == note2);
 
-    position.removeNote(note1);
-    REQUIRE(position.getNotes().size() == 1);
-    REQUIRE(position.getNotes()[0] == note2);
+  position.removeNote(note1);
+  REQUIRE(position.getNotes().size() == 1);
+  REQUIRE(position.getNotes()[0] == note2);
 }
 
 TEST_CASE("Score/Position/FindByString", "")
 {
-    Position position;
-    Note note1(2, 12), note2(4, 13);
-    position.insertNote(note2);
-    position.insertNote(note1);
+  Position position;
+  Note note1(2, 12), note2(4, 13);
+  position.insertNote(note2);
+  position.insertNote(note1);
 
-    REQUIRE(!Utils::findByString(position, 3));
-    REQUIRE(*Utils::findByString(position, 2) == note1);
-    REQUIRE(*Utils::findByString(position, 4) == note2);
+  REQUIRE(!Utils::findByString(position, 3));
+  REQUIRE(*Utils::findByString(position, 2) == note1);
+  REQUIRE(*Utils::findByString(position, 4) == note2);
 }
 
 TEST_CASE("Score/Position/HasNoteWithTappedHarmonic", "")
 {
-    Position position;
-    REQUIRE(!Utils::hasNoteWithTappedHarmonic(position));
+  Position position;
+  REQUIRE(!Utils::hasNoteWithTappedHarmonic(position));
 
-    Note note;
-    note.setTappedHarmonicFret(12);
-    position.insertNote(note);
-    REQUIRE(Utils::hasNoteWithTappedHarmonic(position));
+  Note note;
+  note.setTappedHarmonicFret(12);
+  position.insertNote(note);
+  REQUIRE(Utils::hasNoteWithTappedHarmonic(position));
 }
 
 TEST_CASE("Score/Position/HasNoteWithArtificialHarmonic", "")
 {
-    Position position;
-    REQUIRE(!Utils::hasNoteWithArtificialHarmonic(position));
+  Position position;
+  REQUIRE(!Utils::hasNoteWithArtificialHarmonic(position));
 
-    Note note;
-    note.setArtificialHarmonic(ArtificialHarmonic(
-        ChordName::D, ChordName::Flat, ArtificialHarmonic::Octave::Octave15ma));
-    position.insertNote(note);
-    REQUIRE(Utils::hasNoteWithArtificialHarmonic(position));
+  Note note;
+  note.setArtificialHarmonic(
+    ArtificialHarmonic(ChordName::D, ChordName::Flat, ArtificialHarmonic::Octave::Octave15ma));
+  position.insertNote(note);
+  REQUIRE(Utils::hasNoteWithArtificialHarmonic(position));
 }
 
 TEST_CASE("Score/Position/HasNoteWithTrill", "")
 {
-    Position position;
-    REQUIRE(!Utils::hasNoteWithTrill(position));
+  Position position;
+  REQUIRE(!Utils::hasNoteWithTrill(position));
 
-    Note note;
-    note.setTrilledFret(12);
-    position.insertNote(note);
-    REQUIRE(Utils::hasNoteWithTrill(position));
+  Note note;
+  note.setTrilledFret(12);
+  position.insertNote(note);
+  REQUIRE(Utils::hasNoteWithTrill(position));
 }
 
 TEST_CASE("Score/Position/HasNoteWithBend", "")
 {
-    Position position;
-    REQUIRE(!Utils::hasNoteWithBend(position));
+  Position position;
+  REQUIRE(!Utils::hasNoteWithBend(position));
 
-    Note note;
-    note.setBend(
-        Bend(Bend::BendAndHold, 2, 0, 0, Bend::LowPoint, Bend::MidPoint));
-    position.insertNote(note);
-    REQUIRE(Utils::hasNoteWithBend(position));
+  Note note;
+  note.setBend(Bend(Bend::BendAndHold, 2, 0, 0, Bend::LowPoint, Bend::MidPoint));
+  position.insertNote(note);
+  REQUIRE(Utils::hasNoteWithBend(position));
 }
 
 TEST_CASE("Score/Position/HasNoteWithProperty", "")
 {
-    Position position;
+  Position position;
 
-    REQUIRE(!Utils::hasNoteWithProperty(position, Note::HammerOnOrPullOff));
+  REQUIRE(!Utils::hasNoteWithProperty(position, Note::HammerOnOrPullOff));
 
-    Note note;
-    note.setProperty(Note::GhostNote);
-    position.insertNote(note);
-    REQUIRE(!Utils::hasNoteWithProperty(position, Note::HammerOnOrPullOff));
-    position.removeNote(note);
+  Note note;
+  note.setProperty(Note::GhostNote);
+  position.insertNote(note);
+  REQUIRE(!Utils::hasNoteWithProperty(position, Note::HammerOnOrPullOff));
+  position.removeNote(note);
 
-    note.setProperty(Note::HammerOnOrPullOff);
-    position.insertNote(note);
-    REQUIRE(Utils::hasNoteWithProperty(position, Note::HammerOnOrPullOff));
+  note.setProperty(Note::HammerOnOrPullOff);
+  position.insertNote(note);
+  REQUIRE(Utils::hasNoteWithProperty(position, Note::HammerOnOrPullOff));
 }
 
 TEST_CASE("Score/Position/Serialization", "")
 {
-    Position position;
-    position.setPosition(42);
-    position.setDurationType(Position::HalfNote);
-    position.setProperty(Position::PalmMuting, true);
-    position.setProperty(Position::WideVibrato, true);
-    position.setMultiBarRest(7);
+  Position position;
+  position.setPosition(42);
+  position.setDurationType(Position::HalfNote);
+  position.setProperty(Position::PalmMuting, true);
+  position.setProperty(Position::WideVibrato, true);
+  position.setMultiBarRest(7);
 
-    Serialization::test("position", position);
+  Serialization::test("position", position);
 }

@@ -20,21 +20,19 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemoveAlternateEnding::RemoveAlternateEnding(const ScoreLocation &location)
-    : QUndoCommand(QObject::tr("Remove Repeat Ending")),
-      myLocation(location),
-      myOriginalEnding(*ScoreUtils::findByPosition(
-          location.getSystem().getAlternateEndings(),
-          location.getPositionIndex()))
-{
-}
+RemoveAlternateEnding::RemoveAlternateEnding(const ScoreLocation& location)
+  : QUndoCommand(QObject::tr("Remove Repeat Ending"))
+  , myLocation(location)
+  , myOriginalEnding(
+      *ScoreUtils::findByPosition(location.getSystem().getAlternateEndings(), location.getPositionIndex()))
+{}
 
 void RemoveAlternateEnding::redo()
 {
-    myLocation.getSystem().removeAlternateEnding(myOriginalEnding);
+  myLocation.getSystem().removeAlternateEnding(myOriginalEnding);
 }
 
 void RemoveAlternateEnding::undo()
 {
-    myLocation.getSystem().insertAlternateEnding(myOriginalEnding);
+  myLocation.getSystem().insertAlternateEnding(myOriginalEnding);
 }

@@ -17,27 +17,27 @@
 
 #include "addnoteproperty.h"
 
-AddNoteProperty::AddNoteProperty(const ScoreLocation &location,
+AddNoteProperty::AddNoteProperty(const ScoreLocation& location,
                                  Note::SimpleProperty property,
-                                 const QString &description)
-    : QUndoCommand(QObject::tr("Set ") + description),
-      myLocation(location),
-      myProperty(property)
+                                 const QString& description)
+  : QUndoCommand(QObject::tr("Set ") + description)
+  , myLocation(location)
+  , myProperty(property)
 {
-    for (const Note *note : myLocation.getSelectedNotes())
-        myOriginalNotes.push_back(*note);
+  for (const Note* note : myLocation.getSelectedNotes())
+    myOriginalNotes.push_back(*note);
 }
 
 void AddNoteProperty::redo()
 {
-    for (Note *note : myLocation.getSelectedNotes())
-        note->setProperty(myProperty, true);
+  for (Note* note : myLocation.getSelectedNotes())
+    note->setProperty(myProperty, true);
 }
 
 void AddNoteProperty::undo()
 {
-    std::vector<Note *> selectedNotes = myLocation.getSelectedNotes();
+  std::vector<Note*> selectedNotes = myLocation.getSelectedNotes();
 
-    for (size_t i = 0; i < myOriginalNotes.size(); ++i)
-        *selectedNotes[i] = myOriginalNotes[i];
+  for (size_t i = 0; i < myOriginalNotes.size(); ++i)
+    *selectedNotes[i] = myOriginalNotes[i];
 }

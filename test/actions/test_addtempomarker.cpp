@@ -22,18 +22,18 @@
 
 TEST_CASE("Actions/AddTempoMarker", "")
 {
-    Score score;
-    score.insertSystem(System());
+  Score score;
+  score.insertSystem(System());
 
-    TempoMarker marker(6);
-    marker.setBeatsPerMinute(160);
-    ScoreLocation location(score, 0, 0, 6);
-    AddTempoMarker action(location, marker);
+  TempoMarker marker(6);
+  marker.setBeatsPerMinute(160);
+  ScoreLocation location(score, 0, 0, 6);
+  AddTempoMarker action(location, marker);
 
-    action.redo();
-    REQUIRE(location.getSystem().getTempoMarkers().size() == 1);
-    REQUIRE(location.getSystem().getTempoMarkers()[0] == marker);
+  action.redo();
+  REQUIRE(location.getSystem().getTempoMarkers().size() == 1);
+  REQUIRE(location.getSystem().getTempoMarkers()[0] == marker);
 
-    action.undo();
-    REQUIRE(location.getSystem().getTempoMarkers().size() == 0);
+  action.undo();
+  REQUIRE(location.getSystem().getTempoMarkers().size() == 0);
 }

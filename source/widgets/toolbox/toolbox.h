@@ -29,14 +29,13 @@ class TheTabEditor;
 
 class Toolbox : public QTabWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 public:
-    Toolbox(TheTabEditor *mainWindow,
-            boost::shared_ptr<SkinManager> skinManager);
+  Toolbox(TheTabEditor* mainWindow, boost::shared_ptr<SkinManager> skinManager);
 
 private:
-    ScorePage *scorePage;
-    NotePage *notePage;
+  ScorePage* scorePage;
+  NotePage* notePage;
 };
 
 #endif // TOOLBOX_H

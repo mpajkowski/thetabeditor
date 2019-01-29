@@ -23,18 +23,17 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/AddPositionProperty", "")
 {
-    myLocation.getPosition()->setProperty(Position::PickStrokeUp);
+  myLocation.getPosition()->setProperty(Position::PickStrokeUp);
 
-    AddPositionProperty action(myLocation, Position::PickStrokeDown,
-                               "Pick Stroke Up");
+  AddPositionProperty action(myLocation, Position::PickStrokeDown, "Pick Stroke Up");
 
-    // Ensure that mutually exclusive properties are cleared and reset as
-    // needed.
-    action.redo();
-    REQUIRE(myLocation.getPosition()->hasProperty(Position::PickStrokeDown));
-    REQUIRE(!myLocation.getPosition()->hasProperty(Position::PickStrokeUp));
+  // Ensure that mutually exclusive properties are cleared and reset as
+  // needed.
+  action.redo();
+  REQUIRE(myLocation.getPosition()->hasProperty(Position::PickStrokeDown));
+  REQUIRE(!myLocation.getPosition()->hasProperty(Position::PickStrokeUp));
 
-    action.undo();
-    REQUIRE(!myLocation.getPosition()->hasProperty(Position::PickStrokeDown));
-    REQUIRE(myLocation.getPosition()->hasProperty(Position::PickStrokeUp));
+  action.undo();
+  REQUIRE(!myLocation.getPosition()->hasProperty(Position::PickStrokeDown));
+  REQUIRE(myLocation.getPosition()->hasProperty(Position::PickStrokeUp));
 }

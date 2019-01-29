@@ -19,19 +19,18 @@
 
 #include <score/staff.h>
 
-AddDynamic::AddDynamic(const ScoreLocation &location, const Dynamic &dynamic)
-    : QUndoCommand(QObject::tr("Add Dynamic")),
-      myLocation(location),
-      myDynamic(dynamic)
-{
-}
+AddDynamic::AddDynamic(const ScoreLocation& location, const Dynamic& dynamic)
+  : QUndoCommand(QObject::tr("Add Dynamic"))
+  , myLocation(location)
+  , myDynamic(dynamic)
+{}
 
 void AddDynamic::redo()
 {
-    myLocation.getStaff().insertDynamic(myDynamic);
+  myLocation.getStaff().insertDynamic(myDynamic);
 }
 
 void AddDynamic::undo()
 {
-    myLocation.getStaff().removeDynamic(myDynamic);
+  myLocation.getStaff().removeDynamic(myDynamic);
 }

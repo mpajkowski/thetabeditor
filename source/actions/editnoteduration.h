@@ -25,16 +25,15 @@
 class EditNoteDuration : public QUndoCommand
 {
 public:
-    EditNoteDuration(const ScoreLocation &location,
-                     Position::DurationType duration, bool forRests);
+  EditNoteDuration(const ScoreLocation& location, Position::DurationType duration, bool forRests);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Position::DurationType myNewDuration;
-    std::vector<Position::DurationType> myOriginalDurations;
+  ScoreLocation myLocation;
+  const Position::DurationType myNewDuration;
+  std::vector<Position::DurationType> myOriginalDurations;
 };
 
 #endif

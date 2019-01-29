@@ -20,55 +20,46 @@
 #include <score/barline.h>
 #include <score/score.h>
 
-EditTimeSignature::EditTimeSignature(const ScoreLocation &location,
-                                     const TimeSignature &newTimeSig)
-    : QUndoCommand(QObject::tr("Edit Time Signature")),
-      myLocation(location),
-      myNewTime(newTimeSig),
-      myOldTime(location.getBarline()->getTimeSignature())
-{
-}
+EditTimeSignature::EditTimeSignature(const ScoreLocation& location, const TimeSignature& newTimeSig)
+  : QUndoCommand(QObject::tr("Edit Time Signature"))
+  , myLocation(location)
+  , myNewTime(newTimeSig)
+  , myOldTime(location.getBarline()->getTimeSignature())
+{}
 
 void EditTimeSignature::redo()
 {
-    myLocation.getBarline()->setTimeSignature(myNewTime);
-    updateFollowingTimeSignatures(myOldTime, myNewTime);
+  myLocation.getBarline()->setTimeSignature(myNewTime);
+  updateFollowingTimeSignatures(myOldTime, myNewTime);
 }
 
 void EditTimeSignature::undo()
 {
-    myLocation.getBarline()->setTimeSignature(myOldTime);
-    updateFollowingTimeSignatures(myNewTime, myOldTime);
+  myLocation.getBarline()->setTimeSignature(myOldTime);
+  updateFollowingTimeSignatures(myNewTime, myOldTime);
 }
 
-void EditTimeSignature::updateFollowingTimeSignatures(
-    const TimeSignature &oldTime, const TimeSignature &newTime)
+void EditTimeSignature::updateFollowingTimeSignatures(const TimeSignature& oldTime,
+                                                      const TimeSignature& newTime)
 {
-    Score &score = myLocation.getScore();
-    const size_t start_system_index = myLocation.getSystemIndex();
+  Score& score = myLocation.getScore();
+  const size_t start_system_index = myLocation.getSystemIndex();
 
-    for (size_t i = start_system_index; i < score.getSystems().size(); ++i)
-    {
-        for (Barline &bar : score.getSystems()[i].getBarlines())
-        {
-            if (i == start_system_index &&
-                bar.getPosition() <= myLocation.getPositionIndex())
-            {
-                continue;
-            }
+  for (size_t i = start_system_index; i < score.getSystems().size(); ++i) {
+    for (Barline& bar : score.getSystems()[i].getBarlines()) {
+      if (i == start_system_index && bar.getPosition() <= myLocation.getPositionIndex()) {
+        continue;
+      }
 
-            const TimeSignature &currentTime = bar.getTimeSignature();
-            if (currentTime.getMeterType() == oldTime.getMeterType() &&
-                currentTime.getBeatsPerMeasure() ==
-                    oldTime.getBeatsPerMeasure() &&
-                currentTime.getBeatValue() == oldTime.getBeatValue())
-            {
-                TimeSignature time(newTime);
-                time.setVisible(currentTime.isVisible());
-                bar.setTimeSignature(time);
-            }
-            else
-                return;
-        }
+      const TimeSignature& currentTime = bar.getTimeSignature();
+      if (currentTime.getMeterType() == oldTime.getMeterType() &&
+          currentTime.getBeatsPerMeasure() == oldTime.getBeatsPerMeasure() &&
+          currentTime.getBeatValue() == oldTime.getBeatValue()) {
+        TimeSignature time(newTime);
+        time.setVisible(currentTime.isVisible());
+        bar.setTimeSignature(time);
+      } else
+        return;
     }
+  }
 }

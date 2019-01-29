@@ -23,18 +23,17 @@
 
 enum class ClickType
 {
-    Barline,
-    KeySignature,
-    TimeSignature,
-    TabClef,
-    Clef,
-    Selection
+  Barline,
+  KeySignature,
+  TimeSignature,
+  TabClef,
+  Clef,
+  Selection
 };
 
 /// Provides a way to subscribe to or publish notifications about events at
 /// a score location (e.g. a mouse click on a particular symbol).
-class ClickPubSub : public PubSub<void(ClickType, const ScoreLocation &)>
-{
-};
+class ClickPubSub : public PubSub<void(ClickType, const ScoreLocation&)>
+{};
 
 #endif

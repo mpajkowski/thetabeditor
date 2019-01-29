@@ -22,17 +22,17 @@
 
 TEST_CASE("Score/IrregularGrouping/Serialization", "")
 {
-    IrregularGrouping group(42, 5, 3, 2);
-    Serialization::test("irregular_grouping", group);
+  IrregularGrouping group(42, 5, 3, 2);
+  Serialization::test("irregular_grouping", group);
 }
 
 TEST_CASE("Score/IrregularGrouping/ToString")
 {
-    IrregularGrouping group(0, 1, 3, 2);
+  IrregularGrouping group(0, 1, 3, 2);
 
-    REQUIRE(boost::lexical_cast<std::string>(group) == "3");
+  REQUIRE(boost::lexical_cast<std::string>(group) == "3");
 
-    group.setNotesPlayed(7);
-    group.setNotesPlayedOver(5);
-    REQUIRE(boost::lexical_cast<std::string>(group) == "7:5");
+  group.setNotesPlayed(7);
+  group.setNotesPlayedOver(5);
+  REQUIRE(boost::lexical_cast<std::string>(group) == "7:5");
 }

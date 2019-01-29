@@ -22,8 +22,7 @@
 #include <string>
 #include <vector>
 
-namespace Midi
-{
+namespace Midi {
 // MIDI Duration constants.
 const uint32_t MIDI_WHOLE = 2880;
 const uint32_t MIDI_HALF_DOTTED = 2160;
@@ -457,10 +456,8 @@ const uint8_t MIDI_PERCUSSION_PRESET_MUTE_CUICA = 43;
 const uint8_t MIDI_PERCUSSION_PRESET_OPEN_CUICA = 44;
 const uint8_t MIDI_PERCUSSION_PRESET_MUTE_TRIANGLE = 45;
 const uint8_t MIDI_PERCUSSION_PRESET_OPEN_TRIANGLE = 46;
-const uint8_t FIRST_MIDI_PERCUSSION_PRESET =
-    MIDI_PERCUSSION_PRESET_ACOUSTIC_BASS_DRUM;
-const uint8_t LAST_MIDI_PERCUSSION_PRESET =
-    MIDI_PERCUSSION_PRESET_OPEN_TRIANGLE;
+const uint8_t FIRST_MIDI_PERCUSSION_PRESET = MIDI_PERCUSSION_PRESET_ACOUSTIC_BASS_DRUM;
+const uint8_t LAST_MIDI_PERCUSSION_PRESET = MIDI_PERCUSSION_PRESET_OPEN_TRIANGLE;
 /// The first percussion preset starts at 35.
 const uint8_t MIDI_PERCUSSION_PRESET_OFFSET = 35;
 
@@ -491,7 +488,9 @@ int32_t getMidiNoteOctave(uint8_t note, char noteText = 0);
 /// @param forceAccidentals Whether to display accidentals for notes that
 /// are in the key signature (useful for e.g. reinstating a flat or sharp
 /// in the key signature after a natural sign).
-std::string getMidiNoteText(uint8_t note, bool minor, bool usesSharps,
+std::string getMidiNoteText(uint8_t note,
+                            bool minor,
+                            bool usesSharps,
                             uint8_t numAccidentals,
                             bool forceAccidentals = false);
 

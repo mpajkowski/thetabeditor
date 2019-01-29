@@ -19,22 +19,21 @@
 
 #include <powertabdocument/position.h>
 
-RemoveVolumeSwell::RemoveVolumeSwell(Position *position) : position(position)
+RemoveVolumeSwell::RemoveVolumeSwell(Position* position)
+  : position(position)
 {
-    Q_ASSERT(position->HasVolumeSwell());
-    position->GetVolumeSwell(originalStartVolume, originalEndVolume,
-                             originalDuration);
+  Q_ASSERT(position->HasVolumeSwell());
+  position->GetVolumeSwell(originalStartVolume, originalEndVolume, originalDuration);
 
-    setText(QObject::tr("Remove Volume Swell"));
+  setText(QObject::tr("Remove Volume Swell"));
 }
 
 void RemoveVolumeSwell::redo()
 {
-    position->ClearVolumeSwell();
+  position->ClearVolumeSwell();
 }
 
 void RemoveVolumeSwell::undo()
 {
-    position->SetVolumeSwell(originalStartVolume, originalEndVolume,
-                             originalDuration);
+  position->SetVolumeSwell(originalStartVolume, originalEndVolume, originalDuration);
 }

@@ -24,68 +24,68 @@
 class KeySignature
 {
 public:
-    enum KeyType
-    {
-        Major,
-        Minor
-    };
+  enum KeyType
+  {
+    Major,
+    Minor
+  };
 
-    KeySignature();
-    KeySignature(KeyType type, int accidentals, bool usesSharps);
+  KeySignature();
+  KeySignature(KeyType type, int accidentals, bool usesSharps);
 
-    bool operator==(const KeySignature &other) const;
+  bool operator==(const KeySignature& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the key signature type (major or minor).
-    KeyType getKeyType() const;
-    /// Sets the key signature type (major or minor).
-    void setKeyType(KeyType type);
+  /// Returns the key signature type (major or minor).
+  KeyType getKeyType() const;
+  /// Sets the key signature type (major or minor).
+  void setKeyType(KeyType type);
 
-    /// Returns the number of accidentals in the key signature.
-    /// @param includeCancel Indicates whether accidentals for a cancellation
-    /// key signature should be included.
-    int getNumAccidentals(bool includeCancel = false) const;
-    /// Sets the number of accidentals in the key signature.
-    void setNumAccidentals(int accidentals);
+  /// Returns the number of accidentals in the key signature.
+  /// @param includeCancel Indicates whether accidentals for a cancellation
+  /// key signature should be included.
+  int getNumAccidentals(bool includeCancel = false) const;
+  /// Sets the number of accidentals in the key signature.
+  void setNumAccidentals(int accidentals);
 
-    /// Returns whether the key signature uses sharps or flats.
-    bool usesSharps() const;
-    /// Sets whether the key signature uses sharps or flats.
-    void setSharps(bool sharps = true);
+  /// Returns whether the key signature uses sharps or flats.
+  bool usesSharps() const;
+  /// Sets whether the key signature uses sharps or flats.
+  void setSharps(bool sharps = true);
 
-    /// Returns whether the key signature should be displayed.
-    bool isVisible() const;
-    /// Sets whether the key signature should be displayed.
-    void setVisible(bool visible = true);
+  /// Returns whether the key signature should be displayed.
+  bool isVisible() const;
+  /// Sets whether the key signature should be displayed.
+  void setVisible(bool visible = true);
 
-    /// Returns whether the key signature is a cancellation.
-    bool isCancellation() const;
-    /// Sets whether the key signature is a cancellation.
-    void setCancellation(bool cancellation = true);
+  /// Returns whether the key signature is a cancellation.
+  bool isCancellation() const;
+  /// Sets whether the key signature is a cancellation.
+  void setCancellation(bool cancellation = true);
 
-    /// The maximum valid number of accidentals.
-    static const int MAX_NUM_ACCIDENTALS;
+  /// The maximum valid number of accidentals.
+  static const int MAX_NUM_ACCIDENTALS;
 
 private:
-    KeyType myKeyType;
-    int myNumAccidentals;
-    bool myUsesSharps;
-    bool myIsVisible;
-    bool myIsCancellation;
+  KeyType myKeyType;
+  int myNumAccidentals;
+  bool myUsesSharps;
+  bool myIsVisible;
+  bool myIsCancellation;
 };
 
-template <class Archive>
-void KeySignature::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void KeySignature::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("key_type", myKeyType);
-    ar("num_accidentals", myNumAccidentals);
-    ar("sharps", myUsesSharps);
-    ar("visible", myIsVisible);
-    ar("cancellation", myIsCancellation);
+  ar("key_type", myKeyType);
+  ar("num_accidentals", myNumAccidentals);
+  ar("sharps", myUsesSharps);
+  ar("visible", myIsVisible);
+  ar("cancellation", myIsCancellation);
 }
 
-std::ostream &operator<<(std::ostream &os, const KeySignature &key);
+std::ostream& operator<<(std::ostream& os, const KeySignature& key);
 
 #endif

@@ -24,116 +24,107 @@
 class MockViewFilterView : public ViewFilterView
 {
 public:
-    MockViewFilterView() : myPresenter(nullptr)
-    {
-    }
+  MockViewFilterView()
+    : myPresenter(nullptr)
+  {}
 
-    void setPresenter(ViewFilterPresenter *presenter) override
-    {
-        myPresenter = presenter;
-    }
+  void setPresenter(ViewFilterPresenter* presenter) override { myPresenter = presenter; }
 
-    bool launch() override
-    {
-        return false;
-    }
+  bool launch() override { return false; }
 
-    void update(const std::vector<std::string> &names,
-                const boost::optional<int> &selection,
-                const std::vector<FilterRule> &rules) override
-    {
-        myFilterNames = names;
-        mySelection = selection;
-        myRules = rules;
-    }
+  void update(const std::vector<std::string>& names,
+              const boost::optional<int>& selection,
+              const std::vector<FilterRule>& rules) override
+  {
+    myFilterNames = names;
+    mySelection = selection;
+    myRules = rules;
+  }
 
-    ViewFilterPresenter *myPresenter;
-    std::vector<std::string> myFilterNames;
-    boost::optional<int> mySelection;
-    std::vector<FilterRule> myRules;
+  ViewFilterPresenter* myPresenter;
+  std::vector<std::string> myFilterNames;
+  boost::optional<int> mySelection;
+  std::vector<FilterRule> myRules;
 };
 
 TEST_CASE("Dialogs/ViewFilter")
 {
-    Score score;
-    ViewFilter filter_all;
-    filter_all.setDescription("Filter 1");
-    score.insertViewFilter(filter_all);
+  Score score;
+  ViewFilter filter_all;
+  filter_all.setDescription("Filter 1");
+  score.insertViewFilter(filter_all);
 
-    MockViewFilterView view;
-    ViewFilterPresenter presenter(view, score);
+  MockViewFilterView view;
+  ViewFilterPresenter presenter(view, score);
 
-    SECTION("Init")
-    {
-        REQUIRE(view.myPresenter != nullptr);
-        REQUIRE(view.myFilterNames.size() == 1);
-        REQUIRE(view.mySelection);
-    }
+  SECTION("Init")
+  {
+    REQUIRE(view.myPresenter != nullptr);
+    REQUIRE(view.myFilterNames.size() == 1);
+    REQUIRE(view.mySelection);
+  }
 
-    SECTION("Add Filter")
-    {
-        presenter.addFilter();
-        REQUIRE(view.myFilterNames ==
-                std::vector<std::string>({ "Filter 1", "Untitled" }));
-        REQUIRE(*view.mySelection == 1);
-    }
+  SECTION("Add Filter")
+  {
+    presenter.addFilter();
+    REQUIRE(view.myFilterNames == std::vector<std::string>({ "Filter 1", "Untitled" }));
+    REQUIRE(*view.mySelection == 1);
+  }
 
-    SECTION("Remove Filter")
-    {
-        presenter.addFilter();
-        presenter.addFilter();
-        presenter.selectFilter(2);
-        presenter.removeSelectedFilter();
+  SECTION("Remove Filter")
+  {
+    presenter.addFilter();
+    presenter.addFilter();
+    presenter.selectFilter(2);
+    presenter.removeSelectedFilter();
 
-        REQUIRE(view.myFilterNames.size() == 2);
-        REQUIRE(view.myFilterNames ==
-                std::vector<std::string>({ "Filter 1", "Untitled" }));
-        REQUIRE(*view.mySelection == 1);
+    REQUIRE(view.myFilterNames.size() == 2);
+    REQUIRE(view.myFilterNames == std::vector<std::string>({ "Filter 1", "Untitled" }));
+    REQUIRE(*view.mySelection == 1);
 
-        presenter.removeSelectedFilter();
-        presenter.removeSelectedFilter();
-        REQUIRE(view.myFilterNames.empty());
-        REQUIRE(!view.mySelection);
-    }
+    presenter.removeSelectedFilter();
+    presenter.removeSelectedFilter();
+    REQUIRE(view.myFilterNames.empty());
+    REQUIRE(!view.mySelection);
+  }
 
-    SECTION("Select Filter")
-    {
-        presenter.addFilter();
-        presenter.selectFilter(0);
-        REQUIRE(*view.mySelection == 0);
-    }
+  SECTION("Select Filter")
+  {
+    presenter.addFilter();
+    presenter.selectFilter(0);
+    REQUIRE(*view.mySelection == 0);
+  }
 
-    SECTION("Edit Filter Description")
-    {
-        presenter.addFilter();
-        presenter.editFilterDescription("New Filter Name");
-        REQUIRE(view.myFilterNames ==
-                std::vector<std::string>({ "Filter 1", "New Filter Name" }));
-    }
+  SECTION("Edit Filter Description")
+  {
+    presenter.addFilter();
+    presenter.editFilterDescription("New Filter Name");
+    REQUIRE(view.myFilterNames == std::vector<std::string>({ "Filter 1", "New Filter Name" }));
+  }
 
-    SECTION("Add Rule")
-    {
-        REQUIRE(view.myRules.empty());
-        presenter.addRule();
-        REQUIRE(view.myRules.size() == 1);
-        REQUIRE(view.myRules[0] == FilterRule());
-    }
+  SECTION("Add Rule")
+  {
+    REQUIRE(view.myRules.empty());
+    presenter.addRule();
+    REQUIRE(view.myRules.size() == 1);
+    REQUIRE(view.myRules[0] == FilterRule());
+  }
 
-    SECTION("Remove Rule")
-    {
-        presenter.addRule();
-        presenter.addRule();
-        presenter.addRule();
-        presenter.removeRule(1);
-        REQUIRE(view.myRules.size() == 2);
-    }
+  SECTION("Remove Rule")
+  {
+    presenter.addRule();
+    presenter.addRule();
+    presenter.addRule();
+    presenter.removeRule(1);
+    REQUIRE(view.myRules.size() == 2);
+  }
 
-    SECTION("Edit Rule")
-    {
-        presenter.addRule();
+  SECTION("Edit Rule")
+  {
+    presenter.addRule();
 
-        FilterRule new_rule(FilterRule::NUM_STRINGS, FilterRule::EQUAL, 4);
-        presenter.editRule(0, new_rule);
-        REQUIRE(view.myRules[0] == new_rule);
-    }
+    FilterRule new_rule(FilterRule::NUM_STRINGS, FilterRule::EQUAL, 4);
+    presenter.editRule(0, new_rule);
+    REQUIRE(view.myRules[0] == new_rule);
+  }
 }

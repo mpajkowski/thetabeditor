@@ -25,14 +25,14 @@
 class RemoveDynamic : public QUndoCommand
 {
 public:
-    RemoveDynamic(const ScoreLocation &location);
+  RemoveDynamic(const ScoreLocation& location);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Dynamic myOriginalDynamic;
+  ScoreLocation myLocation;
+  const Dynamic myOriginalDynamic;
 };
 
 #endif

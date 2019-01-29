@@ -19,20 +19,18 @@
 
 #include <score/system.h>
 
-AddDirection::AddDirection(const ScoreLocation &location,
-                           const Direction &direction)
-    : QUndoCommand(QObject::tr("Add Musical Direction")),
-      myLocation(location),
-      myDirection(direction)
-{
-}
+AddDirection::AddDirection(const ScoreLocation& location, const Direction& direction)
+  : QUndoCommand(QObject::tr("Add Musical Direction"))
+  , myLocation(location)
+  , myDirection(direction)
+{}
 
 void AddDirection::redo()
 {
-    myLocation.getSystem().insertDirection(myDirection);
+  myLocation.getSystem().insertDirection(myDirection);
 }
 
 void AddDirection::undo()
 {
-    myLocation.getSystem().removeDirection(myDirection);
+  myLocation.getSystem().removeDirection(myDirection);
 }

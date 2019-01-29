@@ -26,29 +26,28 @@ class SettingsTree;
 /// sequences, etc.
 class Command : public QAction
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    Command(const QString &text, const QString &id,
-            const QKeySequence &defaultShortcut, QObject *parent);
+  Command(const QString& text, const QString& id, const QKeySequence& defaultShortcut, QObject* parent);
 
-    QString id() const;
-    QKeySequence defaultShortcut() const;
+  QString id() const;
+  QKeySequence defaultShortcut() const;
 
-    /// Loads the shortcut for the command - if there is not a customized
-    /// shortcut in the settings file, then the default shortcut is used.
-    void load(const SettingsTree &settings);
+  /// Loads the shortcut for the command - if there is not a customized
+  /// shortcut in the settings file, then the default shortcut is used.
+  void load(const SettingsTree& settings);
 
-    /// Saves the command's shortcut.
-    void save(SettingsTree &settings) const;
+  /// Saves the command's shortcut.
+  void save(SettingsTree& settings) const;
 
 private:
-    /// Returns the name of the key used for storing the customized shortcut.
-    std::string getSettingsKey() const;
+  /// Returns the name of the key used for storing the customized shortcut.
+  std::string getSettingsKey() const;
 
-    /// Unique identifer (used when storing a customized key sequence).
-    const QString myId;
-    const QKeySequence myDefaultShortcut;
+  /// Unique identifer (used when storing a customized key sequence).
+  const QString myId;
+  const QKeySequence myDefaultShortcut;
 };
 
 #endif

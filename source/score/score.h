@@ -31,98 +31,96 @@ class PlayerChange;
 class Score
 {
 public:
-    typedef std::vector<System>::iterator SystemIterator;
-    typedef std::vector<System>::const_iterator SystemConstIterator;
-    typedef std::vector<Player>::iterator PlayerIterator;
-    typedef std::vector<Player>::const_iterator PlayerConstIterator;
-    typedef std::vector<ViewFilter>::iterator ViewFilterIterator;
-    typedef std::vector<ViewFilter>::const_iterator ViewFilterConstIterator;
+  typedef std::vector<System>::iterator SystemIterator;
+  typedef std::vector<System>::const_iterator SystemConstIterator;
+  typedef std::vector<Player>::iterator PlayerIterator;
+  typedef std::vector<Player>::const_iterator PlayerConstIterator;
+  typedef std::vector<ViewFilter>::iterator ViewFilterIterator;
+  typedef std::vector<ViewFilter>::const_iterator ViewFilterConstIterator;
 
-    Score();
-    Score(const Score &other) = delete;
-    Score &operator=(const Score &other) = delete;
-    bool operator==(const Score &other) const;
+  Score();
+  Score(const Score& other) = delete;
+  Score& operator=(const Score& other) = delete;
+  bool operator==(const Score& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns information about the score (e.g. title, author, etc.).
-    const ScoreInfo &getScoreInfo() const;
-    /// Sets information about the score (e.g. title, author, etc.).
-    void setScoreInfo(const ScoreInfo &info);
+  /// Returns information about the score (e.g. title, author, etc.).
+  const ScoreInfo& getScoreInfo() const;
+  /// Sets information about the score (e.g. title, author, etc.).
+  void setScoreInfo(const ScoreInfo& info);
 
-    /// Returns the set of systems in the score.
-    boost::iterator_range<SystemIterator> getSystems();
-    /// Returns the set of systems in the score.
-    boost::iterator_range<SystemConstIterator> getSystems() const;
+  /// Returns the set of systems in the score.
+  boost::iterator_range<SystemIterator> getSystems();
+  /// Returns the set of systems in the score.
+  boost::iterator_range<SystemConstIterator> getSystems() const;
 
-    /// Adds a new system to the score, optionally at a specific index.
-    void insertSystem(const System &system, int index = -1);
-    /// Removes the specified system from the score.
-    void removeSystem(int index);
+  /// Adds a new system to the score, optionally at a specific index.
+  void insertSystem(const System& system, int index = -1);
+  /// Removes the specified system from the score.
+  void removeSystem(int index);
 
-    /// Returns the set of players in the score.
-    boost::iterator_range<PlayerIterator> getPlayers();
-    /// Returns the set of players in the score.
-    boost::iterator_range<PlayerConstIterator> getPlayers() const;
+  /// Returns the set of players in the score.
+  boost::iterator_range<PlayerIterator> getPlayers();
+  /// Returns the set of players in the score.
+  boost::iterator_range<PlayerConstIterator> getPlayers() const;
 
-    /// Adds a new player to the score.
-    void insertPlayer(const Player &player);
-    void insertPlayer(const Player &player, int index);
-    /// Removes the specified player from the score.
-    void removePlayer(int index);
+  /// Adds a new player to the score.
+  void insertPlayer(const Player& player);
+  void insertPlayer(const Player& player, int index);
+  /// Removes the specified player from the score.
+  void removePlayer(int index);
 
-    /// Returns the set of view filters in the score.
-    boost::iterator_range<ViewFilterIterator> getViewFilters();
-    /// Returns the set of view filters in the score.
-    boost::iterator_range<ViewFilterConstIterator> getViewFilters() const;
+  /// Returns the set of view filters in the score.
+  boost::iterator_range<ViewFilterIterator> getViewFilters();
+  /// Returns the set of view filters in the score.
+  boost::iterator_range<ViewFilterConstIterator> getViewFilters() const;
 
-    /// Adds a new filter to the score.
-    void insertViewFilter(const ViewFilter &filter);
-    /// Removes the specified filter from the score.
-    void removeViewFilter(int index);
+  /// Adds a new filter to the score.
+  void insertViewFilter(const ViewFilter& filter);
+  /// Removes the specified filter from the score.
+  void removeViewFilter(int index);
 
-    /// Returns the spacing between tabulature lines for the score.
-    int getLineSpacing() const;
-    /// Sets the spacing between tabulature lines for the score.
-    void setLineSpacing(int value);
+  /// Returns the spacing between tabulature lines for the score.
+  int getLineSpacing() const;
+  /// Sets the spacing between tabulature lines for the score.
+  void setLineSpacing(int value);
 
-    static const int MIN_LINE_SPACING;
-    static const int MAX_LINE_SPACING;
+  static const int MIN_LINE_SPACING;
+  static const int MAX_LINE_SPACING;
 
 private:
-    // TODO - add font settings, chord diagrams, etc.
-    ScoreInfo myScoreInfo;
-    std::vector<System> mySystems;
-    std::vector<Player> myPlayers;
-    int myLineSpacing; ///< Spacing between tab lines (in pixels).
-    std::vector<ViewFilter> myViewFilters;
+  // TODO - add font settings, chord diagrams, etc.
+  ScoreInfo myScoreInfo;
+  std::vector<System> mySystems;
+  std::vector<Player> myPlayers;
+  int myLineSpacing; ///< Spacing between tab lines (in pixels).
+  std::vector<ViewFilter> myViewFilters;
 };
 
-template <class Archive>
-void Score::serialize(Archive &ar, const FileVersion version)
+template<class Archive>
+void Score::serialize(Archive& ar, const FileVersion version)
 {
-    ar("score_info", myScoreInfo);
-    ar("systems", mySystems);
-    ar("players", myPlayers);
-    ar("line_spacing", myLineSpacing);
+  ar("score_info", myScoreInfo);
+  ar("systems", mySystems);
+  ar("players", myPlayers);
+  ar("line_spacing", myLineSpacing);
 
-    if (version >= FileVersion::VIEW_FILTERS)
-        ar("view_filters", myViewFilters);
+  if (version >= FileVersion::VIEW_FILTERS)
+    ar("view_filters", myViewFilters);
 }
 
-namespace ScoreUtils
-{
+namespace ScoreUtils {
 /// Get the current player change for the given position.
-const PlayerChange *getCurrentPlayers(const Score &score, int systemIndex,
-                                      int positionIndex);
+const PlayerChange* getCurrentPlayers(const Score& score, int systemIndex, int positionIndex);
 
 /// Readjust the letters for the rehearsal signs in the score
 /// (i.e. assigning rehearsal signs the letters "A", "B", and so on).
-void adjustRehearsalSigns(Score &score);
+void adjustRehearsalSigns(Score& score);
 
 /// Add the standard view filters (guitar and bass) to the score.
-void addStandardFilters(Score &score);
+void addStandardFilters(Score& score);
 } // namespace ScoreUtils
 
 #endif

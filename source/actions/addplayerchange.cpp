@@ -19,21 +19,20 @@
 
 #include <score/system.h>
 
-AddPlayerChange::AddPlayerChange(const ScoreLocation &location,
-                                 const PlayerChange &change)
-    : QUndoCommand(QObject::tr("Add Player Change")),
-      myLocation(location),
-      myPlayerChange(change)
+AddPlayerChange::AddPlayerChange(const ScoreLocation& location, const PlayerChange& change)
+  : QUndoCommand(QObject::tr("Add Player Change"))
+  , myLocation(location)
+  , myPlayerChange(change)
 {
-    myPlayerChange.setPosition(location.getPositionIndex());
+  myPlayerChange.setPosition(location.getPositionIndex());
 }
 
 void AddPlayerChange::redo()
 {
-    myLocation.getSystem().insertPlayerChange(myPlayerChange);
+  myLocation.getSystem().insertPlayerChange(myPlayerChange);
 }
 
 void AddPlayerChange::undo()
 {
-    myLocation.getSystem().removePlayerChange(myPlayerChange);
+  myLocation.getSystem().removePlayerChange(myPlayerChange);
 }

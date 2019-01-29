@@ -25,18 +25,17 @@
 class EditBarline : public QUndoCommand
 {
 public:
-    EditBarline(const ScoreLocation &location, Barline::BarType type,
-                int repeats);
+  EditBarline(const ScoreLocation& location, Barline::BarType type, int repeats);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Barline::BarType myBarType;
-    const Barline::BarType myOriginalBarType;
-    const int myRepeats;
-    const int myOriginalRepeats;
+  ScoreLocation myLocation;
+  const Barline::BarType myBarType;
+  const Barline::BarType myOriginalBarType;
+  const int myRepeats;
+  const int myOriginalRepeats;
 };
 
 #endif

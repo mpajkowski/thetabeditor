@@ -29,37 +29,33 @@ class ClickPubSub;
 class BarlinePainter : public QGraphicsItem
 {
 public:
-    BarlinePainter(const LayoutConstPtr &layout, const Barline &barline,
-                   const ScoreLocation &location,
-                   const std::shared_ptr<ClickPubSub> &pubsub);
+  BarlinePainter(const LayoutConstPtr& layout,
+                 const Barline& barline,
+                 const ScoreLocation& location,
+                 const std::shared_ptr<ClickPubSub>& pubsub);
 
-    virtual void paint(QPainter *painter,
-                       const QStyleOptionGraphicsItem *option,
-                       QWidget *widget) override;
+  virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
-    virtual QRectF boundingRect() const override
-    {
-        return myBounds;
-    }
+  virtual QRectF boundingRect() const override { return myBounds; }
 
 private:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *) override;
+  virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+  virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+  virtual void hoverMoveEvent(QGraphicsSceneHoverEvent*) override;
+  virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent*) override;
 
-    bool isInStdNotationStaff(double y);
-    void drawVerticalLines(QPainter *painter, double myX);
+  bool isInStdNotationStaff(double y);
+  void drawVerticalLines(QPainter* painter, double myX);
 
-    LayoutConstPtr myLayout;
-    const Barline &myBarline;
-    QRectF myBounds;
-    ScoreLocation myLocation;
-    std::shared_ptr<ClickPubSub> myPubSub;
-    double myX;
-    double myWidth;
+  LayoutConstPtr myLayout;
+  const Barline& myBarline;
+  QRectF myBounds;
+  ScoreLocation myLocation;
+  std::shared_ptr<ClickPubSub> myPubSub;
+  double myX;
+  double myWidth;
 
-    static const double DOUBLE_BAR_WIDTH;
+  static const double DOUBLE_BAR_WIDTH;
 };
 
 #endif // BARLINEPAINTER_H

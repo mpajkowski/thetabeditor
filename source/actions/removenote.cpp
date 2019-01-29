@@ -19,35 +19,33 @@
 
 #include <score/staff.h>
 
-RemoveNote::RemoveNote(const ScoreLocation &location)
-    : QUndoCommand(QObject::tr("Clear Note")),
-      myLocation(location),
-      myNote(*location.getNote())
+RemoveNote::RemoveNote(const ScoreLocation& location)
+  : QUndoCommand(QObject::tr("Clear Note"))
+  , myLocation(location)
+  , myNote(*location.getNote())
 {
-    Q_ASSERT(myLocation.getNote());
+  Q_ASSERT(myLocation.getNote());
 }
 
 void RemoveNote::redo()
 {
-    Position *pos = myLocation.getPosition();
-    Q_ASSERT(pos);
+  Position* pos = myLocation.getPosition();
+  Q_ASSERT(pos);
 
-    pos->removeNote(myNote);
+  pos->removeNote(myNote);
 
-    if (pos->getNotes().empty())
-    {
-        myRemovePosAction.reset(new RemovePosition(myLocation));
-        myRemovePosAction->redo();
-    }
+  if (pos->getNotes().empty()) {
+    myRemovePosAction.reset(new RemovePosition(myLocation));
+    myRemovePosAction->redo();
+  }
 }
 
 void RemoveNote::undo()
 {
-    if (myRemovePosAction)
-    {
-        myRemovePosAction->undo();
-        myRemovePosAction.reset();
-    }
+  if (myRemovePosAction) {
+    myRemovePosAction->undo();
+    myRemovePosAction.reset();
+  }
 
-    myLocation.getPosition()->insertNote(myNote);
+  myLocation.getPosition()->insertNote(myNote);
 }

@@ -25,14 +25,14 @@
 class AddDirection : public QUndoCommand
 {
 public:
-    AddDirection(const ScoreLocation &location, const Direction &direction);
+  AddDirection(const ScoreLocation& location, const Direction& direction);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Direction myDirection;
+  ScoreLocation myLocation;
+  const Direction myDirection;
 };
 
 #endif

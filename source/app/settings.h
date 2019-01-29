@@ -24,8 +24,7 @@
 #include <util/settingstree.h>
 
 /// All predefined settings and their default values.
-namespace Settings
-{
+namespace Settings {
 extern const Setting<std::string> PreviousDirectory;
 extern const Setting<QByteArray> WindowState;
 extern const Setting<std::vector<std::string>> RecentFiles;
@@ -36,25 +35,25 @@ extern const Setting<int> DefaultInstrumentPreset;
 extern const Setting<Tuning> DefaultTuning;
 } // namespace Settings
 
-template <>
+template<>
 struct SettingValueConverter<Tuning>
 {
-    static Tuning from(const SettingsTree::SettingValue &v);
-    static SettingsTree::SettingValue to(const Tuning &t);
+  static Tuning from(const SettingsTree::SettingValue& v);
+  static SettingsTree::SettingValue to(const Tuning& t);
 };
 
-template <>
+template<>
 struct SettingValueConverter<QByteArray>
 {
-    static QByteArray from(const SettingsTree::SettingValue &v);
-    static SettingsTree::SettingValue to(const QByteArray &array);
+  static QByteArray from(const SettingsTree::SettingValue& v);
+  static SettingsTree::SettingValue to(const QByteArray& array);
 };
 
-template <>
+template<>
 struct SettingValueConverter<QKeySequence>
 {
-    static QKeySequence from(const SettingsTree::SettingValue &v);
-    static SettingsTree::SettingValue to(const QKeySequence &seq);
+  static QKeySequence from(const SettingsTree::SettingValue& v);
+  static SettingsTree::SettingValue to(const QKeySequence& seq);
 };
 
 #endif

@@ -19,61 +19,51 @@
 
 #include <score/score.h>
 
-EditPlayer::EditPlayer(Score &score, int playerIndex, const Player &player)
-    : QUndoCommand(QObject::tr("Edit Player")),
-      myScore(score),
-      myPlayerIndex(playerIndex),
-      myNewPlayer(player),
-      myOriginalPlayer(score.getPlayers()[playerIndex])
-{
-}
+EditPlayer::EditPlayer(Score& score, int playerIndex, const Player& player)
+  : QUndoCommand(QObject::tr("Edit Player"))
+  , myScore(score)
+  , myPlayerIndex(playerIndex)
+  , myNewPlayer(player)
+  , myOriginalPlayer(score.getPlayers()[playerIndex])
+{}
 
 void EditPlayer::redo()
 {
-    if (myScore.getPlayers()[myPlayerIndex].getTuning().getStringCount() !=
-        myNewPlayer.getTuning().getStringCount())
-    {
-        // If the number of strings changed, remove the player from any staves
-        // it was assigned to.
-        for (System &system : myScore.getSystems())
-        {
-            for (PlayerChange &change : system.getPlayerChanges())
-            {
-                myOriginalChanges.push_back(change);
+  if (myScore.getPlayers()[myPlayerIndex].getTuning().getStringCount() !=
+      myNewPlayer.getTuning().getStringCount()) {
+    // If the number of strings changed, remove the player from any staves
+    // it was assigned to.
+    for (System& system : myScore.getSystems()) {
+      for (PlayerChange& change : system.getPlayerChanges()) {
+        myOriginalChanges.push_back(change);
 
-                for (unsigned int i = 0; i < system.getStaves().size(); ++i)
-                {
-                    for (const ActivePlayer &activePlayer :
-                         change.getActivePlayers(i))
-                    {
-                        if (activePlayer.getPlayerNumber() == myPlayerIndex)
-                            change.removeActivePlayer(i, activePlayer);
-                    }
-                }
-            }
+        for (unsigned int i = 0; i < system.getStaves().size(); ++i) {
+          for (const ActivePlayer& activePlayer : change.getActivePlayers(i)) {
+            if (activePlayer.getPlayerNumber() == myPlayerIndex)
+              change.removeActivePlayer(i, activePlayer);
+          }
         }
+      }
     }
+  }
 
-    myScore.getPlayers()[myPlayerIndex] = myNewPlayer;
+  myScore.getPlayers()[myPlayerIndex] = myNewPlayer;
 }
 
 void EditPlayer::undo()
 {
-    myScore.getPlayers()[myPlayerIndex] = myOriginalPlayer;
+  myScore.getPlayers()[myPlayerIndex] = myOriginalPlayer;
 
-    // Restore the original player changes.
-    if (!myOriginalChanges.empty())
-    {
-        int i = 0;
-        for (System &system : myScore.getSystems())
-        {
-            for (PlayerChange &change : system.getPlayerChanges())
-            {
-                change = myOriginalChanges[i];
-                ++i;
-            }
-        }
-
-        myOriginalChanges.clear();
+  // Restore the original player changes.
+  if (!myOriginalChanges.empty()) {
+    int i = 0;
+    for (System& system : myScore.getSystems()) {
+      for (PlayerChange& change : system.getPlayerChanges()) {
+        change = myOriginalChanges[i];
+        ++i;
+      }
     }
+
+    myOriginalChanges.clear();
+  }
 }

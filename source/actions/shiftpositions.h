@@ -24,20 +24,20 @@
 class ShiftPositions : public QUndoCommand
 {
 public:
-    enum ShiftType
-    {
-        Forward,
-        Backward
-    };
+  enum ShiftType
+  {
+    Forward,
+    Backward
+  };
 
-    ShiftPositions(const ScoreLocation &location, ShiftType type);
+  ShiftPositions(const ScoreLocation& location, ShiftType type);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const ShiftType myShiftType;
+  ScoreLocation myLocation;
+  const ShiftType myShiftType;
 };
 
 #endif

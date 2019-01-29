@@ -21,10 +21,8 @@
 #include <score/generalmidi.h>
 #include <sstream>
 
-namespace Settings
-{
-const Setting<std::string> PreviousDirectory(
-    "app/previous_directory", Paths::getHomeDir().generic_string());
+namespace Settings {
+const Setting<std::string> PreviousDirectory("app/previous_directory", Paths::getHomeDir().generic_string());
 
 const Setting<QByteArray> WindowState("app/window_state", QByteArray());
 
@@ -32,77 +30,67 @@ const Setting<std::vector<std::string>> RecentFiles("app/recent_files", {});
 
 const Setting<bool> OpenFilesInNewWindow("app/open_files_in_new_window", false);
 
-const Setting<std::string> DefaultInstrumentName("app/default_instrument_name",
-                                                 "Untitled");
+const Setting<std::string> DefaultInstrumentName("app/default_instrument_name", "Untitled");
 
-const Setting<int> DefaultInstrumentPreset(
-    "app/default_instrument_preset", Midi::MIDI_PRESET_ACOUSTIC_GUITAR_STEEL);
+const Setting<int> DefaultInstrumentPreset("app/default_instrument_preset",
+                                           Midi::MIDI_PRESET_ACOUSTIC_GUITAR_STEEL);
 
 const Setting<Tuning> DefaultTuning("app/default_tuning", Tuning());
 } // namespace Settings
 
-Tuning SettingValueConverter<Tuning>::from(const SettingsTree::SettingValue &v)
+Tuning SettingValueConverter<Tuning>::from(const SettingsTree::SettingValue& v)
 {
-    std::string name;
-    int offset = 0;
-    bool sharps = false;
-    size_t num_notes = 0;
-    std::vector<uint8_t> notes;
+  std::string name;
+  int offset = 0;
+  bool sharps = false;
+  size_t num_notes = 0;
+  std::vector<uint8_t> notes;
 
-    std::stringstream input(boost::get<std::string>(v));
-    input >> name >> offset >> sharps >> num_notes;
+  std::stringstream input(boost::get<std::string>(v));
+  input >> name >> offset >> sharps >> num_notes;
 
-    for (size_t i = 0; i < num_notes; ++i)
-    {
-        int note = 0;
-        input >> note;
-        notes.push_back(note);
-    }
+  for (size_t i = 0; i < num_notes; ++i) {
+    int note = 0;
+    input >> note;
+    notes.push_back(note);
+  }
 
-    Tuning tuning;
-    tuning.setName(name);
-    tuning.setMusicNotationOffset(offset);
-    tuning.setSharps(sharps);
-    tuning.setNotes(notes);
-    return tuning;
+  Tuning tuning;
+  tuning.setName(name);
+  tuning.setMusicNotationOffset(offset);
+  tuning.setSharps(sharps);
+  tuning.setNotes(notes);
+  return tuning;
 }
 
-SettingsTree::SettingValue SettingValueConverter<Tuning>::to(
-    const Tuning &tuning)
+SettingsTree::SettingValue SettingValueConverter<Tuning>::to(const Tuning& tuning)
 {
-    std::ostringstream ss;
-    ss << tuning.getName() << " "
-       << static_cast<int>(tuning.getMusicNotationOffset()) << " "
-       << tuning.usesSharps() << " ";
-    ss << tuning.getNotes().size();
-    for (int n : tuning.getNotes())
-        ss << " " << n;
+  std::ostringstream ss;
+  ss << tuning.getName() << " " << static_cast<int>(tuning.getMusicNotationOffset()) << " "
+     << tuning.usesSharps() << " ";
+  ss << tuning.getNotes().size();
+  for (int n : tuning.getNotes())
+    ss << " " << n;
 
-    return ss.str();
+  return ss.str();
 }
 
-QByteArray SettingValueConverter<QByteArray>::from(
-    const SettingsTree::SettingValue &v)
+QByteArray SettingValueConverter<QByteArray>::from(const SettingsTree::SettingValue& v)
 {
-    return QByteArray::fromBase64(
-        QByteArray::fromStdString(boost::get<std::string>(v)));
+  return QByteArray::fromBase64(QByteArray::fromStdString(boost::get<std::string>(v)));
 }
 
-SettingsTree::SettingValue SettingValueConverter<QByteArray>::to(
-    const QByteArray &array)
+SettingsTree::SettingValue SettingValueConverter<QByteArray>::to(const QByteArray& array)
 {
-    return array.toBase64().toStdString();
+  return array.toBase64().toStdString();
 }
 
-QKeySequence SettingValueConverter<QKeySequence>::from(
-    const SettingsTree::SettingValue &v)
+QKeySequence SettingValueConverter<QKeySequence>::from(const SettingsTree::SettingValue& v)
 {
-    return QKeySequence::fromString(
-        QString::fromStdString(boost::get<std::string>(v)));
+  return QKeySequence::fromString(QString::fromStdString(boost::get<std::string>(v)));
 }
 
-SettingsTree::SettingValue SettingValueConverter<QKeySequence>::to(
-    const QKeySequence &seq)
+SettingsTree::SettingValue SettingValueConverter<QKeySequence>::to(const QKeySequence& seq)
 {
-    return seq.toString().toStdString();
+  return seq.toString().toStdString();
 }

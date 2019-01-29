@@ -27,60 +27,57 @@
 class Voice
 {
 public:
-    Voice();
+  Voice();
 
-    typedef std::vector<Position>::iterator PositionIterator;
-    typedef std::vector<Position>::const_iterator PositionConstIterator;
-    typedef std::vector<IrregularGrouping>::iterator IrregularGroupingIterator;
-    typedef std::vector<IrregularGrouping>::const_iterator
-        IrregularGroupingConstIterator;
+  typedef std::vector<Position>::iterator PositionIterator;
+  typedef std::vector<Position>::const_iterator PositionConstIterator;
+  typedef std::vector<IrregularGrouping>::iterator IrregularGroupingIterator;
+  typedef std::vector<IrregularGrouping>::const_iterator IrregularGroupingConstIterator;
 
-    bool operator==(const Voice &other) const;
+  bool operator==(const Voice& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the set of positions in the voice.
-    boost::iterator_range<PositionIterator> getPositions();
-    /// Returns the set of positions in the voice.
-    boost::iterator_range<PositionConstIterator> getPositions() const;
+  /// Returns the set of positions in the voice.
+  boost::iterator_range<PositionIterator> getPositions();
+  /// Returns the set of positions in the voice.
+  boost::iterator_range<PositionConstIterator> getPositions() const;
 
-    /// Adds a new position to the voice.
-    void insertPosition(const Position &position);
-    /// Removes any positions that satisfy the given predicate.
-    template <typename Predicate>
-    void removePositions(Predicate p);
-    /// Removes the specified position from the voice.
-    void removePosition(const Position &position);
+  /// Adds a new position to the voice.
+  void insertPosition(const Position& position);
+  /// Removes any positions that satisfy the given predicate.
+  template<typename Predicate>
+  void removePositions(Predicate p);
+  /// Removes the specified position from the voice.
+  void removePosition(const Position& position);
 
-    /// Returns the set of irregular groupings in the voice.
-    boost::iterator_range<IrregularGroupingIterator> getIrregularGroupings();
-    /// Returns the set of irregular groupings in the voice.
-    boost::iterator_range<IrregularGroupingConstIterator>
-    getIrregularGroupings() const;
+  /// Returns the set of irregular groupings in the voice.
+  boost::iterator_range<IrregularGroupingIterator> getIrregularGroupings();
+  /// Returns the set of irregular groupings in the voice.
+  boost::iterator_range<IrregularGroupingConstIterator> getIrregularGroupings() const;
 
-    /// Adds a new irregular grouping to the voice.
-    void insertIrregularGrouping(const IrregularGrouping &group);
-    /// Removes the specified irregular grouping from the voice.
-    void removeIrregularGrouping(const IrregularGrouping &group);
+  /// Adds a new irregular grouping to the voice.
+  void insertIrregularGrouping(const IrregularGrouping& group);
+  /// Removes the specified irregular grouping from the voice.
+  void removeIrregularGrouping(const IrregularGrouping& group);
 
 private:
-    std::vector<Position> myPositions;
-    std::vector<IrregularGrouping> myIrregularGroupings;
+  std::vector<Position> myPositions;
+  std::vector<IrregularGrouping> myIrregularGroupings;
 };
 
-template <class Archive>
-void Voice::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void Voice::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("positions", myPositions);
-    ar("irregular_groupings", myIrregularGroupings);
+  ar("positions", myPositions);
+  ar("irregular_groupings", myIrregularGroupings);
 }
 
-template <typename Predicate>
+template<typename Predicate>
 void Voice::removePositions(Predicate p)
 {
-    myPositions.erase(std::remove_if(myPositions.begin(), myPositions.end(), p),
-                      myPositions.end());
+  myPositions.erase(std::remove_if(myPositions.begin(), myPositions.end(), p), myPositions.end());
 }
 
 #endif

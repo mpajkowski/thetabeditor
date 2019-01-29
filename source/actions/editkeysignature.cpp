@@ -20,60 +20,50 @@
 #include <score/barline.h>
 #include <score/score.h>
 
-EditKeySignature::EditKeySignature(const ScoreLocation &location,
-                                   const KeySignature &newKey)
-    : QUndoCommand(QObject::tr("Edit Key Signature")),
-      myLocation(location),
-      myNewKey(newKey),
-      myOldKey(location.getBarline()->getKeySignature())
-{
-}
+EditKeySignature::EditKeySignature(const ScoreLocation& location, const KeySignature& newKey)
+  : QUndoCommand(QObject::tr("Edit Key Signature"))
+  , myLocation(location)
+  , myNewKey(newKey)
+  , myOldKey(location.getBarline()->getKeySignature())
+{}
 
 void EditKeySignature::redo()
 {
-    myLocation.getBarline()->setKeySignature(myNewKey);
-    updateFollowingKeySignatures(myOldKey, myNewKey);
+  myLocation.getBarline()->setKeySignature(myNewKey);
+  updateFollowingKeySignatures(myOldKey, myNewKey);
 }
 
 void EditKeySignature::undo()
 {
-    myLocation.getBarline()->setKeySignature(myOldKey);
-    updateFollowingKeySignatures(myNewKey, myOldKey);
+  myLocation.getBarline()->setKeySignature(myOldKey);
+  updateFollowingKeySignatures(myNewKey, myOldKey);
 }
 
-void EditKeySignature::updateFollowingKeySignatures(const KeySignature &oldKey,
-                                                    const KeySignature &newKey)
+void EditKeySignature::updateFollowingKeySignatures(const KeySignature& oldKey, const KeySignature& newKey)
 {
-    Score &score = myLocation.getScore();
-    const size_t start_system_index = myLocation.getSystemIndex();
+  Score& score = myLocation.getScore();
+  const size_t start_system_index = myLocation.getSystemIndex();
 
-    for (size_t i = start_system_index; i < score.getSystems().size(); ++i)
-    {
-        for (Barline &bar : score.getSystems()[i].getBarlines())
-        {
-            if (i == start_system_index &&
-                bar.getPosition() <= myLocation.getPositionIndex())
-            {
-                continue;
-            }
+  for (size_t i = start_system_index; i < score.getSystems().size(); ++i) {
+    for (Barline& bar : score.getSystems()[i].getBarlines()) {
+      if (i == start_system_index && bar.getPosition() <= myLocation.getPositionIndex()) {
+        continue;
+      }
 
-            const KeySignature &currentKey = bar.getKeySignature();
-            if (currentKey.getKeyType() == oldKey.getKeyType() &&
-                currentKey.getNumAccidentals() == oldKey.getNumAccidentals() &&
-                currentKey.usesSharps() == oldKey.usesSharps())
-            {
-                KeySignature key;
-                key.setVisible(bar.getKeySignature().isVisible());
-                key.setCancellation(bar.getKeySignature().isCancellation());
-                key.setSharps(newKey.usesSharps());
-                key.setKeyType(newKey.getKeyType());
-                key.setNumAccidentals(newKey.getNumAccidentals());
-                bar.setKeySignature(key);
-            }
-            else
-            {
-                return;
-            }
-        }
+      const KeySignature& currentKey = bar.getKeySignature();
+      if (currentKey.getKeyType() == oldKey.getKeyType() &&
+          currentKey.getNumAccidentals() == oldKey.getNumAccidentals() &&
+          currentKey.usesSharps() == oldKey.usesSharps()) {
+        KeySignature key;
+        key.setVisible(bar.getKeySignature().isVisible());
+        key.setCancellation(bar.getKeySignature().isCancellation());
+        key.setSharps(newKey.usesSharps());
+        key.setKeyType(newKey.getKeyType());
+        key.setNumAccidentals(newKey.getNumAccidentals());
+        bar.setKeySignature(key);
+      } else {
+        return;
+      }
     }
+  }
 }

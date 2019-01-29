@@ -20,8 +20,7 @@
 
 #include <QWidget>
 
-namespace Ui
-{
+namespace Ui {
 class PlaybackWidget;
 }
 
@@ -30,41 +29,42 @@ class QButtonGroup;
 
 class PlaybackWidget : public QWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit PlaybackWidget(const QAction &play_pause_command,
-                            const QAction &rewind_command,
-                            const QAction &stop_command,
-                            const QAction &metronome_command, QWidget *parent);
-    ~PlaybackWidget();
+  explicit PlaybackWidget(const QAction& play_pause_command,
+                          const QAction& rewind_command,
+                          const QAction& stop_command,
+                          const QAction& metronome_command,
+                          QWidget* parent);
+  ~PlaybackWidget();
 
-    /// Reload any settings for the given score.
-    void reset(const Document &doc);
+  /// Reload any settings for the given score.
+  void reset(const Document& doc);
 
-    /// Get the current playback speed.
-    int getPlaybackSpeed() const;
+  /// Get the current playback speed.
+  int getPlaybackSpeed() const;
 
-    /// Toggles the play/pause button.
-    void setPlaybackMode(bool isPlaying);
+  /// Toggles the play/pause button.
+  void setPlaybackMode(bool isPlaying);
 
-    /// Updates the text containing the caret's location.
-    void updateLocationLabel(const std::string &location);
+  /// Updates the text containing the caret's location.
+  void updateLocationLabel(const std::string& location);
 
 signals:
-    void playbackSpeedChanged(int speed);
-    void activeVoiceChanged(int voice);
-    void activeFilterChanged(int filter);
-    void zoomChanged(double zoom);
+  void playbackSpeedChanged(int speed);
+  void activeVoiceChanged(int voice);
+  void activeFilterChanged(int filter);
+  void zoomChanged(double zoom);
 
 private:
-    void onSettingChanged(const std::string &setting);
-    double validateZoom(double percent);
+  void onSettingChanged(const std::string& setting);
+  double validateZoom(double percent);
 
-    Ui::PlaybackWidget *ui;
-    QButtonGroup *myVoices;
+  Ui::PlaybackWidget* ui;
+  QButtonGroup* myVoices;
 
-    const float MAX_ZOOM = 200, MIN_ZOOM = 25;
+  const float MAX_ZOOM = 200, MIN_ZOOM = 25;
 };
 
 #endif

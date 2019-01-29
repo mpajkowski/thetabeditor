@@ -20,8 +20,7 @@
 
 #include <QDialog>
 
-namespace Ui
-{
+namespace Ui {
 class PlayerChangeDialog;
 }
 
@@ -32,23 +31,24 @@ class System;
 
 class PlayerChangeDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit PlayerChangeDialog(QWidget *parent, const Score &score,
-                                const System &system,
-                                const PlayerChange *currentPlayers);
-    ~PlayerChangeDialog();
+  explicit PlayerChangeDialog(QWidget* parent,
+                              const Score& score,
+                              const System& system,
+                              const PlayerChange* currentPlayers);
+  ~PlayerChangeDialog();
 
-    PlayerChange getPlayerChange() const;
+  PlayerChange getPlayerChange() const;
 
 private:
-    QComboBox *getStaffComboBox(int numStrings, const System &system);
-    QComboBox *getInstrumentComboBox(const Score &score);
+  QComboBox* getStaffComboBox(int numStrings, const System& system);
+  QComboBox* getInstrumentComboBox(const Score& score);
 
-    Ui::PlayerChangeDialog *ui;
-    std::vector<QComboBox *> myStaffComboBoxes;
-    std::vector<QComboBox *> myInstrumentComboBoxes;
+  Ui::PlayerChangeDialog* ui;
+  std::vector<QComboBox*> myStaffComboBoxes;
+  std::vector<QComboBox*> myInstrumentComboBoxes;
 };
 
 #endif

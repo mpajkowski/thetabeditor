@@ -20,20 +20,19 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemoveChordText::RemoveChordText(const ScoreLocation &location)
-    : QUndoCommand(QObject::tr("Remove Chord Text")),
-      myLocation(location),
-      myOriginalChord(*ScoreUtils::findByPosition(
-          location.getSystem().getChords(), location.getPositionIndex()))
-{
-}
+RemoveChordText::RemoveChordText(const ScoreLocation& location)
+  : QUndoCommand(QObject::tr("Remove Chord Text"))
+  , myLocation(location)
+  , myOriginalChord(
+      *ScoreUtils::findByPosition(location.getSystem().getChords(), location.getPositionIndex()))
+{}
 
 void RemoveChordText::redo()
 {
-    myLocation.getSystem().removeChord(myOriginalChord);
+  myLocation.getSystem().removeChord(myOriginalChord);
 }
 
 void RemoveChordText::undo()
 {
-    myLocation.getSystem().insertChord(myOriginalChord);
+  myLocation.getSystem().insertChord(myOriginalChord);
 }

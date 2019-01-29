@@ -24,34 +24,34 @@
 class RehearsalSign
 {
 public:
-    RehearsalSign();
-    RehearsalSign(const std::string &letters, const std::string &description);
+  RehearsalSign();
+  RehearsalSign(const std::string& letters, const std::string& description);
 
-    bool operator==(const RehearsalSign &other) const;
+  bool operator==(const RehearsalSign& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the letter(s) of the sign (e.g. "A", "B", ... "Z", "AA", ...).
-    const std::string &getLetters() const;
-    /// Sets the letter(s) of the rehearsal sign.
-    void setLetters(const std::string &letters);
+  /// Returns the letter(s) of the sign (e.g. "A", "B", ... "Z", "AA", ...).
+  const std::string& getLetters() const;
+  /// Sets the letter(s) of the rehearsal sign.
+  void setLetters(const std::string& letters);
 
-    /// Returns a description of the rehearsal sign (e.g. "Chorus").
-    const std::string &getDescription() const;
-    /// Sets the description of the rehearsal sign.
-    void setDescription(const std::string &description);
+  /// Returns a description of the rehearsal sign (e.g. "Chorus").
+  const std::string& getDescription() const;
+  /// Sets the description of the rehearsal sign.
+  void setDescription(const std::string& description);
 
 private:
-    std::string myLetters;
-    std::string myDescription;
+  std::string myLetters;
+  std::string myDescription;
 };
 
-template <class Archive>
-void RehearsalSign::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void RehearsalSign::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("letters", myLetters);
-    ar("description", myDescription);
+  ar("letters", myLetters);
+  ar("description", myDescription);
 }
 
 #endif

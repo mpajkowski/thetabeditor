@@ -34,123 +34,110 @@ class Score;
 class FilterRule
 {
 public:
-    enum Subject : int
-    {
-        PLAYER_NAME = 0,
-        NUM_STRINGS = 1,
-    };
+  enum Subject : int
+  {
+    PLAYER_NAME = 0,
+    NUM_STRINGS = 1,
+  };
 
-    enum Operation : int
-    {
-        LESS_THAN = 0,
-        LESS_THAN_EQUAL = 1,
-        EQUAL = 2,
-        GREATER_THAN_EQUAL = 3,
-        GREATER_THAN = 4
-    };
+  enum Operation : int
+  {
+    LESS_THAN = 0,
+    LESS_THAN_EQUAL = 1,
+    EQUAL = 2,
+    GREATER_THAN_EQUAL = 3,
+    GREATER_THAN = 4
+  };
 
-    FilterRule();
-    FilterRule(Subject subject, std::string value);
-    FilterRule(Subject subject, Operation op, int value);
+  FilterRule();
+  FilterRule(Subject subject, std::string value);
+  FilterRule(Subject subject, Operation op, int value);
 
-    bool operator==(const FilterRule &other) const;
+  bool operator==(const FilterRule& other) const;
 
-    Subject getSubject() const
-    {
-        return mySubject;
-    }
-    Operation getOperation() const
-    {
-        return myOperation;
-    }
-    int getIntValue() const
-    {
-        return myIntValue;
-    }
-    const std::string &getStringValue() const
-    {
-        return myStrValue;
-    }
+  Subject getSubject() const { return mySubject; }
+  Operation getOperation() const { return myOperation; }
+  int getIntValue() const { return myIntValue; }
+  const std::string& getStringValue() const { return myStrValue; }
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns whether the given staff is visible.
-    bool accept(const Score &score, int system_index, int staff_index) const;
+  /// Returns whether the given staff is visible.
+  bool accept(const Score& score, int system_index, int staff_index) const;
 
 private:
-    bool accept(const Score &score, const ActivePlayer &player) const;
+  bool accept(const Score& score, const ActivePlayer& player) const;
 
-    Subject mySubject;
-    Operation myOperation;
-    int myIntValue;
-    std::string myStrValue;
-    boost::regex myRegex;
+  Subject mySubject;
+  Operation myOperation;
+  int myIntValue;
+  std::string myStrValue;
+  boost::regex myRegex;
 };
 
 /// A filter that specifies which staves are visible.
 class ViewFilter
 {
 public:
-    typedef std::vector<FilterRule>::iterator RuleIterator;
-    typedef std::vector<FilterRule>::const_iterator RuleConstIterator;
+  typedef std::vector<FilterRule>::iterator RuleIterator;
+  typedef std::vector<FilterRule>::const_iterator RuleConstIterator;
 
-    ViewFilter();
-    bool operator==(const ViewFilter &other) const;
+  ViewFilter();
+  bool operator==(const ViewFilter& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the label for the filter.
-    const std::string &getDescription() const;
-    /// Sets the label for the filter.
-    void setDescription(const std::string &description);
+  /// Returns the label for the filter.
+  const std::string& getDescription() const;
+  /// Sets the label for the filter.
+  void setDescription(const std::string& description);
 
-    /// Adds a new rule to the filter.
-    void addRule(const FilterRule &rule);
-    /// Removes the specified rule from the filter.
-    void removeRule(int index);
+  /// Adds a new rule to the filter.
+  void addRule(const FilterRule& rule);
+  /// Removes the specified rule from the filter.
+  void removeRule(int index);
 
-    /// Returns the list of rules in the filter.
-    boost::iterator_range<RuleIterator> getRules();
-    /// Returns the list of rules in the filter.
-    boost::iterator_range<RuleConstIterator> getRules() const;
+  /// Returns the list of rules in the filter.
+  boost::iterator_range<RuleIterator> getRules();
+  /// Returns the list of rules in the filter.
+  boost::iterator_range<RuleConstIterator> getRules() const;
 
-    /// Returns whether the given staff is visible.
-    bool accept(const Score &score, int system_index, int staff_index) const;
+  /// Returns whether the given staff is visible.
+  bool accept(const Score& score, int system_index, int staff_index) const;
 
 private:
-    std::string myDescription;
-    std::vector<FilterRule> myRules;
+  std::string myDescription;
+  std::vector<FilterRule> myRules;
 };
 
-template <class Archive>
-void FilterRule::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void FilterRule::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("subject", mySubject);
-    ar("operation", myOperation);
+  ar("subject", mySubject);
+  ar("operation", myOperation);
 
-    switch (mySubject)
-    {
-        case PLAYER_NAME:
-            ar("value", myStrValue);
-            break;
-        case NUM_STRINGS:
-            ar("value", myIntValue);
-            break;
-        default:
-            assert(!"Unexpected subject for filter.");
-            break;
-    }
+  switch (mySubject) {
+    case PLAYER_NAME:
+      ar("value", myStrValue);
+      break;
+    case NUM_STRINGS:
+      ar("value", myIntValue);
+      break;
+    default:
+      assert(!"Unexpected subject for filter.");
+      break;
+  }
 }
 
-template <class Archive>
-void ViewFilter::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void ViewFilter::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("description", myDescription);
-    ar("rules", myRules);
+  ar("description", myDescription);
+  ar("rules", myRules);
 }
 
-std::ostream &operator<<(std::ostream &os, const ViewFilter &filter);
+std::ostream& operator<<(std::ostream& os, const ViewFilter& filter);
 
 #endif

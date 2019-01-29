@@ -17,23 +17,22 @@
 
 #include "removenoteproperty.h"
 
-RemoveNoteProperty::RemoveNoteProperty(const ScoreLocation &location,
+RemoveNoteProperty::RemoveNoteProperty(const ScoreLocation& location,
                                        Note::SimpleProperty property,
-                                       const QString &description)
-    : QUndoCommand(QObject::tr("Remove ") + description),
-      myLocation(location),
-      myProperty(property)
-{
-}
+                                       const QString& description)
+  : QUndoCommand(QObject::tr("Remove ") + description)
+  , myLocation(location)
+  , myProperty(property)
+{}
 
 void RemoveNoteProperty::redo()
 {
-    for (Note *note : myLocation.getSelectedNotes())
-        note->setProperty(myProperty, false);
+  for (Note* note : myLocation.getSelectedNotes())
+    note->setProperty(myProperty, false);
 }
 
 void RemoveNoteProperty::undo()
 {
-    for (Note *note : myLocation.getSelectedNotes())
-        note->setProperty(myProperty, true);
+  for (Note* note : myLocation.getSelectedNotes())
+    note->setProperty(myProperty, true);
 }

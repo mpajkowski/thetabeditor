@@ -23,16 +23,16 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/AddBend", "")
 {
-    Note note;
-    myLocation.getPosition()->insertNote(note);
+  Note note;
+  myLocation.getPosition()->insertNote(note);
 
-    Bend bend(Bend::PreBend, 3);
-    AddBend action(myLocation, bend);
+  Bend bend(Bend::PreBend, 3);
+  AddBend action(myLocation, bend);
 
-    action.redo();
-    REQUIRE(myLocation.getNote()->hasBend());
-    REQUIRE(myLocation.getNote()->getBend() == bend);
+  action.redo();
+  REQUIRE(myLocation.getNote()->hasBend());
+  REQUIRE(myLocation.getNote()->getBend() == bend);
 
-    action.undo();
-    REQUIRE(!myLocation.getNote()->hasBend());
+  action.undo();
+  REQUIRE(!myLocation.getNote()->hasBend());
 }

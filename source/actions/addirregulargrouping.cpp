@@ -19,22 +19,22 @@
 
 #include <score/voice.h>
 
-AddIrregularGrouping::AddIrregularGrouping(const ScoreLocation &location,
-                                           const IrregularGrouping &group)
-    : myLocation(location), myGroup(group)
+AddIrregularGrouping::AddIrregularGrouping(const ScoreLocation& location, const IrregularGrouping& group)
+  : myLocation(location)
+  , myGroup(group)
 {
-    if (group.getNotesPlayed() == 3 && group.getNotesPlayed() == 2)
-        setText(QObject::tr("Add Triplet"));
-    else
-        setText(QObject::tr("Add Irregular Grouping"));
+  if (group.getNotesPlayed() == 3 && group.getNotesPlayed() == 2)
+    setText(QObject::tr("Add Triplet"));
+  else
+    setText(QObject::tr("Add Irregular Grouping"));
 }
 
 void AddIrregularGrouping::redo()
 {
-    myLocation.getVoice().insertIrregularGrouping(myGroup);
+  myLocation.getVoice().insertIrregularGrouping(myGroup);
 }
 
 void AddIrregularGrouping::undo()
 {
-    myLocation.getVoice().removeIrregularGrouping(myGroup);
+  myLocation.getVoice().removeIrregularGrouping(myGroup);
 }

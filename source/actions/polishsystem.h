@@ -27,14 +27,14 @@
 class PolishSystem : public QUndoCommand
 {
 public:
-    PolishSystem(const ScoreLocation &location);
+  PolishSystem(const ScoreLocation& location);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    boost::optional<System> myOriginalSystem;
+  ScoreLocation myLocation;
+  boost::optional<System> myOriginalSystem;
 };
 
 #endif

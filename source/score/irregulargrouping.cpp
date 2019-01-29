@@ -20,77 +20,76 @@
 #include <ostream>
 
 IrregularGrouping::IrregularGrouping()
-    : myPosition(0), myLength(0), myNotesPlayed(0), myNotesPlayedOver(0)
-{
-}
+  : myPosition(0)
+  , myLength(0)
+  , myNotesPlayed(0)
+  , myNotesPlayedOver(0)
+{}
 
-IrregularGrouping::IrregularGrouping(int position, int length, int notesPlayed,
-                                     int notesPlayedOver)
-    : myPosition(position),
-      myLength(length),
-      myNotesPlayed(notesPlayed),
-      myNotesPlayedOver(notesPlayedOver)
-{
-}
+IrregularGrouping::IrregularGrouping(int position, int length, int notesPlayed, int notesPlayedOver)
+  : myPosition(position)
+  , myLength(length)
+  , myNotesPlayed(notesPlayed)
+  , myNotesPlayedOver(notesPlayedOver)
+{}
 
-bool IrregularGrouping::operator==(const IrregularGrouping &other) const
+bool IrregularGrouping::operator==(const IrregularGrouping& other) const
 {
-    return myPosition == other.myPosition && myLength == other.myLength &&
-           myNotesPlayed == other.myNotesPlayed &&
-           myNotesPlayedOver == other.myNotesPlayedOver;
+  return myPosition == other.myPosition && myLength == other.myLength &&
+         myNotesPlayed == other.myNotesPlayed && myNotesPlayedOver == other.myNotesPlayedOver;
 }
 
 int IrregularGrouping::getPosition() const
 {
-    return myPosition;
+  return myPosition;
 }
 
 void IrregularGrouping::setPosition(int position)
 {
-    myPosition = position;
+  myPosition = position;
 }
 
 int IrregularGrouping::getLength() const
 {
-    return myLength;
+  return myLength;
 }
 
 void IrregularGrouping::setLength(int length)
 {
-    myLength = length;
+  myLength = length;
 }
 
 int IrregularGrouping::getNotesPlayed() const
 {
-    return myNotesPlayed;
+  return myNotesPlayed;
 }
 
 void IrregularGrouping::setNotesPlayed(int notes)
 {
-    myNotesPlayed = notes;
+  myNotesPlayed = notes;
 }
 
 int IrregularGrouping::getNotesPlayedOver() const
 {
-    return myNotesPlayedOver;
+  return myNotesPlayedOver;
 }
 
 void IrregularGrouping::setNotesPlayedOver(int notes)
 {
-    myNotesPlayedOver = notes;
+  myNotesPlayedOver = notes;
 }
 
-std::ostream &operator<<(std::ostream &os, const IrregularGrouping &group)
+std::ostream& operator<<(std::ostream& os, const IrregularGrouping& group)
 {
-    os << group.getNotesPlayed();
+  os << group.getNotesPlayed();
 
-    const int playedOver = group.getNotesPlayedOver();
-    // Check for a power of 2.
-    const bool isNormalGrouping = (playedOver & (playedOver - 1)) == 0;
+  const int playedOver = group.getNotesPlayedOver();
+  // Check for a power of 2.
+  const bool isNormalGrouping = (playedOver & (playedOver - 1)) == 0;
 
-    // Display the ratio if there is an irregular or non-standard ratio.
-    if (!isNormalGrouping || group.getNotesPlayed() < playedOver)
-        os << ":" << playedOver;
+  // Display the ratio if there is an irregular or non-standard ratio.
+  if (!isNormalGrouping || group.getNotesPlayed() < playedOver)
+    os << ":" << playedOver;
 
-    return os;
+  return os;
 }

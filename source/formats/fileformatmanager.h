@@ -32,37 +32,35 @@ class SettingsManager;
 class FileFormatManager
 {
 public:
-    FileFormatManager(const SettingsManager &settings_manager);
+  FileFormatManager(const SettingsManager& settings_manager);
 
-    /// Returns the file format corresponding to the given extension.
-    boost::optional<FileFormat> findFormat(const std::string &extension) const;
+  /// Returns the file format corresponding to the given extension.
+  boost::optional<FileFormat> findFormat(const std::string& extension) const;
 
-    /// Returns a correctly formatted file filter for a Qt file dialog.
-    /// e.g. "FileType (*.ext1 *.ext2);;FileType2 (*.ext3)".
-    std::string importFileFilter() const;
+  /// Returns a correctly formatted file filter for a Qt file dialog.
+  /// e.g. "FileType (*.ext1 *.ext2);;FileType2 (*.ext3)".
+  std::string importFileFilter() const;
 
-    /// Imports a file into the given score.
-    /// @throws std::exception
-    void importFile(Score &score, const boost::filesystem::path &filename,
-                    const FileFormat &format);
+  /// Imports a file into the given score.
+  /// @throws std::exception
+  void importFile(Score& score, const boost::filesystem::path& filename, const FileFormat& format);
 
-    /// Returns a correctly formatted file filter for a Qt file dialog.
-    std::string exportFileFilter() const;
+  /// Returns a correctly formatted file filter for a Qt file dialog.
+  std::string exportFileFilter() const;
 
-    /// Exports the given score to a file.
-    /// @throws std::exception
-    void exportFile(const Score &score, const boost::filesystem::path &filename,
-                    const FileFormat &format);
+  /// Exports the given score to a file.
+  /// @throws std::exception
+  void exportFile(const Score& score, const boost::filesystem::path& filename, const FileFormat& format);
 
 private:
-    template <typename Importer>
-    void registerImporter();
+  template<typename Importer>
+  void registerImporter();
 
-    template <typename Exporter>
-    void registerExporter();
+  template<typename Exporter>
+  void registerExporter();
 
-    std::vector<std::unique_ptr<FileFormatImporter>> myImporters;
-    std::vector<std::unique_ptr<FileFormatExporter>> myExporters;
+  std::vector<std::unique_ptr<FileFormatImporter>> myImporters;
+  std::vector<std::unique_ptr<FileFormatExporter>> myExporters;
 };
 
 #endif

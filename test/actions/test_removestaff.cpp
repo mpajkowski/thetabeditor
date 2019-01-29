@@ -23,18 +23,18 @@
 
 TEST_CASE("Actions/RemoveStaff", "")
 {
-    Score score;
-    System system;
-    system.insertStaff(Staff(6));
-    system.insertStaff(Staff(7));
-    score.insertSystem(system);
+  Score score;
+  System system;
+  system.insertStaff(Staff(6));
+  system.insertStaff(Staff(7));
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 1);
-    RemoveStaff action(location);
+  ScoreLocation location(score, 0, 1);
+  RemoveStaff action(location);
 
-    action.redo();
-    REQUIRE(location.getSystem().getStaves().size() == 1);
+  action.redo();
+  REQUIRE(location.getSystem().getStaves().size() == 1);
 
-    action.undo();
-    REQUIRE(location.getSystem().getStaves().size() == 2);
+  action.undo();
+  REQUIRE(location.getSystem().getStaves().size() == 2);
 }

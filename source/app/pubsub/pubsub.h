@@ -23,21 +23,20 @@
 /// A thin wrapper around boost::signal.
 /// Provides a loosely-coupled way of sending and receiving messages (anyone
 /// can send a message without explicitly connecting to each subscriber).
-template <typename Signature>
+template<typename Signature>
 class PubSub
 {
 public:
-    typedef boost::signals2::signal<Signature> message_t;
+  typedef boost::signals2::signal<Signature> message_t;
 
-    /// Subscribe to any messages.
-    boost::signals2::connection subscribe(
-        const typename message_t::slot_type &subscriber)
-    {
-        return publish.connect(subscriber);
-    }
+  /// Subscribe to any messages.
+  boost::signals2::connection subscribe(const typename message_t::slot_type& subscriber)
+  {
+    return publish.connect(subscriber);
+  }
 
-    /// Call PubSub.publish(args) to publish a message.
-    message_t publish;
+  /// Call PubSub.publish(args) to publish a message.
+  message_t publish;
 };
 
 #endif

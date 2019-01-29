@@ -22,21 +22,21 @@
 
 TEST_CASE("Actions/AddStaff", "")
 {
-    Score score;
-    System system;
-    system.insertStaff(Staff());
-    score.insertSystem(system);
+  Score score;
+  System system;
+  system.insertStaff(Staff());
+  score.insertSystem(system);
 
-    Staff staff(7);
-    ScoreLocation location(score, 0, 0, 6);
-    AddStaff action(location, staff, 0);
+  Staff staff(7);
+  ScoreLocation location(score, 0, 0, 6);
+  AddStaff action(location, staff, 0);
 
-    action.redo();
-    REQUIRE(location.getSystem().getStaves().size() == 2);
-    REQUIRE(location.getSystem().getStaves()[0].getStringCount() == 7);
-    REQUIRE(location.getSystem().getStaves()[1].getStringCount() == 6);
+  action.redo();
+  REQUIRE(location.getSystem().getStaves().size() == 2);
+  REQUIRE(location.getSystem().getStaves()[0].getStringCount() == 7);
+  REQUIRE(location.getSystem().getStaves()[1].getStringCount() == 6);
 
-    action.undo();
-    REQUIRE(location.getSystem().getStaves().size() == 1);
-    REQUIRE(location.getSystem().getStaves()[0].getStringCount() == 6);
+  action.undo();
+  REQUIRE(location.getSystem().getStaves().size() == 1);
+  REQUIRE(location.getSystem().getStaves()[0].getStringCount() == 6);
 }

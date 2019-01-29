@@ -23,33 +23,32 @@
 
 class QButtonGroup;
 
-namespace Ui
-{
+namespace Ui {
 class TempoMarkerDialog;
 }
 
 class TempoMarkerDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit TempoMarkerDialog(QWidget *parent);
-    ~TempoMarkerDialog();
+  explicit TempoMarkerDialog(QWidget* parent);
+  ~TempoMarkerDialog();
 
-    TempoMarker getTempoMarker() const;
+  TempoMarker getTempoMarker() const;
 
 private slots:
-    /// Disables the BPM spinner if listesso is enabled.
-    void onListessoChanged(bool enabled);
-    /// Disable the beat types, BPM spinner, and listesso beat types if the
-    /// metronome marker will be hidden.
-    void onShowMetronomeMarkerChanged(bool enabled);
+  /// Disables the BPM spinner if listesso is enabled.
+  void onListessoChanged(bool enabled);
+  /// Disable the beat types, BPM spinner, and listesso beat types if the
+  /// metronome marker will be hidden.
+  void onShowMetronomeMarkerChanged(bool enabled);
 
 private:
-    Ui::TempoMarkerDialog *ui;
-    QButtonGroup *myBeatTypes;
-    QButtonGroup *myListessoBeatTypes;
-    QButtonGroup *myTripletFeelTypes;
+  Ui::TempoMarkerDialog* ui;
+  QButtonGroup* myBeatTypes;
+  QButtonGroup* myListessoBeatTypes;
+  QButtonGroup* myTripletFeelTypes;
 };
 
 #endif

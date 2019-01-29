@@ -25,104 +25,94 @@
 
 /// Helper class to reduce code duplication for removing special note properties
 /// such as bends or trills.
-template <typename T>
+template<typename T>
 class RemoveSpecialNoteProperty : public QUndoCommand
 {
 public:
-    typedef std::function<void(Note *)> Clearer;
-    typedef std::function<void(Note *, T)> Setter;
+  typedef std::function<void(Note*)> Clearer;
+  typedef std::function<void(Note*, T)> Setter;
 
-    RemoveSpecialNoteProperty(const ScoreLocation &location,
-                              const QString &text, const T &currentValue,
-                              const Clearer &clearer, const Setter &setter)
-        : QUndoCommand(text),
-          myLocation(location),
-          myOriginalValue(currentValue),
-          myClearer(clearer),
-          mySetter(setter)
-    {
-    }
+  RemoveSpecialNoteProperty(const ScoreLocation& location,
+                            const QString& text,
+                            const T& currentValue,
+                            const Clearer& clearer,
+                            const Setter& setter)
+    : QUndoCommand(text)
+    , myLocation(location)
+    , myOriginalValue(currentValue)
+    , myClearer(clearer)
+    , mySetter(setter)
+  {}
 
-    virtual void redo() override
-    {
-        myClearer(myLocation.getNote());
-    }
+  virtual void redo() override { myClearer(myLocation.getNote()); }
 
-    virtual void undo() override
-    {
-        mySetter(myLocation.getNote(), myOriginalValue);
-    }
+  virtual void undo() override { mySetter(myLocation.getNote(), myOriginalValue); }
 
 private:
-    ScoreLocation myLocation;
-    const T myOriginalValue;
-    Clearer myClearer;
-    Setter mySetter;
+  ScoreLocation myLocation;
+  const T myOriginalValue;
+  Clearer myClearer;
+  Setter mySetter;
 };
 
 class RemoveTappedHarmonic : public RemoveSpecialNoteProperty<int>
 {
 public:
-    RemoveTappedHarmonic(const ScoreLocation &location)
-        : RemoveSpecialNoteProperty<int>(
-              location, QObject::tr("Remove Tapped Harmonic"),
-              location.getNote()->getTappedHarmonicFret(),
-              std::mem_fn(&Note::clearTappedHarmonic),
-              std::mem_fn(&Note::setTappedHarmonicFret))
-    {
-    }
+  RemoveTappedHarmonic(const ScoreLocation& location)
+    : RemoveSpecialNoteProperty<int>(location,
+                                     QObject::tr("Remove Tapped Harmonic"),
+                                     location.getNote()->getTappedHarmonicFret(),
+                                     std::mem_fn(&Note::clearTappedHarmonic),
+                                     std::mem_fn(&Note::setTappedHarmonicFret))
+  {}
 };
 
 class RemoveTrill : public RemoveSpecialNoteProperty<int>
 {
 public:
-    RemoveTrill(const ScoreLocation &location)
-        : RemoveSpecialNoteProperty<int>(location, QObject::tr("Remove Trill"),
-                                         location.getNote()->getTrilledFret(),
-                                         std::mem_fn(&Note::clearTrill),
-                                         std::mem_fn(&Note::setTrilledFret))
-    {
-    }
+  RemoveTrill(const ScoreLocation& location)
+    : RemoveSpecialNoteProperty<int>(location,
+                                     QObject::tr("Remove Trill"),
+                                     location.getNote()->getTrilledFret(),
+                                     std::mem_fn(&Note::clearTrill),
+                                     std::mem_fn(&Note::setTrilledFret))
+  {}
 };
 
-class RemoveArtificialHarmonic
-    : public RemoveSpecialNoteProperty<ArtificialHarmonic>
+class RemoveArtificialHarmonic : public RemoveSpecialNoteProperty<ArtificialHarmonic>
 {
 public:
-    RemoveArtificialHarmonic(const ScoreLocation &location)
-        : RemoveSpecialNoteProperty<ArtificialHarmonic>(
-              location, QObject::tr("Remove Artificial Harmonic"),
-              location.getNote()->getArtificialHarmonic(),
-              std::mem_fn(&Note::clearArtificialHarmonic),
-              std::mem_fn(&Note::setArtificialHarmonic))
-    {
-    }
+  RemoveArtificialHarmonic(const ScoreLocation& location)
+    : RemoveSpecialNoteProperty<ArtificialHarmonic>(location,
+                                                    QObject::tr("Remove Artificial Harmonic"),
+                                                    location.getNote()->getArtificialHarmonic(),
+                                                    std::mem_fn(&Note::clearArtificialHarmonic),
+                                                    std::mem_fn(&Note::setArtificialHarmonic))
+  {}
 };
 
 class RemoveBend : public RemoveSpecialNoteProperty<Bend>
 {
 public:
-    RemoveBend(const ScoreLocation &location)
-        : RemoveSpecialNoteProperty<Bend>(location, QObject::tr("Remove Bend"),
-                                          location.getNote()->getBend(),
-                                          std::mem_fn(&Note::clearBend),
-                                          std::mem_fn(&Note::setBend))
-    {
-    }
+  RemoveBend(const ScoreLocation& location)
+    : RemoveSpecialNoteProperty<Bend>(location,
+                                      QObject::tr("Remove Bend"),
+                                      location.getNote()->getBend(),
+                                      std::mem_fn(&Note::clearBend),
+                                      std::mem_fn(&Note::setBend))
+  {}
 };
 
-class RemoveLeftHandFingering
-    : public RemoveSpecialNoteProperty<LeftHandFingering>
+class RemoveLeftHandFingering : public RemoveSpecialNoteProperty<LeftHandFingering>
 {
 public:
-    RemoveLeftHandFingering(const ScoreLocation &location)
-        : RemoveSpecialNoteProperty<LeftHandFingering>(
-              location, QObject::tr("Remove Left Hand Fingering"),
-              location.getNote()->getLeftHandFingering(),
-              std::mem_fn(&Note::clearLeftHandFingering),
-              std::mem_fn(&Note::setLeftHandFingering))
-    {
-    }
+  RemoveLeftHandFingering(const ScoreLocation& location)
+    : RemoveSpecialNoteProperty<LeftHandFingering>(location,
+                                                   QObject::tr("Remove Left Hand Fingering"),
+                                                   location.getNote()->getLeftHandFingering(),
+                                                   std::mem_fn(&Note::clearLeftHandFingering),
+                                                   std::mem_fn(&Note::setLeftHandFingering))
+  {}
 };
 
 #endif

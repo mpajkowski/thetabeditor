@@ -23,19 +23,19 @@
 
 TEST_CASE("Actions/RemovePlayerChange", "")
 {
-    Score score;
-    System system;
-    PlayerChange change(5);
-    change.insertActivePlayer(1, ActivePlayer(0, 2));
-    system.insertPlayerChange(change);
-    score.insertSystem(system);
+  Score score;
+  System system;
+  PlayerChange change(5);
+  change.insertActivePlayer(1, ActivePlayer(0, 2));
+  system.insertPlayerChange(change);
+  score.insertSystem(system);
 
-    RemovePlayerChange action(ScoreLocation(score, 0, 0, 5));
+  RemovePlayerChange action(ScoreLocation(score, 0, 0, 5));
 
-    action.redo();
-    REQUIRE(score.getSystems()[0].getPlayerChanges().size() == 0);
+  action.redo();
+  REQUIRE(score.getSystems()[0].getPlayerChanges().size() == 0);
 
-    action.undo();
-    REQUIRE(score.getSystems()[0].getPlayerChanges().size() == 1);
-    REQUIRE(score.getSystems()[0].getPlayerChanges()[0] == change);
+  action.undo();
+  REQUIRE(score.getSystems()[0].getPlayerChanges().size() == 1);
+  REQUIRE(score.getSystems()[0].getPlayerChanges()[0] == change);
 }

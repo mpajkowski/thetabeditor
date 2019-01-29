@@ -21,46 +21,46 @@
 
 TEST_CASE("Score/Score/Systems", "")
 {
-    Score score;
+  Score score;
 
-    REQUIRE(score.getSystems().size() == 0);
+  REQUIRE(score.getSystems().size() == 0);
 
-    System system;
-    score.insertSystem(system);
-    REQUIRE(score.getSystems().size() == 1);
-    score.removeSystem(0);
-    REQUIRE(score.getSystems().size() == 0);
+  System system;
+  score.insertSystem(system);
+  REQUIRE(score.getSystems().size() == 1);
+  score.removeSystem(0);
+  REQUIRE(score.getSystems().size() == 0);
 }
 
 TEST_CASE("Score/Score/Players", "")
 {
-    Score score;
+  Score score;
 
-    REQUIRE(score.getPlayers().size() == 0);
+  REQUIRE(score.getPlayers().size() == 0);
 
-    Player player;
-    score.insertPlayer(player);
-    REQUIRE(score.getPlayers().size() == 1);
-    score.removePlayer(0);
-    REQUIRE(score.getPlayers().size() == 0);
+  Player player;
+  score.insertPlayer(player);
+  REQUIRE(score.getPlayers().size() == 1);
+  score.removePlayer(0);
+  REQUIRE(score.getPlayers().size() == 0);
 }
 
 TEST_CASE("Score/Score/ViewFilters", "")
 {
-    Score score;
+  Score score;
 
-    REQUIRE(score.getViewFilters().size() == 0);
+  REQUIRE(score.getViewFilters().size() == 0);
 
-    ViewFilter filter1;
-    filter1.addRule(FilterRule(FilterRule::PLAYER_NAME, "foo"));
-    score.insertViewFilter(filter1);
+  ViewFilter filter1;
+  filter1.addRule(FilterRule(FilterRule::PLAYER_NAME, "foo"));
+  score.insertViewFilter(filter1);
 
-    ViewFilter filter2;
-    filter2.addRule(FilterRule(FilterRule::PLAYER_NAME, "bar"));
-    score.insertViewFilter(filter2);
+  ViewFilter filter2;
+  filter2.addRule(FilterRule(FilterRule::PLAYER_NAME, "bar"));
+  score.insertViewFilter(filter2);
 
-    REQUIRE(score.getViewFilters().size() == 2);
-    score.removeViewFilter(1);
-    REQUIRE(score.getViewFilters().size() == 1);
-    REQUIRE(score.getViewFilters()[0] == filter1);
+  REQUIRE(score.getViewFilters().size() == 2);
+  score.removeViewFilter(1);
+  REQUIRE(score.getViewFilters().size() == 1);
+  REQUIRE(score.getViewFilters()[0] == filter1);
 }

@@ -35,110 +35,91 @@ static const QString PTB_MIME_TYPE = "application/ptb";
 class ClipboardSelection
 {
 public:
-    ClipboardSelection() : myNumStrings(0)
-    {
-    }
+  ClipboardSelection()
+    : myNumStrings(0)
+  {}
 
-    ClipboardSelection(int numStrings,
-                       const std::vector<const Position *> &positions,
-                       const std::vector<const IrregularGrouping *> &groups)
-        : myNumStrings(numStrings)
-    {
-        for (const Position *pos : positions)
-            myPositions.push_back(*pos);
-        for (const IrregularGrouping *group : groups)
-            myGroups.push_back(*group);
-    }
+  ClipboardSelection(int numStrings,
+                     const std::vector<const Position*>& positions,
+                     const std::vector<const IrregularGrouping*>& groups)
+    : myNumStrings(numStrings)
+  {
+    for (const Position* pos : positions)
+      myPositions.push_back(*pos);
+    for (const IrregularGrouping* group : groups)
+      myGroups.push_back(*group);
+  }
 
-    int getNumStrings() const
-    {
-        return myNumStrings;
-    }
+  int getNumStrings() const { return myNumStrings; }
 
-    const std::vector<Position> &getPositions() const
-    {
-        return myPositions;
-    }
+  const std::vector<Position>& getPositions() const { return myPositions; }
 
-    const std::vector<IrregularGrouping> &getIrregularGroupings() const
-    {
-        return myGroups;
-    }
+  const std::vector<IrregularGrouping>& getIrregularGroupings() const { return myGroups; }
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion /*version*/)
-    {
-        ar("num_strings", myNumStrings);
-        ar("positions", myPositions);
-        ar("irregular_groupings", myGroups);
-    }
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion /*version*/)
+  {
+    ar("num_strings", myNumStrings);
+    ar("positions", myPositions);
+    ar("irregular_groupings", myGroups);
+  }
 
 private:
-    int myNumStrings;
-    std::vector<Position> myPositions;
-    std::vector<IrregularGrouping> myGroups;
+  int myNumStrings;
+  std::vector<Position> myPositions;
+  std::vector<IrregularGrouping> myGroups;
 };
 
-void Clipboard::copySelection(const ScoreLocation &location)
+void Clipboard::copySelection(const ScoreLocation& location)
 {
-    const auto selectedPositions = location.getSelectedPositions();
-    const int numStrings = location.getStaff().getStringCount();
+  const auto selectedPositions = location.getSelectedPositions();
+  const int numStrings = location.getStaff().getStringCount();
 
-    if (selectedPositions.empty())
-        return;
+  if (selectedPositions.empty())
+    return;
 
-    ClipboardSelection selection(numStrings, selectedPositions,
-                                 location.getSelectedIrregularGroupings());
+  ClipboardSelection selection(numStrings, selectedPositions, location.getSelectedIrregularGroupings());
 
-    // Serialize the notes to a string.
-    std::ostringstream ss;
-    ScoreUtils::save(ss, "clipboard_selection", selection);
-    const std::string data = ss.str();
+  // Serialize the notes to a string.
+  std::ostringstream ss;
+  ScoreUtils::save(ss, "clipboard_selection", selection);
+  const std::string data = ss.str();
 
-    // Copy the data to the clipboard.
-    auto mimeData = new QMimeData();
-    mimeData->setData(
-        PTB_MIME_TYPE,
-        QByteArray(data.c_str(), static_cast<int>(data.length())));
+  // Copy the data to the clipboard.
+  auto mimeData = new QMimeData();
+  mimeData->setData(PTB_MIME_TYPE, QByteArray(data.c_str(), static_cast<int>(data.length())));
 
-    QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setMimeData(mimeData);
+  QClipboard* clipboard = QApplication::clipboard();
+  clipboard->setMimeData(mimeData);
 }
 
-void Clipboard::paste(QWidget *parent, UndoManager &undoManager,
-                      ScoreLocation &location)
+void Clipboard::paste(QWidget* parent, UndoManager& undoManager, ScoreLocation& location)
 {
-    const int currentStaffSize = location.getStaff().getStringCount();
+  const int currentStaffSize = location.getStaff().getStringCount();
 
-    // Load data from the clipboard and deserialize.
-    const QByteArray rawData =
-        QApplication::clipboard()->mimeData()->data(PTB_MIME_TYPE);
-    Q_ASSERT(!rawData.isEmpty());
+  // Load data from the clipboard and deserialize.
+  const QByteArray rawData = QApplication::clipboard()->mimeData()->data(PTB_MIME_TYPE);
+  Q_ASSERT(!rawData.isEmpty());
 
-    std::istringstream inputData(std::string(rawData.data(), rawData.length()));
+  std::istringstream inputData(std::string(rawData.data(), rawData.length()));
 
-    ClipboardSelection selection;
-    ScoreUtils::load(inputData, "clipboard_selection", selection);
+  ClipboardSelection selection;
+  ScoreUtils::load(inputData, "clipboard_selection", selection);
 
-    // For safety, prevent pasting into a tuning with a different number of
-    // strings.
-    if (currentStaffSize != selection.getNumStrings())
-    {
-        QMessageBox msg(parent);
-        msg.setText(QObject::tr("Cannot paste notes from a different tuning."));
-        msg.exec();
-        return;
-    }
+  // For safety, prevent pasting into a tuning with a different number of
+  // strings.
+  if (currentStaffSize != selection.getNumStrings()) {
+    QMessageBox msg(parent);
+    msg.setText(QObject::tr("Cannot paste notes from a different tuning."));
+    msg.exec();
+    return;
+  }
 
-    undoManager.push(new InsertNotes(location, selection.getPositions(),
-                                     selection.getIrregularGroupings()),
-                     location.getSystemIndex());
+  undoManager.push(new InsertNotes(location, selection.getPositions(), selection.getIrregularGroupings()),
+                   location.getSystemIndex());
 }
 
 bool Clipboard::hasData()
 {
-    return !QApplication::clipboard()
-                ->mimeData()
-                ->data(PTB_MIME_TYPE)
-                .isEmpty();
+  return !QApplication::clipboard()->mimeData()->data(PTB_MIME_TYPE).isEmpty();
 }

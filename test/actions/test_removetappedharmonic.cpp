@@ -23,15 +23,15 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/RemoveTappedHarmonic", "")
 {
-    const int tappedFret = 17;
-    myLocation.getNote()->setTappedHarmonicFret(tappedFret);
+  const int tappedFret = 17;
+  myLocation.getNote()->setTappedHarmonicFret(tappedFret);
 
-    RemoveTappedHarmonic action(myLocation);
+  RemoveTappedHarmonic action(myLocation);
 
-    action.redo();
-    REQUIRE(!myLocation.getNote()->hasTappedHarmonic());
+  action.redo();
+  REQUIRE(!myLocation.getNote()->hasTappedHarmonic());
 
-    action.undo();
-    REQUIRE(myLocation.getNote()->hasTappedHarmonic());
-    REQUIRE(myLocation.getNote()->getTappedHarmonicFret() == tappedFret);
+  action.undo();
+  REQUIRE(myLocation.getNote()->hasTappedHarmonic());
+  REQUIRE(myLocation.getNote()->getTappedHarmonicFret() == tappedFret);
 }

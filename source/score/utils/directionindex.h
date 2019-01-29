@@ -29,24 +29,24 @@ class Score;
 class DirectionIndex
 {
 public:
-    DirectionIndex(const Score &score);
+  DirectionIndex(const Score& score);
 
-    /// When moving from one location in the score to another, returns the new
-    /// location that should be moved to (after taking directions into account).
-    SystemLocation performDirection(const SystemLocation &prevLocation,
-                                    const SystemLocation &currentLocation,
-                                    int activeRepeat);
+  /// When moving from one location in the score to another, returns the new
+  /// location that should be moved to (after taking directions into account).
+  SystemLocation performDirection(const SystemLocation& prevLocation,
+                                  const SystemLocation& currentLocation,
+                                  int activeRepeat);
 
 private:
-    SystemLocation followDirection(DirectionSymbol::SymbolType symbol);
+  SystemLocation followDirection(DirectionSymbol::SymbolType symbol);
 
-    const Score &myScore;
-    DirectionSymbol::ActiveSymbolType myActiveSymbol;
+  const Score& myScore;
+  DirectionSymbol::ActiveSymbolType myActiveSymbol;
 
-    /// Used for looking up direction symbols at a given location.
-    std::multimap<SystemLocation, DirectionSymbol> myDirections;
-    /// Used for finding the location of a symbol type.
-    std::map<DirectionSymbol::SymbolType, SystemLocation> mySymbolLocations;
+  /// Used for looking up direction symbols at a given location.
+  std::multimap<SystemLocation, DirectionSymbol> myDirections;
+  /// Used for finding the location of a symbol type.
+  std::map<DirectionSymbol::SymbolType, SystemLocation> mySymbolLocations;
 };
 
 #endif

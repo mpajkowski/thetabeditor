@@ -17,33 +17,31 @@
 
 #include "repeatcontroller.h"
 
-RepeatController::RepeatController(const Score &score)
-    : myDirectionIndex(score), myRepeatIndex(score)
+RepeatController::RepeatController(const Score& score)
+  : myDirectionIndex(score)
+  , myRepeatIndex(score)
+{}
+
+bool RepeatController::checkForRepeat(const SystemLocation& prevLocation,
+                                      const SystemLocation& currentLocation,
+                                      SystemLocation& newLocation)
 {
-}
+  RepeatedSection* active_repeat = myRepeatIndex.findRepeat(currentLocation);
 
-bool RepeatController::checkForRepeat(const SystemLocation &prevLocation,
-                                      const SystemLocation &currentLocation,
-                                      SystemLocation &newLocation)
-{
-    RepeatedSection *active_repeat = myRepeatIndex.findRepeat(currentLocation);
+  newLocation = myDirectionIndex.performDirection(
+    prevLocation, currentLocation, active_repeat ? active_repeat->getCurrentRepeatNumber() : 1);
 
-    newLocation = myDirectionIndex.performDirection(
-        prevLocation, currentLocation,
-        active_repeat ? active_repeat->getCurrentRepeatNumber() : 1);
+  if (newLocation != currentLocation) {
+    // If a direction was performed, reset the repeat count for the active
+    // repeat, since we may end up returning to it later (e.g. D.C. al
+    // Fine).
+    if (active_repeat)
+      active_repeat->reset();
+  }
+  // If no musical direction was performed, try to perform a repeat.
+  else if (active_repeat)
+    newLocation = active_repeat->performRepeat(currentLocation);
 
-    if (newLocation != currentLocation)
-    {
-        // If a direction was performed, reset the repeat count for the active
-        // repeat, since we may end up returning to it later (e.g. D.C. al
-        // Fine).
-        if (active_repeat)
-            active_repeat->reset();
-    }
-    // If no musical direction was performed, try to perform a repeat.
-    else if (active_repeat)
-        newLocation = active_repeat->performRepeat(currentLocation);
-
-    // Return true if a position shift occurred.
-    return newLocation != currentLocation;
+  // Return true if a position shift occurred.
+  return newLocation != currentLocation;
 }

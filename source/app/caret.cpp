@@ -22,215 +22,198 @@
 #include <score/score.h>
 #include <score/system.h>
 
-Caret::Caret(Score &score, const ViewOptions &options)
-    : myLocation(score), myViewOptions(options), myInPlaybackMode(false)
+Caret::Caret(Score& score, const ViewOptions& options)
+  : myLocation(score)
+  , myViewOptions(options)
+  , myInPlaybackMode(false)
+{}
+
+ScoreLocation& Caret::getLocation()
 {
+  return myLocation;
 }
 
-ScoreLocation &Caret::getLocation()
+const ScoreLocation& Caret::getLocation() const
 {
-    return myLocation;
-}
-
-const ScoreLocation &Caret::getLocation() const
-{
-    return myLocation;
+  return myLocation;
 }
 
 bool Caret::isInPlaybackMode() const
 {
-    return myInPlaybackMode;
+  return myInPlaybackMode;
 }
 
 void Caret::setIsInPlaybackMode(bool set)
 {
-    myInPlaybackMode = set;
-    // Trigger a redraw.
-    onLocationChanged();
+  myInPlaybackMode = set;
+  // Trigger a redraw.
+  onLocationChanged();
 }
 
 void Caret::moveHorizontal(int offset)
 {
-    moveToPosition(myLocation.getPositionIndex() + offset);
+  moveToPosition(myLocation.getPositionIndex() + offset);
 }
 
 void Caret::moveVertical(int offset)
 {
-    const int numStrings = myLocation.getStaff().getStringCount();
-    myLocation.setString((myLocation.getString() + offset + numStrings) %
-                         numStrings);
+  const int numStrings = myLocation.getStaff().getStringCount();
+  myLocation.setString((myLocation.getString() + offset + numStrings) % numStrings);
 
-    onLocationChanged();
+  onLocationChanged();
 }
 
 void Caret::moveToStartPosition()
 {
-    moveToPosition(0);
+  moveToPosition(0);
 }
 
 void Caret::moveToEndPosition()
 {
-    moveToPosition(getLastPosition());
+  moveToPosition(getLastPosition());
 }
 
 void Caret::moveSystem(int offset)
 {
-    moveToSystem(myLocation.getSystemIndex() + offset, false);
+  moveToSystem(myLocation.getSystemIndex() + offset, false);
 }
 
 void Caret::moveToFirstSystem()
 {
-    moveToSystem(0, false);
+  moveToSystem(0, false);
 }
 
 void Caret::moveToLastSystem()
 {
-    moveToSystem(getLastSystemIndex(), false);
+  moveToSystem(getLastSystemIndex(), false);
 }
 
 void Caret::moveStaff(int offset)
 {
-    moveToStaff(myLocation.getStaffIndex() + offset);
+  moveToStaff(myLocation.getStaffIndex() + offset);
 }
 
 void Caret::moveToStaff(int staff)
 {
-    const int num_staves =
-        static_cast<int>(myLocation.getSystem().getStaves().size());
-    staff = boost::algorithm::clamp(staff, 0, num_staves - 1);
+  const int num_staves = static_cast<int>(myLocation.getSystem().getStaves().size());
+  staff = boost::algorithm::clamp(staff, 0, num_staves - 1);
 
-    const bool is_increasing = staff >= myLocation.getStaffIndex();
-    const int increment = is_increasing ? 1 : -1;
-    const int end = is_increasing ? num_staves : -1;
+  const bool is_increasing = staff >= myLocation.getStaffIndex();
+  const int increment = is_increasing ? 1 : -1;
+  const int end = is_increasing ? num_staves : -1;
 
-    const Score &score = myLocation.getScore();
-    const ViewFilter *filter =
-        myViewOptions.getFilter()
-            ? &score.getViewFilters()[*myViewOptions.getFilter()]
-            : nullptr;
+  const Score& score = myLocation.getScore();
+  const ViewFilter* filter =
+    myViewOptions.getFilter() ? &score.getViewFilters()[*myViewOptions.getFilter()] : nullptr;
 
-    // If the specified staff is hidden by the current filter, try the staves
-    // before or after in that direction.
-    for (int i = staff; i != end; i += increment)
-    {
-        if (!filter || filter->accept(score, myLocation.getSystemIndex(), i))
-        {
-            myLocation.setStaffIndex(i);
-            onLocationChanged();
-            return;
-        }
+  // If the specified staff is hidden by the current filter, try the staves
+  // before or after in that direction.
+  for (int i = staff; i != end; i += increment) {
+    if (!filter || filter->accept(score, myLocation.getSystemIndex(), i)) {
+      myLocation.setStaffIndex(i);
+      onLocationChanged();
+      return;
     }
+  }
 }
 
 bool Caret::moveToNextBar()
 {
-    const Barline *nextBar =
-        myLocation.getSystem().getNextBarline(myLocation.getPositionIndex());
-    if (!nextBar)
-        return false;
+  const Barline* nextBar = myLocation.getSystem().getNextBarline(myLocation.getPositionIndex());
+  if (!nextBar)
+    return false;
 
-    // Move into the next system if necessary.
-    if (*nextBar == myLocation.getSystem().getBarlines().back())
-        return moveToSystem(myLocation.getSystemIndex() + 1, true);
-    else
-    {
-        moveToPosition(nextBar->getPosition());
-        return true;
-    }
+  // Move into the next system if necessary.
+  if (*nextBar == myLocation.getSystem().getBarlines().back())
+    return moveToSystem(myLocation.getSystemIndex() + 1, true);
+  else {
+    moveToPosition(nextBar->getPosition());
+    return true;
+  }
 }
 
 void Caret::moveToPrevBar()
 {
-    const System &system = myLocation.getSystem();
-    const Barline *prevBar =
-        system.getPreviousBarline(myLocation.getPositionIndex());
-    if (prevBar)
-        prevBar = system.getPreviousBarline(prevBar->getPosition());
+  const System& system = myLocation.getSystem();
+  const Barline* prevBar = system.getPreviousBarline(myLocation.getPositionIndex());
+  if (prevBar)
+    prevBar = system.getPreviousBarline(prevBar->getPosition());
 
-    if (prevBar)
-        moveToPosition(prevBar->getPosition());
-    else if (myLocation.getSystemIndex() > 0)
-    {
-        // Move up by a system if we're at the start of our current system.
-        moveToSystem(myLocation.getSystemIndex() - 1, true);
+  if (prevBar)
+    moveToPosition(prevBar->getPosition());
+  else if (myLocation.getSystemIndex() > 0) {
+    // Move up by a system if we're at the start of our current system.
+    moveToSystem(myLocation.getSystemIndex() - 1, true);
 
-        // Move to the last barline if possible.
-        const System &newSystem = myLocation.getSystem();
-        const size_t count = newSystem.getBarlines().size();
-        if (count > 2)
-            moveToPosition(newSystem.getBarlines()[count - 2].getPosition());
-    }
+    // Move to the last barline if possible.
+    const System& newSystem = myLocation.getSystem();
+    const size_t count = newSystem.getBarlines().size();
+    if (count > 2)
+      moveToPosition(newSystem.getBarlines()[count - 2].getPosition());
+  }
 }
 
-boost::signals2::connection Caret::subscribeToChanges(
-    const LocationChangedSlot::slot_type &subscriber) const
+boost::signals2::connection Caret::subscribeToChanges(const LocationChangedSlot::slot_type& subscriber) const
 {
-    return onLocationChanged.connect(subscriber);
+  return onLocationChanged.connect(subscriber);
 }
 
 int Caret::getLastPosition() const
 {
-    // There must be at least one position space to the left of the last bar.
-    return myLocation.getSystem().getBarlines().back().getPosition() - 1;
+  // There must be at least one position space to the left of the last bar.
+  return myLocation.getSystem().getBarlines().back().getPosition() - 1;
 }
 
 int Caret::getLastSystemIndex() const
 {
-    return static_cast<int>(myLocation.getScore().getSystems().size() - 1);
+  return static_cast<int>(myLocation.getScore().getSystems().size() - 1);
 }
 
 void Caret::moveToPosition(int position)
 {
-    myLocation.setPositionIndex(
-        boost::algorithm::clamp(position, 0, getLastPosition()));
-    myLocation.setSelectionStart(myLocation.getPositionIndex());
+  myLocation.setPositionIndex(boost::algorithm::clamp(position, 0, getLastPosition()));
+  myLocation.setSelectionStart(myLocation.getPositionIndex());
 
-    onLocationChanged();
+  onLocationChanged();
 }
 
 bool Caret::moveToSystem(int system, bool keepStaff)
 {
-    const int prevSystem = myLocation.getSystemIndex();
-    myLocation.setSystemIndex(
-        boost::algorithm::clamp(system, 0, getLastSystemIndex()));
+  const int prevSystem = myLocation.getSystemIndex();
+  myLocation.setSystemIndex(boost::algorithm::clamp(system, 0, getLastSystemIndex()));
 
-    if (myLocation.getSystemIndex() != prevSystem)
-    {
-        if (!keepStaff)
-            myLocation.setStaffIndex(0);
-        else
-        {
-            myLocation.setStaffIndex(boost::algorithm::clamp(
-                myLocation.getStaffIndex(), 0,
-                static_cast<int>(myLocation.getSystem().getStaves().size() -
-                                 1)));
-        }
-
-        myLocation.setPositionIndex(0);
-        myLocation.setSelectionStart(0);
-        myLocation.setString(0);
-
-        onLocationChanged();
-        return true;
+  if (myLocation.getSystemIndex() != prevSystem) {
+    if (!keepStaff)
+      myLocation.setStaffIndex(0);
+    else {
+      myLocation.setStaffIndex(boost::algorithm::clamp(
+        myLocation.getStaffIndex(), 0, static_cast<int>(myLocation.getSystem().getStaves().size() - 1)));
     }
-    else
-        return false;
-}
 
-void Caret::moveToLocation(const ScoreLocation &location)
-{
-    myLocation.setSystemIndex(location.getSystemIndex());
-    myLocation.setStaffIndex(location.getStaffIndex());
-    myLocation.setPositionIndex(location.getPositionIndex());
-    myLocation.setSelectionStart(location.getSelectionStart());
-    myLocation.setString(location.getString());
+    myLocation.setPositionIndex(0);
+    myLocation.setSelectionStart(0);
+    myLocation.setString(0);
 
     onLocationChanged();
+    return true;
+  } else
+    return false;
+}
+
+void Caret::moveToLocation(const ScoreLocation& location)
+{
+  myLocation.setSystemIndex(location.getSystemIndex());
+  myLocation.setStaffIndex(location.getStaffIndex());
+  myLocation.setPositionIndex(location.getPositionIndex());
+  myLocation.setSelectionStart(location.getSelectionStart());
+  myLocation.setString(location.getString());
+
+  onLocationChanged();
 }
 
 void Caret::moveToValidPosition()
 {
-    moveToSystem(myLocation.getSystemIndex(), true);
-    moveToStaff(myLocation.getStaffIndex());
-    moveToPosition(myLocation.getPositionIndex());
+  moveToSystem(myLocation.getSystemIndex(), true);
+  moveToStaff(myLocation.getStaffIndex());
+  moveToPosition(myLocation.getPositionIndex());
 }

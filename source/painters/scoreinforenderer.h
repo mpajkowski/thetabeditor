@@ -21,9 +21,8 @@
 class QGraphicsItem;
 class ScoreInfo;
 
-namespace ScoreInfoRenderer
-{
-QGraphicsItem *render(const ScoreInfo &score_info);
+namespace ScoreInfoRenderer {
+QGraphicsItem* render(const ScoreInfo& score_info);
 }
 
 #endif

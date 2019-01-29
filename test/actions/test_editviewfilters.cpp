@@ -22,23 +22,22 @@
 
 TEST_CASE("Actions/EditViewFilters", "")
 {
-    Score score;
+  Score score;
 
-    ViewFilter filter1;
-    filter1.addRule(FilterRule(FilterRule::NUM_STRINGS, FilterRule::EQUAL, 7));
-    ViewFilter filter2;
-    filter2.addRule(
-        FilterRule(FilterRule::NUM_STRINGS, FilterRule::LESS_THAN_EQUAL, 5));
+  ViewFilter filter1;
+  filter1.addRule(FilterRule(FilterRule::NUM_STRINGS, FilterRule::EQUAL, 7));
+  ViewFilter filter2;
+  filter2.addRule(FilterRule(FilterRule::NUM_STRINGS, FilterRule::LESS_THAN_EQUAL, 5));
 
-    score.insertViewFilter(filter2);
+  score.insertViewFilter(filter2);
 
-    std::vector<ViewFilter> old_filters = { filter2 };
-    std::vector<ViewFilter> new_filters = { filter1, filter2 };
-    EditViewFilters action(score, new_filters);
+  std::vector<ViewFilter> old_filters = { filter2 };
+  std::vector<ViewFilter> new_filters = { filter1, filter2 };
+  EditViewFilters action(score, new_filters);
 
-    action.redo();
-    REQUIRE(score.getViewFilters() == new_filters);
+  action.redo();
+  REQUIRE(score.getViewFilters() == new_filters);
 
-    action.undo();
-    REQUIRE(score.getViewFilters() == old_filters);
+  action.undo();
+  REQUIRE(score.getViewFilters() == old_filters);
 }

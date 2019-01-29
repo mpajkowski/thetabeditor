@@ -22,34 +22,34 @@
 
 TEST_CASE("Actions/EditClef", "")
 {
-    Score score;
-    System system;
-    Staff staff1, staff2;
-    staff2.setClefType(Staff::BassClef);
-    system.insertStaff(staff1);
-    system.insertStaff(staff2);
-    score.insertSystem(system);
+  Score score;
+  System system;
+  Staff staff1, staff2;
+  staff2.setClefType(Staff::BassClef);
+  system.insertStaff(staff1);
+  system.insertStaff(staff2);
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0);
+  ScoreLocation location(score, 0, 0);
 
-    {
-        EditStaff action(location, Staff::BassClef, 6);
+  {
+    EditStaff action(location, Staff::BassClef, 6);
 
-        action.redo();
-        REQUIRE(location.getStaff().getClefType() == Staff::BassClef);
+    action.redo();
+    REQUIRE(location.getStaff().getClefType() == Staff::BassClef);
 
-        action.undo();
-        REQUIRE(location.getStaff().getClefType() == Staff::TrebleClef);
-    }
+    action.undo();
+    REQUIRE(location.getStaff().getClefType() == Staff::TrebleClef);
+  }
 
-    location.setStaffIndex(1);
-    {
-        EditStaff action(location, Staff::TrebleClef, 6);
+  location.setStaffIndex(1);
+  {
+    EditStaff action(location, Staff::TrebleClef, 6);
 
-        action.redo();
-        REQUIRE(location.getStaff().getClefType() == Staff::TrebleClef);
+    action.redo();
+    REQUIRE(location.getStaff().getClefType() == Staff::TrebleClef);
 
-        action.undo();
-        REQUIRE(location.getStaff().getClefType() == Staff::BassClef);
-    }
+    action.undo();
+    REQUIRE(location.getStaff().getClefType() == Staff::BassClef);
+  }
 }

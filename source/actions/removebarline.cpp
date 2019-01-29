@@ -20,24 +20,23 @@
 #include <score/score.h>
 #include <score/system.h>
 
-RemoveBarline::RemoveBarline(const ScoreLocation &location)
-    : QUndoCommand(QObject::tr("Remove Barline")),
-      myLocation(location),
-      myOriginalBarline(*location.getBarline())
-{
-}
+RemoveBarline::RemoveBarline(const ScoreLocation& location)
+  : QUndoCommand(QObject::tr("Remove Barline"))
+  , myLocation(location)
+  , myOriginalBarline(*location.getBarline())
+{}
 
 void RemoveBarline::redo()
 {
-    myLocation.getSystem().removeBarline(myOriginalBarline);
+  myLocation.getSystem().removeBarline(myOriginalBarline);
 
-    // Update the rehearsal signs letters, since a rehearsal sign may have been
-    // removed.
-    ScoreUtils::adjustRehearsalSigns(myLocation.getScore());
+  // Update the rehearsal signs letters, since a rehearsal sign may have been
+  // removed.
+  ScoreUtils::adjustRehearsalSigns(myLocation.getScore());
 }
 
 void RemoveBarline::undo()
 {
-    myLocation.getSystem().insertBarline(myOriginalBarline);
-    ScoreUtils::adjustRehearsalSigns(myLocation.getScore());
+  myLocation.getSystem().insertBarline(myOriginalBarline);
+  ScoreUtils::adjustRehearsalSigns(myLocation.getScore());
 }

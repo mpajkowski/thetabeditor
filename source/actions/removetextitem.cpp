@@ -20,20 +20,19 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemoveTextItem::RemoveTextItem(const ScoreLocation &location)
-    : QUndoCommand(QObject::tr("Remove Text")),
-      myLocation(location),
-      myOriginalText(*ScoreUtils::findByPosition(
-          location.getSystem().getTextItems(), location.getPositionIndex()))
-{
-}
+RemoveTextItem::RemoveTextItem(const ScoreLocation& location)
+  : QUndoCommand(QObject::tr("Remove Text"))
+  , myLocation(location)
+  , myOriginalText(
+      *ScoreUtils::findByPosition(location.getSystem().getTextItems(), location.getPositionIndex()))
+{}
 
 void RemoveTextItem::redo()
 {
-    myLocation.getSystem().removeTextItem(myOriginalText);
+  myLocation.getSystem().removeTextItem(myOriginalText);
 }
 
 void RemoveTextItem::undo()
 {
-    myLocation.getSystem().insertTextItem(myOriginalText);
+  myLocation.getSystem().insertTextItem(myOriginalText);
 }

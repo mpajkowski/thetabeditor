@@ -17,28 +17,27 @@
 
 #include "addpositionproperty.h"
 
-AddPositionProperty::AddPositionProperty(const ScoreLocation &location,
+AddPositionProperty::AddPositionProperty(const ScoreLocation& location,
                                          Position::SimpleProperty property,
-                                         const QString &positionDescription)
-    : QUndoCommand(QObject::tr("Set ") + positionDescription),
-      myLocation(location),
-      myProperty(property)
+                                         const QString& positionDescription)
+  : QUndoCommand(QObject::tr("Set ") + positionDescription)
+  , myLocation(location)
+  , myProperty(property)
 {
-    for (const Position *pos : myLocation.getSelectedPositions())
-        myOriginalPositions.push_back(*pos);
+  for (const Position* pos : myLocation.getSelectedPositions())
+    myOriginalPositions.push_back(*pos);
 }
 
 void AddPositionProperty::redo()
 {
-    for (Position *pos : myLocation.getSelectedPositions())
-        pos->setProperty(myProperty, true);
+  for (Position* pos : myLocation.getSelectedPositions())
+    pos->setProperty(myProperty, true);
 }
 
 void AddPositionProperty::undo()
 {
-    std::vector<Position *> selectedPositions =
-        myLocation.getSelectedPositions();
+  std::vector<Position*> selectedPositions = myLocation.getSelectedPositions();
 
-    for (size_t i = 0; i < myOriginalPositions.size(); ++i)
-        *selectedPositions[i] = myOriginalPositions[i];
+  for (size_t i = 0; i < myOriginalPositions.size(); ++i)
+    *selectedPositions[i] = myOriginalPositions[i];
 }

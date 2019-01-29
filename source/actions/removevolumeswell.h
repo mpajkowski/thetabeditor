@@ -26,17 +26,17 @@ class Position;
 class RemoveVolumeSwell : public QUndoCommand
 {
 public:
-    RemoveVolumeSwell(Position *position);
+  RemoveVolumeSwell(Position* position);
 
-    void redo();
-    void undo();
+  void redo();
+  void undo();
 
 private:
-    Position *position;
+  Position* position;
 
-    uint8_t originalStartVolume;
-    uint8_t originalEndVolume;
-    uint8_t originalDuration;
+  uint8_t originalStartVolume;
+  uint8_t originalEndVolume;
+  uint8_t originalDuration;
 };
 
 #endif // REMOVEVOLUMESWELL_H

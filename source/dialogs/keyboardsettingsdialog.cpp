@@ -22,224 +22,196 @@
 #include <QMessageBox>
 #include <app/command.h>
 
-Q_DECLARE_METATYPE(Command *)
+Q_DECLARE_METATYPE(Command*)
 
-KeyboardSettingsDialog::KeyboardSettingsDialog(
-    QWidget *parent, const std::vector<Command *> &commands)
-    : QDialog(parent), ui(new Ui::KeyboardSettingsDialog), myCommands(commands)
+KeyboardSettingsDialog::KeyboardSettingsDialog(QWidget* parent, const std::vector<Command*>& commands)
+  : QDialog(parent)
+  , ui(new Ui::KeyboardSettingsDialog)
+  , myCommands(commands)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    initializeCommandTable();
+  initializeCommandTable();
 
-    ui->shortcutEdit->installEventFilter(this);
+  ui->shortcutEdit->installEventFilter(this);
 
-    connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(resetShortcut()));
+  connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(resetShortcut()));
 
-    connect(ui->commandsList,
-            SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),
-            this,
-            SLOT(activeCommandChanged(QTreeWidgetItem *, QTreeWidgetItem *)));
+  connect(ui->commandsList,
+          SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
+          this,
+          SLOT(activeCommandChanged(QTreeWidgetItem*, QTreeWidgetItem*)));
 
-    connect(ui->defaultButton, SIGNAL(clicked()), this,
-            SLOT(resetToDefaultShortcut()));
-    ui->shortcutEdit->setFocus();
+  connect(ui->defaultButton, SIGNAL(clicked()), this, SLOT(resetToDefaultShortcut()));
+  ui->shortcutEdit->setFocus();
 }
 
 KeyboardSettingsDialog::~KeyboardSettingsDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 void KeyboardSettingsDialog::initializeCommandTable()
 {
-    std::sort(
-        myCommands.begin(), myCommands.end(),
-        [](const Command *a, const Command *b) { return a->id() < b->id(); });
+  std::sort(myCommands.begin(), myCommands.end(), [](const Command* a, const Command* b) {
+    return a->id() < b->id();
+  });
 
-    ui->commandsList->setColumnCount(3);
+  ui->commandsList->setColumnCount(3);
 
-    ui->commandsList->setHeaderLabels(
-        { tr("Command"), tr("Label"), tr("Shortcut") });
+  ui->commandsList->setHeaderLabels({ tr("Command"), tr("Label"), tr("Shortcut") });
 
-    // Populate list of commands.
-    for (Command *command : myCommands)
-    {
-        QString shortcut_text =
-            command->shortcut().toString(QKeySequence::NativeText);
+  // Populate list of commands.
+  for (Command* command : myCommands) {
+    QString shortcut_text = command->shortcut().toString(QKeySequence::NativeText);
 
-        // Build up a set of the known shortcuts.
-        if (!command->shortcut().isEmpty())
-        {
-            auto result =
-                myKnownShortcuts.emplace(shortcut_text.toStdString(),
-                                         ui->commandsList->topLevelItemCount());
-            // We shouldn't have duplicate shortcuts.
-            Q_ASSERT_X(result.second, "Import Keyboard Settings",
-                       "Duplicate Shortcut");
-        }
-
-        // NOTE: QAction::toolTip() is called to avoid getting ampersands from
-        //       mnemonics (which would appear in QAction::text)
-        auto item = new QTreeWidgetItem(
-            QStringList({ command->id(), command->toolTip(), shortcut_text }));
-
-        item->setData(0, Qt::UserRole, qVariantFromValue(command));
-        ui->commandsList->addTopLevelItem(item);
+    // Build up a set of the known shortcuts.
+    if (!command->shortcut().isEmpty()) {
+      auto result =
+        myKnownShortcuts.emplace(shortcut_text.toStdString(), ui->commandsList->topLevelItemCount());
+      // We shouldn't have duplicate shortcuts.
+      Q_ASSERT_X(result.second, "Import Keyboard Settings", "Duplicate Shortcut");
     }
 
-    ui->commandsList->header()->sectionResizeMode(
-        QHeaderView::ResizeToContents);
+    // NOTE: QAction::toolTip() is called to avoid getting ampersands from
+    //       mnemonics (which would appear in QAction::text)
+    auto item = new QTreeWidgetItem(QStringList({ command->id(), command->toolTip(), shortcut_text }));
 
-    // resize dialog to avoid horizontal scrollbars
-    int totalWidth = 0;
-    for (int i = 0; i < ui->commandsList->columnCount(); i++)
-    {
-        totalWidth += ui->commandsList->columnWidth(i);
-    }
+    item->setData(0, Qt::UserRole, qVariantFromValue(command));
+    ui->commandsList->addTopLevelItem(item);
+  }
 
-    resize(totalWidth + 50, height());
+  ui->commandsList->header()->sectionResizeMode(QHeaderView::ResizeToContents);
 
-    ui->commandsList->setCurrentItem(ui->commandsList->itemAt(0, 0));
+  // resize dialog to avoid horizontal scrollbars
+  int totalWidth = 0;
+  for (int i = 0; i < ui->commandsList->columnCount(); i++) {
+    totalWidth += ui->commandsList->columnWidth(i);
+  }
+
+  resize(totalWidth + 50, height());
+
+  ui->commandsList->setCurrentItem(ui->commandsList->itemAt(0, 0));
 }
 
-bool KeyboardSettingsDialog::eventFilter(QObject *, QEvent *e)
+bool KeyboardSettingsDialog::eventFilter(QObject*, QEvent* e)
 {
-    if (e->type() == QEvent::KeyPress)
-    {
-        QKeyEvent *k = static_cast<QKeyEvent *>(e);
-        processKeyPress(k);
-        return true;
-    }
+  if (e->type() == QEvent::KeyPress) {
+    QKeyEvent* k = static_cast<QKeyEvent*>(e);
+    processKeyPress(k);
+    return true;
+  }
 
-    // Ignore these events.
-    if (e->type() == QEvent::KeyRelease)
-    {
-        return true;
-    }
+  // Ignore these events.
+  if (e->type() == QEvent::KeyRelease) {
+    return true;
+  }
 
-    return false;
+  return false;
 }
 
-void KeyboardSettingsDialog::processKeyPress(QKeyEvent *e)
+void KeyboardSettingsDialog::processKeyPress(QKeyEvent* e)
 {
-    int key = e->key();
+  int key = e->key();
 
-    // Ignore a modifer key by itself (i.e. just the Ctrl key).
-    if (key == Qt::Key_Control || key == Qt::Key_Shift || key == Qt::Key_Meta ||
-        key == Qt::Key_Alt)
-    {
-        return;
-    }
+  // Ignore a modifer key by itself (i.e. just the Ctrl key).
+  if (key == Qt::Key_Control || key == Qt::Key_Shift || key == Qt::Key_Meta || key == Qt::Key_Alt) {
+    return;
+  }
 
-    QTreeWidgetItem *item = ui->commandsList->currentItem();
-    QString text = item->text(CommandShortcut);
+  QTreeWidgetItem* item = ui->commandsList->currentItem();
+  QString text = item->text(CommandShortcut);
 
-    if (key == Qt::Key_Backspace && !text.isEmpty())
-    {
-        // Remove if there is a shortcut already present (and backspace is
-        // pressed)
-        setShortcut(QKeySequence());
-    }
-    else
-    {
-        // Add in any modifers like Shift or Ctrl, but remove the keypad modifer
-        // since QKeySequence doesn't handle that well.
-        key |= (e->modifiers() & ~Qt::KeypadModifier);
+  if (key == Qt::Key_Backspace && !text.isEmpty()) {
+    // Remove if there is a shortcut already present (and backspace is
+    // pressed)
+    setShortcut(QKeySequence());
+  } else {
+    // Add in any modifers like Shift or Ctrl, but remove the keypad modifer
+    // since QKeySequence doesn't handle that well.
+    key |= (e->modifiers() & ~Qt::KeypadModifier);
 
-        setShortcut(key);
-    }
+    setShortcut(key);
+  }
 
-    e->accept();
+  e->accept();
 }
 
 void KeyboardSettingsDialog::resetShortcut()
 {
-    setShortcut(activeCommand()->shortcut());
+  setShortcut(activeCommand()->shortcut());
 }
 
 void KeyboardSettingsDialog::resetToDefaultShortcut()
 {
-    setShortcut(activeCommand()->defaultShortcut());
+  setShortcut(activeCommand()->defaultShortcut());
 }
 
-void KeyboardSettingsDialog::setShortcut(const QKeySequence &shortcut,
-                                         QTreeWidgetItem *item)
+void KeyboardSettingsDialog::setShortcut(const QKeySequence& shortcut, QTreeWidgetItem* item)
 {
-    if (!item)
-        item = ui->commandsList->currentItem();
+  if (!item)
+    item = ui->commandsList->currentItem();
 
-    const QString shortcut_text = shortcut.toString(QKeySequence::NativeText);
+  const QString shortcut_text = shortcut.toString(QKeySequence::NativeText);
 
-    // Check whether this shortcut is already in use by a different command.
-    auto it = myKnownShortcuts.find(shortcut_text.toStdString());
-    if (it != myKnownShortcuts.end())
-    {
-        QTreeWidgetItem *conflict_item =
-            ui->commandsList->topLevelItem(it->second);
-        if (item == conflict_item)
-            return;
+  // Check whether this shortcut is already in use by a different command.
+  auto it = myKnownShortcuts.find(shortcut_text.toStdString());
+  if (it != myKnownShortcuts.end()) {
+    QTreeWidgetItem* conflict_item = ui->commandsList->topLevelItem(it->second);
+    if (item == conflict_item)
+      return;
 
-        auto conflict = conflict_item->data(0, Qt::UserRole).value<Command *>();
+    auto conflict = conflict_item->data(0, Qt::UserRole).value<Command*>();
 
-        QMessageBox msg;
-        msg.setIcon(QMessageBox::Question);
-        msg.setText(
-            tr("The shortcut %1 is already in use.").arg(shortcut_text));
-        msg.setInformativeText(
-            tr("Do you want to use this shortcut and remove the shortcut of "
-               "the <b>%1</b> command?")
-                .arg(conflict->id()));
-        msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msg.setDefaultButton(QMessageBox::Yes);
+    QMessageBox msg;
+    msg.setIcon(QMessageBox::Question);
+    msg.setText(tr("The shortcut %1 is already in use.").arg(shortcut_text));
+    msg.setInformativeText(tr("Do you want to use this shortcut and remove the shortcut of "
+                              "the <b>%1</b> command?")
+                             .arg(conflict->id()));
+    msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msg.setDefaultButton(QMessageBox::Yes);
 
-        if (msg.exec() == QMessageBox::Yes)
-            setShortcut(QKeySequence(), conflict_item);
-        else
-            return;
-    }
+    if (msg.exec() == QMessageBox::Yes)
+      setShortcut(QKeySequence(), conflict_item);
+    else
+      return;
+  }
 
-    // Update the hash table of shortcuts.
-    myKnownShortcuts.erase(item->text(CommandShortcut).toStdString());
-    if (!shortcut.isEmpty())
-    {
-        myKnownShortcuts.emplace(shortcut_text.toStdString(),
-                                 ui->commandsList->indexOfTopLevelItem(item));
-    }
+  // Update the hash table of shortcuts.
+  myKnownShortcuts.erase(item->text(CommandShortcut).toStdString());
+  if (!shortcut.isEmpty()) {
+    myKnownShortcuts.emplace(shortcut_text.toStdString(), ui->commandsList->indexOfTopLevelItem(item));
+  }
 
-    item->setText(CommandShortcut, shortcut_text);
-    if (item == ui->commandsList->currentItem())
-        ui->shortcutEdit->setText(shortcut_text);
+  item->setText(CommandShortcut, shortcut_text);
+  if (item == ui->commandsList->currentItem())
+    ui->shortcutEdit->setText(shortcut_text);
 }
 
-void KeyboardSettingsDialog::activeCommandChanged(
-    QTreeWidgetItem *current, QTreeWidgetItem * /*previous*/)
+void KeyboardSettingsDialog::activeCommandChanged(QTreeWidgetItem* current, QTreeWidgetItem* /*previous*/)
 {
-    ui->shortcutEdit->setText(current->text(CommandShortcut));
-    ui->shortcutEdit->setFocus();
+  ui->shortcutEdit->setText(current->text(CommandShortcut));
+  ui->shortcutEdit->setFocus();
 }
 
 void KeyboardSettingsDialog::saveShortcuts()
 {
-    for (int i = 0; i < ui->commandsList->topLevelItemCount(); i++)
-    {
-        QTreeWidgetItem *currentItem = ui->commandsList->topLevelItem(i);
-        Command *command =
-            currentItem->data(0, Qt::UserRole).value<Command *>();
+  for (int i = 0; i < ui->commandsList->topLevelItemCount(); i++) {
+    QTreeWidgetItem* currentItem = ui->commandsList->topLevelItem(i);
+    Command* command = currentItem->data(0, Qt::UserRole).value<Command*>();
 
-        command->setShortcut(currentItem->text(CommandShortcut));
-    }
+    command->setShortcut(currentItem->text(CommandShortcut));
+  }
 }
 
 void KeyboardSettingsDialog::accept()
 {
-    saveShortcuts();
-    done(Accepted);
+  saveShortcuts();
+  done(Accepted);
 }
 
-Command *KeyboardSettingsDialog::activeCommand() const
+Command* KeyboardSettingsDialog::activeCommand() const
 {
-    return ui->commandsList->currentItem()
-        ->data(0, Qt::UserRole)
-        .value<Command *>();
+  return ui->commandsList->currentItem()->data(0, Qt::UserRole).value<Command*>();
 }

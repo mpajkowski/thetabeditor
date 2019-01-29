@@ -26,20 +26,18 @@
 #include <score/serialization.h>
 
 PowerTabImporter::PowerTabImporter()
-    : FileFormatImporter(getPowerTabFileFormat())
-{
-}
+  : FileFormatImporter(getPowerTabFileFormat())
+{}
 
-void PowerTabImporter::load(const boost::filesystem::path &filename,
-                            Score &score)
+void PowerTabImporter::load(const boost::filesystem::path& filename, Score& score)
 {
-    // The files are compressed by gzip, so we need to uncompress them before
-    // loading the data.
-    boost::filesystem::ifstream file(filename, std::ios::in | std::ios::binary);
-    boost::iostreams::filtering_istreambuf in;
-    in.push(boost::iostreams::gzip_decompressor());
-    in.push(file);
+  // The files are compressed by gzip, so we need to uncompress them before
+  // loading the data.
+  boost::filesystem::ifstream file(filename, std::ios::in | std::ios::binary);
+  boost::iostreams::filtering_istreambuf in;
+  in.push(boost::iostreams::gzip_decompressor());
+  in.push(file);
 
-    std::istream compressed_input(&in);
-    ScoreUtils::load(compressed_input, "score", score);
+  std::istream compressed_input(&in);
+  ScoreUtils::load(compressed_input, "score", score);
 }

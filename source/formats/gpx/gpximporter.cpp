@@ -26,19 +26,18 @@
 #include <boost/filesystem/fstream.hpp>
 
 GpxImporter::GpxImporter()
-    : FileFormatImporter(FileFormat("Guitar Pro 6", { "gpx" }))
+  : FileFormatImporter(FileFormat("Guitar Pro 6", { "gpx" }))
+{}
+
+void GpxImporter::load(const boost::filesystem::path& filename, Score& score)
 {
-}
+  // Load the data, decompress, and open as XML document.
+  boost::filesystem::ifstream file(filename, std::ios::binary | std::ios::in);
+  Gpx::FileSystem fs(file);
 
-void GpxImporter::load(const boost::filesystem::path &filename, Score &score)
-{
-    // Load the data, decompress, and open as XML document.
-    boost::filesystem::ifstream file(filename, std::ios::binary | std::ios::in);
-    Gpx::FileSystem fs(file);
+  Gpx::DocumentReader reader(fs.getFileContents("score.gpif"));
+  reader.readScore(score);
 
-    Gpx::DocumentReader reader(fs.getFileContents("score.gpif"));
-    reader.readScore(score);
-
-    ScoreUtils::polishScore(score);
-    ScoreUtils::addStandardFilters(score);
+  ScoreUtils::polishScore(score);
+  ScoreUtils::addStandardFilters(score);
 }

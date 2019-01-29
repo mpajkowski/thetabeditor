@@ -20,26 +20,24 @@
 #include <QCoreApplication>
 #include <QtGlobal>
 
-namespace AppInfo
-{
-const char *BUG_TRACKER_URL =
-    "https://github.com/powertab/thetabeditor/issues/";
-const char *APPLICATION_NAME = "The Tab Editor";
-const char *APPLICATION_VERSION = "2.0";
+namespace AppInfo {
+const char* BUG_TRACKER_URL = "https://github.com/powertab/thetabeditor/issues/";
+const char* APPLICATION_NAME = "The Tab Editor";
+const char* APPLICATION_VERSION = "2.0";
 
 #if defined(Q_OS_WIN)
-const char *ORGANIZATION_NAME = "Power Tab";
-const char *APPLICATION_ID = "The Tab Editor";
+const char* ORGANIZATION_NAME = "Power Tab";
+const char* APPLICATION_ID = "The Tab Editor";
 #else
-const char *ORGANIZATION_NAME = "powertab";
-const char *APPLICATION_ID = "thetabeditor";
+const char* ORGANIZATION_NAME = "powertab";
+const char* APPLICATION_ID = "thetabeditor";
 #endif
 
-std::string getAbsolutePath(const char *relative_path)
+std::string getAbsolutePath(const char* relative_path)
 {
-    std::string path = QCoreApplication::applicationDirPath().toStdString();
-    path += "/";
-    path += relative_path;
-    return path;
+  std::string path = QCoreApplication::applicationDirPath().toStdString();
+  path += "/";
+  path += relative_path;
+  return path;
 }
 } // namespace AppInfo

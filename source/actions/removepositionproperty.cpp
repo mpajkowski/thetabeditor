@@ -17,23 +17,22 @@
 
 #include "removepositionproperty.h"
 
-RemovePositionProperty::RemovePositionProperty(
-    const ScoreLocation &location, Position::SimpleProperty property,
-    const QString &positionDescription)
-    : QUndoCommand(QObject::tr("Remove ") + positionDescription),
-      myLocation(location),
-      myProperty(property)
-{
-}
+RemovePositionProperty::RemovePositionProperty(const ScoreLocation& location,
+                                               Position::SimpleProperty property,
+                                               const QString& positionDescription)
+  : QUndoCommand(QObject::tr("Remove ") + positionDescription)
+  , myLocation(location)
+  , myProperty(property)
+{}
 
 void RemovePositionProperty::redo()
 {
-    for (Position *pos : myLocation.getSelectedPositions())
-        pos->setProperty(myProperty, false);
+  for (Position* pos : myLocation.getSelectedPositions())
+    pos->setProperty(myProperty, false);
 }
 
 void RemovePositionProperty::undo()
 {
-    for (Position *pos : myLocation.getSelectedPositions())
-        pos->setProperty(myProperty, true);
+  for (Position* pos : myLocation.getSelectedPositions())
+    pos->setProperty(myProperty, true);
 }

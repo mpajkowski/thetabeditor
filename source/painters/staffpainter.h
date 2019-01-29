@@ -30,30 +30,26 @@ class Staff;
 class StaffPainter : public QGraphicsItem
 {
 public:
-    StaffPainter(const LayoutConstPtr &layout, const ScoreLocation &location,
-                 const std::shared_ptr<ClickPubSub> &pubsub);
+  StaffPainter(const LayoutConstPtr& layout,
+               const ScoreLocation& location,
+               const std::shared_ptr<ClickPubSub>& pubsub);
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
-                       QWidget *) override;
+  virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) override;
 
-    virtual QRectF boundingRect() const override
-    {
-        return myBounds;
-    }
+  virtual QRectF boundingRect() const override { return myBounds; }
 
 protected:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+  virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+  virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
-    void drawStaffLines(QPainter *painter, int lineCount, double lineSpacing,
-                        double startHeight);
-    int getPositionFromX(double x) const;
+  void drawStaffLines(QPainter* painter, int lineCount, double lineSpacing, double startHeight);
+  int getPositionFromX(double x) const;
 
-    LayoutConstPtr myLayout;
-    std::shared_ptr<ClickPubSub> myPubSub;
-    ScoreLocation myLocation;
-    const QRectF myBounds;
+  LayoutConstPtr myLayout;
+  std::shared_ptr<ClickPubSub> myPubSub;
+  ScoreLocation myLocation;
+  const QRectF myBounds;
 };
 
 #endif

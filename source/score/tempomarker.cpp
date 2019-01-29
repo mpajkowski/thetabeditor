@@ -24,120 +24,114 @@ const int TempoMarker::MAX_BEATS_PER_MINUTE = 300;
 const int TempoMarker::DEFAULT_BEATS_PER_MINUTE = 120;
 
 TempoMarker::TempoMarker()
-    : myPosition(0),
-      myMarkerType(StandardMarker),
-      myBeatType(Quarter),
-      myListessoBeatType(Quarter),
-      myTripletFeel(NoTripletFeel),
-      myAlterationOfPace(NoAlterationOfPace),
-      myBeatsPerMinute(DEFAULT_BEATS_PER_MINUTE),
-      myDescription("")
-{
-}
+  : myPosition(0)
+  , myMarkerType(StandardMarker)
+  , myBeatType(Quarter)
+  , myListessoBeatType(Quarter)
+  , myTripletFeel(NoTripletFeel)
+  , myAlterationOfPace(NoAlterationOfPace)
+  , myBeatsPerMinute(DEFAULT_BEATS_PER_MINUTE)
+  , myDescription("")
+{}
 
 TempoMarker::TempoMarker(int position)
-    : myPosition(position),
-      myMarkerType(StandardMarker),
-      myBeatType(Quarter),
-      myListessoBeatType(Quarter),
-      myTripletFeel(NoTripletFeel),
-      myAlterationOfPace(NoAlterationOfPace),
-      myBeatsPerMinute(DEFAULT_BEATS_PER_MINUTE),
-      myDescription("")
-{
-}
+  : myPosition(position)
+  , myMarkerType(StandardMarker)
+  , myBeatType(Quarter)
+  , myListessoBeatType(Quarter)
+  , myTripletFeel(NoTripletFeel)
+  , myAlterationOfPace(NoAlterationOfPace)
+  , myBeatsPerMinute(DEFAULT_BEATS_PER_MINUTE)
+  , myDescription("")
+{}
 
-bool TempoMarker::operator==(const TempoMarker &other) const
+bool TempoMarker::operator==(const TempoMarker& other) const
 {
-    return myPosition == other.myPosition &&
-           myMarkerType == other.myMarkerType &&
-           myBeatType == other.myBeatType &&
-           myListessoBeatType == other.myListessoBeatType &&
-           myTripletFeel == other.myTripletFeel &&
-           myAlterationOfPace == other.myAlterationOfPace &&
-           myBeatsPerMinute == other.myBeatsPerMinute &&
-           myDescription == other.myDescription;
+  return myPosition == other.myPosition && myMarkerType == other.myMarkerType &&
+         myBeatType == other.myBeatType && myListessoBeatType == other.myListessoBeatType &&
+         myTripletFeel == other.myTripletFeel && myAlterationOfPace == other.myAlterationOfPace &&
+         myBeatsPerMinute == other.myBeatsPerMinute && myDescription == other.myDescription;
 }
 
 int TempoMarker::getPosition() const
 {
-    return myPosition;
+  return myPosition;
 }
 
 void TempoMarker::setPosition(int position)
 {
-    myPosition = position;
+  myPosition = position;
 }
 
 TempoMarker::MarkerType TempoMarker::getMarkerType() const
 {
-    return myMarkerType;
+  return myMarkerType;
 }
 
 void TempoMarker::setMarkerType(MarkerType type)
 {
-    myMarkerType = type;
+  myMarkerType = type;
 }
 
 TempoMarker::BeatType TempoMarker::getBeatType() const
 {
-    return myBeatType;
+  return myBeatType;
 }
 
 void TempoMarker::setBeatType(BeatType type)
 {
-    myBeatType = type;
+  myBeatType = type;
 }
 
 TempoMarker::BeatType TempoMarker::getListessoBeatType() const
 {
-    return myListessoBeatType;
+  return myListessoBeatType;
 }
 
 void TempoMarker::setListessoBeatType(BeatType type)
 {
-    myListessoBeatType = type;
+  myListessoBeatType = type;
 }
 
 TempoMarker::TripletFeelType TempoMarker::getTripletFeel() const
 {
-    return myTripletFeel;
+  return myTripletFeel;
 }
 
 void TempoMarker::setTripletFeel(TripletFeelType type)
 {
-    myTripletFeel = type;
+  myTripletFeel = type;
 }
 
 TempoMarker::AlterationOfPaceType TempoMarker::getAlterationOfPace() const
 {
-    return myAlterationOfPace;
+  return myAlterationOfPace;
 }
 
 void TempoMarker::setAlterationOfPace(AlterationOfPaceType type)
 {
-    myAlterationOfPace = type;
+  myAlterationOfPace = type;
 }
 
 int TempoMarker::getBeatsPerMinute() const
 {
-    return myBeatsPerMinute;
+  return myBeatsPerMinute;
 }
 
 void TempoMarker::setBeatsPerMinute(int bpm)
 {
-    if (bpm < MIN_BEATS_PER_MINUTE || bpm > MAX_BEATS_PER_MINUTE)
-        throw std::out_of_range("Invalid beats per minute");
+  if (bpm < MIN_BEATS_PER_MINUTE || bpm > MAX_BEATS_PER_MINUTE)
+    throw std::out_of_range("Invalid beats per minute");
 
-    myBeatsPerMinute = bpm;
+  myBeatsPerMinute = bpm;
 }
 
-const std::string &TempoMarker::getDescription() const
+const std::string& TempoMarker::getDescription() const
 {
-    return myDescription;
+  return myDescription;
 }
 
-void TempoMarker::setDescription(const std::string &description)
+void TempoMarker::setDescription(const std::string& description)
 {
-    myDescription = description;
+  myDescription = description;
 }

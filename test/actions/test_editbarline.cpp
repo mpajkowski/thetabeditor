@@ -22,19 +22,19 @@
 
 TEST_CASE("Actions/EditBarline", "")
 {
-    Score score;
-    System system;
-    system.insertBarline(Barline(6, Barline::DoubleBar, 3));
-    score.insertSystem(system);
+  Score score;
+  System system;
+  system.insertBarline(Barline(6, Barline::DoubleBar, 3));
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0, 6);
-    EditBarline action(location, Barline::RepeatEnd, 4);
+  ScoreLocation location(score, 0, 0, 6);
+  EditBarline action(location, Barline::RepeatEnd, 4);
 
-    action.redo();
-    REQUIRE(location.getBarline()->getBarType() == Barline::RepeatEnd);
-    REQUIRE(location.getBarline()->getRepeatCount() == 4);
+  action.redo();
+  REQUIRE(location.getBarline()->getBarType() == Barline::RepeatEnd);
+  REQUIRE(location.getBarline()->getRepeatCount() == 4);
 
-    action.undo();
-    REQUIRE(location.getBarline()->getBarType() == Barline::DoubleBar);
-    REQUIRE(location.getBarline()->getRepeatCount() == 3);
+  action.undo();
+  REQUIRE(location.getBarline()->getBarType() == Barline::DoubleBar);
+  REQUIRE(location.getBarline()->getRepeatCount() == 3);
 }

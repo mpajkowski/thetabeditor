@@ -35,91 +35,100 @@ class Tuning;
 class StdNotationNote
 {
 public:
-    enum AccidentalType
-    {
-        NoAccidental,
-        Natural,
-        Sharp,
-        DoubleSharp,
-        Flat,
-        DoubleFlat
-    };
+  enum AccidentalType
+  {
+    NoAccidental,
+    Natural,
+    Sharp,
+    DoubleSharp,
+    Flat,
+    DoubleFlat
+  };
 
-    StdNotationNote(const Voice &voice, const Position &pos, const Note &note,
-                    const KeySignature &key, const Tuning &tuning, double y,
-                    const boost::optional<int> &tie);
+  StdNotationNote(const Voice& voice,
+                  const Position& pos,
+                  const Note& note,
+                  const KeySignature& key,
+                  const Tuning& tuning,
+                  double y,
+                  const boost::optional<int>& tie);
 
-    static void getNotesInStaff(
-        const Score &score, const System &system, int systemIndex,
-        const Staff &staff, int staffIndex, const LayoutInfo &layout,
-        std::vector<StdNotationNote> &notes,
-        std::array<std::vector<NoteStem>, Staff::NUM_VOICES> &stemsByVoice,
-        std::array<std::vector<BeamGroup>, Staff::NUM_VOICES> &groupsByVoice);
+  static void getNotesInStaff(const Score& score,
+                              const System& system,
+                              int systemIndex,
+                              const Staff& staff,
+                              int staffIndex,
+                              const LayoutInfo& layout,
+                              std::vector<StdNotationNote>& notes,
+                              std::array<std::vector<NoteStem>, Staff::NUM_VOICES>& stemsByVoice,
+                              std::array<std::vector<BeamGroup>, Staff::NUM_VOICES>& groupsByVoice);
 
-    double getY() const;
-    QChar getNoteHeadSymbol() const;
-    bool isGraceNote() const;
-    int getPosition() const;
-    AccidentalType getAccidentalType() const;
-    QString getAccidentalText() const;
-    bool isDotted() const;
-    bool isDoubleDotted() const;
+  double getY() const;
+  QChar getNoteHeadSymbol() const;
+  bool isGraceNote() const;
+  int getPosition() const;
+  AccidentalType getAccidentalType() const;
+  QString getAccidentalText() const;
+  bool isDotted() const;
+  bool isDoubleDotted() const;
 
-    /// Return the score note attached to this note.
-    const Note *getNote() const;
+  /// Return the score note attached to this note.
+  const Note* getNote() const;
 
-    /// Remove the note's accidental.
-    void clearAccidental();
-    /// Force the accidental to be shown, even if it's part of the key
-    /// signature.
-    void showAccidental();
+  /// Remove the note's accidental.
+  void clearAccidental();
+  /// Force the accidental to be shown, even if it's part of the key
+  /// signature.
+  void showAccidental();
 
-    const boost::optional<int> &getTie() const;
-    const Voice &getVoice() const;
+  const boost::optional<int>& getTie() const;
+  const Voice& getVoice() const;
 
 private:
-    /// Return the offset of the note from the top of the staff.
-    static double getNoteLocation(const Staff &staff, const Note &note,
-                                  const KeySignature &key,
-                                  const Tuning &tuning);
+  /// Return the offset of the note from the top of the staff.
+  static double getNoteLocation(const Staff& staff,
+                                const Note& note,
+                                const KeySignature& key,
+                                const Tuning& tuning);
 
-    /// Returns the number of octaves (from -2 to 2) that the note is shifted
-    /// by.
-    static int getOctaveOffset(const Note &note);
+  /// Returns the number of octaves (from -2 to 2) that the note is shifted
+  /// by.
+  static int getOctaveOffset(const Note& note);
 
-    /// Computes the accidental for the note.
-    /// @param explicitSymbol If true, an accidental or natural sign will be
-    /// displayed even if the note is in the key signature.
-    void computeAccidentalType(bool explicitSymbol);
+  /// Computes the accidental for the note.
+  /// @param explicitSymbol If true, an accidental or natural sign will be
+  /// displayed even if the note is in the key signature.
+  void computeAccidentalType(bool explicitSymbol);
 
-    /// Returns the non-zero beaming patterns of the time signature.
-    static std::vector<uint8_t> getBeamingPatterns(
-        const TimeSignature &timeSig);
+  /// Returns the non-zero beaming patterns of the time signature.
+  static std::vector<uint8_t> getBeamingPatterns(const TimeSignature& timeSig);
 
-    /// Calculates the beaming for a set of note stems.
-    static void computeBeaming(const TimeSignature &timeSig,
-                               std::vector<NoteStem> &stems,
-                               size_t firstStemIndex,
-                               std::vector<BeamGroup> &groups);
+  /// Calculates the beaming for a set of note stems.
+  static void computeBeaming(const TimeSignature& timeSig,
+                             std::vector<NoteStem>& stems,
+                             size_t firstStemIndex,
+                             std::vector<BeamGroup>& groups);
 
-    /// A group may be split into several beam groups if there are rests,
-    /// whole notes, etc.
-    static void computeBeamingGroups(
-        std::vector<NoteStem> &stems, const std::vector<double> &durations,
-        const boost::optional<double> &subgroupLength,
-        size_t firstStemIndexInBar, size_t firstStemIndex, size_t lastStemIndex,
-        std::vector<BeamGroup> &groups);
+  /// A group may be split into several beam groups if there are rests,
+  /// whole notes, etc.
+  static void computeBeamingGroups(std::vector<NoteStem>& stems,
+                                   const std::vector<double>& durations,
+                                   const boost::optional<double>& subgroupLength,
+                                   size_t firstStemIndexInBar,
+                                   size_t firstStemIndex,
+                                   size_t lastStemIndex,
+                                   std::vector<BeamGroup>& groups);
 
-    double myY;
-    QChar myNoteHeadSymbol;
-    AccidentalType myAccidentalType;
+  double myY;
+  QChar myNoteHeadSymbol;
+  AccidentalType myAccidentalType;
 
-    const Voice &myVoice;
-    const Position *myPosition;
-    const Note *myNote;
-    const KeySignature *myKey;
-    const Tuning *myTuning;
-    const boost::optional<int> myTie;
+  const Voice& myVoice;
+  const Position* myPosition;
+  const Note* myNote;
+  const KeySignature* myKey;
+  const Tuning* myTuning;
+  const boost::optional<int> myTie;
 };
 
 #endif

@@ -22,18 +22,18 @@
 
 TEST_CASE("Actions/AddDirection", "")
 {
-    Score score;
-    score.insertSystem(System());
+  Score score;
+  score.insertSystem(System());
 
-    Direction direction(6);
-    direction.insertSymbol(DirectionSymbol::Segno);
-    ScoreLocation location(score, 0, 0, 6);
-    AddDirection action(location, direction);
+  Direction direction(6);
+  direction.insertSymbol(DirectionSymbol::Segno);
+  ScoreLocation location(score, 0, 0, 6);
+  AddDirection action(location, direction);
 
-    action.redo();
-    REQUIRE(location.getSystem().getDirections().size() == 1);
-    REQUIRE(location.getSystem().getDirections()[0] == direction);
+  action.redo();
+  REQUIRE(location.getSystem().getDirections().size() == 1);
+  REQUIRE(location.getSystem().getDirections()[0] == direction);
 
-    action.undo();
-    REQUIRE(location.getSystem().getDirections().size() == 0);
+  action.undo();
+  REQUIRE(location.getSystem().getDirections().size() == 0);
 }

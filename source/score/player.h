@@ -26,57 +26,57 @@
 class Player
 {
 public:
-    Player();
+  Player();
 
-    bool operator==(const Player &other) const;
+  bool operator==(const Player& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns a description of the player (e.g. "Rhythm Guitar 1").
-    const std::string &getDescription() const;
-    /// Sets the description of the player.
-    void setDescription(const std::string &description);
+  /// Returns a description of the player (e.g. "Rhythm Guitar 1").
+  const std::string& getDescription() const;
+  /// Sets the description of the player.
+  void setDescription(const std::string& description);
 
-    /// Returns the maximum volume for the player's instruments.
-    uint8_t getMaxVolume() const;
-    /// Sets the maximum volume for the player's instruments.
-    void setMaxVolume(uint8_t volume);
+  /// Returns the maximum volume for the player's instruments.
+  uint8_t getMaxVolume() const;
+  /// Sets the maximum volume for the player's instruments.
+  void setMaxVolume(uint8_t volume);
 
-    /// Returns the pan value for the player's instruments.
-    uint8_t getPan() const;
-    /// Sets the pan value for the player's instruments.
-    void setPan(uint8_t pan);
+  /// Returns the pan value for the player's instruments.
+  uint8_t getPan() const;
+  /// Sets the pan value for the player's instruments.
+  void setPan(uint8_t pan);
 
-    /// Returns the player's tuning.
-    const Tuning &getTuning() const;
-    /// Sets the player's tuning.
-    void setTuning(const Tuning &tuning);
+  /// Returns the player's tuning.
+  const Tuning& getTuning() const;
+  /// Sets the player's tuning.
+  void setTuning(const Tuning& tuning);
 
-    uint8_t getMidiPreset() const;
-    void setMidiPreset(uint8_t preset);
+  uint8_t getMidiPreset() const;
+  void setMidiPreset(uint8_t preset);
 
-    static const uint8_t MIN_VOLUME;
-    static const uint8_t MAX_VOLUME;
-    static const uint8_t MIN_PAN;
-    static const uint8_t MAX_PAN;
+  static const uint8_t MIN_VOLUME;
+  static const uint8_t MAX_VOLUME;
+  static const uint8_t MIN_PAN;
+  static const uint8_t MAX_PAN;
 
 private:
-    std::string myDescription;
-    uint8_t myMaxVolume;
-    uint8_t myPan;
-    Tuning myTuning;
-    uint8_t myMidiPreset;
+  std::string myDescription;
+  uint8_t myMaxVolume;
+  uint8_t myPan;
+  Tuning myTuning;
+  uint8_t myMidiPreset;
 };
 
-template <class Archive>
-void Player::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void Player::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("description", myDescription);
-    ar("max_volume", myMaxVolume);
-    ar("pan", myPan);
-    ar("tuning", myTuning);
-    ar("my_midi_preset", myMidiPreset);
+  ar("description", myDescription);
+  ar("max_volume", myMaxVolume);
+  ar("pan", myPan);
+  ar("tuning", myTuning);
+  ar("my_midi_preset", myMidiPreset);
 }
 
 #endif

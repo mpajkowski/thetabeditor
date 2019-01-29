@@ -19,20 +19,19 @@
 
 #include <score/system.h>
 
-AddStaff::AddStaff(const ScoreLocation &location, const Staff &staff, int index)
-    : QUndoCommand(QObject::tr("Add Staff")),
-      myLocation(location),
-      myStaff(staff),
-      myIndex(index)
-{
-}
+AddStaff::AddStaff(const ScoreLocation& location, const Staff& staff, int index)
+  : QUndoCommand(QObject::tr("Add Staff"))
+  , myLocation(location)
+  , myStaff(staff)
+  , myIndex(index)
+{}
 
 void AddStaff::redo()
 {
-    myLocation.getSystem().insertStaff(myStaff, myIndex);
+  myLocation.getSystem().insertStaff(myStaff, myIndex);
 }
 
 void AddStaff::undo()
 {
-    myLocation.getSystem().removeStaff(myIndex);
+  myLocation.getSystem().removeStaff(myIndex);
 }

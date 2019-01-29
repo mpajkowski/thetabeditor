@@ -17,37 +17,37 @@
 
 #include "rehearsalsign.h"
 
-RehearsalSign::RehearsalSign() : myLetters(""), myDescription("")
+RehearsalSign::RehearsalSign()
+  : myLetters("")
+  , myDescription("")
+{}
+
+RehearsalSign::RehearsalSign(const std::string& letters, const std::string& description)
+  : myLetters(letters)
+  , myDescription(description)
+{}
+
+bool RehearsalSign::operator==(const RehearsalSign& other) const
 {
+  return myLetters == other.myLetters && myDescription == other.myDescription;
 }
 
-RehearsalSign::RehearsalSign(const std::string &letters,
-                             const std::string &description)
-    : myLetters(letters), myDescription(description)
+const std::string& RehearsalSign::getLetters() const
 {
+  return myLetters;
 }
 
-bool RehearsalSign::operator==(const RehearsalSign &other) const
+void RehearsalSign::setLetters(const std::string& letters)
 {
-    return myLetters == other.myLetters && myDescription == other.myDescription;
+  myLetters = letters;
 }
 
-const std::string &RehearsalSign::getLetters() const
+const std::string& RehearsalSign::getDescription() const
 {
-    return myLetters;
+  return myDescription;
 }
 
-void RehearsalSign::setLetters(const std::string &letters)
+void RehearsalSign::setDescription(const std::string& description)
 {
-    myLetters = letters;
-}
-
-const std::string &RehearsalSign::getDescription() const
-{
-    return myDescription;
-}
-
-void RehearsalSign::setDescription(const std::string &description)
-{
-    myDescription = description;
+  myDescription = description;
 }

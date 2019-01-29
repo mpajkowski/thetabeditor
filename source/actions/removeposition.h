@@ -26,16 +26,15 @@
 class RemovePosition : public QUndoCommand
 {
 public:
-    RemovePosition(const ScoreLocation &location,
-                   const QString &text = QObject::tr("Remove Position"));
+  RemovePosition(const ScoreLocation& location, const QString& text = QObject::tr("Remove Position"));
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Position myOriginalPosition;
-    std::vector<IrregularGrouping> myIrregularGroups;
+  ScoreLocation myLocation;
+  const Position myOriginalPosition;
+  std::vector<IrregularGrouping> myIrregularGroups;
 };
 
 #endif

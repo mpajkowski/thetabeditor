@@ -22,17 +22,17 @@
 
 TEST_CASE("Actions/AddTextItem", "")
 {
-    Score score;
-    score.insertSystem(System());
+  Score score;
+  score.insertSystem(System());
 
-    TextItem text(7, "foo");
-    ScoreLocation location(score, 0, 0, 6);
-    AddTextItem action(location, text);
+  TextItem text(7, "foo");
+  ScoreLocation location(score, 0, 0, 6);
+  AddTextItem action(location, text);
 
-    action.redo();
-    REQUIRE(location.getSystem().getTextItems().size() == 1);
-    REQUIRE(location.getSystem().getTextItems()[0] == text);
+  action.redo();
+  REQUIRE(location.getSystem().getTextItems().size() == 1);
+  REQUIRE(location.getSystem().getTextItems()[0] == text);
 
-    action.undo();
-    REQUIRE(location.getSystem().getTextItems().size() == 0);
+  action.undo();
+  REQUIRE(location.getSystem().getTextItems().size() == 0);
 }

@@ -25,106 +25,99 @@
 const int KeySignature::MAX_NUM_ACCIDENTALS = 7;
 
 KeySignature::KeySignature()
-    : myKeyType(Major),
-      myNumAccidentals(0),
-      myUsesSharps(true),
-      myIsVisible(false),
-      myIsCancellation(false)
-{
-}
+  : myKeyType(Major)
+  , myNumAccidentals(0)
+  , myUsesSharps(true)
+  , myIsVisible(false)
+  , myIsCancellation(false)
+{}
 
 KeySignature::KeySignature(KeyType type, int accidentals, bool usesSharps)
-    : myKeyType(type),
-      myNumAccidentals(accidentals),
-      myUsesSharps(usesSharps),
-      myIsVisible(false),
-      myIsCancellation(false)
-{
-}
+  : myKeyType(type)
+  , myNumAccidentals(accidentals)
+  , myUsesSharps(usesSharps)
+  , myIsVisible(false)
+  , myIsCancellation(false)
+{}
 
-bool KeySignature::operator==(const KeySignature &other) const
+bool KeySignature::operator==(const KeySignature& other) const
 {
-    return myKeyType == other.myKeyType &&
-           myNumAccidentals == other.myNumAccidentals &&
-           myUsesSharps == other.myUsesSharps &&
-           myIsVisible == other.myIsVisible &&
-           myIsCancellation == other.myIsCancellation;
+  return myKeyType == other.myKeyType && myNumAccidentals == other.myNumAccidentals &&
+         myUsesSharps == other.myUsesSharps && myIsVisible == other.myIsVisible &&
+         myIsCancellation == other.myIsCancellation;
 }
 
 KeySignature::KeyType KeySignature::getKeyType() const
 {
-    return myKeyType;
+  return myKeyType;
 }
 
 void KeySignature::setKeyType(KeyType type)
 {
-    myKeyType = type;
+  myKeyType = type;
 }
 
 int KeySignature::getNumAccidentals(bool includeCancel) const
 {
-    // Cancellations will always be C Major / A Minor, so if we are not
-    // including the cancellation then there are no accidentals.
-    if (isCancellation() && !includeCancel)
-        return 0;
+  // Cancellations will always be C Major / A Minor, so if we are not
+  // including the cancellation then there are no accidentals.
+  if (isCancellation() && !includeCancel)
+    return 0;
 
-    return myNumAccidentals;
+  return myNumAccidentals;
 }
 
 void KeySignature::setNumAccidentals(int accidentals)
 {
-    if (accidentals > MAX_NUM_ACCIDENTALS)
-        throw std::out_of_range("Invalid number of accidentals");
+  if (accidentals > MAX_NUM_ACCIDENTALS)
+    throw std::out_of_range("Invalid number of accidentals");
 
-    myNumAccidentals = accidentals;
+  myNumAccidentals = accidentals;
 }
 
 bool KeySignature::usesSharps() const
 {
-    return myUsesSharps;
+  return myUsesSharps;
 }
 
 void KeySignature::setSharps(bool sharps)
 {
-    myUsesSharps = sharps;
+  myUsesSharps = sharps;
 }
 
 bool KeySignature::isVisible() const
 {
-    return myIsVisible;
+  return myIsVisible;
 }
 
 void KeySignature::setVisible(bool visible)
 {
-    myIsVisible = visible;
+  myIsVisible = visible;
 }
 
 bool KeySignature::isCancellation() const
 {
-    return myIsCancellation;
+  return myIsCancellation;
 }
 
 void KeySignature::setCancellation(bool cancellation)
 {
-    myIsCancellation = cancellation;
+  myIsCancellation = cancellation;
 }
 
-std::ostream &operator<<(std::ostream &os, const KeySignature &key)
+std::ostream& operator<<(std::ostream& os, const KeySignature& key)
 {
-    const std::string type =
-        (key.getKeyType() == KeySignature::Major) ? "Major" : "Minor";
-    const std::string tonic =
-        Midi::getKeyText(key.getKeyType() == KeySignature::Minor,
-                         key.usesSharps(), key.getNumAccidentals());
-    const std::string separator = key.getNumAccidentals() == 0 ? "" : " -";
+  const std::string type = (key.getKeyType() == KeySignature::Major) ? "Major" : "Minor";
+  const std::string tonic =
+    Midi::getKeyText(key.getKeyType() == KeySignature::Minor, key.usesSharps(), key.getNumAccidentals());
+  const std::string separator = key.getNumAccidentals() == 0 ? "" : " -";
 
-    os << tonic << " " << type << separator;
+  os << tonic << " " << type << separator;
 
-    for (int i = 0; i < key.getNumAccidentals(); ++i)
-    {
-        const int offset = key.usesSharps() ? 6 : 2;
-        os << " " << Midi::getKeyText(false, key.usesSharps(), offset + i);
-    }
+  for (int i = 0; i < key.getNumAccidentals(); ++i) {
+    const int offset = key.usesSharps() ? 6 : 2;
+    os << " " << Midi::getKeyText(false, key.usesSharps(), offset + i);
+  }
 
-    return os;
+  return os;
 }

@@ -23,14 +23,13 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/EditNoteDuration", "")
 {
-    myLocation.getPosition()->setDurationType(Position::HalfNote);
+  myLocation.getPosition()->setDurationType(Position::HalfNote);
 
-    EditNoteDuration action(myLocation, Position::ThirtySecondNote, false);
+  EditNoteDuration action(myLocation, Position::ThirtySecondNote, false);
 
-    action.redo();
-    REQUIRE(myLocation.getPosition()->getDurationType() ==
-            Position::ThirtySecondNote);
+  action.redo();
+  REQUIRE(myLocation.getPosition()->getDurationType() == Position::ThirtySecondNote);
 
-    action.undo();
-    REQUIRE(myLocation.getPosition()->getDurationType() == Position::HalfNote);
+  action.undo();
+  REQUIRE(myLocation.getPosition()->getDurationType() == Position::HalfNote);
 }

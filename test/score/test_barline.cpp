@@ -23,24 +23,24 @@
 
 TEST_CASE("Score/Barline/RehearsalSign", "")
 {
-    Barline barline;
+  Barline barline;
 
-    REQUIRE(!barline.hasRehearsalSign());
+  REQUIRE(!barline.hasRehearsalSign());
 
-    barline.setRehearsalSign(RehearsalSign("D", "Solo"));
-    REQUIRE(barline.hasRehearsalSign());
-    REQUIRE(barline.getRehearsalSign().getDescription() == "Solo");
+  barline.setRehearsalSign(RehearsalSign("D", "Solo"));
+  REQUIRE(barline.hasRehearsalSign());
+  REQUIRE(barline.getRehearsalSign().getDescription() == "Solo");
 }
 
 TEST_CASE("Score/Barline/Serialization", "")
 {
-    Barline barline;
-    barline.setBarType(Barline::RepeatEnd);
-    barline.setRepeatCount(42);
-    barline.setPosition(23);
+  Barline barline;
+  barline.setBarType(Barline::RepeatEnd);
+  barline.setRepeatCount(42);
+  barline.setPosition(23);
 
-    Serialization::test("barline", barline);
+  Serialization::test("barline", barline);
 
-    barline.setRehearsalSign(RehearsalSign("D", "Solo"));
-    Serialization::test("barline", barline);
+  barline.setRehearsalSign(RehearsalSign("D", "Solo"));
+  Serialization::test("barline", barline);
 }

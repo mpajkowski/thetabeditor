@@ -19,21 +19,23 @@
 
 #include <powertabdocument/position.h>
 
-AddVolumeSwell::AddVolumeSwell(Position *position, uint8_t startVol,
-                               uint8_t endVol, uint8_t duration)
-    : position(position), startVol(startVol), endVol(endVol), duration(duration)
+AddVolumeSwell::AddVolumeSwell(Position* position, uint8_t startVol, uint8_t endVol, uint8_t duration)
+  : position(position)
+  , startVol(startVol)
+  , endVol(endVol)
+  , duration(duration)
 {
-    Q_ASSERT(!position->HasVolumeSwell());
+  Q_ASSERT(!position->HasVolumeSwell());
 
-    setText(QObject::tr("Add Volume Swell"));
+  setText(QObject::tr("Add Volume Swell"));
 }
 
 void AddVolumeSwell::redo()
 {
-    position->SetVolumeSwell(startVol, endVol, duration);
+  position->SetVolumeSwell(startVol, endVol, duration);
 }
 
 void AddVolumeSwell::undo()
 {
-    position->ClearVolumeSwell();
+  position->ClearVolumeSwell();
 }

@@ -27,18 +27,18 @@ class Score;
 class RepeatController
 {
 public:
-    RepeatController(const Score &score);
+  RepeatController(const Score& score);
 
-    /// Checks if a repeat needs to be performed at the given location.
-    /// @returns True if the playback position needs to be changed, and updates
-    ///     the newLocation parameter with the new playback location.
-    bool checkForRepeat(const SystemLocation &prevLocation,
-                        const SystemLocation &currentLocation,
-                        SystemLocation &newLocation);
+  /// Checks if a repeat needs to be performed at the given location.
+  /// @returns True if the playback position needs to be changed, and updates
+  ///     the newLocation parameter with the new playback location.
+  bool checkForRepeat(const SystemLocation& prevLocation,
+                      const SystemLocation& currentLocation,
+                      SystemLocation& newLocation);
 
 private:
-    DirectionIndex myDirectionIndex;
-    RepeatIndexer myRepeatIndex;
+  DirectionIndex myDirectionIndex;
+  RepeatIndexer myRepeatIndex;
 };
 
 #endif

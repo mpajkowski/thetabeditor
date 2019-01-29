@@ -20,23 +20,20 @@
 #include <score/barline.h>
 #include <score/score.h>
 
-AddRehearsalSign::AddRehearsalSign(const ScoreLocation &location,
-                                   const std::string &description)
-    : QUndoCommand(QObject::tr("Add Rehearsal Sign")),
-      myLocation(location),
-      myDescription(description)
-{
-}
+AddRehearsalSign::AddRehearsalSign(const ScoreLocation& location, const std::string& description)
+  : QUndoCommand(QObject::tr("Add Rehearsal Sign"))
+  , myLocation(location)
+  , myDescription(description)
+{}
 
 void AddRehearsalSign::redo()
 {
-    myLocation.getBarline()->setRehearsalSign(
-        RehearsalSign("A", myDescription));
-    ScoreUtils::adjustRehearsalSigns(myLocation.getScore());
+  myLocation.getBarline()->setRehearsalSign(RehearsalSign("A", myDescription));
+  ScoreUtils::adjustRehearsalSigns(myLocation.getScore());
 }
 
 void AddRehearsalSign::undo()
 {
-    myLocation.getBarline()->clearRehearsalSign();
-    ScoreUtils::adjustRehearsalSigns(myLocation.getScore());
+  myLocation.getBarline()->clearRehearsalSign();
+  ScoreUtils::adjustRehearsalSigns(myLocation.getScore());
 }

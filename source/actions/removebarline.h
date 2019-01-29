@@ -25,14 +25,14 @@
 class RemoveBarline : public QUndoCommand
 {
 public:
-    RemoveBarline(const ScoreLocation &location);
+  RemoveBarline(const ScoreLocation& location);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Barline myOriginalBarline;
+  ScoreLocation myLocation;
+  const Barline myOriginalBarline;
 };
 
 #endif

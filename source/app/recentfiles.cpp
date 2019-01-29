@@ -25,89 +25,81 @@
 #include <shlobj.h>
 #endif
 
-RecentFiles::RecentFiles(SettingsManager &settings_manager,
-                         QMenu *recent_files_menu, QObject *parent)
-    : QObject(parent),
-      mySettingsManager(settings_manager),
-      myRecentFilesMenu(recent_files_menu)
+RecentFiles::RecentFiles(SettingsManager& settings_manager, QMenu* recent_files_menu, QObject* parent)
+  : QObject(parent)
+  , mySettingsManager(settings_manager)
+  , myRecentFilesMenu(recent_files_menu)
 {
-    Q_ASSERT(recent_files_menu);
+  Q_ASSERT(recent_files_menu);
 
-    /// Load recently used files from previous sessions.
-    auto settings = mySettingsManager.getReadHandle();
-    auto recent_files = settings->get(Settings::RecentFiles);
-    for (const std::string &file : recent_files)
-        myRecentFiles.append(QString::fromStdString(file));
+  /// Load recently used files from previous sessions.
+  auto settings = mySettingsManager.getReadHandle();
+  auto recent_files = settings->get(Settings::RecentFiles);
+  for (const std::string& file : recent_files)
+    myRecentFiles.append(QString::fromStdString(file));
 
-    updateMenu();
+  updateMenu();
 }
 
-RecentFiles::~RecentFiles()
-{
-}
+RecentFiles::~RecentFiles() {}
 
 void RecentFiles::save()
 {
-    auto settings = mySettingsManager.getWriteHandle();
-    std::vector<std::string> recent_files;
-    for (const QString &file : myRecentFiles)
-        recent_files.push_back(file.toStdString());
+  auto settings = mySettingsManager.getWriteHandle();
+  std::vector<std::string> recent_files;
+  for (const QString& file : myRecentFiles)
+    recent_files.push_back(file.toStdString());
 
-    settings->set(Settings::RecentFiles, recent_files);
+  settings->set(Settings::RecentFiles, recent_files);
 }
 
-void RecentFiles::add(const QString &fileName)
+void RecentFiles::add(const QString& fileName)
 {
-    // If the filename is already in the list, move it to the front.
-    myRecentFiles.removeOne(fileName);
+  // If the filename is already in the list, move it to the front.
+  myRecentFiles.removeOne(fileName);
 
-    myRecentFiles.prepend(fileName);
+  myRecentFiles.prepend(fileName);
 
-    if (myRecentFiles.length() > MAX_RECENT_FILES)
-        myRecentFiles.pop_back();
+  if (myRecentFiles.length() > MAX_RECENT_FILES)
+    myRecentFiles.pop_back();
 
-    save();
-    updateMenu();
+  save();
+  updateMenu();
 
-    // Add the file to the recent files jump list.
+  // Add the file to the recent files jump list.
 #ifdef _WIN32
-    SHAddToRecentDocs(SHARD_PATHW, QDir::toNativeSeparators(fileName).utf16());
+  SHAddToRecentDocs(SHARD_PATHW, QDir::toNativeSeparators(fileName).utf16());
 #endif
 }
 
 void RecentFiles::updateMenu()
 {
-    myRecentFilesMenu->clear();
+  myRecentFilesMenu->clear();
 
-    for (const QString &fileName : myRecentFiles)
-    {
-        auto fileAction = new QAction(fileName, myRecentFilesMenu);
-        myRecentFilesMenu->addAction(fileAction);
+  for (const QString& fileName : myRecentFiles) {
+    auto fileAction = new QAction(fileName, myRecentFilesMenu);
+    myRecentFilesMenu->addAction(fileAction);
 
-        connect(fileAction, &QAction::triggered,
-                [=]() { handleFileSelection(fileName); });
-    }
+    connect(fileAction, &QAction::triggered, [=]() { handleFileSelection(fileName); });
+  }
 
-    if (!myRecentFiles.isEmpty())
-    {
-        myRecentFilesMenu->addSeparator();
+  if (!myRecentFiles.isEmpty()) {
+    myRecentFilesMenu->addSeparator();
 
-        QAction *clearRecentFiles =
-            new QAction(tr("Clear Recent Files"), myRecentFilesMenu);
-        connect(clearRecentFiles, &QAction::triggered, this,
-                &RecentFiles::clear);
-        myRecentFilesMenu->addAction(clearRecentFiles);
-    }
+    QAction* clearRecentFiles = new QAction(tr("Clear Recent Files"), myRecentFilesMenu);
+    connect(clearRecentFiles, &QAction::triggered, this, &RecentFiles::clear);
+    myRecentFilesMenu->addAction(clearRecentFiles);
+  }
 }
 
 void RecentFiles::clear()
 {
-    myRecentFiles.clear();
-    save();
-    updateMenu();
+  myRecentFiles.clear();
+  save();
+  updateMenu();
 }
 
-void RecentFiles::handleFileSelection(const QString &fileName)
+void RecentFiles::handleFileSelection(const QString& fileName)
 {
-    emit fileSelected(fileName);
+  emit fileSelected(fileName);
 }

@@ -19,30 +19,36 @@
 
 #include <score/note.h>
 
-LeftHandFingeringDialog::LeftHandFingeringDialog(QWidget *parent)
-    : QDialog(parent), ui(new Ui::LeftHandFingeringDialog)
+LeftHandFingeringDialog::LeftHandFingeringDialog(QWidget* parent)
+  : QDialog(parent)
+  , ui(new Ui::LeftHandFingeringDialog)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    ui->fingerComboBox->addItems({ tr("None (string empty)"),
-                                   tr("Index finger"), tr("Middle finger"),
-                                   tr("Ring finger"), tr("Little finger") });
+  ui->fingerComboBox->addItems({ tr("None (string empty)"),
+                                 tr("Index finger"),
+                                 tr("Middle finger"),
+                                 tr("Ring finger"),
+                                 tr("Little finger") });
 
-    ui->positionComboBox->addItems(
-        { tr("Left"), tr("Above and left"), tr("Above, centered"),
-          tr("Above and right"), tr("Right"), tr("Below and right"),
-          tr("Below, centered"), tr("Below and left") });
+  ui->positionComboBox->addItems({ tr("Left"),
+                                   tr("Above and left"),
+                                   tr("Above, centered"),
+                                   tr("Above and right"),
+                                   tr("Right"),
+                                   tr("Below and right"),
+                                   tr("Below, centered"),
+                                   tr("Below and left") });
 }
 
 LeftHandFingeringDialog::~LeftHandFingeringDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 LeftHandFingering LeftHandFingeringDialog::getLeftHandFingering() const
 {
-    return LeftHandFingering(static_cast<LeftHandFingering::Finger>(
-                                 ui->fingerComboBox->currentIndex()),
-                             static_cast<LeftHandFingering::DisplayPosition>(
-                                 ui->positionComboBox->currentIndex()));
+  return LeftHandFingering(
+    static_cast<LeftHandFingering::Finger>(ui->fingerComboBox->currentIndex()),
+    static_cast<LeftHandFingering::DisplayPosition>(ui->positionComboBox->currentIndex()));
 }

@@ -21,8 +21,7 @@
 #include <QDialog>
 #include <score/tuning.h>
 
-namespace Ui
-{
+namespace Ui {
 class PreferencesDialog;
 }
 
@@ -32,27 +31,27 @@ class TuningDictionary;
 /// Dialog that allows the user to modify general editor-wide settings.
 class PreferencesDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit PreferencesDialog(QWidget *parent,
-                               SettingsManager &settings_manager,
-                               const TuningDictionary &dictionary);
-    ~PreferencesDialog();
+  explicit PreferencesDialog(QWidget* parent,
+                             SettingsManager& settings_manager,
+                             const TuningDictionary& dictionary);
+  ~PreferencesDialog();
 
 private slots:
-    virtual void accept() override;
-    void editTuning();
+  virtual void accept() override;
+  void editTuning();
 
 private:
-    /// Load the current preferences and initialize the widgets with those
-    /// values.
-    void loadCurrentSettings();
+  /// Load the current preferences and initialize the widgets with those
+  /// values.
+  void loadCurrentSettings();
 
-    Ui::PreferencesDialog *ui;
-    SettingsManager &mySettingsManager;
-    const TuningDictionary &myDictionary;
-    Tuning myDefaultTuning;
+  Ui::PreferencesDialog* ui;
+  SettingsManager& mySettingsManager;
+  const TuningDictionary& myDictionary;
+  Tuning myDefaultTuning;
 };
 
 #endif

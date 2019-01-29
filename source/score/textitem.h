@@ -24,30 +24,30 @@
 class TextItem
 {
 public:
-    TextItem();
-    TextItem(int position, const std::string &contents);
+  TextItem();
+  TextItem(int position, const std::string& contents);
 
-    bool operator==(const TextItem &other) const;
+  bool operator==(const TextItem& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    int getPosition() const;
-    void setPosition(int position);
+  int getPosition() const;
+  void setPosition(int position);
 
-    const std::string &getContents() const;
-    void setContents(const std::string &contents);
+  const std::string& getContents() const;
+  void setContents(const std::string& contents);
 
 private:
-    int myPosition;
-    std::string myContents;
+  int myPosition;
+  std::string myContents;
 };
 
-template <class Archive>
-void TextItem::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void TextItem::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("position", myPosition);
-    ar("contents", myContents);
+  ar("position", myPosition);
+  ar("contents", myContents);
 }
 
 #endif

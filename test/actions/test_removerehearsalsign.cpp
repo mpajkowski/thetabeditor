@@ -22,32 +22,32 @@
 
 TEST_CASE("Actions/RemoveRehearsalSign", "")
 {
-    Score score;
-    System system;
-    system.insertBarline(Barline(6, Barline::SingleBar));
-    system.getBarlines()[0].setRehearsalSign(RehearsalSign("A", "Intro"));
-    system.getBarlines()[1].setRehearsalSign(RehearsalSign("B", "Verse"));
-    score.insertSystem(system);
+  Score score;
+  System system;
+  system.insertBarline(Barline(6, Barline::SingleBar));
+  system.getBarlines()[0].setRehearsalSign(RehearsalSign("A", "Intro"));
+  system.getBarlines()[1].setRehearsalSign(RehearsalSign("B", "Verse"));
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0, 0);
-    RemoveRehearsalSign action(location);
+  ScoreLocation location(score, 0, 0, 0);
+  RemoveRehearsalSign action(location);
 
-    action.redo();
-    {
-        const Barline &barline1 = score.getSystems()[0].getBarlines()[0];
-        const Barline &barline2 = score.getSystems()[0].getBarlines()[1];
-        REQUIRE(!barline1.hasRehearsalSign());
-        REQUIRE(barline2.hasRehearsalSign());
-        REQUIRE(barline2.getRehearsalSign().getLetters() == "A");
-    }
+  action.redo();
+  {
+    const Barline& barline1 = score.getSystems()[0].getBarlines()[0];
+    const Barline& barline2 = score.getSystems()[0].getBarlines()[1];
+    REQUIRE(!barline1.hasRehearsalSign());
+    REQUIRE(barline2.hasRehearsalSign());
+    REQUIRE(barline2.getRehearsalSign().getLetters() == "A");
+  }
 
-    action.undo();
-    {
-        const Barline &barline1 = score.getSystems()[0].getBarlines()[0];
-        const Barline &barline2 = score.getSystems()[0].getBarlines()[1];
-        REQUIRE(barline1.hasRehearsalSign());
-        REQUIRE(barline1.getRehearsalSign().getLetters() == "A");
-        REQUIRE(barline2.hasRehearsalSign());
-        REQUIRE(barline2.getRehearsalSign().getLetters() == "B");
-    }
+  action.undo();
+  {
+    const Barline& barline1 = score.getSystems()[0].getBarlines()[0];
+    const Barline& barline2 = score.getSystems()[0].getBarlines()[1];
+    REQUIRE(barline1.hasRehearsalSign());
+    REQUIRE(barline1.getRehearsalSign().getLetters() == "A");
+    REQUIRE(barline2.hasRehearsalSign());
+    REQUIRE(barline2.getRehearsalSign().getLetters() == "B");
+  }
 }

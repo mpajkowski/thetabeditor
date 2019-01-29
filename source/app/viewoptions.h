@@ -25,33 +25,18 @@
 class ViewOptions
 {
 public:
-    ViewOptions();
+  ViewOptions();
 
-    const boost::optional<int> &getFilter() const
-    {
-        return myFilter;
-    }
-    void setFilter(int filter)
-    {
-        myFilter = filter;
-    }
-    void clearFilter()
-    {
-        myFilter.reset();
-    }
+  const boost::optional<int>& getFilter() const { return myFilter; }
+  void setFilter(int filter) { myFilter = filter; }
+  void clearFilter() { myFilter.reset(); }
 
-    double getZoom() const
-    {
-        return myZoom;
-    }
-    void setZoom(double percent)
-    {
-        myZoom = percent;
-    }
+  double getZoom() const { return myZoom; }
+  void setZoom(double percent) { myZoom = percent; }
 
 private:
-    boost::optional<int> myFilter;
-    double myZoom;
+  boost::optional<int> myFilter;
+  double myZoom;
 };
 
 #endif

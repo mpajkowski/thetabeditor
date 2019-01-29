@@ -20,23 +20,22 @@
 #include <score/score.h>
 #include <score/utils/scorepolisher.h>
 
-PolishScore::PolishScore(Score &score)
-    : QUndoCommand(QObject::tr("Polish Score")), myScore(score)
-{
-}
+PolishScore::PolishScore(Score& score)
+  : QUndoCommand(QObject::tr("Polish Score"))
+  , myScore(score)
+{}
 
 void PolishScore::redo()
 {
-    for (const System &system : myScore.getSystems())
-        myOriginalSystems.push_back(system);
+  for (const System& system : myScore.getSystems())
+    myOriginalSystems.push_back(system);
 
-    ScoreUtils::polishScore(myScore);
+  ScoreUtils::polishScore(myScore);
 }
 
 void PolishScore::undo()
 {
-    std::copy(myOriginalSystems.begin(), myOriginalSystems.end(),
-              myScore.getSystems().begin());
+  std::copy(myOriginalSystems.begin(), myOriginalSystems.end(), myScore.getSystems().begin());
 
-    myOriginalSystems.clear();
+  myOriginalSystems.clear();
 }

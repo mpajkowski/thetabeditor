@@ -23,12 +23,12 @@
 class VerticalLayout
 {
 public:
-    /// Adds a box to the layout. Returns the y-coordinate where the box should
-    /// be placed.
-    int addBox(int left, int right, int height);
+  /// Adds a box to the layout. Returns the y-coordinate where the box should
+  /// be placed.
+  int addBox(int left, int right, int height);
 
 private:
-    std::vector<int> heights;
+  std::vector<int> heights;
 };
 
 #endif

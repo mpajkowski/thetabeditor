@@ -23,16 +23,16 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/AddTrill", "")
 {
-    Note note;
-    myLocation.getPosition()->insertNote(note);
-    const int trillFret = 17;
+  Note note;
+  myLocation.getPosition()->insertNote(note);
+  const int trillFret = 17;
 
-    AddTrill action(myLocation, trillFret);
+  AddTrill action(myLocation, trillFret);
 
-    action.redo();
-    REQUIRE(myLocation.getNote()->hasTrill());
-    REQUIRE(myLocation.getNote()->getTrilledFret() == trillFret);
+  action.redo();
+  REQUIRE(myLocation.getNote()->hasTrill());
+  REQUIRE(myLocation.getNote()->getTrilledFret() == trillFret);
 
-    action.undo();
-    REQUIRE(!myLocation.getNote()->hasTrill());
+  action.undo();
+  REQUIRE(!myLocation.getNote()->hasTrill());
 }

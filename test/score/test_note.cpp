@@ -23,145 +23,142 @@
 
 TEST_CASE("Score/Note/SimpleProperties", "")
 {
-    Note note;
+  Note note;
 
-    REQUIRE(!note.hasProperty(Note::HammerOnOrPullOff));
-    note.setProperty(Note::HammerOnOrPullOff, true);
-    REQUIRE(note.hasProperty(Note::HammerOnOrPullOff));
+  REQUIRE(!note.hasProperty(Note::HammerOnOrPullOff));
+  note.setProperty(Note::HammerOnOrPullOff, true);
+  REQUIRE(note.hasProperty(Note::HammerOnOrPullOff));
 }
 
 TEST_CASE("Score/Note/Trill", "")
 {
-    Note note;
+  Note note;
 
-    REQUIRE(!note.hasTrill());
-    REQUIRE_THROWS(note.getTrilledFret());
+  REQUIRE(!note.hasTrill());
+  REQUIRE_THROWS(note.getTrilledFret());
 
-    note.setTrilledFret(5);
-    REQUIRE(note.hasTrill());
-    REQUIRE(note.getTrilledFret() == 5);
+  note.setTrilledFret(5);
+  REQUIRE(note.hasTrill());
+  REQUIRE(note.getTrilledFret() == 5);
 
-    note.clearTrill();
-    REQUIRE(!note.hasTrill());
-    REQUIRE_THROWS(note.getTrilledFret());
+  note.clearTrill();
+  REQUIRE(!note.hasTrill());
+  REQUIRE_THROWS(note.getTrilledFret());
 }
 
 TEST_CASE("Score/Note/TappedHarmonic", "")
 {
-    Note note;
+  Note note;
 
-    REQUIRE(!note.hasTappedHarmonic());
-    REQUIRE_THROWS(note.getTappedHarmonicFret());
+  REQUIRE(!note.hasTappedHarmonic());
+  REQUIRE_THROWS(note.getTappedHarmonicFret());
 
-    note.setTappedHarmonicFret(5);
-    REQUIRE(note.hasTappedHarmonic());
-    REQUIRE(note.getTappedHarmonicFret() == 5);
+  note.setTappedHarmonicFret(5);
+  REQUIRE(note.hasTappedHarmonic());
+  REQUIRE(note.getTappedHarmonicFret() == 5);
 
-    note.clearTappedHarmonic();
-    REQUIRE(!note.hasTappedHarmonic());
-    REQUIRE_THROWS(note.getTappedHarmonicFret());
+  note.clearTappedHarmonic();
+  REQUIRE(!note.hasTappedHarmonic());
+  REQUIRE_THROWS(note.getTappedHarmonicFret());
 }
 
 TEST_CASE("Score/Note/ArtificialHarmonic", "")
 {
-    Note note;
+  Note note;
 
-    REQUIRE(!note.hasArtificialHarmonic());
+  REQUIRE(!note.hasArtificialHarmonic());
 
-    note.setArtificialHarmonic(ArtificialHarmonic(
-        ChordName::D, ChordName::Flat, ArtificialHarmonic::Octave::Octave15ma));
-    REQUIRE(note.hasArtificialHarmonic());
-    REQUIRE(note.getArtificialHarmonic().getKey() == ChordName::D);
+  note.setArtificialHarmonic(
+    ArtificialHarmonic(ChordName::D, ChordName::Flat, ArtificialHarmonic::Octave::Octave15ma));
+  REQUIRE(note.hasArtificialHarmonic());
+  REQUIRE(note.getArtificialHarmonic().getKey() == ChordName::D);
 
-    note.clearArtificialHarmonic();
-    REQUIRE(!note.hasArtificialHarmonic());
+  note.clearArtificialHarmonic();
+  REQUIRE(!note.hasArtificialHarmonic());
 }
 
 TEST_CASE("Score/Note/Bend", "")
 {
-    Note note;
+  Note note;
 
-    REQUIRE(!note.hasBend());
+  REQUIRE(!note.hasBend());
 
-    note.setBend(
-        Bend(Bend::BendAndHold, 2, 0, 0, Bend::LowPoint, Bend::MidPoint));
-    REQUIRE(note.hasBend());
-    REQUIRE(note.getBend().getType() == Bend::BendAndHold);
+  note.setBend(Bend(Bend::BendAndHold, 2, 0, 0, Bend::LowPoint, Bend::MidPoint));
+  REQUIRE(note.hasBend());
+  REQUIRE(note.getBend().getType() == Bend::BendAndHold);
 
-    note.clearBend();
-    REQUIRE(!note.hasBend());
+  note.clearBend();
+  REQUIRE(!note.hasBend());
 }
 
 TEST_CASE("Score/Note/LeftHandFingering", "")
 {
-    Note note;
+  Note note;
 
-    REQUIRE(!note.hasLeftHandFingering());
+  REQUIRE(!note.hasLeftHandFingering());
 
-    note.setLeftHandFingering(
-        LeftHandFingering(LeftHandFingering::Finger::Ring,
-                          LeftHandFingering::DisplayPosition::BelowRight));
-    REQUIRE(note.hasLeftHandFingering());
-    REQUIRE(note.getLeftHandFingering().getFingerNumber() ==
-            LeftHandFingering::Finger::Ring);
+  note.setLeftHandFingering(
+    LeftHandFingering(LeftHandFingering::Finger::Ring, LeftHandFingering::DisplayPosition::BelowRight));
+  REQUIRE(note.hasLeftHandFingering());
+  REQUIRE(note.getLeftHandFingering().getFingerNumber() == LeftHandFingering::Finger::Ring);
 
-    note.clearLeftHandFingering();
-    REQUIRE(!note.hasLeftHandFingering());
+  note.clearLeftHandFingering();
+  REQUIRE(!note.hasLeftHandFingering());
 }
 
 TEST_CASE("Score/Note/Bend/GetPitchText", "")
 {
-    REQUIRE(Bend::getPitchText(0) == "Standard");
-    REQUIRE(Bend::getPitchText(4) == "Full");
-    REQUIRE(Bend::getPitchText(2) == "1/2");
-    REQUIRE(Bend::getPitchText(3) == "3/4");
-    REQUIRE(Bend::getPitchText(7) == "1 3/4");
-    REQUIRE(Bend::getPitchText(8) == "2");
+  REQUIRE(Bend::getPitchText(0) == "Standard");
+  REQUIRE(Bend::getPitchText(4) == "Full");
+  REQUIRE(Bend::getPitchText(2) == "1/2");
+  REQUIRE(Bend::getPitchText(3) == "3/4");
+  REQUIRE(Bend::getPitchText(7) == "1 3/4");
+  REQUIRE(Bend::getPitchText(8) == "2");
 }
 
 TEST_CASE("Score/Note/ToString", "")
 {
-    Note note(3, 12);
+  Note note(3, 12);
 
-    REQUIRE(boost::lexical_cast<std::string>(note) == "12");
+  REQUIRE(boost::lexical_cast<std::string>(note) == "12");
 
-    note.setTappedHarmonicFret(15);
-    REQUIRE(boost::lexical_cast<std::string>(note) == "12(15)");
-    note.clearTappedHarmonic();
+  note.setTappedHarmonicFret(15);
+  REQUIRE(boost::lexical_cast<std::string>(note) == "12(15)");
+  note.clearTappedHarmonic();
 
-    note.setProperty(Note::NaturalHarmonic);
-    REQUIRE(boost::lexical_cast<std::string>(note) == "[12]");
-    note.setProperty(Note::NaturalHarmonic, false);
+  note.setProperty(Note::NaturalHarmonic);
+  REQUIRE(boost::lexical_cast<std::string>(note) == "[12]");
+  note.setProperty(Note::NaturalHarmonic, false);
 
-    note.setProperty(Note::GhostNote);
-    REQUIRE(boost::lexical_cast<std::string>(note) == "(12)");
-    note.setProperty(Note::GhostNote, false);
+  note.setProperty(Note::GhostNote);
+  REQUIRE(boost::lexical_cast<std::string>(note) == "(12)");
+  note.setProperty(Note::GhostNote, false);
 
-    note.setTrilledFret(5);
-    REQUIRE(boost::lexical_cast<std::string>(note) == "12(5)");
+  note.setTrilledFret(5);
+  REQUIRE(boost::lexical_cast<std::string>(note) == "12(5)");
 
-    Note mutedNote;
-    mutedNote.setProperty(Note::Muted);
-    REQUIRE(boost::lexical_cast<std::string>(mutedNote) == "x");
+  Note mutedNote;
+  mutedNote.setProperty(Note::Muted);
+  REQUIRE(boost::lexical_cast<std::string>(mutedNote) == "x");
 }
 
 TEST_CASE("Score/Note/Harmonics/GetValidFretOffsets", "")
 {
-    std::vector<int> frets = Harmonics::getValidFretOffsets();
+  std::vector<int> frets = Harmonics::getValidFretOffsets();
 
-    REQUIRE(!frets.empty());
-    // Check a couple valid and invalid frets.
-    REQUIRE(std::find(frets.begin(), frets.end(), 12) != frets.end());
-    REQUIRE(std::find(frets.begin(), frets.end(), 7) != frets.end());
-    REQUIRE(std::find(frets.begin(), frets.end(), 8) == frets.end());
+  REQUIRE(!frets.empty());
+  // Check a couple valid and invalid frets.
+  REQUIRE(std::find(frets.begin(), frets.end(), 12) != frets.end());
+  REQUIRE(std::find(frets.begin(), frets.end(), 7) != frets.end());
+  REQUIRE(std::find(frets.begin(), frets.end(), 8) == frets.end());
 }
 
 TEST_CASE("Score/Note/Serialization", "")
 {
-    Note note(3, 12);
-    note.setProperty(Note::Octave15ma);
-    note.setArtificialHarmonic(ArtificialHarmonic(
-        ChordName::D, ChordName::Flat, ArtificialHarmonic::Octave::Octave15ma));
+  Note note(3, 12);
+  note.setProperty(Note::Octave15ma);
+  note.setArtificialHarmonic(
+    ArtificialHarmonic(ChordName::D, ChordName::Flat, ArtificialHarmonic::Octave::Octave15ma));
 
-    Serialization::test("note", note);
+  Serialization::test("note", note);
 }

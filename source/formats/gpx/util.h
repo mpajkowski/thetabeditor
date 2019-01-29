@@ -22,12 +22,10 @@
 #include <cstdint>
 #include <vector>
 
-namespace Gpx
-{
-namespace Util
-{
-    /// Converts 4 bytes starting at the given index into an integer.
-    uint32_t readUInt(const std::vector<uint8_t> &bytes, size_t index);
+namespace Gpx {
+namespace Util {
+/// Converts 4 bytes starting at the given index into an integer.
+uint32_t readUInt(const std::vector<uint8_t>& bytes, size_t index);
 } // namespace Util
 } // namespace Gpx
 

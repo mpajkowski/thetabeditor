@@ -21,51 +21,48 @@
 #include <boost/filesystem/operations.hpp>
 #include <iostream>
 
-static const char *theSettingsFilename = "settings.json";
+static const char* theSettingsFilename = "settings.json";
 
-void SettingsManager::load(const boost::filesystem::path &dir)
+void SettingsManager::load(const boost::filesystem::path& dir)
 {
 #ifdef __APPLE__
-    if (!boost::filesystem::exists(dir))
-        return;
+  if (!boost::filesystem::exists(dir))
+    return;
+
+  auto settings = getWriteHandle();
+  settings->loadFromPlist();
+#else
+  auto path = dir / theSettingsFilename;
+
+  if (!boost::filesystem::exists(path))
+    return;
+
+  try {
+    boost::filesystem::ifstream is(path);
 
     auto settings = getWriteHandle();
-    settings->loadFromPlist();
-#else
-    auto path = dir / theSettingsFilename;
-
-    if (!boost::filesystem::exists(path))
-        return;
-
-    try
-    {
-        boost::filesystem::ifstream is(path);
-
-        auto settings = getWriteHandle();
-        settings->loadFromJSON(is);
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << "Error loading " << path << ": " << e.what() << std::endl;
-    }
+    settings->loadFromJSON(is);
+  } catch (const std::exception& e) {
+    std::cerr << "Error loading " << path << ": " << e.what() << std::endl;
+  }
 #endif
 }
 
-void SettingsManager::save(const boost::filesystem::path &dir) const
+void SettingsManager::save(const boost::filesystem::path& dir) const
 {
-    // Ensure the directory exists.
-    boost::filesystem::create_directories(dir);
+  // Ensure the directory exists.
+  boost::filesystem::create_directories(dir);
 
-    auto settings = getReadHandle();
+  auto settings = getReadHandle();
 
 #ifdef __APPLE__
-    settings->saveToPlist();
+  settings->saveToPlist();
 #else
-    // Save the settings to disk in JSON format.
-    auto path = dir / theSettingsFilename;
-    boost::filesystem::ofstream os(path);
-    os.exceptions(std::ios::failbit | std::ios::badbit);
+  // Save the settings to disk in JSON format.
+  auto path = dir / theSettingsFilename;
+  boost::filesystem::ofstream os(path);
+  os.exceptions(std::ios::failbit | std::ios::badbit);
 
-    settings->saveToJSON(os);
+  settings->saveToJSON(os);
 #endif
 }

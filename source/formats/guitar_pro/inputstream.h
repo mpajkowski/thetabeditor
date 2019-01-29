@@ -25,78 +25,73 @@
 
 #include "document.h"
 
-namespace Gp
-{
+namespace Gp {
 
 typedef std::bitset<8> Flags;
 
 class InputStream
 {
 public:
-    InputStream(std::istream &stream);
+  InputStream(std::istream& stream);
 
-    /// Reads simple data (e.g. uint32_t, int16_t) from the input stream.
-    template <class T>
-    T read();
+  /// Reads simple data (e.g. uint32_t, int16_t) from the input stream.
+  template<class T>
+  T read();
 
-    /// Reads a string in the most common format for Guitar Pro - an integer
-    /// representing the size of the stored information + 1, followed by the
-    /// length-prefixed string of characters representing the data
-    std::string readString();
+  /// Reads a string in the most common format for Guitar Pro - an integer
+  /// representing the size of the stored information + 1, followed by the
+  /// length-prefixed string of characters representing the data
+  std::string readString();
 
-    /// Reads a string prefixed with 4 bytes that indicate the length.
-    std::string readIntString();
+  /// Reads a string prefixed with 4 bytes that indicate the length.
+  std::string readIntString();
 
-    /// Reads a fixed length string (any unused characters trailing the string
-    /// are skipped).
-    std::string readFixedLengthString(uint32_t maxLength);
+  /// Reads a fixed length string (any unused characters trailing the string
+  /// are skipped).
+  std::string readFixedLengthString(uint32_t maxLength);
 
-    std::string readVersionString();
+  std::string readVersionString();
 
-    void skip(int numBytes);
+  void skip(int numBytes);
 
-    Gp::Version version; // TODO - make private.
-    Gp::Version getVersion() const
-    {
-        return version;
-    }
+  Gp::Version version; // TODO - make private.
+  Gp::Version getVersion() const { return version; }
 
 private:
-    /// Reads a character string.
-    /// The string consists of some number of bytes (encoding the length of the
-    /// string, n) followed by n characters.  This is templated on the length
-    /// prefix type, to allow for strings prefixed with a 2-byte length value,
-    /// 4-byte length value, etc
-    template <class LengthPrefixType>
-    std::string readCharacterString();
+  /// Reads a character string.
+  /// The string consists of some number of bytes (encoding the length of the
+  /// string, n) followed by n characters.  This is templated on the length
+  /// prefix type, to allow for strings prefixed with a 2-byte length value,
+  /// 4-byte length value, etc
+  template<class LengthPrefixType>
+  std::string readCharacterString();
 
-    std::istream &myStream;
+  std::istream& myStream;
 };
 
-template <class T>
+template<class T>
 inline T InputStream::read()
 {
-    static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
-    T data;
-    myStream.read((char *)&data, sizeof(data));
-    return data;
+  static_assert(std::is_arithmetic<T>::value, "T must be an arithmetic type");
+  T data;
+  myStream.read((char*)&data, sizeof(data));
+  return data;
 }
 
-template <typename LengthPrefixType>
+template<typename LengthPrefixType>
 inline std::string InputStream::readCharacterString()
 {
-    static_assert(std::is_integral<LengthPrefixType>::value,
-                  "LengthPrefixType must be an integral type");
+  static_assert(std::is_integral<LengthPrefixType>::value, "LengthPrefixType must be an integral type");
 
-    const LengthPrefixType length = read<LengthPrefixType>();
+  const LengthPrefixType length = read<LengthPrefixType>();
 
-    std::string str;
-    str.resize(length);
+  std::string str;
+  str.resize(length);
 
-    if (length != 0)
-        myStream.read(&str[0], length);
+  if (length != 0)
+    myStream.read(&str[0], length);
 
-    return str;
+  return str;
 }
 } // namespace Gp
 

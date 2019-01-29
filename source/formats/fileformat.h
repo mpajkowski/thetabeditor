@@ -28,62 +28,59 @@ class Score;
 class FileFormat
 {
 public:
-    FileFormat(const std::string &myName,
-               const std::vector<std::string> &myFileExtensions);
+  FileFormat(const std::string& myName, const std::vector<std::string>& myFileExtensions);
 
-    bool operator==(const FileFormat &format) const;
+  bool operator==(const FileFormat& format) const;
 
-    /// Returns a correctly formatted file filter for a Qt file dialog.
-    /// e.g. "FileType (*.ext1 *.ext2)".
-    std::string fileFilter() const;
+  /// Returns a correctly formatted file filter for a Qt file dialog.
+  /// e.g. "FileType (*.ext1 *.ext2)".
+  std::string fileFilter() const;
 
-    std::string allExtensions() const;
+  std::string allExtensions() const;
 
-    bool contains(const std::string &extension) const;
+  bool contains(const std::string& extension) const;
 
 private:
-    /// Name of the file format (e.g. "Power Tab", "MIDI", etc).
-    std::string myName;
-    /// Supported file extensions (e.g. {"gp3", "gp4"}).
-    std::vector<std::string> myFileExtensions;
+  /// Name of the file format (e.g. "Power Tab", "MIDI", etc).
+  std::string myName;
+  /// Supported file extensions (e.g. {"gp3", "gp4"}).
+  std::vector<std::string> myFileExtensions;
 };
 
 /// Base class for all file format importers.
 class FileFormatImporter
 {
 public:
-    FileFormatImporter(const FileFormat &myFormat);
-    virtual ~FileFormatImporter();
+  FileFormatImporter(const FileFormat& myFormat);
+  virtual ~FileFormatImporter();
 
-    /// Imports the file into the given score.
-    /// @throw FileFormatException
-    virtual void load(const boost::filesystem::path &filename,
-                      Score &score) = 0;
+  /// Imports the file into the given score.
+  /// @throw FileFormatException
+  virtual void load(const boost::filesystem::path& filename, Score& score) = 0;
 
-    /// Returns the file format corresponding to this importer.
-    FileFormat fileFormat() const;
+  /// Returns the file format corresponding to this importer.
+  FileFormat fileFormat() const;
 
 private:
-    const FileFormat myFormat;
+  const FileFormat myFormat;
 };
 
 /// Base class for all file format exporters.
 class FileFormatExporter
 {
 public:
-    FileFormatExporter(const FileFormat &myFormat);
-    virtual ~FileFormatExporter();
+  FileFormatExporter(const FileFormat& myFormat);
+  virtual ~FileFormatExporter();
 
-    /// Exports the given score to a file.
-    /// @throw FileFormatException
-    virtual void save(const boost::filesystem::path &filename,
-                      const Score &score) = 0;
+  /// Exports the given score to a file.
+  /// @throw FileFormatException
+  virtual void save(const boost::filesystem::path& filename, const Score& score) = 0;
 
-    /// Returns the file format corresponding to this exporter.
-    FileFormat fileFormat() const;
+  /// Returns the file format corresponding to this exporter.
+  FileFormat fileFormat() const;
 
 private:
-    const FileFormat myFormat;
+  const FileFormat myFormat;
 };
 
 /// Exception used for any errors with format conversions
@@ -91,7 +88,7 @@ private:
 class FileFormatException : public std::runtime_error
 {
 public:
-    FileFormatException(const std::string &error);
+  FileFormatException(const std::string& error);
 };
 
 #endif

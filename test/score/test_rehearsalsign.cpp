@@ -22,9 +22,9 @@
 
 TEST_CASE("Score/RehearsalSign/Serialization", "")
 {
-    RehearsalSign sign;
-    sign.setLetters("B");
-    sign.setDescription("Intro");
+  RehearsalSign sign;
+  sign.setLetters("B");
+  sign.setDescription("Intro");
 
-    Serialization::test("rehearsal_sign", sign);
+  Serialization::test("rehearsal_sign", sign);
 }

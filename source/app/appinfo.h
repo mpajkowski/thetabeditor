@@ -20,20 +20,19 @@
 
 #include <string>
 
-namespace AppInfo
-{
-extern const char *BUG_TRACKER_URL;
+namespace AppInfo {
+extern const char* BUG_TRACKER_URL;
 /// Organization name used by QSettings.
-extern const char *ORGANIZATION_NAME;
+extern const char* ORGANIZATION_NAME;
 /// Application name used by QSettings.
-extern const char *APPLICATION_ID;
+extern const char* APPLICATION_ID;
 /// Application name that should be displayed to the user.
-extern const char *APPLICATION_NAME;
-extern const char *APPLICATION_VERSION;
+extern const char* APPLICATION_NAME;
+extern const char* APPLICATION_VERSION;
 
 /// Given a path relative to the location of the executable, return the full
 /// path.
-std::string getAbsolutePath(const char *relative_path);
+std::string getAbsolutePath(const char* relative_path);
 } // namespace AppInfo
 
 #endif

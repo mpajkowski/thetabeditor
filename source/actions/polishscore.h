@@ -26,14 +26,14 @@ class Score;
 class PolishScore : public QUndoCommand
 {
 public:
-    PolishScore(Score &score);
+  PolishScore(Score& score);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    Score &myScore;
-    std::vector<System> myOriginalSystems;
+  Score& myScore;
+  std::vector<System> myOriginalSystems;
 };
 
 #endif

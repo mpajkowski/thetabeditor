@@ -19,19 +19,18 @@
 
 #include <score/system.h>
 
-AddChordText::AddChordText(const ScoreLocation &location, const ChordText &text)
-    : QUndoCommand(QObject::tr("Add Chord Text")),
-      myLocation(location),
-      myText(text)
-{
-}
+AddChordText::AddChordText(const ScoreLocation& location, const ChordText& text)
+  : QUndoCommand(QObject::tr("Add Chord Text"))
+  , myLocation(location)
+  , myText(text)
+{}
 
 void AddChordText::redo()
 {
-    myLocation.getSystem().insertChord(myText);
+  myLocation.getSystem().insertChord(myText);
 }
 
 void AddChordText::undo()
 {
-    myLocation.getSystem().removeChord(myText);
+  myLocation.getSystem().removeChord(myText);
 }

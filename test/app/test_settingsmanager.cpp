@@ -21,21 +21,21 @@
 
 TEST_CASE("App/SettingsManager", "")
 {
-    SettingsManager manager;
+  SettingsManager manager;
 
-    int count = 0;
-    manager.subscribeToChanges([&]() { ++count; });
+  int count = 0;
+  manager.subscribeToChanges([&]() { ++count; });
 
-    {
-        auto settings = manager.getWriteHandle();
-        settings->set("foo", 42);
-        settings->set("bar", "asdf");
-    }
+  {
+    auto settings = manager.getWriteHandle();
+    settings->set("foo", 42);
+    settings->set("bar", "asdf");
+  }
 
-    {
-        auto settings = manager.getReadHandle();
-        REQUIRE(settings->get<int>("foo") == 42);
-    }
+  {
+    auto settings = manager.getReadHandle();
+    REQUIRE(settings->get<int>("foo") == 42);
+  }
 
-    REQUIRE(count == 1);
+  REQUIRE(count == 1);
 }

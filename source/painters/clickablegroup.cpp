@@ -19,30 +19,30 @@
 
 #include <QCursor>
 
-ClickableGroup::ClickableGroup(const QString &tooltip, const Callback &callback)
-    : myCallback(callback)
+ClickableGroup::ClickableGroup(const QString& tooltip, const Callback& callback)
+  : myCallback(callback)
 {
-    setToolTip(tooltip);
-    setAcceptHoverEvents(true);
+  setToolTip(tooltip);
+  setAcceptHoverEvents(true);
 }
 
-void ClickableGroup::mousePressEvent(QGraphicsSceneMouseEvent *)
+void ClickableGroup::mousePressEvent(QGraphicsSceneMouseEvent*)
 {
-    // No action is needed here, but we need to override this method in
-    // order to get the mouse release event.
+  // No action is needed here, but we need to override this method in
+  // order to get the mouse release event.
 }
 
-void ClickableGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent *)
+void ClickableGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent*)
 {
-    myCallback();
+  myCallback();
 }
 
-void ClickableGroup::hoverEnterEvent(QGraphicsSceneHoverEvent *)
+void ClickableGroup::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 {
-    setCursor(Qt::PointingHandCursor);
+  setCursor(Qt::PointingHandCursor);
 }
 
-void ClickableGroup::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
+void ClickableGroup::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 {
-    unsetCursor();
+  unsetCursor();
 }

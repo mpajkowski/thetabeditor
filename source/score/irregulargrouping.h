@@ -24,51 +24,50 @@
 class IrregularGrouping
 {
 public:
-    IrregularGrouping();
-    IrregularGrouping(int position, int length, int notesPlayed,
-                      int notesPlayedOver);
+  IrregularGrouping();
+  IrregularGrouping(int position, int length, int notesPlayed, int notesPlayedOver);
 
-    bool operator==(const IrregularGrouping &other) const;
+  bool operator==(const IrregularGrouping& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the index of the start position of the group.
-    int getPosition() const;
-    /// Sets the index of start position of the group.
-    void setPosition(int position);
+  /// Returns the index of the start position of the group.
+  int getPosition() const;
+  /// Sets the index of start position of the group.
+  void setPosition(int position);
 
-    /// Returns the number of positions in the group.
-    int getLength() const;
-    /// Sets the number of positions in the group.
-    void setLength(int length);
+  /// Returns the number of positions in the group.
+  int getLength() const;
+  /// Sets the number of positions in the group.
+  void setLength(int length);
 
-    /// Returns the numerator of the irregular group (i.e. 3 for a triplet).
-    int getNotesPlayed() const;
-    /// Sets the numerator of the irregular group (i.e. 3 for a triplet).
-    void setNotesPlayed(int notes);
+  /// Returns the numerator of the irregular group (i.e. 3 for a triplet).
+  int getNotesPlayed() const;
+  /// Sets the numerator of the irregular group (i.e. 3 for a triplet).
+  void setNotesPlayed(int notes);
 
-    /// Return the denominator of the irregular group (i.e. 2 for a triplet).
-    int getNotesPlayedOver() const;
-    /// Sets the denominator of the irregular group (i.e. 2 for a triplet).
-    void setNotesPlayedOver(int notes);
+  /// Return the denominator of the irregular group (i.e. 2 for a triplet).
+  int getNotesPlayedOver() const;
+  /// Sets the denominator of the irregular group (i.e. 2 for a triplet).
+  void setNotesPlayedOver(int notes);
 
 private:
-    int myPosition;
-    int myLength;
-    int myNotesPlayed;
-    int myNotesPlayedOver;
+  int myPosition;
+  int myLength;
+  int myNotesPlayed;
+  int myNotesPlayedOver;
 };
 
-template <class Archive>
-void IrregularGrouping::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void IrregularGrouping::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("position", myPosition);
-    ar("length", myLength);
-    ar("notes_played", myNotesPlayed);
-    ar("notes_played_over", myNotesPlayedOver);
+  ar("position", myPosition);
+  ar("length", myLength);
+  ar("notes_played", myNotesPlayed);
+  ar("notes_played_over", myNotesPlayedOver);
 }
 
-std::ostream &operator<<(std::ostream &os, const IrregularGrouping &group);
+std::ostream& operator<<(std::ostream& os, const IrregularGrouping& group);
 
 #endif

@@ -25,16 +25,16 @@
 class EditTabNumber : public QUndoCommand
 {
 public:
-    EditTabNumber(const ScoreLocation &location, int typedNumber);
+  EditTabNumber(const ScoreLocation& location, int typedNumber);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const int myOriginalNumber;
-    const int myTappedHarmonicOffset;
-    int myNewNumber;
+  ScoreLocation myLocation;
+  const int myOriginalNumber;
+  const int myTappedHarmonicOffset;
+  int myNewNumber;
 };
 
 #endif

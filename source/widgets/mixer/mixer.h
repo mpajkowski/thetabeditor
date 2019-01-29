@@ -29,21 +29,22 @@ class TuningDictionary;
 class Mixer : public QWidget
 {
 public:
-    Mixer(QWidget *parent, const TuningDictionary &dictionary,
-          const PlayerEditPubSub &editPubSub,
-          const PlayerRemovePubSub &removePubSub);
+  Mixer(QWidget* parent,
+        const TuningDictionary& dictionary,
+        const PlayerEditPubSub& editPubSub,
+        const PlayerRemovePubSub& removePubSub);
 
-    /// Clear and then populate the mixer.
-    void reset(const Score &score);
+  /// Clear and then populate the mixer.
+  void reset(const Score& score);
 
-    /// Removes all items from the mixer.
-    void clear();
+  /// Removes all items from the mixer.
+  void clear();
 
 private:
-    QVBoxLayout *myLayout;
-    const TuningDictionary &myDictionary;
-    const PlayerEditPubSub &myEditPubSub;
-    const PlayerRemovePubSub &myRemovePubSub;
+  QVBoxLayout* myLayout;
+  const TuningDictionary& myDictionary;
+  const PlayerEditPubSub& myEditPubSub;
+  const PlayerRemovePubSub& myRemovePubSub;
 };
 
 #endif

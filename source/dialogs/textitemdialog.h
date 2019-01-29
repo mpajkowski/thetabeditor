@@ -21,26 +21,25 @@
 #include <QDialog>
 #include <string>
 
-namespace Ui
-{
+namespace Ui {
 class TextItemDialog;
 }
 
 class TextItemDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit TextItemDialog(QWidget *parent);
-    ~TextItemDialog();
+  explicit TextItemDialog(QWidget* parent);
+  ~TextItemDialog();
 
-    std::string getContents() const;
+  std::string getContents() const;
 
 protected slots:
-    virtual void accept() override;
+  virtual void accept() override;
 
 private:
-    Ui::TextItemDialog *ui;
+  Ui::TextItemDialog* ui;
 };
 
 #endif

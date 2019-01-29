@@ -23,21 +23,21 @@
 
 TEST_CASE("Actions/RemoveVolumeSwell", "")
 {
-    Position pos;
-    pos.SetVolumeSwell(Dynamic::mf, Dynamic::ff, 3);
+  Position pos;
+  pos.SetVolumeSwell(Dynamic::mf, Dynamic::ff, 3);
 
-    RemoveVolumeSwell action(&pos);
+  RemoveVolumeSwell action(&pos);
 
-    action.redo();
-    REQUIRE(!pos.HasVolumeSwell());
+  action.redo();
+  REQUIRE(!pos.HasVolumeSwell());
 
-    action.undo();
-    REQUIRE(pos.HasVolumeSwell());
+  action.undo();
+  REQUIRE(pos.HasVolumeSwell());
 
-    uint8_t startVol, endVol, duration;
-    pos.GetVolumeSwell(startVol, endVol, duration);
+  uint8_t startVol, endVol, duration;
+  pos.GetVolumeSwell(startVol, endVol, duration);
 
-    REQUIRE(startVol == Dynamic::mf);
-    REQUIRE(endVol == Dynamic::ff);
-    REQUIRE(duration == 3u);
+  REQUIRE(startVol == Dynamic::mf);
+  REQUIRE(endVol == Dynamic::ff);
+  REQUIRE(duration == 3u);
 }

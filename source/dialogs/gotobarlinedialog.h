@@ -22,8 +22,7 @@
 #include <score/scorelocation.h>
 #include <vector>
 
-namespace Ui
-{
+namespace Ui {
 class GoToBarlineDialog;
 }
 
@@ -32,15 +31,15 @@ class Score;
 class GoToBarlineDialog : public QDialog
 {
 public:
-    explicit GoToBarlineDialog(QWidget *parent, const Score &score);
-    ~GoToBarlineDialog();
+  explicit GoToBarlineDialog(QWidget* parent, const Score& score);
+  ~GoToBarlineDialog();
 
-    /// Returns the location of the selected barline.
-    ScoreLocation getLocation() const;
+  /// Returns the location of the selected barline.
+  ScoreLocation getLocation() const;
 
 private:
-    Ui::GoToBarlineDialog *ui;
-    std::vector<ScoreLocation> myLocations;
+  Ui::GoToBarlineDialog* ui;
+  std::vector<ScoreLocation> myLocations;
 };
 
 #endif

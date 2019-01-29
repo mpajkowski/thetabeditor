@@ -21,35 +21,34 @@
 #include <QDialog>
 #include <score/keysignature.h>
 
-namespace Ui
-{
+namespace Ui {
 class KeySignatureDialog;
 }
 
 class KeySignatureDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    KeySignatureDialog(QWidget *parent, const KeySignature &currentKey);
-    ~KeySignatureDialog();
+  KeySignatureDialog(QWidget* parent, const KeySignature& currentKey);
+  ~KeySignatureDialog();
 
-    KeySignature getNewKey() const;
+  KeySignature getNewKey() const;
 
 private slots:
-    /// Populate the list of key types, depending on whether we are using
-    /// major or minor keys.
-    void populateKeyTypes(KeySignature::KeyType type);
+  /// Populate the list of key types, depending on whether we are using
+  /// major or minor keys.
+  void populateKeyTypes(KeySignature::KeyType type);
 
-    /// After the user makes a modification, set the key signature to be
-    /// visible. This is only done for the first modification in case the user
-    /// doesn't want to show the key signature.
-    void handleModification();
+  /// After the user makes a modification, set the key signature to be
+  /// visible. This is only done for the first modification in case the user
+  /// doesn't want to show the key signature.
+  void handleModification();
 
 private:
-    Ui::KeySignatureDialog *ui;
-    bool myIsModified;
-    const KeySignature myPreviousKey;
+  Ui::KeySignatureDialog* ui;
+  bool myIsModified;
+  const KeySignature myPreviousKey;
 };
 
 #endif // KEYSIGNATUREDIALOG_H

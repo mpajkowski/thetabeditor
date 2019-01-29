@@ -21,8 +21,7 @@
 #include <QDialog>
 #include <score/note.h>
 
-namespace Ui
-{
+namespace Ui {
 class ArtificialHarmonicDialog;
 }
 
@@ -31,23 +30,23 @@ class QButtonGroup;
 
 class ArtificialHarmonicDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit ArtificialHarmonicDialog(QWidget *parent);
-    ~ArtificialHarmonicDialog();
+  explicit ArtificialHarmonicDialog(QWidget* parent);
+  ~ArtificialHarmonicDialog();
 
-    ArtificialHarmonic getHarmonic() const;
+  ArtificialHarmonic getHarmonic() const;
 
 private slots:
-    void onAccidentalButtonClicked(QAbstractButton *);
+  void onAccidentalButtonClicked(QAbstractButton*);
 
 private:
-    Ui::ArtificialHarmonicDialog *ui;
+  Ui::ArtificialHarmonicDialog* ui;
 
-    QButtonGroup *myKeyGroup;
-    QButtonGroup *myAccidentalGroup;
-    QButtonGroup *myOctaveGroup;
+  QButtonGroup* myKeyGroup;
+  QButtonGroup* myAccidentalGroup;
+  QButtonGroup* myOctaveGroup;
 };
 
 #endif

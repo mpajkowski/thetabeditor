@@ -22,21 +22,21 @@
 
 TEST_CASE("Actions/RemoveDynamic", "")
 {
-    Score score;
-    System system;
-    Staff staff;
-    Dynamic dynamic(6, Dynamic::mp);
-    staff.insertDynamic(dynamic);
-    system.insertStaff(staff);
-    score.insertSystem(system);
+  Score score;
+  System system;
+  Staff staff;
+  Dynamic dynamic(6, Dynamic::mp);
+  staff.insertDynamic(dynamic);
+  system.insertStaff(staff);
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0, 6);
-    RemoveDynamic action(location);
+  ScoreLocation location(score, 0, 0, 6);
+  RemoveDynamic action(location);
 
-    action.redo();
-    REQUIRE(location.getStaff().getDynamics().size() == 0);
+  action.redo();
+  REQUIRE(location.getStaff().getDynamics().size() == 0);
 
-    action.undo();
-    REQUIRE(location.getStaff().getDynamics().size() == 1);
-    REQUIRE(location.getStaff().getDynamics()[0].getVolume() == Dynamic::mp);
+  action.undo();
+  REQUIRE(location.getStaff().getDynamics().size() == 1);
+  REQUIRE(location.getStaff().getDynamics()[0].getVolume() == Dynamic::mp);
 }

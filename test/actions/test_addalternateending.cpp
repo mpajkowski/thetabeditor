@@ -22,19 +22,19 @@
 
 TEST_CASE("Actions/AddAlternateEnding", "")
 {
-    Score score;
-    score.insertSystem(System());
+  Score score;
+  score.insertSystem(System());
 
-    AlternateEnding ending(6);
-    ending.addNumber(3);
-    ending.setDaCapo(true);
-    ScoreLocation location(score, 0, 0, 6);
-    AddAlternateEnding action(location, ending);
+  AlternateEnding ending(6);
+  ending.addNumber(3);
+  ending.setDaCapo(true);
+  ScoreLocation location(score, 0, 0, 6);
+  AddAlternateEnding action(location, ending);
 
-    action.redo();
-    REQUIRE(location.getSystem().getAlternateEndings().size() == 1);
-    REQUIRE(location.getSystem().getAlternateEndings()[0] == ending);
+  action.redo();
+  REQUIRE(location.getSystem().getAlternateEndings().size() == 1);
+  REQUIRE(location.getSystem().getAlternateEndings()[0] == ending);
 
-    action.undo();
-    REQUIRE(location.getSystem().getAlternateEndings().size() == 0);
+  action.undo();
+  REQUIRE(location.getSystem().getAlternateEndings().size() == 0);
 }

@@ -22,16 +22,16 @@
 
 TEST_CASE("Actions/AddPlayer", "")
 {
-    Score score;
-    Player player;
-    player.setDescription("Test Player");
+  Score score;
+  Player player;
+  player.setDescription("Test Player");
 
-    AddPlayer action(score, player);
+  AddPlayer action(score, player);
 
-    action.redo();
-    REQUIRE(score.getPlayers().size() == 1);
-    REQUIRE(score.getPlayers()[0] == player);
+  action.redo();
+  REQUIRE(score.getPlayers().size() == 1);
+  REQUIRE(score.getPlayers()[0] == player);
 
-    action.undo();
-    REQUIRE(score.getPlayers().size() == 0);
+  action.undo();
+  REQUIRE(score.getPlayers().size() == 0);
 }

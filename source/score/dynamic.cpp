@@ -17,36 +17,37 @@
 
 #include "dynamic.h"
 
-Dynamic::Dynamic() : myPosition(0), myVolume(fff)
-{
-}
+Dynamic::Dynamic()
+  : myPosition(0)
+  , myVolume(fff)
+{}
 
 Dynamic::Dynamic(int position, VolumeLevel level)
-    : myPosition(position), myVolume(level)
-{
-}
+  : myPosition(position)
+  , myVolume(level)
+{}
 
-bool Dynamic::operator==(const Dynamic &other) const
+bool Dynamic::operator==(const Dynamic& other) const
 {
-    return myPosition == other.myPosition && myVolume == other.myVolume;
+  return myPosition == other.myPosition && myVolume == other.myVolume;
 }
 
 int Dynamic::getPosition() const
 {
-    return myPosition;
+  return myPosition;
 }
 
 void Dynamic::setPosition(int position)
 {
-    myPosition = position;
+  myPosition = position;
 }
 
 Dynamic::VolumeLevel Dynamic::getVolume() const
 {
-    return myVolume;
+  return myVolume;
 }
 
 void Dynamic::setVolume(VolumeLevel level)
 {
-    myVolume = level;
+  myVolume = level;
 }

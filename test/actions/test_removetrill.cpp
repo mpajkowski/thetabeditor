@@ -23,15 +23,15 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/RemoveTrill", "")
 {
-    const int trillFret = 17;
-    myLocation.getNote()->setTrilledFret(trillFret);
+  const int trillFret = 17;
+  myLocation.getNote()->setTrilledFret(trillFret);
 
-    RemoveTrill action(myLocation);
+  RemoveTrill action(myLocation);
 
-    action.redo();
-    REQUIRE(!myLocation.getNote()->hasTrill());
+  action.redo();
+  REQUIRE(!myLocation.getNote()->hasTrill());
 
-    action.undo();
-    REQUIRE(myLocation.getNote()->hasTrill());
-    REQUIRE(myLocation.getNote()->getTrilledFret() == trillFret);
+  action.undo();
+  REQUIRE(myLocation.getNote()->hasTrill());
+  REQUIRE(myLocation.getNote()->getTrilledFret() == trillFret);
 }

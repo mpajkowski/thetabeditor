@@ -32,45 +32,45 @@ class QPrinter;
 /// The visual display of the score.
 class ScoreArea : public QGraphicsView
 {
-    class Scene : public QGraphicsScene
-    {
-    protected:
-        /// The default implementation accepts the event, preventing it from
-        /// propagating up to the main window (which is Where we want to handle
-        /// drag events).
-        void dragEnterEvent(QGraphicsSceneDragDropEvent *event) override;
-    };
+  class Scene : public QGraphicsScene
+  {
+  protected:
+    /// The default implementation accepts the event, preventing it from
+    /// propagating up to the main window (which is Where we want to handle
+    /// drag events).
+    void dragEnterEvent(QGraphicsSceneDragDropEvent* event) override;
+  };
 
 public:
-    explicit ScoreArea(QWidget *parent);
+  explicit ScoreArea(QWidget* parent);
 
-    void renderDocument(const Document &document);
+  void renderDocument(const Document& document);
 
-    void refreshZoom();
+  void refreshZoom();
 
-    void print(QPrinter &printer);
+  void print(QPrinter& printer);
 
-    /// Redraws the specified system, and shifts the following systems as
-    /// necessary.
-    void redrawSystem(int index);
+  /// Redraws the specified system, and shifts the following systems as
+  /// necessary.
+  void redrawSystem(int index);
 
-    std::shared_ptr<ClickPubSub> getClickPubSub() const;
+  std::shared_ptr<ClickPubSub> getClickPubSub() const;
 
 protected:
-    virtual void focusInEvent(QFocusEvent *event) override;
-    virtual void focusOutEvent(QFocusEvent *event) override;
+  virtual void focusInEvent(QFocusEvent* event) override;
+  virtual void focusOutEvent(QFocusEvent* event) override;
 
 private:
-    /// Adjusts the scroll location whenever the caret moves.
-    void adjustScroll();
+  /// Adjusts the scroll location whenever the caret moves.
+  void adjustScroll();
 
-    Scene myScene;
-    boost::optional<const Document &> myDocument;
-    QGraphicsItem *myScoreInfoBlock;
-    QList<QGraphicsItem *> myRenderedSystems;
-    CaretPainter *myCaretPainter;
+  Scene myScene;
+  boost::optional<const Document&> myDocument;
+  QGraphicsItem* myScoreInfoBlock;
+  QList<QGraphicsItem*> myRenderedSystems;
+  CaretPainter* myCaretPainter;
 
-    std::shared_ptr<ClickPubSub> myClickPubSub;
+  std::shared_ptr<ClickPubSub> myClickPubSub;
 };
 
 #endif

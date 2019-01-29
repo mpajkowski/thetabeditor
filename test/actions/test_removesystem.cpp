@@ -23,16 +23,16 @@
 
 TEST_CASE("Actions/RemoveSystem", "")
 {
-    Score score;
-    System system;
-    score.insertSystem(system);
-    score.insertSystem(system);
+  Score score;
+  System system;
+  score.insertSystem(system);
+  score.insertSystem(system);
 
-    RemoveSystem action(score, 1);
+  RemoveSystem action(score, 1);
 
-    action.redo();
-    REQUIRE(score.getSystems().size() == 1);
+  action.redo();
+  REQUIRE(score.getSystems().size() == 1);
 
-    action.undo();
-    REQUIRE(score.getSystems().size() == 2);
+  action.undo();
+  REQUIRE(score.getSystems().size() == 2);
 }

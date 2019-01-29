@@ -19,97 +19,93 @@
 
 #include <score/score.h>
 
-ViewFilterPresenter::ViewFilterPresenter(ViewFilterView &view,
-                                         const Score &score)
-    : myView(view),
-      myFilters(score.getViewFilters().begin(), score.getViewFilters().end())
+ViewFilterPresenter::ViewFilterPresenter(ViewFilterView& view, const Score& score)
+  : myView(view)
+  , myFilters(score.getViewFilters().begin(), score.getViewFilters().end())
 {
-    myView.setPresenter(this);
+  myView.setPresenter(this);
 
-    if (!score.getViewFilters().empty())
-        mySelection = 0;
+  if (!score.getViewFilters().empty())
+    mySelection = 0;
 
-    updateView();
+  updateView();
 }
 
 bool ViewFilterPresenter::exec()
 {
-    return myView.launch();
+  return myView.launch();
 }
 
 void ViewFilterPresenter::addFilter()
 {
-    ViewFilter filter;
-    filter.setDescription("Untitled");
+  ViewFilter filter;
+  filter.setDescription("Untitled");
 
-    myFilters.push_back(filter);
-    mySelection = myFilters.size() - 1;
+  myFilters.push_back(filter);
+  mySelection = myFilters.size() - 1;
 
-    updateView();
+  updateView();
 }
 
 void ViewFilterPresenter::removeSelectedFilter()
 {
-    assert(mySelection);
+  assert(mySelection);
 
-    myFilters.erase(myFilters.begin() + *mySelection);
-    if (myFilters.empty())
-        mySelection.reset();
-    else if (*mySelection == static_cast<int>(myFilters.size()))
-        *mySelection = myFilters.size() - 1;
+  myFilters.erase(myFilters.begin() + *mySelection);
+  if (myFilters.empty())
+    mySelection.reset();
+  else if (*mySelection == static_cast<int>(myFilters.size()))
+    *mySelection = myFilters.size() - 1;
 
-    updateView();
+  updateView();
 }
 
 void ViewFilterPresenter::selectFilter(int index)
 {
-    assert(index >= 0);
-    assert(index < static_cast<int>(myFilters.size()));
+  assert(index >= 0);
+  assert(index < static_cast<int>(myFilters.size()));
 
-    if (mySelection != index)
-    {
-        mySelection = index;
-        updateView();
-    }
+  if (mySelection != index) {
+    mySelection = index;
+    updateView();
+  }
 }
 
-void ViewFilterPresenter::editFilterDescription(const std::string &description)
+void ViewFilterPresenter::editFilterDescription(const std::string& description)
 {
-    myFilters[*mySelection].setDescription(description);
-    updateView();
+  myFilters[*mySelection].setDescription(description);
+  updateView();
 }
 
 void ViewFilterPresenter::addRule()
 {
-    myFilters[*mySelection].addRule(FilterRule());
-    updateView();
+  myFilters[*mySelection].addRule(FilterRule());
+  updateView();
 }
 
 void ViewFilterPresenter::removeRule(int index)
 {
-    myFilters[*mySelection].removeRule(index);
-    updateView();
+  myFilters[*mySelection].removeRule(index);
+  updateView();
 }
 
-void ViewFilterPresenter::editRule(int index, const FilterRule &rule)
+void ViewFilterPresenter::editRule(int index, const FilterRule& rule)
 {
-    myFilters[*mySelection].getRules()[index] = rule;
-    updateView();
+  myFilters[*mySelection].getRules()[index] = rule;
+  updateView();
 }
 
 void ViewFilterPresenter::updateView()
 {
-    std::vector<std::string> filter_names;
-    for (auto &&filter : myFilters)
-        filter_names.push_back(filter.getDescription());
+  std::vector<std::string> filter_names;
+  for (auto&& filter : myFilters)
+    filter_names.push_back(filter.getDescription());
 
-    std::vector<FilterRule> rules;
-    if (mySelection)
-    {
-        auto &filter = myFilters[*mySelection];
-        rules.insert(rules.begin(), filter.getRules().begin(),
-                     filter.getRules().end());
-    }
+  std::vector<FilterRule> rules;
+  if (mySelection) {
+    auto& filter = myFilters[*mySelection];
+    rules.insert(rules.begin(), filter.getRules().begin(), filter.getRules().end());
+  }
 
-    myView.update(filter_names, mySelection, rules);
+  myView.update(filter_names, mySelection, rules);
 }

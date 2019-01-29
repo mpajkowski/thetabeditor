@@ -22,44 +22,42 @@
 
 TEST_CASE("Actions/RemovePlayer", "")
 {
-    Score score;
-    Player player1;
-    player1.setDescription("Player 1");
-    Player player2;
-    player2.setDescription("Player 2");
+  Score score;
+  Player player1;
+  player1.setDescription("Player 1");
+  Player player2;
+  player2.setDescription("Player 2");
 
-    PlayerChange change;
-    change.insertActivePlayer(0, ActivePlayer(0, 0));
-    change.insertActivePlayer(0, ActivePlayer(1, 0));
-    System system;
-    system.insertPlayerChange(change);
-    system.insertStaff(Staff());
+  PlayerChange change;
+  change.insertActivePlayer(0, ActivePlayer(0, 0));
+  change.insertActivePlayer(0, ActivePlayer(1, 0));
+  System system;
+  system.insertPlayerChange(change);
+  system.insertStaff(Staff());
 
-    score.insertSystem(system);
-    score.insertPlayer(player1);
-    score.insertPlayer(player2);
+  score.insertSystem(system);
+  score.insertPlayer(player1);
+  score.insertPlayer(player2);
 
-    RemovePlayer action(score, 0);
+  RemovePlayer action(score, 0);
 
-    action.redo();
-    REQUIRE(score.getPlayers().size() == 1);
-    REQUIRE(score.getPlayers()[0] == player2);
-    {
-        const PlayerChange &newChange =
-            score.getSystems()[0].getPlayerChanges()[0];
-        REQUIRE(newChange.getActivePlayers(0).size() == 1);
-        REQUIRE(newChange.getActivePlayers(0)[0].getPlayerNumber() == 0);
-    }
+  action.redo();
+  REQUIRE(score.getPlayers().size() == 1);
+  REQUIRE(score.getPlayers()[0] == player2);
+  {
+    const PlayerChange& newChange = score.getSystems()[0].getPlayerChanges()[0];
+    REQUIRE(newChange.getActivePlayers(0).size() == 1);
+    REQUIRE(newChange.getActivePlayers(0)[0].getPlayerNumber() == 0);
+  }
 
-    action.undo();
-    REQUIRE(score.getPlayers().size() == 2);
-    REQUIRE(score.getPlayers()[0] == player1);
-    REQUIRE(score.getPlayers()[1] == player2);
-    {
-        const PlayerChange &newChange =
-            score.getSystems()[0].getPlayerChanges()[0];
-        REQUIRE(newChange.getActivePlayers(0).size() == 2);
-        REQUIRE(newChange.getActivePlayers(0)[0].getPlayerNumber() == 0);
-        REQUIRE(newChange.getActivePlayers(0)[1].getPlayerNumber() == 1);
-    }
+  action.undo();
+  REQUIRE(score.getPlayers().size() == 2);
+  REQUIRE(score.getPlayers()[0] == player1);
+  REQUIRE(score.getPlayers()[1] == player2);
+  {
+    const PlayerChange& newChange = score.getSystems()[0].getPlayerChanges()[0];
+    REQUIRE(newChange.getActivePlayers(0).size() == 2);
+    REQUIRE(newChange.getActivePlayers(0)[0].getPlayerNumber() == 0);
+    REQUIRE(newChange.getActivePlayers(0)[1].getPlayerNumber() == 1);
+  }
 }

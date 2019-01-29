@@ -30,40 +30,36 @@ class QPainterPath;
 class BeamGroup
 {
 public:
-    BeamGroup(NoteStem::StemType direction, const std::vector<size_t> &stems);
+  BeamGroup(NoteStem::StemType direction, const std::vector<size_t>& stems);
 
-    /// Draws the stems for each note in the group.
-    void drawStems(QGraphicsItem *parent, const std::vector<NoteStem> &stems,
-                   const QFont &musicFont, const QFontMetricsF &fm,
-                   const LayoutInfo &layout) const;
+  /// Draws the stems for each note in the group.
+  void drawStems(QGraphicsItem* parent,
+                 const std::vector<NoteStem>& stems,
+                 const QFont& musicFont,
+                 const QFontMetricsF& fm,
+                 const LayoutInfo& layout) const;
 
 private:
-    /// Draws the extra beams required for sixteenth notes, etc.
-    void drawExtraBeams(QPainterPath &path,
-                        std::vector<NoteStem>::const_iterator begin,
-                        std::vector<NoteStem>::const_iterator end) const;
+  /// Draws the extra beams required for sixteenth notes, etc.
+  void drawExtraBeams(QPainterPath& path,
+                      std::vector<NoteStem>::const_iterator begin,
+                      std::vector<NoteStem>::const_iterator end) const;
 
-    /// Creates and positions a staccato symbol.
-    static QGraphicsItem *createStaccato(const NoteStem &stem,
-                                         const QFont &musicFont,
-                                         const QFontMetricsF &fm);
+  /// Creates and positions a staccato symbol.
+  static QGraphicsItem* createStaccato(const NoteStem& stem, const QFont& musicFont, const QFontMetricsF& fm);
 
-    /// Creates and positions a fermata symbol.
-    static QGraphicsItem *createFermata(const NoteStem &noteStem,
-                                        const QFont &musicFont,
-                                        const LayoutInfo &layout);
+  /// Creates and positions a fermata symbol.
+  static QGraphicsItem* createFermata(const NoteStem& noteStem,
+                                      const QFont& musicFont,
+                                      const LayoutInfo& layout);
 
-    /// Creates and positions an accent symbol.
-    static QGraphicsItem *createAccent(const NoteStem &stem,
-                                       const QFont &musicFont,
-                                       const LayoutInfo &layout);
+  /// Creates and positions an accent symbol.
+  static QGraphicsItem* createAccent(const NoteStem& stem, const QFont& musicFont, const LayoutInfo& layout);
 
-    static QGraphicsItem *createNoteFlag(const NoteStem &stem,
-                                         const QFont &musicFont,
-                                         const QFontMetricsF &fm);
+  static QGraphicsItem* createNoteFlag(const NoteStem& stem, const QFont& musicFont, const QFontMetricsF& fm);
 
-    NoteStem::StemType myStemDirection;
-    std::vector<size_t> myStems;
+  NoteStem::StemType myStemDirection;
+  std::vector<size_t> myStems;
 };
 
 #endif

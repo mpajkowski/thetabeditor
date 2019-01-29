@@ -20,52 +20,52 @@
 #include <boost/functional/hash.hpp>
 
 SystemLocation::SystemLocation(int system, int position)
-    : mySystem(system), myPosition(position)
+  : mySystem(system)
+  , myPosition(position)
+{}
+
+SystemLocation::SystemLocation()
+  : mySystem(0)
+  , myPosition(0)
+{}
+
+bool SystemLocation::operator<(const SystemLocation& location) const
 {
+  if (mySystem == location.mySystem)
+    return myPosition < location.myPosition;
+  else
+    return mySystem < location.mySystem;
 }
 
-SystemLocation::SystemLocation() : mySystem(0), myPosition(0)
+bool SystemLocation::operator==(const SystemLocation& location) const
 {
-}
-
-bool SystemLocation::operator<(const SystemLocation &location) const
-{
-    if (mySystem == location.mySystem)
-        return myPosition < location.myPosition;
-    else
-        return mySystem < location.mySystem;
-}
-
-bool SystemLocation::operator==(const SystemLocation &location) const
-{
-    return mySystem == location.mySystem && myPosition == location.myPosition;
+  return mySystem == location.mySystem && myPosition == location.myPosition;
 }
 
 void SystemLocation::setPosition(int position)
 {
-    myPosition = position;
+  myPosition = position;
 }
 
 int SystemLocation::getPosition() const
 {
-    return myPosition;
+  return myPosition;
 }
 
 void SystemLocation::setSystem(int system)
 {
-    mySystem = system;
+  mySystem = system;
 }
 
 int SystemLocation::getSystem() const
 {
-    return mySystem;
+  return mySystem;
 }
 
-size_t std::hash<SystemLocation>::operator()(
-    const SystemLocation &location) const
+size_t std::hash<SystemLocation>::operator()(const SystemLocation& location) const
 {
-    size_t seed = 0;
-    boost::hash_combine(seed, location.getSystem());
-    boost::hash_combine(seed, location.getPosition());
-    return seed;
+  size_t seed = 0;
+  boost::hash_combine(seed, location.getSystem());
+  boost::hash_combine(seed, location.getPosition());
+  return seed;
 }

@@ -22,9 +22,9 @@
 
 TEST_CASE("Score/TextItem/Serialization", "")
 {
-    TextItem text;
-    text.setPosition(7);
-    text.setContents("foo");
+  TextItem text;
+  text.setPosition(7);
+  text.setContents("foo");
 
-    Serialization::test("text_item", text);
+  Serialization::test("text_item", text);
 }

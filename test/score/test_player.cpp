@@ -23,20 +23,20 @@
 
 TEST_CASE("Score/Player/Serialization", "")
 {
-    Tuning tuning;
-    std::vector<uint8_t> notes;
-    notes.push_back(Midi::MIDI_NOTE_E4);
-    notes.push_back(Midi::MIDI_NOTE_C2);
-    notes.push_back(Midi::MIDI_NOTE_G3);
-    tuning.setNotes(notes);
-    tuning.setMusicNotationOffset(3);
-    tuning.setSharps(false);
-    tuning.setCapo(7);
+  Tuning tuning;
+  std::vector<uint8_t> notes;
+  notes.push_back(Midi::MIDI_NOTE_E4);
+  notes.push_back(Midi::MIDI_NOTE_C2);
+  notes.push_back(Midi::MIDI_NOTE_G3);
+  tuning.setNotes(notes);
+  tuning.setMusicNotationOffset(3);
+  tuning.setSharps(false);
+  tuning.setCapo(7);
 
-    Player player;
-    player.setDescription("My Description");
-    player.setMaxVolume(42);
-    player.setPan(123);
+  Player player;
+  player.setDescription("My Description");
+  player.setMaxVolume(42);
+  player.setPan(123);
 
-    Serialization::test("player", player);
+  Serialization::test("player", player);
 }

@@ -19,37 +19,34 @@
 
 #include <score/staff.h>
 
-AddNote::AddNote(const ScoreLocation &location, const Note &note,
-                 Position::DurationType duration)
-    : QUndoCommand(QObject::tr("Add Note")),
-      myLocation(location),
-      myNote(note),
-      myDuration(duration)
+AddNote::AddNote(const ScoreLocation& location, const Note& note, Position::DurationType duration)
+  : QUndoCommand(QObject::tr("Add Note"))
+  , myLocation(location)
+  , myNote(note)
+  , myDuration(duration)
 {
-    if (myLocation.getPosition())
-        myOriginalPosition = *myLocation.getPosition();
+  if (myLocation.getPosition())
+    myOriginalPosition = *myLocation.getPosition();
 }
 
 void AddNote::redo()
 {
-    Position *pos = myLocation.getPosition();
+  Position* pos = myLocation.getPosition();
 
-    // Add a new position if necessary.
-    if (!pos)
-    {
-        myLocation.getVoice().insertPosition(
-            Position(myLocation.getPositionIndex(), myDuration));
-        pos = myLocation.getPosition();
-    }
+  // Add a new position if necessary.
+  if (!pos) {
+    myLocation.getVoice().insertPosition(Position(myLocation.getPositionIndex(), myDuration));
+    pos = myLocation.getPosition();
+  }
 
-    pos->setRest(false);
-    pos->insertNote(myNote);
+  pos->setRest(false);
+  pos->insertNote(myNote);
 }
 
 void AddNote::undo()
 {
-    if (!myOriginalPosition)
-        myLocation.getVoice().removePosition(*myLocation.getPosition());
-    else
-        *myLocation.getPosition() = *myOriginalPosition;
+  if (!myOriginalPosition)
+    myLocation.getVoice().removePosition(*myLocation.getPosition());
+  else
+    *myLocation.getPosition() = *myOriginalPosition;
 }

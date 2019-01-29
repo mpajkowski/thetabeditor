@@ -21,8 +21,7 @@
 #include <util/settingstree.h>
 
 /// Audio-related settings and their default values.
-namespace Settings
-{
+namespace Settings {
 extern const Setting<int> MidiApi;
 extern const Setting<int> MidiPort;
 

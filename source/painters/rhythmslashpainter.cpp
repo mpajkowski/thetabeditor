@@ -23,48 +23,38 @@
 #include <powertabdocument/system.h>
 
 const double RhythmSlashPainter::STEM_OFFSET = 3.0;
-const double RhythmSlashPainter::NOTE_HEAD_OFFSET =
-    System::RHYTHM_SLASH_SPACING / 2.0;
+const double RhythmSlashPainter::NOTE_HEAD_OFFSET = System::RHYTHM_SLASH_SPACING / 2.0;
 
-RhythmSlashPainter::RhythmSlashPainter(
-    boost::shared_ptr<const RhythmSlash> rhythmSlash)
-    : rhythmSlash(rhythmSlash), musicFont(MusicFont().getFont())
+RhythmSlashPainter::RhythmSlashPainter(boost::shared_ptr<const RhythmSlash> rhythmSlash)
+  : rhythmSlash(rhythmSlash)
+  , musicFont(MusicFont().getFont())
 {
-    bounds = QRectF(0, 0, musicFont.pixelSize(), System::RHYTHM_SLASH_SPACING);
+  bounds = QRectF(0, 0, musicFont.pixelSize(), System::RHYTHM_SLASH_SPACING);
 }
 
-void RhythmSlashPainter::paint(QPainter *painter,
-                               const QStyleOptionGraphicsItem *, QWidget *)
+void RhythmSlashPainter::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
-    // adjustment for the width difference between the two rhythm slash symbols
-    if (rhythmSlash->GetDurationType() >= 4)
-    {
-        musicFont.setStretch(100);
+  // adjustment for the width difference between the two rhythm slash symbols
+  if (rhythmSlash->GetDurationType() >= 4) {
+    musicFont.setStretch(100);
+  } else {
+    musicFont.setStretch(77);
+  }
+
+  painter->setFont(musicFont);
+
+  // draw the note flag
+  {
+    const double y = System::RHYTHM_SLASH_SPACING / 1.5;
+    const double x = -(musicFont.pixelSize() / 4.0);
+
+    if (rhythmSlash->GetDurationType() >= 4) {
+      painter->drawText(x, y, MusicFont::getSymbol(MusicFont::RhythmSlashFilled));
+    } else {
+      painter->drawText(x - 1, y, MusicFont::getSymbol(MusicFont::RhythmSlashNoFill));
     }
-    else
-    {
-        musicFont.setStretch(77);
-    }
+  }
 
-    painter->setFont(musicFont);
-
-    // draw the note flag
-    {
-        const double y = System::RHYTHM_SLASH_SPACING / 1.5;
-        const double x = -(musicFont.pixelSize() / 4.0);
-
-        if (rhythmSlash->GetDurationType() >= 4)
-        {
-            painter->drawText(
-                x, y, MusicFont::getSymbol(MusicFont::RhythmSlashFilled));
-        }
-        else
-        {
-            painter->drawText(
-                x - 1, y, MusicFont::getSymbol(MusicFont::RhythmSlashNoFill));
-        }
-    }
-
-    // draw note stem
-    painter->drawLine(STEM_OFFSET, 0, STEM_OFFSET, NOTE_HEAD_OFFSET);
+  // draw note stem
+  painter->drawLine(STEM_OFFSET, 0, STEM_OFFSET, NOTE_HEAD_OFFSET);
 }

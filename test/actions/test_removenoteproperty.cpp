@@ -23,12 +23,12 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/RemoveNoteProperty", "")
 {
-    myLocation.getNote()->setProperty(Note::Octave8va);
-    RemoveNoteProperty action(myLocation, Note::Octave8va, "Octave 8va");
+  myLocation.getNote()->setProperty(Note::Octave8va);
+  RemoveNoteProperty action(myLocation, Note::Octave8va, "Octave 8va");
 
-    action.redo();
-    REQUIRE(!myLocation.getNote()->hasProperty(Note::Octave8va));
+  action.redo();
+  REQUIRE(!myLocation.getNote()->hasProperty(Note::Octave8va));
 
-    action.undo();
-    REQUIRE(myLocation.getNote()->hasProperty(Note::Octave8va));
+  action.undo();
+  REQUIRE(myLocation.getNote()->hasProperty(Note::Octave8va));
 }

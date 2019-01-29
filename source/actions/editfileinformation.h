@@ -25,16 +25,15 @@
 class EditFileInformation : public QUndoCommand
 {
 public:
-    EditFileInformation(const ScoreLocation &location,
-                        const ScoreInfo &scoreInfo);
+  EditFileInformation(const ScoreLocation& location, const ScoreInfo& scoreInfo);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const ScoreInfo myScoreInfo;
-    const ScoreInfo myOriginalScoreInfo;
+  ScoreLocation myLocation;
+  const ScoreInfo myScoreInfo;
+  const ScoreInfo myOriginalScoreInfo;
 };
 
 #endif

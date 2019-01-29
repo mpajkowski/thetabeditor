@@ -24,8 +24,7 @@
 #include <string>
 #include <vector>
 
-namespace Gpx
-{
+namespace Gpx {
 
 /// The uncompressed *.gpx file is essentially a filesystem containing several
 /// xml files.
@@ -33,15 +32,15 @@ namespace Gpx
 class FileSystem
 {
 public:
-    FileSystem(std::istream &stream);
+  FileSystem(std::istream& stream);
 
-    const std::string &getFileContents(const std::string &filename) const;
+  const std::string& getFileContents(const std::string& filename) const;
 
 private:
-    void readUncompressedData(std::vector<uint8_t> &data);
+  void readUncompressedData(std::vector<uint8_t>& data);
 
-    /// Maps filenames to file contents.
-    std::map<std::string, std::string> myFiles;
+  /// Maps filenames to file contents.
+  std::map<std::string, std::string> myFiles;
 };
 
 } // namespace Gpx

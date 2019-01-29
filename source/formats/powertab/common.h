@@ -22,7 +22,7 @@
 
 inline FileFormat getPowerTabFileFormat()
 {
-    return FileFormat("Power Tab Document", { "pt2" });
+  return FileFormat("Power Tab Document", { "pt2" });
 }
 
 #endif // COMMON_H

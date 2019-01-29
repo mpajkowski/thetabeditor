@@ -23,16 +23,15 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/RemoveArtificialHarmonic", "")
 {
-    ArtificialHarmonic harmonic(ChordName::D, ChordName::Flat,
-                                ArtificialHarmonic::Octave::Octave15ma);
-    myLocation.getNote()->setArtificialHarmonic(harmonic);
+  ArtificialHarmonic harmonic(ChordName::D, ChordName::Flat, ArtificialHarmonic::Octave::Octave15ma);
+  myLocation.getNote()->setArtificialHarmonic(harmonic);
 
-    RemoveArtificialHarmonic action(myLocation);
+  RemoveArtificialHarmonic action(myLocation);
 
-    action.redo();
-    REQUIRE(!myLocation.getNote()->hasArtificialHarmonic());
+  action.redo();
+  REQUIRE(!myLocation.getNote()->hasArtificialHarmonic());
 
-    action.undo();
-    REQUIRE(myLocation.getNote()->hasArtificialHarmonic());
-    REQUIRE(myLocation.getNote()->getArtificialHarmonic() == harmonic);
+  action.undo();
+  REQUIRE(myLocation.getNote()->hasArtificialHarmonic());
+  REQUIRE(myLocation.getNote()->getArtificialHarmonic() == harmonic);
 }

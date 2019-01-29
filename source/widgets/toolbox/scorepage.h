@@ -31,55 +31,54 @@ class TheTabEditor;
 
 class ScorePage : public QFrame
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    ScorePage(TheTabEditor *mainWindow,
-              boost::shared_ptr<SkinManager> skinManager, QFrame *parent = 0);
+  ScorePage(TheTabEditor* mainWindow, boost::shared_ptr<SkinManager> skinManager, QFrame* parent = 0);
 
 private:
-    TheTabEditor *mainWindow;
+  TheTabEditor* mainWindow;
 
-    QVBoxLayout *layout;
+  QVBoxLayout* layout;
 
-    QHBoxLayout *songLayout;
-    QHBoxLayout *sectionLayout;
-    // QHBoxLayout *staffLayout;
-    QHBoxLayout *flowDynamicsLayout;
+  QHBoxLayout* songLayout;
+  QHBoxLayout* sectionLayout;
+  // QHBoxLayout *staffLayout;
+  QHBoxLayout* flowDynamicsLayout;
 
-    QGroupBox *songGroup;
-    QGroupBox *sectionGroup;
-    // QGroupBox *staffGroup;
-    QGroupBox *flowDynamicsGroup;
+  QGroupBox* songGroup;
+  QGroupBox* sectionGroup;
+  // QGroupBox *staffGroup;
+  QGroupBox* flowDynamicsGroup;
 
-    // song group
-    QPushButton *addInstrumentButton;
-    QPushButton *addPercussionButton;
-    QPushButton *increaseHeightButton;
-    QPushButton *decreaseHeightButton;
+  // song group
+  QPushButton* addInstrumentButton;
+  QPushButton* addPercussionButton;
+  QPushButton* increaseHeightButton;
+  QPushButton* decreaseHeightButton;
 
-    // section group
-    QPushButton *insertSectionBeforeButton;
-    QPushButton *insertSectionAfterButton;
-    QPushButton *removeSectionButton;
-    QPushButton *addBarButton;
-    QPushButton *increaseWidthButton;
-    QPushButton *decreaseWidthButton;
-    QPushButton *justifyButton;
+  // section group
+  QPushButton* insertSectionBeforeButton;
+  QPushButton* insertSectionAfterButton;
+  QPushButton* removeSectionButton;
+  QPushButton* addBarButton;
+  QPushButton* increaseWidthButton;
+  QPushButton* decreaseWidthButton;
+  QPushButton* justifyButton;
 
-    // staff group
-    // QPushButton *
+  // staff group
+  // QPushButton *
 
-    // flow and dynamics group
-    QPushButton *addRehearsalSignButton;
-    QPushButton *addDirectionButton;
-    QPushButton *addTempoMarkerButton;
-    QPushButton *addVolumeMarkerButton;
+  // flow and dynamics group
+  QPushButton* addRehearsalSignButton;
+  QPushButton* addDirectionButton;
+  QPushButton* addTempoMarkerButton;
+  QPushButton* addVolumeMarkerButton;
 
-    void createSongButtons();
-    void createSectionButtons();
-    // void createStaffButtons();
-    void createFlowDynamicsButtons();
+  void createSongButtons();
+  void createSectionButtons();
+  // void createStaffButtons();
+  void createFlowDynamicsButtons();
 };
 
 #endif // SCOREPAGE_H

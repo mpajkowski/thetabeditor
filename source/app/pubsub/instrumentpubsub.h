@@ -24,13 +24,11 @@ class Instrument;
 
 /// Provides a way to subscribe to or publish notifications about changes
 /// to a particular instrument.
-class InstrumentEditPubSub : public PubSub<void(int, const Instrument &)>
-{
-};
+class InstrumentEditPubSub : public PubSub<void(int, const Instrument&)>
+{};
 
 /// Notifications about an instrument being removed.
 class InstrumentRemovePubSub : public PubSub<void(int)>
-{
-};
+{};
 
 #endif

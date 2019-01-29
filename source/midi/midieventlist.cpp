@@ -21,48 +21,42 @@
 #include <cassert>
 
 MidiEventList::MidiEventList(bool absolute_ticks)
-    : myAbsoluteTicks(absolute_ticks)
-{
-}
+  : myAbsoluteTicks(absolute_ticks)
+{}
 
 void MidiEventList::convertToDeltaTicks()
 {
-    assert(myAbsoluteTicks);
-    myAbsoluteTicks = false;
+  assert(myAbsoluteTicks);
+  myAbsoluteTicks = false;
 
-    if (myEvents.size() <= 1)
-        return;
+  if (myEvents.size() <= 1)
+    return;
 
-    // First, sort by timestamp. Events for different voices may have been added
-    // out of order.
-    std::stable_sort(myEvents.begin(), myEvents.end(),
-                     [](const MidiEvent &a, const MidiEvent &b) {
-                         return a.getTicks() < b.getTicks();
-                     });
+  // First, sort by timestamp. Events for different voices may have been added
+  // out of order.
+  std::stable_sort(myEvents.begin(), myEvents.end(), [](const MidiEvent& a, const MidiEvent& b) {
+    return a.getTicks() < b.getTicks();
+  });
 
-    for (size_t i = myEvents.size() - 1; i >= 1; --i)
-    {
-        MidiEvent &event = myEvents[i];
-        const MidiEvent &prev_event = myEvents[i - 1];
-        event.setTicks(event.getTicks() - prev_event.getTicks());
-    }
+  for (size_t i = myEvents.size() - 1; i >= 1; --i) {
+    MidiEvent& event = myEvents[i];
+    const MidiEvent& prev_event = myEvents[i - 1];
+    event.setTicks(event.getTicks() - prev_event.getTicks());
+  }
 }
 
 void MidiEventList::convertToAbsoluteTicks()
 {
-    assert(!myAbsoluteTicks);
-    myAbsoluteTicks = true;
+  assert(!myAbsoluteTicks);
+  myAbsoluteTicks = true;
 
-    for (size_t i = 1; i < myEvents.size(); ++i)
-    {
-        myEvents[i].setTicks(myEvents[i].getTicks() +
-                             myEvents[i - 1].getTicks());
-    }
+  for (size_t i = 1; i < myEvents.size(); ++i) {
+    myEvents[i].setTicks(myEvents[i].getTicks() + myEvents[i - 1].getTicks());
+  }
 }
 
-void MidiEventList::concat(const MidiEventList &other)
+void MidiEventList::concat(const MidiEventList& other)
 {
-    myEvents.reserve(myEvents.size() + other.myEvents.size());
-    myEvents.insert(myEvents.end(), other.myEvents.begin(),
-                    other.myEvents.end());
+  myEvents.reserve(myEvents.size() + other.myEvents.size());
+  myEvents.insert(myEvents.end(), other.myEvents.begin(), other.myEvents.end());
 }

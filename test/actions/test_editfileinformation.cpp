@@ -22,17 +22,17 @@
 
 TEST_CASE("Actions/EditFileInformation", "")
 {
-    Score score;
+  Score score;
 
-    ScoreInfo info;
-    info.setLessonData(LessonData());
+  ScoreInfo info;
+  info.setLessonData(LessonData());
 
-    ScoreLocation location(score);
-    EditFileInformation action(location, info);
+  ScoreLocation location(score);
+  EditFileInformation action(location, info);
 
-    action.redo();
-    REQUIRE(score.getScoreInfo() == info);
+  action.redo();
+  REQUIRE(score.getScoreInfo() == info);
 
-    action.undo();
-    REQUIRE_FALSE(score.getScoreInfo() == info);
+  action.undo();
+  REQUIRE_FALSE(score.getScoreInfo() == info);
 }

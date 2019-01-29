@@ -23,32 +23,32 @@
 
 TEST_CASE("Score/KeySignature/ToString", "")
 {
-    KeySignature key(KeySignature::Major, 4, false);
-    REQUIRE(boost::lexical_cast<std::string>(key) == "Ab Major - Bb Eb Ab Db");
+  KeySignature key(KeySignature::Major, 4, false);
+  REQUIRE(boost::lexical_cast<std::string>(key) == "Ab Major - Bb Eb Ab Db");
 
-    key.setNumAccidentals(0);
-    REQUIRE(boost::lexical_cast<std::string>(key) == "C Major");
+  key.setNumAccidentals(0);
+  REQUIRE(boost::lexical_cast<std::string>(key) == "C Major");
 
-    key.setKeyType(KeySignature::Minor);
-    key.setNumAccidentals(2);
-    key.setSharps(true);
-    REQUIRE(boost::lexical_cast<std::string>(key) == "B Minor - F# C#");
+  key.setKeyType(KeySignature::Minor);
+  key.setNumAccidentals(2);
+  key.setSharps(true);
+  REQUIRE(boost::lexical_cast<std::string>(key) == "B Minor - F# C#");
 }
 
 TEST_CASE("Score/KeySignature/Cancellation", "")
 {
-    KeySignature key(KeySignature::Major, 3, true);
-    key.setCancellation(true);
+  KeySignature key(KeySignature::Major, 3, true);
+  key.setCancellation(true);
 
-    REQUIRE(key.getNumAccidentals(false) == 0);
-    REQUIRE(key.getNumAccidentals(true) == 3);
+  REQUIRE(key.getNumAccidentals(false) == 0);
+  REQUIRE(key.getNumAccidentals(true) == 3);
 }
 
 TEST_CASE("Score/KeySignature/Serialization", "")
 {
-    KeySignature key(KeySignature::Minor, 4, false);
-    key.setVisible(false);
-    key.setCancellation(true);
+  KeySignature key(KeySignature::Minor, 4, false);
+  key.setVisible(false);
+  key.setCancellation(true);
 
-    Serialization::test("key_signature", key);
+  Serialization::test("key_signature", key);
 }

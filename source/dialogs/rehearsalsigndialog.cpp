@@ -21,62 +21,59 @@
 #include <QCompleter>
 #include <QMessageBox>
 
-RehearsalSignDialog::RehearsalSignDialog(QWidget *parent)
-    : QDialog(parent), ui(new Ui::RehearsalSignDialog)
+RehearsalSignDialog::RehearsalSignDialog(QWidget* parent)
+  : QDialog(parent)
+  , ui(new Ui::RehearsalSignDialog)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    populateDescriptionChoices();
-    ui->descriptionComboBox->clearEditText();
+  populateDescriptionChoices();
+  ui->descriptionComboBox->clearEditText();
 }
 
 RehearsalSignDialog::~RehearsalSignDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 void RehearsalSignDialog::populateDescriptionChoices()
 {
-    QStringList descriptions;
-    descriptions << "Intro"
-                 << "Pre-Verse"
-                 << "Verse"
-                 << "Pre-Chorus"
-                 << "Chorus"
-                 << "Interlude"
-                 << "Breakdown"
-                 << "Bridge"
-                 << "Guitar Break"
-                 << "Guitar Solo"
-                 << "Out-Chorus"
-                 << "Outro";
+  QStringList descriptions;
+  descriptions << "Intro"
+               << "Pre-Verse"
+               << "Verse"
+               << "Pre-Chorus"
+               << "Chorus"
+               << "Interlude"
+               << "Breakdown"
+               << "Bridge"
+               << "Guitar Break"
+               << "Guitar Solo"
+               << "Out-Chorus"
+               << "Outro";
 
-    ui->descriptionComboBox->addItems(descriptions);
+  ui->descriptionComboBox->addItems(descriptions);
 
-    // Autocompletion for description choices.
-    auto completer = new QCompleter(descriptions);
-    completer->setCaseSensitivity(Qt::CaseInsensitive);
-    ui->descriptionComboBox->setCompleter(completer);
+  // Autocompletion for description choices.
+  auto completer = new QCompleter(descriptions);
+  completer->setCaseSensitivity(Qt::CaseInsensitive);
+  ui->descriptionComboBox->setCompleter(completer);
 }
 
 void RehearsalSignDialog::accept()
 {
-    std::string description =
-        ui->descriptionComboBox->currentText().toStdString();
+  std::string description = ui->descriptionComboBox->currentText().toStdString();
 
-    if (description.empty())
-    {
-        QMessageBox(QMessageBox::Warning, tr("Rehearsal Sign"),
-                    tr("The Rehearsal Sign description cannot be empty."))
-            .exec();
-    }
-    else
-    {
-        done(QDialog::Accepted);
-    }
+  if (description.empty()) {
+    QMessageBox(
+      QMessageBox::Warning, tr("Rehearsal Sign"), tr("The Rehearsal Sign description cannot be empty."))
+      .exec();
+  } else {
+    done(QDialog::Accepted);
+  }
 }
 
 std::string RehearsalSignDialog::getDescription() const
 {
-    return ui->descriptionComboBox->currentText().toStdString();
+  return ui->descriptionComboBox->currentText().toStdString();
 }

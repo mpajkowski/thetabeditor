@@ -20,30 +20,29 @@
 
 #include <QDialog>
 
-namespace Ui
-{
+namespace Ui {
 class RehearsalSignDialog;
 }
 
 class RehearsalSignDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    RehearsalSignDialog(QWidget *parent);
-    ~RehearsalSignDialog();
+  RehearsalSignDialog(QWidget* parent);
+  ~RehearsalSignDialog();
 
-    /// Returns the description of the rehearsal sign that was entered by
-    /// the user.
-    std::string getDescription() const;
+  /// Returns the description of the rehearsal sign that was entered by
+  /// the user.
+  std::string getDescription() const;
 
 public slots:
-    virtual void accept() override;
+  virtual void accept() override;
 
 private:
-    void populateDescriptionChoices();
+  void populateDescriptionChoices();
 
-    Ui::RehearsalSignDialog *ui;
+  Ui::RehearsalSignDialog* ui;
 };
 
 #endif

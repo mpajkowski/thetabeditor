@@ -19,19 +19,19 @@
 
 #include <score/utils/scorepolisher.h>
 
-PolishSystem::PolishSystem(const ScoreLocation &location)
-    : QUndoCommand(QObject::tr("Polish System")), myLocation(location)
-{
-}
+PolishSystem::PolishSystem(const ScoreLocation& location)
+  : QUndoCommand(QObject::tr("Polish System"))
+  , myLocation(location)
+{}
 
 void PolishSystem::redo()
 {
-    myOriginalSystem = myLocation.getSystem();
-    ScoreUtils::polishSystem(myLocation.getSystem());
+  myOriginalSystem = myLocation.getSystem();
+  ScoreUtils::polishSystem(myLocation.getSystem());
 }
 
 void PolishSystem::undo()
 {
-    myLocation.getSystem() = *myOriginalSystem;
-    myOriginalSystem.reset();
+  myLocation.getSystem() = *myOriginalSystem;
+  myOriginalSystem.reset();
 }

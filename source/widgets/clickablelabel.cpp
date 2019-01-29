@@ -17,27 +17,28 @@
 
 #include "clickablelabel.h"
 
-ClickableLabel::ClickableLabel(QWidget *parent) : QLabel(parent)
+ClickableLabel::ClickableLabel(QWidget* parent)
+  : QLabel(parent)
 {
-    setStyleSheet("QLabel { padding: 4px }");
+  setStyleSheet("QLabel { padding: 4px }");
 }
 
-void ClickableLabel::enterEvent(QEvent *)
+void ClickableLabel::enterEvent(QEvent*)
 {
-    setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
+  setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
 }
 
-void ClickableLabel::leaveEvent(QEvent *)
+void ClickableLabel::leaveEvent(QEvent*)
 {
-    setFrameStyle(QFrame::NoFrame);
+  setFrameStyle(QFrame::NoFrame);
 }
 
-void ClickableLabel::mouseReleaseEvent(QMouseEvent *)
+void ClickableLabel::mouseReleaseEvent(QMouseEvent*)
 {
-    emit clicked();
+  emit clicked();
 }
 
-void ClickableLabel::mouseDoubleClickEvent(QMouseEvent *)
+void ClickableLabel::mouseDoubleClickEvent(QMouseEvent*)
 {
-    emit doubleClicked();
+  emit doubleClicked();
 }

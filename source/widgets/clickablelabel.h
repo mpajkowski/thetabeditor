@@ -23,20 +23,20 @@
 /// A subclass of QLabel that emits signals when it is clicked.
 class ClickableLabel : public QLabel
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    ClickableLabel(QWidget *parent);
+  ClickableLabel(QWidget* parent);
 
 signals:
-    void clicked();
-    void doubleClicked();
+  void clicked();
+  void doubleClicked();
 
 protected:
-    virtual void enterEvent(QEvent *) override;
-    virtual void leaveEvent(QEvent *) override;
-    virtual void mouseReleaseEvent(QMouseEvent *) override;
-    virtual void mouseDoubleClickEvent(QMouseEvent *) override;
+  virtual void enterEvent(QEvent*) override;
+  virtual void leaveEvent(QEvent*) override;
+  virtual void mouseReleaseEvent(QMouseEvent*) override;
+  virtual void mouseDoubleClickEvent(QMouseEvent*) override;
 };
 
 #endif

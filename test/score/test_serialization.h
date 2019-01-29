@@ -23,22 +23,21 @@
 #include <score/serialization.h>
 #include <sstream>
 
-namespace Serialization
-{
+namespace Serialization {
 
 /// Basic test for the serialization code - we should be able to serialize
 /// and deserialize and object, and get an equivalent object back.
-template <typename T>
-void test(const char *name, const T &original)
+template<typename T>
+void test(const char* name, const T& original)
 {
-    std::ostringstream output;
-    ScoreUtils::save(output, name, original);
+  std::ostringstream output;
+  ScoreUtils::save(output, name, original);
 
-    T copy;
-    std::istringstream input(output.str());
-    ScoreUtils::load(input, name, copy);
+  T copy;
+  std::istringstream input(output.str());
+  ScoreUtils::load(input, name, copy);
 
-    REQUIRE(original == copy);
+  REQUIRE(original == copy);
 }
 } // namespace Serialization
 

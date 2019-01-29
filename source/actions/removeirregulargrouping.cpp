@@ -19,20 +19,19 @@
 
 #include <score/voice.h>
 
-RemoveIrregularGrouping::RemoveIrregularGrouping(const ScoreLocation &location,
-                                                 const IrregularGrouping &group)
-    : QUndoCommand(QObject::tr("Remove Irregular Grouping")),
-      myLocation(location),
-      myGroup(group)
-{
-}
+RemoveIrregularGrouping::RemoveIrregularGrouping(const ScoreLocation& location,
+                                                 const IrregularGrouping& group)
+  : QUndoCommand(QObject::tr("Remove Irregular Grouping"))
+  , myLocation(location)
+  , myGroup(group)
+{}
 
 void RemoveIrregularGrouping::redo()
 {
-    myLocation.getVoice().removeIrregularGrouping(myGroup);
+  myLocation.getVoice().removeIrregularGrouping(myGroup);
 }
 
 void RemoveIrregularGrouping::undo()
 {
-    myLocation.getVoice().insertIrregularGrouping(myGroup);
+  myLocation.getVoice().insertIrregularGrouping(myGroup);
 }

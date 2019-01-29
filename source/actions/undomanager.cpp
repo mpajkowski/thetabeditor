@@ -17,96 +17,86 @@
 
 #include "undomanager.h"
 
-UndoManager::UndoManager(QObject *parent) : QUndoGroup(parent)
-{
-}
+UndoManager::UndoManager(QObject* parent)
+  : QUndoGroup(parent)
+{}
 
 void UndoManager::addNewUndoStack()
 {
-    undoStacks.emplace_back(new QUndoStack);
-    addStack(undoStacks.back().get());
+  undoStacks.emplace_back(new QUndoStack);
+  addStack(undoStacks.back().get());
 }
 
 void UndoManager::setActiveStackIndex(int index)
 {
-    if (index == -1) // When there are no open documents, the index is -1.
-        return;
+  if (index == -1) // When there are no open documents, the index is -1.
+    return;
 
-    setActiveStack(undoStacks.at(index).get());
+  setActiveStack(undoStacks.at(index).get());
 }
 
 void UndoManager::removeStack(int index)
 {
-    // Stack is automatically removed from the QUndoGroup when it is deleted.
-    undoStacks.erase(undoStacks.begin() + index);
+  // Stack is automatically removed from the QUndoGroup when it is deleted.
+  undoStacks.erase(undoStacks.begin() + index);
 }
 
-void UndoManager::push(QUndoCommand *cmd)
+void UndoManager::push(QUndoCommand* cmd)
 {
-    activeStack()->push(cmd);
+  activeStack()->push(cmd);
 }
 
-void UndoManager::push(QUndoCommand *cmd, int affectedSystem)
+void UndoManager::push(QUndoCommand* cmd, int affectedSystem)
 {
-    beginMacro(cmd->actionText());
+  beginMacro(cmd->actionText());
 
-    auto onUndo = new SignalOnUndo();
-    if (affectedSystem >= 0)
-    {
-        connect(onUndo, &SignalOnUndo::triggered,
-                [=]() { onSystemChanged(affectedSystem); });
-    }
-    else
-    {
-        connect(onUndo, &SignalOnUndo::triggered, this,
-                &UndoManager::fullRedrawNeeded);
-    }
+  auto onUndo = new SignalOnUndo();
+  if (affectedSystem >= 0) {
+    connect(onUndo, &SignalOnUndo::triggered, [=]() { onSystemChanged(affectedSystem); });
+  } else {
+    connect(onUndo, &SignalOnUndo::triggered, this, &UndoManager::fullRedrawNeeded);
+  }
 
-    push(onUndo);
-    push(cmd);
+  push(onUndo);
+  push(cmd);
 
-    auto onRedo = new SignalOnRedo();
-    if (affectedSystem >= 0)
-    {
-        connect(onRedo, &SignalOnRedo::triggered,
-                [=]() { onSystemChanged(affectedSystem); });
-    }
-    else
-    {
-        connect(onRedo, &SignalOnRedo::triggered, this,
-                &UndoManager::fullRedrawNeeded);
-    }
+  auto onRedo = new SignalOnRedo();
+  if (affectedSystem >= 0) {
+    connect(onRedo, &SignalOnRedo::triggered, [=]() { onSystemChanged(affectedSystem); });
+  } else {
+    connect(onRedo, &SignalOnRedo::triggered, this, &UndoManager::fullRedrawNeeded);
+  }
 
-    push(onRedo);
-    endMacro();
+  push(onRedo);
+  endMacro();
 }
 
 void UndoManager::setClean()
 {
-    activeStack()->setClean();
+  activeStack()->setClean();
 }
 
 void UndoManager::onSystemChanged(int affectedSystem)
 {
-    emit redrawNeeded(affectedSystem);
+  emit redrawNeeded(affectedSystem);
 }
 
-void UndoManager::beginMacro(const QString &text)
+void UndoManager::beginMacro(const QString& text)
 {
-    activeStack()->beginMacro(text);
+  activeStack()->beginMacro(text);
 }
 
 void UndoManager::endMacro()
 {
-    activeStack()->endMacro();
+  activeStack()->endMacro();
 }
 
 void SignalOnRedo::redo()
 {
-    emit triggered();
+  emit triggered();
 }
 
 void SignalOnUndo::undo()
 {
-    emit triggered();
+  emit triggered();
 }

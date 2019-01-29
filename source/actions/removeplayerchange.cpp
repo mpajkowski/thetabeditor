@@ -20,20 +20,19 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemovePlayerChange::RemovePlayerChange(const ScoreLocation &location)
-    : QUndoCommand(QObject::tr("Remove Player Change")),
-      myLocation(location),
-      myPlayerChange(*ScoreUtils::findByPosition(
-          location.getSystem().getPlayerChanges(), location.getPositionIndex()))
-{
-}
+RemovePlayerChange::RemovePlayerChange(const ScoreLocation& location)
+  : QUndoCommand(QObject::tr("Remove Player Change"))
+  , myLocation(location)
+  , myPlayerChange(
+      *ScoreUtils::findByPosition(location.getSystem().getPlayerChanges(), location.getPositionIndex()))
+{}
 
 void RemovePlayerChange::redo()
 {
-    myLocation.getSystem().removePlayerChange(myPlayerChange);
+  myLocation.getSystem().removePlayerChange(myPlayerChange);
 }
 
 void RemovePlayerChange::undo()
 {
-    myLocation.getSystem().insertPlayerChange(myPlayerChange);
+  myLocation.getSystem().insertPlayerChange(myPlayerChange);
 }

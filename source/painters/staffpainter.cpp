@@ -22,69 +22,63 @@
 #include <app/pubsub/clickpubsub.h>
 #include <cmath>
 
-StaffPainter::StaffPainter(const LayoutConstPtr &layout,
-                           const ScoreLocation &location,
-                           const std::shared_ptr<ClickPubSub> &pubsub)
-    : myLayout(layout),
-      myPubSub(pubsub),
-      myLocation(location),
-      myBounds(0, 0, LayoutInfo::STAFF_WIDTH, layout->getStaffHeight())
+StaffPainter::StaffPainter(const LayoutConstPtr& layout,
+                           const ScoreLocation& location,
+                           const std::shared_ptr<ClickPubSub>& pubsub)
+  : myLayout(layout)
+  , myPubSub(pubsub)
+  , myLocation(location)
+  , myBounds(0, 0, LayoutInfo::STAFF_WIDTH, layout->getStaffHeight())
 {
-    // Only use the left mouse button for making selections.
-    setAcceptedMouseButtons(Qt::LeftButton);
+  // Only use the left mouse button for making selections.
+  setAcceptedMouseButtons(Qt::LeftButton);
 }
 
-void StaffPainter::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void StaffPainter::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    const double x = event->pos().x();
-    const double y = event->pos().y();
+  const double x = event->pos().x();
+  const double y = event->pos().y();
 
-    // Find the position relative to the top of the staff, in terms of the tab
-    // line spacing. Then, round it to find the string index.
-    const int string = std::floor(
-        ((y - myLayout->getTopTabLine()) / myLayout->getTabLineSpacing()) +
-        0.5);
+  // Find the position relative to the top of the staff, in terms of the tab
+  // line spacing. Then, round it to find the string index.
+  const int string = std::floor(((y - myLayout->getTopTabLine()) / myLayout->getTabLineSpacing()) + 0.5);
 
-    if (string >= 0 && string < myLayout->getStringCount())
-    {
-        const int position = myLayout->getPositionFromX(x);
-        myLocation.setPositionIndex(position);
-        myLocation.setSelectionStart(position);
-        myLocation.setString(string);
+  if (string >= 0 && string < myLayout->getStringCount()) {
+    const int position = myLayout->getPositionFromX(x);
+    myLocation.setPositionIndex(position);
+    myLocation.setSelectionStart(position);
+    myLocation.setString(string);
 
-        myPubSub->publish(ClickType::Selection, myLocation);
-    }
-}
-
-void StaffPainter::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    const double x = event->pos().x();
-    myLocation.setPositionIndex(myLayout->getPositionFromX(x));
     myPubSub->publish(ClickType::Selection, myLocation);
+  }
 }
 
-void StaffPainter::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
-                         QWidget *)
+void StaffPainter::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
-    painter->setPen(QPen(QBrush(QColor(213, 213, 213)), 0.75));
-
-    // Draw standard notation staff.
-    drawStaffLines(painter, LayoutInfo::NUM_STD_NOTATION_LINES,
-                   myLayout->STD_NOTATION_LINE_SPACING,
-                   myLayout->getTopStdNotationLine());
-
-    // Draw tab staff.
-    drawStaffLines(painter, myLayout->getStringCount(),
-                   myLayout->getTabLineSpacing(), myLayout->getTopTabLine());
+  const double x = event->pos().x();
+  myLocation.setPositionIndex(myLayout->getPositionFromX(x));
+  myPubSub->publish(ClickType::Selection, myLocation);
 }
 
-void StaffPainter::drawStaffLines(QPainter *painter, int lineCount,
-                                  double lineSpacing, double startHeight)
+void StaffPainter::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
-    for (int i = 0; i < lineCount; i++)
-    {
-        const double height = i * lineSpacing + startHeight;
-        painter->drawLine(QPointF(0, height),
-                          QPointF(LayoutInfo::STAFF_WIDTH, height));
-    }
+  painter->setPen(QPen(QBrush(QColor(213, 213, 213)), 0.75));
+
+  // Draw standard notation staff.
+  drawStaffLines(painter,
+                 LayoutInfo::NUM_STD_NOTATION_LINES,
+                 myLayout->STD_NOTATION_LINE_SPACING,
+                 myLayout->getTopStdNotationLine());
+
+  // Draw tab staff.
+  drawStaffLines(
+    painter, myLayout->getStringCount(), myLayout->getTabLineSpacing(), myLayout->getTopTabLine());
+}
+
+void StaffPainter::drawStaffLines(QPainter* painter, int lineCount, double lineSpacing, double startHeight)
+{
+  for (int i = 0; i < lineCount; i++) {
+    const double height = i * lineSpacing + startHeight;
+    painter->drawLine(QPointF(0, height), QPointF(LayoutInfo::STAFF_WIDTH, height));
+  }
 }

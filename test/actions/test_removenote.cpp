@@ -23,29 +23,29 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/RemoveNote", "")
 {
-    RemoveNote action(myLocation);
+  RemoveNote action(myLocation);
 
-    action.redo();
+  action.redo();
+  REQUIRE(myLocation.getPosition() != NULL);
+  REQUIRE(myLocation.getNote() == NULL);
+  REQUIRE(myLocation.getPosition()->getNotes().size() == 1);
+
+  {
+    myLocation.setString(5);
+
+    RemoveNote action2(myLocation);
+    action2.redo();
+    REQUIRE(myLocation.getPosition() == NULL);
+
+    action2.undo();
     REQUIRE(myLocation.getPosition() != NULL);
-    REQUIRE(myLocation.getNote() == NULL);
+    REQUIRE(myLocation.getNote() != NULL);
     REQUIRE(myLocation.getPosition()->getNotes().size() == 1);
 
-    {
-        myLocation.setString(5);
+    myLocation.setString(2);
+  }
 
-        RemoveNote action2(myLocation);
-        action2.redo();
-        REQUIRE(myLocation.getPosition() == NULL);
-
-        action2.undo();
-        REQUIRE(myLocation.getPosition() != NULL);
-        REQUIRE(myLocation.getNote() != NULL);
-        REQUIRE(myLocation.getPosition()->getNotes().size() == 1);
-
-        myLocation.setString(2);
-    }
-
-    action.undo();
-    REQUIRE(myLocation.getPosition()->getNotes().size() == 2);
-    REQUIRE(myLocation.getNote() != NULL);
+  action.undo();
+  REQUIRE(myLocation.getPosition()->getNotes().size() == 2);
+  REQUIRE(myLocation.getNote() != NULL);
 }

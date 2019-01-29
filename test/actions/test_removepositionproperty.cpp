@@ -23,12 +23,12 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/RemovePositionProperty", "")
 {
-    myLocation.getPosition()->setProperty(Position::Tap);
-    RemovePositionProperty action(myLocation, Position::Tap, "Tap");
+  myLocation.getPosition()->setProperty(Position::Tap);
+  RemovePositionProperty action(myLocation, Position::Tap, "Tap");
 
-    action.redo();
-    REQUIRE(!myLocation.getPosition()->hasProperty(Position::Tap));
+  action.redo();
+  REQUIRE(!myLocation.getPosition()->hasProperty(Position::Tap));
 
-    action.undo();
-    REQUIRE(myLocation.getPosition()->hasProperty(Position::Tap));
+  action.undo();
+  REQUIRE(myLocation.getPosition()->hasProperty(Position::Tap));
 }

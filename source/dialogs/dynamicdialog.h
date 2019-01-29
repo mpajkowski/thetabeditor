@@ -23,23 +23,22 @@
 
 class QButtonGroup;
 
-namespace Ui
-{
+namespace Ui {
 class DynamicDialog;
 }
 
 class DynamicDialog : public QDialog
 {
 public:
-    explicit DynamicDialog(QWidget *parent);
-    ~DynamicDialog();
+  explicit DynamicDialog(QWidget* parent);
+  ~DynamicDialog();
 
-    Dynamic::VolumeLevel getVolumeLevel() const;
+  Dynamic::VolumeLevel getVolumeLevel() const;
 
 private:
-    Ui::DynamicDialog *ui;
+  Ui::DynamicDialog* ui;
 
-    QButtonGroup *myVolumeLevels;
+  QButtonGroup* myVolumeLevels;
 };
 
 #endif

@@ -27,17 +27,17 @@ class Score;
 class EditViewFilters : public QUndoCommand
 {
 public:
-    EditViewFilters(Score &score, std::vector<ViewFilter> new_filters);
+  EditViewFilters(Score& score, std::vector<ViewFilter> new_filters);
 
-    void redo() override;
-    void undo() override;
+  void redo() override;
+  void undo() override;
 
 private:
-    void setViewFilters(const std::vector<ViewFilter> &filters);
+  void setViewFilters(const std::vector<ViewFilter>& filters);
 
-    Score &myScore;
-    std::vector<ViewFilter> myOriginalFilters;
-    std::vector<ViewFilter> myNewFilters;
+  Score& myScore;
+  std::vector<ViewFilter> myOriginalFilters;
+  std::vector<ViewFilter> myNewFilters;
 };
 
 #endif

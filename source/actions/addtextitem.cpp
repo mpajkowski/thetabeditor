@@ -19,17 +19,18 @@
 
 #include <score/system.h>
 
-AddTextItem::AddTextItem(const ScoreLocation &location, const TextItem &text)
-    : QUndoCommand(QObject::tr("Add Text")), myLocation(location), myText(text)
-{
-}
+AddTextItem::AddTextItem(const ScoreLocation& location, const TextItem& text)
+  : QUndoCommand(QObject::tr("Add Text"))
+  , myLocation(location)
+  , myText(text)
+{}
 
 void AddTextItem::redo()
 {
-    myLocation.getSystem().insertTextItem(myText);
+  myLocation.getSystem().insertTextItem(myText);
 }
 
 void AddTextItem::undo()
 {
-    myLocation.getSystem().removeTextItem(myText);
+  myLocation.getSystem().removeTextItem(myText);
 }

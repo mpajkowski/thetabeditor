@@ -19,31 +19,30 @@
 
 #include <score/system.h>
 
-AddBarline::AddBarline(const ScoreLocation &location, const Barline &barline)
-    : QUndoCommand(QObject::tr("Insert Barline")),
-      myLocation(location),
-      myBarline(barline)
+AddBarline::AddBarline(const ScoreLocation& location, const Barline& barline)
+  : QUndoCommand(QObject::tr("Insert Barline"))
+  , myLocation(location)
+  , myBarline(barline)
 {
-    // Use the same time signature and key signature from the previous bar.
-    const Barline *prev =
-        myLocation.getSystem().getPreviousBarline(barline.getPosition());
-    Q_ASSERT(prev);
+  // Use the same time signature and key signature from the previous bar.
+  const Barline* prev = myLocation.getSystem().getPreviousBarline(barline.getPosition());
+  Q_ASSERT(prev);
 
-    KeySignature key = prev->getKeySignature();
-    key.setVisible(false);
-    myBarline.setKeySignature(key);
+  KeySignature key = prev->getKeySignature();
+  key.setVisible(false);
+  myBarline.setKeySignature(key);
 
-    TimeSignature time = prev->getTimeSignature();
-    time.setVisible(false);
-    myBarline.setTimeSignature(time);
+  TimeSignature time = prev->getTimeSignature();
+  time.setVisible(false);
+  myBarline.setTimeSignature(time);
 }
 
 void AddBarline::redo()
 {
-    myLocation.getSystem().insertBarline(myBarline);
+  myLocation.getSystem().insertBarline(myBarline);
 }
 
 void AddBarline::undo()
 {
-    myLocation.getSystem().removeBarline(myBarline);
+  myLocation.getSystem().removeBarline(myBarline);
 }

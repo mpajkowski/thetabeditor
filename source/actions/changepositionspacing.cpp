@@ -21,28 +21,24 @@
 
 using boost::shared_ptr;
 
-ChangePositionSpacing::ChangePositionSpacing(shared_ptr<System> system,
-                                             uint8_t spacing)
-    : system(system),
-      newSpacing(spacing),
-      originalSpacing(system->GetPositionSpacing())
+ChangePositionSpacing::ChangePositionSpacing(shared_ptr<System> system, uint8_t spacing)
+  : system(system)
+  , newSpacing(spacing)
+  , originalSpacing(system->GetPositionSpacing())
 {
-    if (newSpacing < originalSpacing)
-    {
-        setText(QObject::tr("Decrease Position Spacing"));
-    }
-    else
-    {
-        setText(QObject::tr("Increase Position Spacing"));
-    }
+  if (newSpacing < originalSpacing) {
+    setText(QObject::tr("Decrease Position Spacing"));
+  } else {
+    setText(QObject::tr("Increase Position Spacing"));
+  }
 }
 
 void ChangePositionSpacing::redo()
 {
-    system->SetPositionSpacing(newSpacing);
+  system->SetPositionSpacing(newSpacing);
 }
 
 void ChangePositionSpacing::undo()
 {
-    system->SetPositionSpacing(originalSpacing);
+  system->SetPositionSpacing(originalSpacing);
 }

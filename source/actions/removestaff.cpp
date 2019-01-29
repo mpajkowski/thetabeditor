@@ -19,20 +19,19 @@
 
 #include <score/system.h>
 
-RemoveStaff::RemoveStaff(const ScoreLocation &location)
-    : QUndoCommand(QObject::tr("Remove Staff")),
-      myLocation(location),
-      myOriginalStaff(location.getStaff()),
-      myIndex(location.getStaffIndex())
-{
-}
+RemoveStaff::RemoveStaff(const ScoreLocation& location)
+  : QUndoCommand(QObject::tr("Remove Staff"))
+  , myLocation(location)
+  , myOriginalStaff(location.getStaff())
+  , myIndex(location.getStaffIndex())
+{}
 
 void RemoveStaff::redo()
 {
-    myLocation.getSystem().removeStaff(myIndex);
+  myLocation.getSystem().removeStaff(myIndex);
 }
 
 void RemoveStaff::undo()
 {
-    myLocation.getSystem().insertStaff(myOriginalStaff, myIndex);
+  myLocation.getSystem().insertStaff(myOriginalStaff, myIndex);
 }

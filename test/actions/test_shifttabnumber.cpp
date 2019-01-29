@@ -27,31 +27,30 @@
 
 TEST_CASE("Actions/ShiftTabNumber", "")
 {
-    boost::shared_ptr<Staff> staff(boost::make_shared<Staff>());
-    Position *pos1(new Position(0, 8, 0)), *pos2(new Position(1, 8, 0)),
-        *pos3(new Position(2, 8, 0));
-    staff->InsertPosition(0, pos1);
-    staff->InsertPosition(0, pos2);
-    staff->InsertPosition(0, pos3);
+  boost::shared_ptr<Staff> staff(boost::make_shared<Staff>());
+  Position *pos1(new Position(0, 8, 0)), *pos2(new Position(1, 8, 0)), *pos3(new Position(2, 8, 0));
+  staff->InsertPosition(0, pos1);
+  staff->InsertPosition(0, pos2);
+  staff->InsertPosition(0, pos3);
 
-    Note *note1(new Note(2, 3)), *note2(new Note(2, 9)), *note3(new Note(2, 8));
-    pos1->InsertNote(note1);
-    pos2->InsertNote(note2);
-    pos3->InsertNote(note3);
+  Note *note1(new Note(2, 3)), *note2(new Note(2, 9)), *note3(new Note(2, 8));
+  pos1->InsertNote(note1);
+  pos2->InsertNote(note2);
+  pos3->InsertNote(note3);
 
-    note1->SetHammerOn();
-    note2->SetPullOff();
+  note1->SetHammerOn();
+  note2->SetPullOff();
 
-    Tuning tuning;
-    tuning.SetToStandard();
+  Tuning tuning;
+  tuning.SetToStandard();
 
-    ShiftTabNumber action(staff, pos2, note2, 0, Position::SHIFT_UP, tuning);
+  ShiftTabNumber action(staff, pos2, note2, 0, Position::SHIFT_UP, tuning);
 
-    action.redo();
-    REQUIRE(!note1->HasHammerOnOrPulloff());
-    REQUIRE(!note2->HasHammerOnOrPulloff());
+  action.redo();
+  REQUIRE(!note1->HasHammerOnOrPulloff());
+  REQUIRE(!note2->HasHammerOnOrPulloff());
 
-    action.undo();
-    REQUIRE(note1->HasHammerOn());
-    REQUIRE(note2->HasPullOff());
+  action.undo();
+  REQUIRE(note1->HasHammerOn());
+  REQUIRE(note2->HasPullOff());
 }

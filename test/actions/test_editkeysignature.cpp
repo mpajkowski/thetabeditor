@@ -22,29 +22,29 @@
 
 TEST_CASE("Actions/EditKeySignature", "")
 {
-    Score score;
-    System system;
-    system.insertBarline(Barline(6, Barline::SingleBar));
-    score.insertSystem(system);
+  Score score;
+  System system;
+  system.insertBarline(Barline(6, Barline::SingleBar));
+  score.insertSystem(system);
 
-    const KeySignature newKey(KeySignature::Minor, 3, false);
+  const KeySignature newKey(KeySignature::Minor, 3, false);
 
-    ScoreLocation location(score, 0, 0, 6);
-    EditKeySignature action(location, newKey);
+  ScoreLocation location(score, 0, 0, 6);
+  EditKeySignature action(location, newKey);
 
-    action.redo();
-    {
-        const System &system = score.getSystems()[0];
-        REQUIRE_FALSE(system.getBarlines()[0].getKeySignature() == newKey);
-        REQUIRE(system.getBarlines()[1].getKeySignature() == newKey);
-        REQUIRE(system.getBarlines()[2].getKeySignature() == newKey);
-        REQUIRE(!system.getBarlines()[2].getKeySignature().isVisible());
-    }
+  action.redo();
+  {
+    const System& system = score.getSystems()[0];
+    REQUIRE_FALSE(system.getBarlines()[0].getKeySignature() == newKey);
+    REQUIRE(system.getBarlines()[1].getKeySignature() == newKey);
+    REQUIRE(system.getBarlines()[2].getKeySignature() == newKey);
+    REQUIRE(!system.getBarlines()[2].getKeySignature().isVisible());
+  }
 
-    action.undo();
-    {
-        const System &system = score.getSystems()[0];
-        REQUIRE_FALSE(system.getBarlines()[1].getKeySignature() == newKey);
-        REQUIRE_FALSE(system.getBarlines()[2].getKeySignature() == newKey);
-    }
+  action.undo();
+  {
+    const System& system = score.getSystems()[0];
+    REQUIRE_FALSE(system.getBarlines()[1].getKeySignature() == newKey);
+    REQUIRE_FALSE(system.getBarlines()[2].getKeySignature() == newKey);
+  }
 }

@@ -22,26 +22,26 @@
 
 TEST_CASE("Score/TempoMarker/BeatsPerMinute", "")
 {
-    TempoMarker tempo;
+  TempoMarker tempo;
 
-    tempo.setBeatsPerMinute(140);
-    REQUIRE(tempo.getBeatsPerMinute() == 140);
+  tempo.setBeatsPerMinute(140);
+  REQUIRE(tempo.getBeatsPerMinute() == 140);
 
-    REQUIRE_THROWS(tempo.setBeatsPerMinute(0));
-    REQUIRE_THROWS(tempo.setBeatsPerMinute(-2));
-    REQUIRE_THROWS(tempo.setBeatsPerMinute(400));
+  REQUIRE_THROWS(tempo.setBeatsPerMinute(0));
+  REQUIRE_THROWS(tempo.setBeatsPerMinute(-2));
+  REQUIRE_THROWS(tempo.setBeatsPerMinute(400));
 }
 
 TEST_CASE("Score/TempoMarker/Serialization", "")
 {
-    TempoMarker tempo(42);
-    tempo.setMarkerType(TempoMarker::AlterationOfPace);
-    tempo.setBeatType(TempoMarker::Sixteenth);
-    tempo.setListessoBeatType(TempoMarker::Eighth);
-    tempo.setTripletFeel(TempoMarker::TripletFeelEighth);
-    tempo.setAlterationOfPace(TempoMarker::Ritardando);
-    tempo.setBeatsPerMinute(140);
-    tempo.setDescription("My Tempo");
+  TempoMarker tempo(42);
+  tempo.setMarkerType(TempoMarker::AlterationOfPace);
+  tempo.setBeatType(TempoMarker::Sixteenth);
+  tempo.setListessoBeatType(TempoMarker::Eighth);
+  tempo.setTripletFeel(TempoMarker::TripletFeelEighth);
+  tempo.setAlterationOfPace(TempoMarker::Ritardando);
+  tempo.setBeatsPerMinute(140);
+  tempo.setDescription("My Tempo");
 
-    Serialization::test("tempo_marker", tempo);
+  Serialization::test("tempo_marker", tempo);
 }

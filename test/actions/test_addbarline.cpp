@@ -22,18 +22,18 @@
 
 TEST_CASE("Actions/AddBarline", "")
 {
-    Score score;
-    System system;
-    score.insertSystem(system);
+  Score score;
+  System system;
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0, 6);
-    Barline barline(6, Barline::SingleBar);
-    AddBarline action(location, barline);
+  ScoreLocation location(score, 0, 0, 6);
+  Barline barline(6, Barline::SingleBar);
+  AddBarline action(location, barline);
 
-    action.redo();
-    REQUIRE(location.getSystem().getBarlines().size() == 3);
-    REQUIRE(location.getSystem().getBarlines()[1] == barline);
+  action.redo();
+  REQUIRE(location.getSystem().getBarlines().size() == 3);
+  REQUIRE(location.getSystem().getBarlines()[1] == barline);
 
-    action.undo();
-    REQUIRE(location.getSystem().getBarlines().size() == 2);
+  action.undo();
+  REQUIRE(location.getSystem().getBarlines().size() == 2);
 }

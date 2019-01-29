@@ -22,17 +22,17 @@
 
 TEST_CASE("Actions/AddChordText", "")
 {
-    Score score;
-    score.insertSystem(System());
+  Score score;
+  score.insertSystem(System());
 
-    ChordText text(6, ChordName());
-    ScoreLocation location(score, 0, 0, 6);
-    AddChordText action(location, text);
+  ChordText text(6, ChordName());
+  ScoreLocation location(score, 0, 0, 6);
+  AddChordText action(location, text);
 
-    action.redo();
-    REQUIRE(location.getSystem().getChords().size() == 1);
-    REQUIRE(location.getSystem().getChords()[0] == text);
+  action.redo();
+  REQUIRE(location.getSystem().getChords().size() == 1);
+  REQUIRE(location.getSystem().getChords()[0] == text);
 
-    action.undo();
-    REQUIRE(location.getSystem().getChords().size() == 0);
+  action.undo();
+  REQUIRE(location.getSystem().getChords().size() == 0);
 }

@@ -27,60 +27,64 @@ class QUndoCommand;
 
 class UndoManager : public QUndoGroup
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit UndoManager(QObject *parent = nullptr);
+  explicit UndoManager(QObject* parent = nullptr);
 
-    void addNewUndoStack();
-    void setActiveStackIndex(int index);
-    void removeStack(int index);
+  void addNewUndoStack();
+  void setActiveStackIndex(int index);
+  void removeStack(int index);
 
-    /// Pushes an undo command onto the active stack.
-    /// @param affectedSystem Index of the system that is modified by this
-    /// action. Use -1 for actions that affect all systems.
-    void push(QUndoCommand *cmd, int affectedSystem);
+  /// Pushes an undo command onto the active stack.
+  /// @param affectedSystem Index of the system that is modified by this
+  /// action. Use -1 for actions that affect all systems.
+  void push(QUndoCommand* cmd, int affectedSystem);
 
-    void setClean();
+  void setClean();
 
-    void beginMacro(const QString &text);
-    void endMacro();
+  void beginMacro(const QString& text);
+  void endMacro();
 
-    static const int AFFECTS_ALL_SYSTEMS = -1;
+  static const int AFFECTS_ALL_SYSTEMS = -1;
 
 signals:
-    void fullRedrawNeeded();
-    void redrawNeeded(int);
+  void fullRedrawNeeded();
+  void redrawNeeded(int);
 
 private:
-    /// Pushes the QUndoCommand onto the active stack.
-    void push(QUndoCommand *cmd);
+  /// Pushes the QUndoCommand onto the active stack.
+  void push(QUndoCommand* cmd);
 
-    void onSystemChanged(int affectedSystem);
+  void onSystemChanged(int affectedSystem);
 
-    std::vector<std::unique_ptr<QUndoStack>> undoStacks;
+  std::vector<std::unique_ptr<QUndoStack>> undoStacks;
 };
 
-class SignalOnRedo : public QObject, public QUndoCommand
+class SignalOnRedo
+  : public QObject
+  , public QUndoCommand
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    virtual void redo() override;
+  virtual void redo() override;
 
 signals:
-    void triggered();
+  void triggered();
 };
 
-class SignalOnUndo : public QObject, public QUndoCommand
+class SignalOnUndo
+  : public QObject
+  , public QUndoCommand
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    virtual void undo() override;
+  virtual void undo() override;
 
 signals:
-    void triggered();
+  void triggered();
 };
 
 #endif

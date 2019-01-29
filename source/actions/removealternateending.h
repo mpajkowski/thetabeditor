@@ -25,14 +25,14 @@
 class RemoveAlternateEnding : public QUndoCommand
 {
 public:
-    RemoveAlternateEnding(const ScoreLocation &location);
+  RemoveAlternateEnding(const ScoreLocation& location);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const AlternateEnding myOriginalEnding;
+  ScoreLocation myLocation;
+  const AlternateEnding myOriginalEnding;
 };
 
 #endif

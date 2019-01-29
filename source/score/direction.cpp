@@ -17,81 +17,78 @@
 
 #include "direction.h"
 
-Direction::Direction() : myPosition(0)
-{
-}
+Direction::Direction()
+  : myPosition(0)
+{}
 
-Direction::Direction(int position) : myPosition(position)
-{
-}
+Direction::Direction(int position)
+  : myPosition(position)
+{}
 
-bool Direction::operator==(const Direction &other) const
+bool Direction::operator==(const Direction& other) const
 {
-    return myPosition == other.myPosition && mySymbols == other.mySymbols;
+  return myPosition == other.myPosition && mySymbols == other.mySymbols;
 }
 
 int Direction::getPosition() const
 {
-    return myPosition;
+  return myPosition;
 }
 
 void Direction::setPosition(int position)
 {
-    myPosition = position;
+  myPosition = position;
 }
 
 boost::iterator_range<Direction::SymbolIterator> Direction::getSymbols()
 {
-    return boost::make_iterator_range(mySymbols);
+  return boost::make_iterator_range(mySymbols);
 }
 
-boost::iterator_range<Direction::SymbolConstIterator> Direction::getSymbols()
-    const
+boost::iterator_range<Direction::SymbolConstIterator> Direction::getSymbols() const
 {
-    return boost::make_iterator_range(mySymbols);
+  return boost::make_iterator_range(mySymbols);
 }
 
-void Direction::insertSymbol(const DirectionSymbol &symbol)
+void Direction::insertSymbol(const DirectionSymbol& symbol)
 {
-    mySymbols.push_back(symbol);
+  mySymbols.push_back(symbol);
 }
 
 void Direction::removeSymbol(int index)
 {
-    mySymbols.erase(mySymbols.begin() + index);
+  mySymbols.erase(mySymbols.begin() + index);
 }
 
 DirectionSymbol::DirectionSymbol()
-    : mySymbolType(Coda), myActiveSymbolType(ActiveNone), myRepeatNumber(0)
-{
-}
+  : mySymbolType(Coda)
+  , myActiveSymbolType(ActiveNone)
+  , myRepeatNumber(0)
+{}
 
-DirectionSymbol::DirectionSymbol(SymbolType type, ActiveSymbolType activeType,
-                                 int repeatNumber)
-    : mySymbolType(type),
-      myActiveSymbolType(activeType),
-      myRepeatNumber(repeatNumber)
-{
-}
+DirectionSymbol::DirectionSymbol(SymbolType type, ActiveSymbolType activeType, int repeatNumber)
+  : mySymbolType(type)
+  , myActiveSymbolType(activeType)
+  , myRepeatNumber(repeatNumber)
+{}
 
-bool DirectionSymbol::operator==(const DirectionSymbol &other) const
+bool DirectionSymbol::operator==(const DirectionSymbol& other) const
 {
-    return mySymbolType == other.mySymbolType &&
-           myActiveSymbolType == other.myActiveSymbolType &&
-           myRepeatNumber == other.myRepeatNumber;
+  return mySymbolType == other.mySymbolType && myActiveSymbolType == other.myActiveSymbolType &&
+         myRepeatNumber == other.myRepeatNumber;
 }
 
 DirectionSymbol::SymbolType DirectionSymbol::getSymbolType() const
 {
-    return mySymbolType;
+  return mySymbolType;
 }
 
 DirectionSymbol::ActiveSymbolType DirectionSymbol::getActiveSymbolType() const
 {
-    return myActiveSymbolType;
+  return myActiveSymbolType;
 }
 
 int DirectionSymbol::getRepeatNumber() const
 {
-    return myRepeatNumber;
+  return myRepeatNumber;
 }

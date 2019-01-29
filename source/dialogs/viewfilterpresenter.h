@@ -29,46 +29,41 @@ class ViewFilterPresenter;
 class ViewFilterView
 {
 public:
-    virtual ~ViewFilterView()
-    {
-    }
+  virtual ~ViewFilterView() {}
 
-    virtual void setPresenter(ViewFilterPresenter *presenter) = 0;
+  virtual void setPresenter(ViewFilterPresenter* presenter) = 0;
 
-    virtual bool launch() = 0;
+  virtual bool launch() = 0;
 
-    virtual void update(const std::vector<std::string> &names,
-                        const boost::optional<int> &selection,
-                        const std::vector<FilterRule> &rules) = 0;
+  virtual void update(const std::vector<std::string>& names,
+                      const boost::optional<int>& selection,
+                      const std::vector<FilterRule>& rules) = 0;
 };
 
 class ViewFilterPresenter
 {
 public:
-    ViewFilterPresenter(ViewFilterView &view, const Score &score);
+  ViewFilterPresenter(ViewFilterView& view, const Score& score);
 
-    bool exec();
+  bool exec();
 
-    const std::vector<ViewFilter> getFilters() const
-    {
-        return myFilters;
-    }
+  const std::vector<ViewFilter> getFilters() const { return myFilters; }
 
-    void addFilter();
-    void removeSelectedFilter();
-    void selectFilter(int index);
-    void editFilterDescription(const std::string &description);
+  void addFilter();
+  void removeSelectedFilter();
+  void selectFilter(int index);
+  void editFilterDescription(const std::string& description);
 
-    void addRule();
-    void removeRule(int index);
-    void editRule(int index, const FilterRule &rule);
+  void addRule();
+  void removeRule(int index);
+  void editRule(int index, const FilterRule& rule);
 
 private:
-    void updateView();
+  void updateView();
 
-    ViewFilterView &myView;
-    std::vector<ViewFilter> myFilters;
-    boost::optional<int> mySelection;
+  ViewFilterView& myView;
+  std::vector<ViewFilter> myFilters;
+  boost::optional<int> mySelection;
 };
 
 #endif

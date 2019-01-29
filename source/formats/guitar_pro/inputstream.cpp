@@ -23,76 +23,73 @@
 #include <formats/fileformat.h>
 
 const std::map<std::string, Gp::Version> theVersionStrings = {
-    { "FICHIER GUITAR PRO v3.00", Gp::Version3 },
-    { "FICHIER GUITAR PRO v4.00", Gp::Version4 },
-    { "FICHIER GUITAR PRO v4.06", Gp::Version4 },
-    { "FICHIER GUITAR PRO L4.06", Gp::Version4 },
-    { "FICHIER GUITAR PRO v5.00", Gp::Version5_0 },
-    { "FICHIER GUITAR PRO v5.10", Gp::Version5_1 }
+  { "FICHIER GUITAR PRO v3.00", Gp::Version3 },   { "FICHIER GUITAR PRO v4.00", Gp::Version4 },
+  { "FICHIER GUITAR PRO v4.06", Gp::Version4 },   { "FICHIER GUITAR PRO L4.06", Gp::Version4 },
+  { "FICHIER GUITAR PRO v5.00", Gp::Version5_0 }, { "FICHIER GUITAR PRO v5.10", Gp::Version5_1 }
 };
 
-Gp::InputStream::InputStream(std::istream &stream) : myStream(stream)
+Gp::InputStream::InputStream(std::istream& stream)
+  : myStream(stream)
 {
-    myStream.exceptions(std::istream::failbit | std::istream::badbit |
-                        std::istream::eofbit);
+  myStream.exceptions(std::istream::failbit | std::istream::badbit | std::istream::eofbit);
 
-    const std::string versionString = readVersionString();
+  const std::string versionString = readVersionString();
 
-    auto it = theVersionStrings.find(versionString);
-    if (it != theVersionStrings.end())
-        this->version = it->second;
-    else
-        throw FileFormatException("Unsupported file version: " + versionString);
+  auto it = theVersionStrings.find(versionString);
+  if (it != theVersionStrings.end())
+    this->version = it->second;
+  else
+    throw FileFormatException("Unsupported file version: " + versionString);
 }
 
 std::string Gp::InputStream::readVersionString()
 {
-    myStream.seekg(std::ios_base::beg);
+  myStream.seekg(std::ios_base::beg);
 
-    // THe version consists of a 30 character string, although not all 30
-    // characters may be used.
-    std::string version = readCharacterString<uint8_t>();
+  // THe version consists of a 30 character string, although not all 30
+  // characters may be used.
+  std::string version = readCharacterString<uint8_t>();
 
-    // Skip past any unread characters to land at position 0x1f.
-    myStream.seekg(31, std::ios_base::beg);
+  // Skip past any unread characters to land at position 0x1f.
+  myStream.seekg(31, std::ios_base::beg);
 
-    return version;
+  return version;
 }
 
 std::string Gp::InputStream::readString()
 {
-    const uint32_t size = read<uint32_t>();
+  const uint32_t size = read<uint32_t>();
 
-    std::string str = readCharacterString<uint8_t>();
-    assert(size - 1 == str.length());
+  std::string str = readCharacterString<uint8_t>();
+  assert(size - 1 == str.length());
 
-    return str;
+  return str;
 }
 
 std::string Gp::InputStream::readIntString()
 {
-    return readCharacterString<uint32_t>();
+  return readCharacterString<uint32_t>();
 }
 
 std::string Gp::InputStream::readFixedLengthString(uint32_t maxLength)
 {
-    const uint8_t actualLength = read<uint8_t>();
+  const uint8_t actualLength = read<uint8_t>();
 
-    std::string str;
+  std::string str;
 
-    if (maxLength != 0)
-        str.resize(maxLength);
-    else
-        str.resize(actualLength);
-
-    if (str.size() != 0)
-        myStream.read(&str[0], str.size());
-
+  if (maxLength != 0)
+    str.resize(maxLength);
+  else
     str.resize(actualLength);
-    return str;
+
+  if (str.size() != 0)
+    myStream.read(&str[0], str.size());
+
+  str.resize(actualLength);
+  return str;
 }
 
 void Gp::InputStream::skip(int numBytes)
 {
-    myStream.seekg(numBytes, std::ios_base::cur);
+  myStream.seekg(numBytes, std::ios_base::cur);
 }

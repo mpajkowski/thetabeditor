@@ -25,73 +25,73 @@ const uint8_t Player::MAX_VOLUME = Midi::MAX_MIDI_CHANNEL_VOLUME;
 const uint8_t Player::MIN_PAN = Midi::MIN_MIDI_CHANNEL_EFFECT_LEVEL;
 const uint8_t Player::MAX_PAN = Midi::MAX_MIDI_CHANNEL_EFFECT_LEVEL;
 
-Player::Player() : myDescription("Untitled"), myMaxVolume(MAX_VOLUME), myPan(64)
+Player::Player()
+  : myDescription("Untitled")
+  , myMaxVolume(MAX_VOLUME)
+  , myPan(64)
+{}
+
+bool Player::operator==(const Player& other) const
 {
+  return myDescription == other.myDescription && myMaxVolume == other.myMaxVolume && myPan == other.myPan &&
+         myTuning == other.myTuning && myMidiPreset == other.myMidiPreset;
 }
 
-bool Player::operator==(const Player &other) const
+const std::string& Player::getDescription() const
 {
-    return myDescription == other.myDescription &&
-           myMaxVolume == other.myMaxVolume && myPan == other.myPan &&
-           myTuning == other.myTuning &&
-           myMidiPreset == other.myMidiPreset;
+  return myDescription;
 }
 
-const std::string &Player::getDescription() const
+void Player::setDescription(const std::string& description)
 {
-    return myDescription;
-}
-
-void Player::setDescription(const std::string &description)
-{
-    myDescription = description;
+  myDescription = description;
 }
 
 uint8_t Player::getMaxVolume() const
 {
-    return myMaxVolume;
+  return myMaxVolume;
 }
 
 void Player::setMaxVolume(uint8_t volume)
 {
-    if (volume > MAX_VOLUME)
-        throw std::out_of_range("Invalid volume");
+  if (volume > MAX_VOLUME)
+    throw std::out_of_range("Invalid volume");
 
-    myMaxVolume = volume;
+  myMaxVolume = volume;
 }
 
 uint8_t Player::getPan() const
 {
-    return myPan;
+  return myPan;
 }
 
 void Player::setPan(uint8_t pan)
 {
-    if (pan > MAX_PAN)
-        throw std::out_of_range("Invalid pan");
+  if (pan > MAX_PAN)
+    throw std::out_of_range("Invalid pan");
 
-    myPan = pan;
+  myPan = pan;
 }
 
-const Tuning &Player::getTuning() const
+const Tuning& Player::getTuning() const
 {
-    return myTuning;
+  return myTuning;
 }
 
-void Player::setTuning(const Tuning &tuning)
+void Player::setTuning(const Tuning& tuning)
 {
-    myTuning = tuning;
+  myTuning = tuning;
 }
 
 uint8_t Player::getMidiPreset() const
 {
-    return myMidiPreset;
+  return myMidiPreset;
 }
 
 void Player::setMidiPreset(uint8_t preset)
 {
-    if (preset > Midi::LAST_MIDI_PRESET)
-        throw std::out_of_range("Invalid MIDI preset");
+  if (preset > Midi::LAST_MIDI_PRESET)
+    throw std::out_of_range("Invalid MIDI preset");
 
-    myMidiPreset = preset;
+  myMidiPreset = preset;
 }

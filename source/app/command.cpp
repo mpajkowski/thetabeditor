@@ -22,38 +22,42 @@
 
 const std::string theKeyPrefix("shortcuts/");
 
-Command::Command(const QString &text, const QString &id,
-                 const QKeySequence &default_shortcut, QObject *parent)
-    : QAction(text, parent), myId(id), myDefaultShortcut(default_shortcut)
+Command::Command(const QString& text,
+                 const QString& id,
+                 const QKeySequence& default_shortcut,
+                 QObject* parent)
+  : QAction(text, parent)
+  , myId(id)
+  , myDefaultShortcut(default_shortcut)
 {
-    setShortcut(myDefaultShortcut);
+  setShortcut(myDefaultShortcut);
 }
 
 QString Command::id() const
 {
-    return myId;
+  return myId;
 }
 
 QKeySequence Command::defaultShortcut() const
 {
-    return myDefaultShortcut;
+  return myDefaultShortcut;
 }
 
-void Command::save(SettingsTree &settings) const
+void Command::save(SettingsTree& settings) const
 {
-    // Only save shortcuts that are different from the default.
-    if (shortcut() == myDefaultShortcut)
-        settings.remove(getSettingsKey());
-    else
-        settings.set(getSettingsKey(), shortcut());
+  // Only save shortcuts that are different from the default.
+  if (shortcut() == myDefaultShortcut)
+    settings.remove(getSettingsKey());
+  else
+    settings.set(getSettingsKey(), shortcut());
 }
 
-void Command::load(const SettingsTree &settings)
+void Command::load(const SettingsTree& settings)
 {
-    setShortcut(settings.get(getSettingsKey(), myDefaultShortcut));
+  setShortcut(settings.get(getSettingsKey(), myDefaultShortcut));
 }
 
 std::string Command::getSettingsKey() const
 {
-    return theKeyPrefix + myId.toStdString();
+  return theKeyPrefix + myId.toStdString();
 }

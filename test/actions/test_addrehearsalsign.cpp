@@ -22,22 +22,22 @@
 
 TEST_CASE("Actions/AddRehearsalSign", "")
 {
-    Score score;
-    System system;
-    system.insertBarline(Barline(6, Barline::SingleBar));
-    system.getBarlines()[0].setRehearsalSign(RehearsalSign("A", "Intro"));
-    score.insertSystem(system);
+  Score score;
+  System system;
+  system.insertBarline(Barline(6, Barline::SingleBar));
+  system.getBarlines()[0].setRehearsalSign(RehearsalSign("A", "Intro"));
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0, 6);
-    AddRehearsalSign action(location, "Verse");
+  ScoreLocation location(score, 0, 0, 6);
+  AddRehearsalSign action(location, "Verse");
 
-    action.redo();
-    const Barline &barline = score.getSystems()[0].getBarlines()[1];
-    REQUIRE(barline.hasRehearsalSign());
-    const RehearsalSign &sign = barline.getRehearsalSign();
-    REQUIRE(sign.getDescription() == "Verse");
-    REQUIRE(sign.getLetters() == "B");
+  action.redo();
+  const Barline& barline = score.getSystems()[0].getBarlines()[1];
+  REQUIRE(barline.hasRehearsalSign());
+  const RehearsalSign& sign = barline.getRehearsalSign();
+  REQUIRE(sign.getDescription() == "Verse");
+  REQUIRE(sign.getLetters() == "B");
 
-    action.undo();
-    REQUIRE(!score.getSystems()[0].getBarlines()[1].hasRehearsalSign());
+  action.undo();
+  REQUIRE(!score.getSystems()[0].getBarlines()[1].hasRehearsalSign());
 }

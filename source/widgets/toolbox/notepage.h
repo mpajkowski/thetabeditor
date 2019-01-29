@@ -32,67 +32,66 @@ class TheTabEditor;
 
 class NotePage : public QFrame
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    NotePage(TheTabEditor *mainWindow,
-             boost::shared_ptr<SkinManager> skinManager, QFrame *parent = 0);
+  NotePage(TheTabEditor* mainWindow, boost::shared_ptr<SkinManager> skinManager, QFrame* parent = 0);
 
 private:
-    TheTabEditor *mainWindow;
-    QVBoxLayout *layout;
+  TheTabEditor* mainWindow;
+  QVBoxLayout* layout;
 
-    QHBoxLayout *noteLayout;
-    QHBoxLayout *restLayout;
-    QHBoxLayout *rhythmLayout;
-    QHBoxLayout *slideLegatoLayout;
-    QHBoxLayout *vibratoTremoloLayout;
+  QHBoxLayout* noteLayout;
+  QHBoxLayout* restLayout;
+  QHBoxLayout* rhythmLayout;
+  QHBoxLayout* slideLegatoLayout;
+  QHBoxLayout* vibratoTremoloLayout;
 
-    QGroupBox *noteGroup;
-    QGroupBox *restGroup;
-    QGroupBox *rhythmGroup;
-    QGroupBox *slideLegatoGroup;
-    QGroupBox *vibratoTremoloGroup;
+  QGroupBox* noteGroup;
+  QGroupBox* restGroup;
+  QGroupBox* rhythmGroup;
+  QGroupBox* slideLegatoGroup;
+  QGroupBox* vibratoTremoloGroup;
 
-    // note group
-    QPushButton *noteButton[7];
+  // note group
+  QPushButton* noteButton[7];
 
-    // rest group
-    QPushButton *restButton[7];
+  // rest group
+  QPushButton* restButton[7];
 
-    // rhythm group
-    QPushButton *dottedButton;
-    QPushButton *doubleDottedButton;
-    QPushButton *tieButton;
-    QPushButton *groupingButton;
-    QPushButton *fermataButton;
+  // rhythm group
+  QPushButton* dottedButton;
+  QPushButton* doubleDottedButton;
+  QPushButton* tieButton;
+  QPushButton* groupingButton;
+  QPushButton* fermataButton;
 
-    // slide and legato group
-    QPushButton *slideInBelowButton;
-    QPushButton *slideInAboveButton;
-    QPushButton *slideOutBelowButton;
-    QPushButton *slideOutAboveButton;
-    QPushButton *shiftSlideButton;
-    QPushButton *legatoSlideButton;
-    QPushButton *legatoButton;
+  // slide and legato group
+  QPushButton* slideInBelowButton;
+  QPushButton* slideInAboveButton;
+  QPushButton* slideOutBelowButton;
+  QPushButton* slideOutAboveButton;
+  QPushButton* shiftSlideButton;
+  QPushButton* legatoSlideButton;
+  QPushButton* legatoButton;
 
-    // vibrato and tremolo group
-    QPushButton *vibratoButton;
-    QPushButton *wideVibratoButton;
-    QPushButton *bendButton;
-    QPushButton *trillButton;
-    QPushButton *tremoloButton;
+  // vibrato and tremolo group
+  QPushButton* vibratoButton;
+  QPushButton* wideVibratoButton;
+  QPushButton* bendButton;
+  QPushButton* trillButton;
+  QPushButton* tremoloButton;
 
-    void createNoteButtons();
-    void createRestButtons();
-    void createRhythmButtons();
-    void createSlideLegatoButtons();
-    void createVibratoTremoloButtons();
+  void createNoteButtons();
+  void createRestButtons();
+  void createRhythmButtons();
+  void createSlideLegatoButtons();
+  void createVibratoTremoloButtons();
 
-    void initButton(QPushButton *button);
+  void initButton(QPushButton* button);
 
 private slots:
-    void resetDottedButtons();
+  void resetDottedButtons();
 };
 
 #endif // NOTEPAGE_H

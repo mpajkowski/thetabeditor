@@ -23,97 +23,88 @@
 #include <formats/powertab/powertabexporter.h>
 #include <formats/powertab/powertabimporter.h>
 
-FileFormatManager::FileFormatManager(const SettingsManager &settings_manager)
+FileFormatManager::FileFormatManager(const SettingsManager& settings_manager)
 {
-    myImporters.emplace_back(new PowerTabImporter());
-    myImporters.emplace_back(new GuitarProImporter());
-    myImporters.emplace_back(new GpxImporter());
+  myImporters.emplace_back(new PowerTabImporter());
+  myImporters.emplace_back(new GuitarProImporter());
+  myImporters.emplace_back(new GpxImporter());
 
-    myExporters.emplace_back(new PowerTabExporter());
-    myExporters.emplace_back(new MidiExporter(settings_manager));
+  myExporters.emplace_back(new PowerTabExporter());
+  myExporters.emplace_back(new MidiExporter(settings_manager));
 }
 
-boost::optional<FileFormat> FileFormatManager::findFormat(
-    const std::string &extension) const
+boost::optional<FileFormat> FileFormatManager::findFormat(const std::string& extension) const
 {
-    for (auto &importer : myImporters)
-    {
-        if (importer->fileFormat().contains(extension))
-            return importer->fileFormat();
-    }
+  for (auto& importer : myImporters) {
+    if (importer->fileFormat().contains(extension))
+      return importer->fileFormat();
+  }
 
-    for (auto &exporter : myExporters)
-    {
-        if (exporter->fileFormat().contains(extension))
-            return exporter->fileFormat();
-    }
+  for (auto& exporter : myExporters) {
+    if (exporter->fileFormat().contains(extension))
+      return exporter->fileFormat();
+  }
 
-    return boost::none;
+  return boost::none;
 }
 
 std::string FileFormatManager::importFileFilter() const
 {
-    std::string filterAll = "All Supported Formats (";
-    std::string filterOther;
+  std::string filterAll = "All Supported Formats (";
+  std::string filterOther;
 
-    for (auto it = myImporters.begin(); it != myImporters.end(); ++it)
-    {
-        if (it != myImporters.begin())
-            filterAll += " ";
+  for (auto it = myImporters.begin(); it != myImporters.end(); ++it) {
+    if (it != myImporters.begin())
+      filterAll += " ";
 
-        const FileFormat &format = (*it)->fileFormat();
-        filterAll += format.allExtensions();
-        filterOther += ";;" + format.fileFilter();
-    }
+    const FileFormat& format = (*it)->fileFormat();
+    filterAll += format.allExtensions();
+    filterOther += ";;" + format.fileFilter();
+  }
 
-    filterAll += ")";
+  filterAll += ")";
 
-    return filterAll + filterOther;
+  return filterAll + filterOther;
 }
 
-void FileFormatManager::importFile(Score &score,
-                                   const boost::filesystem::path &filename,
-                                   const FileFormat &format)
+void FileFormatManager::importFile(Score& score,
+                                   const boost::filesystem::path& filename,
+                                   const FileFormat& format)
 {
-    for (auto &importer : myImporters)
-    {
-        if (importer->fileFormat() == format)
-        {
-            importer->load(filename, score);
-            return;
-        }
+  for (auto& importer : myImporters) {
+    if (importer->fileFormat() == format) {
+      importer->load(filename, score);
+      return;
     }
+  }
 
-    throw std::runtime_error("Unknown file format");
+  throw std::runtime_error("Unknown file format");
 }
 
 std::string FileFormatManager::exportFileFilter() const
 {
-    std::string filter;
+  std::string filter;
 
-    for (auto it = myExporters.begin(); it != myExporters.end(); ++it)
-    {
-        if (it != myExporters.begin())
-            filter += ";;";
+  for (auto it = myExporters.begin(); it != myExporters.end(); ++it) {
+    if (it != myExporters.begin())
+      filter += ";;";
 
-        filter += (*it)->fileFormat().fileFilter();
-    }
+    filter += (*it)->fileFormat().fileFilter();
+  }
 
-    return filter;
+  return filter;
 }
 
-void FileFormatManager::exportFile(const Score &score,
-                                   const boost::filesystem::path &filename,
-                                   const FileFormat &format)
+void FileFormatManager::exportFile(const Score& score,
+                                   const boost::filesystem::path& filename,
+                                   const FileFormat& format)
 {
-    for (auto &exporter : myExporters)
-    {
-        if (exporter->fileFormat() == format)
-        {
-            exporter->save(filename, score);
-            return;
-        }
+  for (auto& exporter : myExporters) {
+    if (exporter->fileFormat() == format) {
+      exporter->save(filename, score);
+      return;
     }
+  }
 
-    throw std::runtime_error("Unknown file format");
+  throw std::runtime_error("Unknown file format");
 }

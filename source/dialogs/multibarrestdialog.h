@@ -20,23 +20,22 @@
 
 #include <QDialog>
 
-namespace Ui
-{
+namespace Ui {
 class MultiBarRestDialog;
 }
 
 class MultiBarRestDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit MultiBarRestDialog(QWidget *parent);
-    ~MultiBarRestDialog();
+  explicit MultiBarRestDialog(QWidget* parent);
+  ~MultiBarRestDialog();
 
-    int getBarCount() const;
+  int getBarCount() const;
 
 private:
-    Ui::MultiBarRestDialog *ui;
+  Ui::MultiBarRestDialog* ui;
 };
 
 #endif

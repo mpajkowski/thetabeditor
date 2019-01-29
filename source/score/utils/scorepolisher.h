@@ -21,12 +21,11 @@
 class Score;
 class System;
 
-namespace ScoreUtils
-{
+namespace ScoreUtils {
 /// Reformats the score.
-void polishScore(Score &score);
+void polishScore(Score& score);
 /// Reformats a single system.
-void polishSystem(System &system);
+void polishSystem(System& system);
 } // namespace ScoreUtils
 
 #endif

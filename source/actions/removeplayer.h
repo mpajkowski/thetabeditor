@@ -28,16 +28,16 @@ class Score;
 class RemovePlayer : public QUndoCommand
 {
 public:
-    RemovePlayer(Score &score, int index);
+  RemovePlayer(Score& score, int index);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    Score &myScore;
-    const Player myPlayer;
-    const int myPlayerIndex;
-    std::vector<PlayerChange> myOriginalChanges;
+  Score& myScore;
+  const Player myPlayer;
+  const int myPlayerIndex;
+  std::vector<PlayerChange> myOriginalChanges;
 };
 
 #endif

@@ -22,12 +22,11 @@
 
 enum class FileVersion : int
 {
-    INITIAL_VERSION = 1, ///< Initial version from the beginning of development.
-    TEXT_ITEMS = 2, ///< Added floating text items.
-    VIEW_FILTERS =
-        3, ///< Removed the Staff::myViewType member and added view filters.
-    LEFT_HAND_FINGERING = 4, ///< Added left hand fingering numbers to notes.
-    LATEST_VERSION = LEFT_HAND_FINGERING
+  INITIAL_VERSION = 1,     ///< Initial version from the beginning of development.
+  TEXT_ITEMS = 2,          ///< Added floating text items.
+  VIEW_FILTERS = 3,        ///< Removed the Staff::myViewType member and added view filters.
+  LEFT_HAND_FINGERING = 4, ///< Added left hand fingering numbers to notes.
+  LATEST_VERSION = LEFT_HAND_FINGERING
 };
 
 #endif

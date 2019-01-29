@@ -20,97 +20,81 @@
 
 #include <dialogs/filterrulewidget.h>
 
-ViewFilterDialog::ViewFilterDialog(QWidget *parent)
-    : QDialog(parent), ui(new Ui::ViewFilterDialog)
+ViewFilterDialog::ViewFilterDialog(QWidget* parent)
+  : QDialog(parent)
+  , ui(new Ui::ViewFilterDialog)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 }
 
-ViewFilterDialog::~ViewFilterDialog()
+ViewFilterDialog::~ViewFilterDialog() {}
+
+void ViewFilterDialog::setPresenter(ViewFilterPresenter* presenter)
 {
-}
+  myPresenter = presenter;
 
-void ViewFilterDialog::setPresenter(ViewFilterPresenter *presenter)
-{
-    myPresenter = presenter;
+  connect(ui->addFilterButton, &QToolButton::clicked, [&]() { myPresenter->addFilter(); });
+  connect(ui->removeFilterButton, &QToolButton::clicked, [&]() { myPresenter->removeSelectedFilter(); });
+  connect(ui->filterList, &QListWidget::itemClicked, [&](QListWidgetItem*) {
+    myPresenter->selectFilter(ui->filterList->currentRow());
+  });
 
-    connect(ui->addFilterButton, &QToolButton::clicked,
-            [&]() { myPresenter->addFilter(); });
-    connect(ui->removeFilterButton, &QToolButton::clicked,
-            [&]() { myPresenter->removeSelectedFilter(); });
-    connect(ui->filterList, &QListWidget::itemClicked, [&](QListWidgetItem *) {
-        myPresenter->selectFilter(ui->filterList->currentRow());
-    });
-
-    connect(ui->nameLineEdit, &QLineEdit::textEdited, [&](const QString &s) {
-        myPresenter->editFilterDescription(s.toStdString());
-    });
-    connect(ui->addRuleButton, &QToolButton::clicked,
-            [&]() { myPresenter->addRule(); });
+  connect(ui->nameLineEdit, &QLineEdit::textEdited, [&](const QString& s) {
+    myPresenter->editFilterDescription(s.toStdString());
+  });
+  connect(ui->addRuleButton, &QToolButton::clicked, [&]() { myPresenter->addRule(); });
 }
 
 bool ViewFilterDialog::launch()
 {
-    return exec() == QDialog::Accepted;
+  return exec() == QDialog::Accepted;
 }
 
-void ViewFilterDialog::update(const std::vector<std::string> &names,
-                              const boost::optional<int> &selection,
-                              const std::vector<FilterRule> &rules)
+void ViewFilterDialog::update(const std::vector<std::string>& names,
+                              const boost::optional<int>& selection,
+                              const std::vector<FilterRule>& rules)
 {
-    ui->filterList->clear();
+  ui->filterList->clear();
 
-    QStringList q_names;
-    for (auto &&name : names)
-        q_names.append(QString::fromStdString(name));
+  QStringList q_names;
+  for (auto&& name : names)
+    q_names.append(QString::fromStdString(name));
 
-    ui->filterList->addItems(q_names);
-    ui->filterList->setCurrentRow(selection ? *selection : -1);
-    ui->removeFilterButton->setEnabled(!names.empty());
+  ui->filterList->addItems(q_names);
+  ui->filterList->setCurrentRow(selection ? *selection : -1);
+  ui->removeFilterButton->setEnabled(!names.empty());
 
-    ui->nameLineEdit->setEnabled((bool)selection);
-    ui->addRuleButton->setEnabled((bool)selection);
+  ui->nameLineEdit->setEnabled((bool)selection);
+  ui->addRuleButton->setEnabled((bool)selection);
 
-    // Remove old widgets.
-    while (ui->filterRuleLayout->count() > static_cast<int>(rules.size()))
-    {
-        auto item =
-            ui->filterRuleLayout->takeAt(ui->filterRuleLayout->count() - 1);
-        item->widget()->deleteLater();
-        delete item;
+  // Remove old widgets.
+  while (ui->filterRuleLayout->count() > static_cast<int>(rules.size())) {
+    auto item = ui->filterRuleLayout->takeAt(ui->filterRuleLayout->count() - 1);
+    item->widget()->deleteLater();
+    delete item;
+  }
+
+  if (selection) {
+    ui->nameLineEdit->setText(QString::fromStdString(names[*selection]));
+
+    // Add new widgets if necessary.
+    for (size_t i = ui->filterRuleLayout->count(), n = rules.size(); i < n; ++i) {
+      auto widget = new FilterRuleWidget(this);
+      ui->filterRuleLayout->addWidget(widget);
+
+      connect(
+        widget, &FilterRuleWidget::changed, [=](const FilterRule& rule) { myPresenter->editRule(i, rule); });
+      connect(widget, &FilterRuleWidget::removeRequested, [=]() { myPresenter->removeRule(i); });
     }
 
-    if (selection)
-    {
-        ui->nameLineEdit->setText(QString::fromStdString(names[*selection]));
+    // Update widgets.
+    for (size_t i = 0, n = rules.size(); i < n; ++i) {
+      auto widget = dynamic_cast<FilterRuleWidget*>(ui->filterRuleLayout->itemAt(i)->widget());
+      assert(widget);
 
-        // Add new widgets if necessary.
-        for (size_t i = ui->filterRuleLayout->count(), n = rules.size(); i < n;
-             ++i)
-        {
-            auto widget = new FilterRuleWidget(this);
-            ui->filterRuleLayout->addWidget(widget);
-
-            connect(widget, &FilterRuleWidget::changed,
-                    [=](const FilterRule &rule) {
-                        myPresenter->editRule(i, rule);
-                    });
-            connect(widget, &FilterRuleWidget::removeRequested,
-                    [=]() { myPresenter->removeRule(i); });
-        }
-
-        // Update widgets.
-        for (size_t i = 0, n = rules.size(); i < n; ++i)
-        {
-            auto widget = dynamic_cast<FilterRuleWidget *>(
-                ui->filterRuleLayout->itemAt(i)->widget());
-            assert(widget);
-
-            widget->update(rules[i]);
-        }
+      widget->update(rules[i]);
     }
-    else
-    {
-        ui->nameLineEdit->clear();
-    }
+  } else {
+    ui->nameLineEdit->clear();
+  }
 }

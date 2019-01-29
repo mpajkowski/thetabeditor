@@ -24,51 +24,49 @@ class QComboBox;
 class Tuning;
 class TuningDictionary;
 
-namespace Ui
-{
+namespace Ui {
 class TuningDialog;
 }
 
 class TuningDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    TuningDialog(QWidget *parent, const Tuning &currentTuning,
-                 const TuningDictionary &dictionary);
-    ~TuningDialog();
+  TuningDialog(QWidget* parent, const Tuning& currentTuning, const TuningDictionary& dictionary);
+  ~TuningDialog();
 
-    Tuning getTuning() const;
+  Tuning getTuning() const;
 
 private slots:
-    /// Switches the note names available for each string.
-    void toggleSharps(bool usesSharps);
+  /// Switches the note names available for each string.
+  void toggleSharps(bool usesSharps);
 
-    /// Updates which string selection boxes are enabled, based on the number
-    /// of strings selected.
-    void updateEnabledStrings(int numStrings);
+  /// Updates which string selection boxes are enabled, based on the number
+  /// of strings selected.
+  void updateEnabledStrings(int numStrings);
 
-    /// Loads all tuning presets for the specified number of strings.
-    void updateTuningDictionary(int numStrings);
+  /// Loads all tuning presets for the specified number of strings.
+  void updateTuningDictionary(int numStrings);
 
-    /// Loads the currently-selected tuning preset.
-    void loadPreset();
+  /// Loads the currently-selected tuning preset.
+  void loadPreset();
 
-    /// Once a change is made to the tuning, update the preset combobox.
-    void updateCurrentPreset();
+  /// Once a change is made to the tuning, update the preset combobox.
+  void updateCurrentPreset();
 
 private:
-    Ui::TuningDialog *ui;
-    const TuningDictionary &myDictionary;
+  Ui::TuningDialog* ui;
+  const TuningDictionary& myDictionary;
 
-    QStringList myNoteNames;
-    std::vector<QComboBox *> myStringSelectors;
+  QStringList myNoteNames;
+  std::vector<QComboBox*> myStringSelectors;
 
-    void initStringSelectors(const Tuning &currentTuning);
+  void initStringSelectors(const Tuning& currentTuning);
 
-    /// Generates a list of note names, to be used for selecting the pitch
-    /// of a string.
-    void generateNoteNames(bool usesSharps);
+  /// Generates a list of note names, to be used for selecting the pitch
+  /// of a string.
+  void generateNoteNames(bool usesSharps);
 };
 
 #endif

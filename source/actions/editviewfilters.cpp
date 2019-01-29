@@ -19,31 +19,28 @@
 
 #include <score/score.h>
 
-EditViewFilters::EditViewFilters(Score &score,
-                                 std::vector<ViewFilter> new_filters)
-    : QUndoCommand(QObject::tr("Edit View Filters")),
-      myScore(score),
-      myOriginalFilters(score.getViewFilters().begin(),
-                        score.getViewFilters().end()),
-      myNewFilters(std::move(new_filters))
-{
-}
+EditViewFilters::EditViewFilters(Score& score, std::vector<ViewFilter> new_filters)
+  : QUndoCommand(QObject::tr("Edit View Filters"))
+  , myScore(score)
+  , myOriginalFilters(score.getViewFilters().begin(), score.getViewFilters().end())
+  , myNewFilters(std::move(new_filters))
+{}
 
 void EditViewFilters::redo()
 {
-    setViewFilters(myNewFilters);
+  setViewFilters(myNewFilters);
 }
 
 void EditViewFilters::undo()
 {
-    setViewFilters(myOriginalFilters);
+  setViewFilters(myOriginalFilters);
 }
 
-void EditViewFilters::setViewFilters(const std::vector<ViewFilter> &filters)
+void EditViewFilters::setViewFilters(const std::vector<ViewFilter>& filters)
 {
-    while (!myScore.getViewFilters().empty())
-        myScore.removeViewFilter(myScore.getViewFilters().size() - 1);
+  while (!myScore.getViewFilters().empty())
+    myScore.removeViewFilter(myScore.getViewFilters().size() - 1);
 
-    for (const ViewFilter &filter : filters)
-        myScore.insertViewFilter(filter);
+  for (const ViewFilter& filter : filters)
+    myScore.insertViewFilter(filter);
 }

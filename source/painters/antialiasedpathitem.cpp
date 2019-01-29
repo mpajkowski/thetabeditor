@@ -19,16 +19,13 @@
 
 #include <QPainter>
 
-AntialiasedPathItem::AntialiasedPathItem(const QPainterPath &path)
-    : QGraphicsPathItem(path)
-{
-}
+AntialiasedPathItem::AntialiasedPathItem(const QPainterPath& path)
+  : QGraphicsPathItem(path)
+{}
 
-void AntialiasedPathItem::paint(QPainter *painter,
-                                const QStyleOptionGraphicsItem *option,
-                                QWidget *widget)
+void AntialiasedPathItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 
 {
-    painter->setRenderHint(QPainter::Antialiasing);
-    QGraphicsPathItem::paint(painter, option, widget);
+  painter->setRenderHint(QPainter::Antialiasing);
+  QGraphicsPathItem::paint(painter, option, widget);
 }

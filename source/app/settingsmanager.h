@@ -26,112 +26,98 @@
 class SettingsManager
 {
 public:
-    typedef boost::signals2::signal<void()> SettingsChangedSignal;
+  typedef boost::signals2::signal<void()> SettingsChangedSignal;
 
-    /// Handle to ensure the settings aren't modified while being accessed by
-    /// another thread (e.g. the MIDI thread).
-    template <typename T>
-    class Handle
+  /// Handle to ensure the settings aren't modified while being accessed by
+  /// another thread (e.g. the MIDI thread).
+  template<typename T>
+  class Handle
+  {
+  public:
+    Handle(const Handle&) = delete;
+    Handle& operator=(const Handle&) = delete;
+
+    // TODO - change to a defaulted move constructor when VS2013 is no
+    // longer supported.
+    Handle(Handle&& other)
+      : mySettings(other.mySettings)
+      , myLock(std::move(other.myLock))
+    {}
+
+    T* operator->() const { return &mySettings; }
+    T& operator*() const { return mySettings; }
+
+  protected:
+    Handle(T& settings, std::mutex& mutex)
+      : mySettings(settings)
+      , myLock(mutex)
+    {}
+
+    friend class SettingsManager;
+
+    T& mySettings;
+    std::unique_lock<std::mutex> myLock;
+  };
+
+  using ReadHandle = Handle<const SettingsTree>;
+
+  class WriteHandle : public Handle<SettingsTree>
+  {
+  public:
+    WriteHandle(SettingsManager& manager)
+      : Handle(manager.mySettings, manager.myMutex)
+      , mySignal(manager.mySettingsChangedSignal)
+    {}
+
+    ~WriteHandle()
     {
-    public:
-        Handle(const Handle &) = delete;
-        Handle &operator=(const Handle &) = delete;
-
-        // TODO - change to a defaulted move constructor when VS2013 is no
-        // longer supported.
-        Handle(Handle &&other)
-            : mySettings(other.mySettings), myLock(std::move(other.myLock))
-        {
-        }
-
-        T *operator->() const
-        {
-            return &mySettings;
-        }
-        T &operator*() const
-        {
-            return mySettings;
-        }
-
-    protected:
-        Handle(T &settings, std::mutex &mutex)
-            : mySettings(settings), myLock(mutex)
-        {
-        }
-
-        friend class SettingsManager;
-
-        T &mySettings;
-        std::unique_lock<std::mutex> myLock;
-    };
-
-    using ReadHandle = Handle<const SettingsTree>;
-
-    class WriteHandle : public Handle<SettingsTree>
-    {
-    public:
-        WriteHandle(SettingsManager &manager)
-            : Handle(manager.mySettings, manager.myMutex),
-              mySignal(manager.mySettingsChangedSignal)
-        {
-        }
-
-        ~WriteHandle()
-        {
-            // Unlock before signalling to avoid deadlocks if callbacks read the
-            // settings.
-            myLock.unlock();
-            mySignal();
-        }
-
-        // TODO - change to a defaulted move constructor when VS2013 is no
-        // longer supported.
-        WriteHandle(WriteHandle &&other)
-            : Handle<SettingsTree>(std::move(other)), mySignal(other.mySignal)
-        {
-        }
-
-    private:
-        SettingsChangedSignal &mySignal;
-    };
-
-    SettingsManager() = default;
-    SettingsManager(const SettingsManager &) = delete;
-    SettingsManager &operator=(const SettingsManager &) = delete;
-
-    /// Obtain read access to the settings.
-    ReadHandle getReadHandle() const
-    {
-        return ReadHandle(mySettings, myMutex);
+      // Unlock before signalling to avoid deadlocks if callbacks read the
+      // settings.
+      myLock.unlock();
+      mySignal();
     }
 
-    /// Obtain write access to the settings.
-    WriteHandle getWriteHandle()
-    {
-        return WriteHandle(*this);
-    }
+    // TODO - change to a defaulted move constructor when VS2013 is no
+    // longer supported.
+    WriteHandle(WriteHandle&& other)
+      : Handle<SettingsTree>(std::move(other))
+      , mySignal(other.mySignal)
+    {}
 
-    /// Register a callback when a setting is changed.
-    boost::signals2::connection subscribeToChanges(
-        const SettingsChangedSignal::slot_type &slot)
-    {
-        return mySettingsChangedSignal.connect(slot);
-    }
+  private:
+    SettingsChangedSignal& mySignal;
+  };
 
-    /// Load the settings from the specified directory.
-    void load(const boost::filesystem::path &dir);
+  SettingsManager() = default;
+  SettingsManager(const SettingsManager&) = delete;
+  SettingsManager& operator=(const SettingsManager&) = delete;
 
-    /// Save the settings to the specified directory.
-    void save(const boost::filesystem::path &dir) const;
+  /// Obtain read access to the settings.
+  ReadHandle getReadHandle() const { return ReadHandle(mySettings, myMutex); }
+
+  /// Obtain write access to the settings.
+  WriteHandle getWriteHandle() { return WriteHandle(*this); }
+
+  /// Register a callback when a setting is changed.
+  boost::signals2::connection subscribeToChanges(const SettingsChangedSignal::slot_type& slot)
+  {
+    return mySettingsChangedSignal.connect(slot);
+  }
+
+  /// Load the settings from the specified directory.
+  void load(const boost::filesystem::path& dir);
+
+  /// Save the settings to the specified directory.
+  void save(const boost::filesystem::path& dir) const;
 
 private:
-    template <typename T>
-    friend class Handle;
+  template<typename T>
+  friend class Handle;
 
-    SettingsTree mySettings;
-    mutable std::mutex myMutex;
+  SettingsTree mySettings;
+  mutable std::mutex myMutex;
 
-    SettingsChangedSignal mySettingsChangedSignal;
+  SettingsChangedSignal mySettingsChangedSignal;
 };
 
 #endif

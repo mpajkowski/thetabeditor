@@ -25,14 +25,14 @@ class Score;
 class AdjustLineSpacing : public QUndoCommand
 {
 public:
-    AdjustLineSpacing(Score &score, int amount);
+  AdjustLineSpacing(Score& score, int amount);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    Score &myScore;
-    const int myAmount;
+  Score& myScore;
+  const int myAmount;
 };
 
 #endif

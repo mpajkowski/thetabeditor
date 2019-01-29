@@ -35,123 +35,115 @@
 
 static uint32_t toBigEndian(uint32_t val)
 {
-    return htonl(val);
+  return htonl(val);
 }
 
 static uint16_t toBigEndian(uint16_t val)
 {
-    return htons(val);
+  return htons(val);
 }
 
 static uint8_t toBigEndian(uint8_t val)
 {
-    return val;
+  return val;
 }
 
-template <typename T>
-static void write(std::ostream &os, T val)
+template<typename T>
+static void write(std::ostream& os, T val)
 {
-    val = toBigEndian(val);
-    os.write(reinterpret_cast<const char *>(&val), sizeof(T));
+  val = toBigEndian(val);
+  os.write(reinterpret_cast<const char*>(&val), sizeof(T));
 }
 
-static void writeVariableLength(std::ostream &os, uint32_t val)
+static void writeVariableLength(std::ostream& os, uint32_t val)
 {
-    std::array<uint8_t, 5> bytes;
-    for (int i = 0; i < 5; ++i)
-        bytes[i] = (val >> ((4 - i) * 7)) & 0x7f;
+  std::array<uint8_t, 5> bytes;
+  for (int i = 0; i < 5; ++i)
+    bytes[i] = (val >> ((4 - i) * 7)) & 0x7f;
 
-    // Find the first byte that needs to be written.
-    int i = 0;
-    for (i = 0; i < 4; ++i)
-    {
-        if (bytes[i] != 0)
-            break;
-    }
+  // Find the first byte that needs to be written.
+  int i = 0;
+  for (i = 0; i < 4; ++i) {
+    if (bytes[i] != 0)
+      break;
+  }
 
-    for (; i < 5; ++i)
-    {
-        // Set the top bit to indicate that more bytes will follow it.
-        if (i < 4)
-            bytes[i] |= 0x80;
+  for (; i < 5; ++i) {
+    // Set the top bit to indicate that more bytes will follow it.
+    if (i < 4)
+      bytes[i] |= 0x80;
 
-        write(os, bytes[i]);
-    }
+    write(os, bytes[i]);
+  }
 }
 
-MidiExporter::MidiExporter(const SettingsManager &settings_manager)
-    : FileFormatExporter(FileFormat("MIDI File", { "mid" })),
-      mySettingsManager(settings_manager)
+MidiExporter::MidiExporter(const SettingsManager& settings_manager)
+  : FileFormatExporter(FileFormat("MIDI File", { "mid" }))
+  , mySettingsManager(settings_manager)
+{}
+
+void MidiExporter::save(const boost::filesystem::path& filename, const Score& score)
 {
+  boost::filesystem::ofstream os(filename, std::ios::out | std::ios::binary);
+  os.exceptions(std::ios::failbit | std::ios::badbit | std::ios::eofbit);
+
+  MidiFile::LoadOptions options;
+  options.myEnableMetronome = false;
+  options.myRecordPositionChanges = false;
+  {
+    auto settings = mySettingsManager.getReadHandle();
+    options.myMetronomePreset =
+      settings->get(Settings::MetronomePreset) + Midi::MIDI_PERCUSSION_PRESET_OFFSET;
+    options.myStrongAccentVel = settings->get(Settings::MetronomeStrongAccent);
+    options.myWeakAccentVel = settings->get(Settings::MetronomeWeakAccent);
+    options.myVibratoStrength = settings->get(Settings::MidiVibratoLevel);
+    options.myWideVibratoStrength = settings->get(Settings::MidiWideVibratoLevel);
+  }
+
+  MidiFile file;
+  file.load(score, options);
+  writeHeader(os, file);
+
+  for (const MidiEventList& track : file.getTracks())
+    writeTrack(os, track);
 }
 
-void MidiExporter::save(const boost::filesystem::path &filename,
-                        const Score &score)
+void MidiExporter::writeHeader(std::ostream& os, const MidiFile& file)
 {
-    boost::filesystem::ofstream os(filename, std::ios::out | std::ios::binary);
-    os.exceptions(std::ios::failbit | std::ios::badbit | std::ios::eofbit);
+  // Chunk ID for the header chunk.
+  os << "MThd";
+  // 6 bytes will follow the chunk size.
+  write(os, static_cast<uint32_t>(6));
 
-    MidiFile::LoadOptions options;
-    options.myEnableMetronome = false;
-    options.myRecordPositionChanges = false;
-    {
-        auto settings = mySettingsManager.getReadHandle();
-        options.myMetronomePreset = settings->get(Settings::MetronomePreset) +
-                                    Midi::MIDI_PERCUSSION_PRESET_OFFSET;
-        options.myStrongAccentVel =
-            settings->get(Settings::MetronomeStrongAccent);
-        options.myWeakAccentVel = settings->get(Settings::MetronomeWeakAccent);
-        options.myVibratoStrength = settings->get(Settings::MidiVibratoLevel);
-        options.myWideVibratoStrength =
-            settings->get(Settings::MidiWideVibratoLevel);
-    }
+  // A format type of 1 indicates that we'll have multiple tracks.
+  write(os, static_cast<uint16_t>(1));
+  write(os, static_cast<uint16_t>(file.getTracks().size()));
 
-    MidiFile file;
-    file.load(score, options);
-    writeHeader(os, file);
-
-    for (const MidiEventList &track : file.getTracks())
-        writeTrack(os, track);
+  // Time division.
+  write(os, static_cast<uint16_t>(file.getTicksPerBeat()));
 }
 
-void MidiExporter::writeHeader(std::ostream &os, const MidiFile &file)
+void MidiExporter::writeTrack(std::ostream& os, const MidiEventList& events)
 {
-    // Chunk ID for the header chunk.
-    os << "MThd";
-    // 6 bytes will follow the chunk size.
-    write(os, static_cast<uint32_t>(6));
+  // Chunk ID for a track chunk.
+  os << "MTrk";
 
-    // A format type of 1 indicates that we'll have multiple tracks.
-    write(os, static_cast<uint16_t>(1));
-    write(os, static_cast<uint16_t>(file.getTracks().size()));
+  // Size in bytes of the track chunk. This will be updated after writing out
+  // all of the data.
+  const std::iostream::pos_type chunk_len_pos = os.tellp();
+  write(os, static_cast<uint32_t>(0));
 
-    // Time division.
-    write(os, static_cast<uint16_t>(file.getTicksPerBeat()));
-}
+  // Write out the MIDI events.
+  const std::iostream::pos_type chunk_start_pos = os.tellp();
+  for (const MidiEvent& event : events) {
+    writeVariableLength(os, event.getTicks());
+    os.write(reinterpret_cast<const char*>(event.getData().data()), event.getData().size());
+  }
 
-void MidiExporter::writeTrack(std::ostream &os, const MidiEventList &events)
-{
-    // Chunk ID for a track chunk.
-    os << "MTrk";
+  const std::iostream::pos_type chunk_end_pos = os.tellp();
 
-    // Size in bytes of the track chunk. This will be updated after writing out
-    // all of the data.
-    const std::iostream::pos_type chunk_len_pos = os.tellp();
-    write(os, static_cast<uint32_t>(0));
-
-    // Write out the MIDI events.
-    const std::iostream::pos_type chunk_start_pos = os.tellp();
-    for (const MidiEvent &event : events)
-    {
-        writeVariableLength(os, event.getTicks());
-        os.write(reinterpret_cast<const char *>(event.getData().data()),
-                 event.getData().size());
-    }
-
-    const std::iostream::pos_type chunk_end_pos = os.tellp();
-
-    // Record the size in bytes of the track chunk.
-    os.seekp(chunk_len_pos);
-    write(os, static_cast<uint32_t>(chunk_end_pos - chunk_start_pos));
-    os.seekp(chunk_end_pos);
+  // Record the size in bytes of the track chunk.
+  os.seekp(chunk_len_pos);
+  write(os, static_cast<uint32_t>(chunk_end_pos - chunk_start_pos));
+  os.seekp(chunk_end_pos);
 }

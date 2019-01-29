@@ -26,21 +26,21 @@ class QCheckBox;
 
 class AlternateEndingDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    AlternateEndingDialog(QWidget *parent);
+  AlternateEndingDialog(QWidget* parent);
 
-    AlternateEnding getAlternateEnding() const;
+  AlternateEnding getAlternateEnding() const;
 
 private slots:
-    virtual void accept() override;
+  virtual void accept() override;
 
 private:
-    std::vector<QCheckBox *> myCheckBoxes;
-    QCheckBox *myDaCapoCheckbox;
-    QCheckBox *myDalSegnoCheckbox;
-    QCheckBox *myDalSegnoSegnoCheckbox;
+  std::vector<QCheckBox*> myCheckBoxes;
+  QCheckBox* myDaCapoCheckbox;
+  QCheckBox* myDalSegnoCheckbox;
+  QCheckBox* myDalSegnoSegnoCheckbox;
 };
 
 #endif

@@ -25,15 +25,14 @@
 class RemoveIrregularGrouping : public QUndoCommand
 {
 public:
-    RemoveIrregularGrouping(const ScoreLocation &location,
-                            const IrregularGrouping &group);
+  RemoveIrregularGrouping(const ScoreLocation& location, const IrregularGrouping& group);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const IrregularGrouping myGroup;
+  ScoreLocation myLocation;
+  const IrregularGrouping myGroup;
 };
 
 #endif

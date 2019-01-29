@@ -28,185 +28,161 @@
 #include <QAction>
 #include <QButtonGroup>
 
-static QString getShortcutHint(const QAction &action)
+static QString getShortcutHint(const QAction& action)
 {
-    if (!action.shortcut().isEmpty())
-    {
-        QString shortcut = action.shortcut().toString(QKeySequence::NativeText);
-        return QString(" (%1)").arg(shortcut);
-    }
-    else
-        return "";
+  if (!action.shortcut().isEmpty()) {
+    QString shortcut = action.shortcut().toString(QKeySequence::NativeText);
+    return QString(" (%1)").arg(shortcut);
+  } else
+    return "";
 }
 
-static QString extractPercent(const QString &text, const QLocale &locale)
+static QString extractPercent(const QString& text, const QLocale& locale)
 {
-    QString number_only(text);
-    number_only.remove(locale.percent());
-    return number_only;
+  QString number_only(text);
+  number_only.remove(locale.percent());
+  return number_only;
 }
 
 class PercentageValidator : public QValidator
 {
 public:
-    PercentageValidator(QObject *parent)
-        : QValidator(parent), myNumberValidator(1, 500, 2)
-    {
-    }
+  PercentageValidator(QObject* parent)
+    : QValidator(parent)
+    , myNumberValidator(1, 500, 2)
+  {}
 
-    State validate(QString &input, int &pos) const override
-    {
-        QString number = extractPercent(input, locale());
-        return myNumberValidator.validate(number, pos);
-    }
+  State validate(QString& input, int& pos) const override
+  {
+    QString number = extractPercent(input, locale());
+    return myNumberValidator.validate(number, pos);
+  }
 
 private:
-    QDoubleValidator myNumberValidator;
+  QDoubleValidator myNumberValidator;
 };
 
-PlaybackWidget::PlaybackWidget(const QAction &play_pause_command,
-                               const QAction &rewind_command,
-                               const QAction &stop_command,
-                               const QAction &metronome_command,
-                               QWidget *parent)
-    : QWidget(parent),
-      ui(new Ui::PlaybackWidget),
-      myVoices(new QButtonGroup(this))
+PlaybackWidget::PlaybackWidget(const QAction& play_pause_command,
+                               const QAction& rewind_command,
+                               const QAction& stop_command,
+                               const QAction& metronome_command,
+                               QWidget* parent)
+  : QWidget(parent)
+  , ui(new Ui::PlaybackWidget)
+  , myVoices(new QButtonGroup(this))
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    myVoices->addButton(ui->voice1Button, 0);
-    myVoices->addButton(ui->voice2Button, 1);
-    Q_ASSERT(myVoices->buttons().length() == Staff::NUM_VOICES);
-    ui->voice1Button->setChecked(true);
+  myVoices->addButton(ui->voice1Button, 0);
+  myVoices->addButton(ui->voice2Button, 1);
+  Q_ASSERT(myVoices->buttons().length() == Staff::NUM_VOICES);
+  ui->voice1Button->setChecked(true);
 
-    ui->speedSpinner->setMinimum(50);
-    ui->speedSpinner->setMaximum(125);
-    ui->speedSpinner->setSuffix("%");
-    ui->speedSpinner->setValue(100);
+  ui->speedSpinner->setMinimum(50);
+  ui->speedSpinner->setMaximum(125);
+  ui->speedSpinner->setSuffix("%");
+  ui->speedSpinner->setValue(100);
 
-    ui->rewindToStartButton->setIcon(
-        style()->standardIcon(QStyle::SP_MediaSkipBackward));
-    connect(&rewind_command, &QAction::changed, [&]() {
-        ui->rewindToStartButton->setToolTip(
-            tr("Click to move playback to the beginning of the score%1.")
-                .arg(getShortcutHint(rewind_command)));
-    });
+  ui->rewindToStartButton->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
+  connect(&rewind_command, &QAction::changed, [&]() {
+    ui->rewindToStartButton->setToolTip(
+      tr("Click to move playback to the beginning of the score%1.").arg(getShortcutHint(rewind_command)));
+  });
 
-    ui->playPauseButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
-    connect(&play_pause_command, &QAction::changed, [&]() {
-        ui->playPauseButton->setToolTip(
-            tr("Click to start or pause playback%1.")
-                .arg(getShortcutHint(play_pause_command)));
-    });
+  ui->playPauseButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+  connect(&play_pause_command, &QAction::changed, [&]() {
+    ui->playPauseButton->setToolTip(
+      tr("Click to start or pause playback%1.").arg(getShortcutHint(play_pause_command)));
+  });
 
-    ui->stopButton->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
-    connect(&stop_command, &QAction::changed, [&]() {
-        ui->stopButton->setToolTip(
-            tr("Click to stop playback and return to the initial "
-               "location%1.")
-                .arg(getShortcutHint(stop_command)));
-    });
+  ui->stopButton->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
+  connect(&stop_command, &QAction::changed, [&]() {
+    ui->stopButton->setToolTip(tr("Click to stop playback and return to the initial "
+                                  "location%1.")
+                                 .arg(getShortcutHint(stop_command)));
+  });
 
-    ui->metronomeToggleButton->setIcon(
-        style()->standardIcon(QStyle::SP_MediaVolume));
-    connect(&metronome_command, &QAction::changed, [&]() {
-        ui->metronomeToggleButton->setToolTip(
-            tr("Click to toggle whether the metronome is turned on%1.")
-                .arg(getShortcutHint(metronome_command)));
-    });
+  ui->metronomeToggleButton->setIcon(style()->standardIcon(QStyle::SP_MediaVolume));
+  connect(&metronome_command, &QAction::changed, [&]() {
+    ui->metronomeToggleButton->setToolTip(
+      tr("Click to toggle whether the metronome is turned on%1.").arg(getShortcutHint(metronome_command)));
+  });
 
-    ui->zoomComboBox->setValidator(new PercentageValidator(this));
+  ui->zoomComboBox->setValidator(new PercentageValidator(this));
 
-    connect(myVoices, SIGNAL(buttonClicked(int)), this,
-            SIGNAL(activeVoiceChanged(int)));
-    connect(ui->speedSpinner, SIGNAL(valueChanged(int)), this,
-            SIGNAL(playbackSpeedChanged(int)));
-    connect(ui->filterComboBox, SIGNAL(currentIndexChanged(int)), this,
-            SIGNAL(activeFilterChanged(int)));
-    connectButtonToAction(ui->playPauseButton, &play_pause_command);
-    connectButtonToAction(ui->metronomeToggleButton, &metronome_command);
-    connectButtonToAction(ui->rewindToStartButton, &rewind_command);
-    connectButtonToAction(ui->stopButton, &stop_command);
+  connect(myVoices, SIGNAL(buttonClicked(int)), this, SIGNAL(activeVoiceChanged(int)));
+  connect(ui->speedSpinner, SIGNAL(valueChanged(int)), this, SIGNAL(playbackSpeedChanged(int)));
+  connect(ui->filterComboBox, SIGNAL(currentIndexChanged(int)), this, SIGNAL(activeFilterChanged(int)));
+  connectButtonToAction(ui->playPauseButton, &play_pause_command);
+  connectButtonToAction(ui->metronomeToggleButton, &metronome_command);
+  connectButtonToAction(ui->rewindToStartButton, &rewind_command);
+  connectButtonToAction(ui->stopButton, &stop_command);
 
-    connect(ui->zoomComboBox, &QComboBox::currentTextChanged,
-            [=](const QString &text) {
-                QLocale locale;
-                double percentage =
-                    locale.toDouble(extractPercent(text, locale));
-                percentage = validateZoom(percentage);
-                zoomChanged(percentage);
-            });
+  connect(ui->zoomComboBox, &QComboBox::currentTextChanged, [=](const QString& text) {
+    QLocale locale;
+    double percentage = locale.toDouble(extractPercent(text, locale));
+    percentage = validateZoom(percentage);
+    zoomChanged(percentage);
+  });
 }
 
 PlaybackWidget::~PlaybackWidget()
 {
-    delete ui;
+  delete ui;
 }
 
 double PlaybackWidget::validateZoom(double percent)
 {
-    if (percent < MIN_ZOOM || percent > MAX_ZOOM)
-    {
-        ui->zoomComboBox->setStyleSheet("QComboBox { color : red; }");
-    }
-    else
-    {
-        ui->zoomComboBox->setStyleSheet("QComboBox { color : black; }");
-    }
+  if (percent < MIN_ZOOM || percent > MAX_ZOOM) {
+    ui->zoomComboBox->setStyleSheet("QComboBox { color : red; }");
+  } else {
+    ui->zoomComboBox->setStyleSheet("QComboBox { color : black; }");
+  }
 
-    return boost::algorithm::clamp(percent, MIN_ZOOM, MAX_ZOOM);
+  return boost::algorithm::clamp(percent, MIN_ZOOM, MAX_ZOOM);
 }
 
-void PlaybackWidget::reset(const Document &doc)
+void PlaybackWidget::reset(const Document& doc)
 {
-    ui->filterComboBox->blockSignals(true);
+  ui->filterComboBox->blockSignals(true);
 
-    // Rebuild the filter list.
-    ui->filterComboBox->clear();
-    for (const ViewFilter &filter : doc.getScore().getViewFilters())
-    {
-        ui->filterComboBox->addItem(
-            QString::fromStdString(filter.getDescription()));
-    }
+  // Rebuild the filter list.
+  ui->filterComboBox->clear();
+  for (const ViewFilter& filter : doc.getScore().getViewFilters()) {
+    ui->filterComboBox->addItem(QString::fromStdString(filter.getDescription()));
+  }
 
-    // Update the selected filter.
-    if (doc.getViewOptions().getFilter())
-        ui->filterComboBox->setCurrentIndex(*doc.getViewOptions().getFilter());
+  // Update the selected filter.
+  if (doc.getViewOptions().getFilter())
+    ui->filterComboBox->setCurrentIndex(*doc.getViewOptions().getFilter());
 
-    // Update the selected voice.
-    myVoices->button(doc.getCaret().getLocation().getVoiceIndex())
-        ->setChecked(true);
+  // Update the selected voice.
+  myVoices->button(doc.getCaret().getLocation().getVoiceIndex())->setChecked(true);
 
-    // Update zoom.
-    QLocale locale;
-    const double zoom = doc.getViewOptions().getZoom();
-    QString percent = QString("%1%2").arg(zoom).arg(locale.percent());
-    ui->zoomComboBox->setCurrentText(percent);
+  // Update zoom.
+  QLocale locale;
+  const double zoom = doc.getViewOptions().getZoom();
+  QString percent = QString("%1%2").arg(zoom).arg(locale.percent());
+  ui->zoomComboBox->setCurrentText(percent);
 
-    ui->filterComboBox->blockSignals(false);
+  ui->filterComboBox->blockSignals(false);
 }
 
 int PlaybackWidget::getPlaybackSpeed() const
 {
-    return ui->speedSpinner->value();
+  return ui->speedSpinner->value();
 }
 
 void PlaybackWidget::setPlaybackMode(bool isPlaying)
 {
-    if (isPlaying)
-    {
-        ui->playPauseButton->setIcon(
-            style()->standardIcon(QStyle::SP_MediaPause));
-    }
-    else
-    {
-        ui->playPauseButton->setIcon(
-            style()->standardIcon(QStyle::SP_MediaPlay));
-    }
+  if (isPlaying) {
+    ui->playPauseButton->setIcon(style()->standardIcon(QStyle::SP_MediaPause));
+  } else {
+    ui->playPauseButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+  }
 }
 
-void PlaybackWidget::updateLocationLabel(const std::string &location)
+void PlaybackWidget::updateLocationLabel(const std::string& location)
 {
-    ui->locationLabel->setText(QString::fromStdString(location));
+  ui->locationLabel->setText(QString::fromStdString(location));
 }

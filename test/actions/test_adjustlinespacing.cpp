@@ -22,14 +22,14 @@
 
 TEST_CASE("Actions/AdjustLineSpacing", "")
 {
-    Score score;
-    const int originalSpacing = score.getLineSpacing();
+  Score score;
+  const int originalSpacing = score.getLineSpacing();
 
-    AdjustLineSpacing action(score, -2);
+  AdjustLineSpacing action(score, -2);
 
-    action.redo();
-    REQUIRE(score.getLineSpacing() == originalSpacing - 2);
+  action.redo();
+  REQUIRE(score.getLineSpacing() == originalSpacing - 2);
 
-    action.undo();
-    REQUIRE(score.getLineSpacing() == originalSpacing);
+  action.undo();
+  REQUIRE(score.getLineSpacing() == originalSpacing);
 }

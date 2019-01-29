@@ -21,28 +21,29 @@
 #include "viewfilterpresenter.h"
 #include <QDialog>
 
-namespace Ui
-{
+namespace Ui {
 class ViewFilterDialog;
 }
 
-class ViewFilterDialog : public QDialog, public ViewFilterView
+class ViewFilterDialog
+  : public QDialog
+  , public ViewFilterView
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit ViewFilterDialog(QWidget *parent = 0);
-    ~ViewFilterDialog();
+  explicit ViewFilterDialog(QWidget* parent = 0);
+  ~ViewFilterDialog();
 
-    void setPresenter(ViewFilterPresenter *presenter) override;
-    bool launch() override;
-    void update(const std::vector<std::string> &names,
-                const boost::optional<int> &selection,
-                const std::vector<FilterRule> &rules) override;
+  void setPresenter(ViewFilterPresenter* presenter) override;
+  bool launch() override;
+  void update(const std::vector<std::string>& names,
+              const boost::optional<int>& selection,
+              const std::vector<FilterRule>& rules) override;
 
 private:
-    std::unique_ptr<Ui::ViewFilterDialog> ui;
-    ViewFilterPresenter *myPresenter;
+  std::unique_ptr<Ui::ViewFilterDialog> ui;
+  ViewFilterPresenter* myPresenter;
 };
 
 #endif

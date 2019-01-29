@@ -21,40 +21,38 @@
 #include <QVBoxLayout>
 #include <score/score.h>
 
-Mixer::Mixer(QWidget *parent, const TuningDictionary &dictionary,
-             const PlayerEditPubSub &editPubSub,
-             const PlayerRemovePubSub &removePubSub)
-    : QWidget(parent),
-      myDictionary(dictionary),
-      myEditPubSub(editPubSub),
-      myRemovePubSub(removePubSub)
+Mixer::Mixer(QWidget* parent,
+             const TuningDictionary& dictionary,
+             const PlayerEditPubSub& editPubSub,
+             const PlayerRemovePubSub& removePubSub)
+  : QWidget(parent)
+  , myDictionary(dictionary)
+  , myEditPubSub(editPubSub)
+  , myRemovePubSub(removePubSub)
 {
-    myLayout = new QVBoxLayout(this);
-    myLayout->setSpacing(0);
-    myLayout->setSizeConstraint(QLayout::SetFixedSize);
-    setLayout(myLayout);
+  myLayout = new QVBoxLayout(this);
+  myLayout->setSpacing(0);
+  myLayout->setSizeConstraint(QLayout::SetFixedSize);
+  setLayout(myLayout);
 }
 
-void Mixer::reset(const Score &score)
+void Mixer::reset(const Score& score)
 {
-    clear();
+  clear();
 
-    for (unsigned int i = 0; i < score.getPlayers().size(); ++i)
-    {
-        myLayout->addWidget(new MixerItem(this, i, score.getPlayers()[i],
-                                          myDictionary, myEditPubSub,
-                                          myRemovePubSub));
-    }
+  for (unsigned int i = 0; i < score.getPlayers().size(); ++i) {
+    myLayout->addWidget(
+      new MixerItem(this, i, score.getPlayers()[i], myDictionary, myEditPubSub, myRemovePubSub));
+  }
 }
 
 void Mixer::clear()
 {
-    while (QLayoutItem *item = myLayout->takeAt(0))
-    {
-        // We might be clearing the mixer in response to a signal from one of
-        // its widgets, so it's not safe to delete the widget until control
-        // returns to the event loop.
-        item->widget()->deleteLater();
-        delete item;
-    }
+  while (QLayoutItem* item = myLayout->takeAt(0)) {
+    // We might be clearing the mixer in response to a signal from one of
+    // its widgets, so it's not safe to delete the widget until control
+    // returns to the event loop.
+    item->widget()->deleteLater();
+    delete item;
+  }
 }

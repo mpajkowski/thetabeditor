@@ -21,25 +21,24 @@
 #include <QDialog>
 #include <score/staff.h>
 
-namespace Ui
-{
+namespace Ui {
 class StaffDialog;
 }
 
 class StaffDialog : public QDialog
 {
 public:
-    explicit StaffDialog(QWidget *parent);
-    ~StaffDialog();
+  explicit StaffDialog(QWidget* parent);
+  ~StaffDialog();
 
-    int getStringCount() const;
-    void setStringCount(int strings);
+  int getStringCount() const;
+  void setStringCount(int strings);
 
-    Staff::ClefType getClefType() const;
-    void setClefType(Staff::ClefType type);
+  Staff::ClefType getClefType() const;
+  void setClefType(Staff::ClefType type);
 
 private:
-    Ui::StaffDialog *ui;
+  Ui::StaffDialog* ui;
 };
 
 #endif

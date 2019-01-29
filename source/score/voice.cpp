@@ -19,54 +19,49 @@
 
 #include "utils.h"
 
-Voice::Voice()
-{
-}
+Voice::Voice() {}
 
-bool Voice::operator==(const Voice &other) const
+bool Voice::operator==(const Voice& other) const
 {
-    return myPositions == other.myPositions &&
-           myIrregularGroupings == other.myIrregularGroupings;
+  return myPositions == other.myPositions && myIrregularGroupings == other.myIrregularGroupings;
 }
 
 boost::iterator_range<Voice::PositionIterator> Voice::getPositions()
 {
-    return boost::make_iterator_range(myPositions);
+  return boost::make_iterator_range(myPositions);
 }
 
 boost::iterator_range<Voice::PositionConstIterator> Voice::getPositions() const
 {
-    return boost::make_iterator_range(myPositions);
+  return boost::make_iterator_range(myPositions);
 }
 
-void Voice::insertPosition(const Position &position)
+void Voice::insertPosition(const Position& position)
 {
-    ScoreUtils::insertObject(myPositions, position);
+  ScoreUtils::insertObject(myPositions, position);
 }
 
-void Voice::removePosition(const Position &position)
+void Voice::removePosition(const Position& position)
 {
-    ScoreUtils::removeObject(myPositions, position);
+  ScoreUtils::removeObject(myPositions, position);
 }
 
-boost::iterator_range<Voice::IrregularGroupingIterator> Voice::
-    getIrregularGroupings()
+boost::iterator_range<Voice::IrregularGroupingIterator> Voice::getIrregularGroupings()
 {
-    return boost::make_iterator_range(myIrregularGroupings);
+  return boost::make_iterator_range(myIrregularGroupings);
 }
 
-boost::iterator_range<Voice::IrregularGroupingConstIterator> Voice::
-    getIrregularGroupings() const
+boost::iterator_range<Voice::IrregularGroupingConstIterator> Voice::getIrregularGroupings() const
 {
-    return boost::make_iterator_range(myIrregularGroupings);
+  return boost::make_iterator_range(myIrregularGroupings);
 }
 
-void Voice::insertIrregularGrouping(const IrregularGrouping &group)
+void Voice::insertIrregularGrouping(const IrregularGrouping& group)
 {
-    ScoreUtils::insertObject(myIrregularGroupings, group);
+  ScoreUtils::insertObject(myIrregularGroupings, group);
 }
 
-void Voice::removeIrregularGrouping(const IrregularGrouping &group)
+void Voice::removeIrregularGrouping(const IrregularGrouping& group)
 {
-    ScoreUtils::removeObject(myIrregularGroupings, group);
+  ScoreUtils::removeObject(myIrregularGroupings, group);
 }

@@ -19,95 +19,96 @@
 
 const int Barline::MIN_REPEAT_COUNT = 2;
 
-Barline::Barline() : myPosition(0), myBarType(SingleBar), myRepeatCount(0)
-{
-}
+Barline::Barline()
+  : myPosition(0)
+  , myBarType(SingleBar)
+  , myRepeatCount(0)
+{}
 
 Barline::Barline(int position, BarType type, int repeatCount)
-    : myPosition(position), myBarType(type), myRepeatCount(repeatCount)
-{
-}
+  : myPosition(position)
+  , myBarType(type)
+  , myRepeatCount(repeatCount)
+{}
 
-bool Barline::operator==(const Barline &other) const
+bool Barline::operator==(const Barline& other) const
 {
-    return myPosition == other.myPosition && myBarType == other.myBarType &&
-           myRepeatCount == other.myRepeatCount &&
-           myKeySignature == other.myKeySignature &&
-           myTimeSignature == other.myTimeSignature &&
-           myRehearsalSign == other.myRehearsalSign;
+  return myPosition == other.myPosition && myBarType == other.myBarType &&
+         myRepeatCount == other.myRepeatCount && myKeySignature == other.myKeySignature &&
+         myTimeSignature == other.myTimeSignature && myRehearsalSign == other.myRehearsalSign;
 }
 
 int Barline::getPosition() const
 {
-    return myPosition;
+  return myPosition;
 }
 
 void Barline::setPosition(int position)
 {
-    myPosition = position;
+  myPosition = position;
 }
 
 Barline::BarType Barline::getBarType() const
 {
-    return myBarType;
+  return myBarType;
 }
 
 void Barline::setBarType(BarType type)
 {
-    myBarType = type;
+  myBarType = type;
 }
 
 int Barline::getRepeatCount() const
 {
-    return myRepeatCount;
+  return myRepeatCount;
 }
 
 void Barline::setRepeatCount(int count)
 {
-    myRepeatCount = count;
+  myRepeatCount = count;
 }
 
-const KeySignature &Barline::getKeySignature() const
+const KeySignature& Barline::getKeySignature() const
 {
-    return myKeySignature;
+  return myKeySignature;
 }
 
-void Barline::setKeySignature(const KeySignature &key)
+void Barline::setKeySignature(const KeySignature& key)
 {
-    myKeySignature = key;
+  myKeySignature = key;
 }
 
-const TimeSignature &Barline::getTimeSignature() const
+const TimeSignature& Barline::getTimeSignature() const
 {
-    return myTimeSignature;
+  return myTimeSignature;
 }
 
-void Barline::setTimeSignature(const TimeSignature &time)
+void Barline::setTimeSignature(const TimeSignature& time)
 {
-    myTimeSignature = time;
+  myTimeSignature = time;
 }
 
 bool Barline::hasRehearsalSign() const
 {
-    return myRehearsalSign.is_initialized();
+  return myRehearsalSign.is_initialized();
 }
 
-const RehearsalSign &Barline::getRehearsalSign() const
+const RehearsalSign& Barline::getRehearsalSign() const
 {
-    return *myRehearsalSign;
+  return *myRehearsalSign;
 }
 
-RehearsalSign &Barline::getRehearsalSign()
+RehearsalSign& Barline::getRehearsalSign()
 {
-    return *myRehearsalSign;
+  return *myRehearsalSign;
 }
 
-void Barline::setRehearsalSign(const RehearsalSign &sign)
+void Barline::setRehearsalSign(const RehearsalSign& sign)
 {
-    myRehearsalSign = sign;
+  myRehearsalSign = sign;
 }
 
 void Barline::clearRehearsalSign()
 {
-    myRehearsalSign.reset();
+  myRehearsalSign.reset();
 }

@@ -23,20 +23,20 @@
 
 TEST_CASE("Actions/AddVolumeSwell", "")
 {
-    Position pos;
+  Position pos;
 
-    AddVolumeSwell action(&pos, Dynamic::mf, Dynamic::ff, 3);
+  AddVolumeSwell action(&pos, Dynamic::mf, Dynamic::ff, 3);
 
-    action.redo();
-    REQUIRE(pos.HasVolumeSwell());
+  action.redo();
+  REQUIRE(pos.HasVolumeSwell());
 
-    uint8_t startVol, endVol, duration;
-    pos.GetVolumeSwell(startVol, endVol, duration);
+  uint8_t startVol, endVol, duration;
+  pos.GetVolumeSwell(startVol, endVol, duration);
 
-    REQUIRE(startVol == Dynamic::mf);
-    REQUIRE(endVol == Dynamic::ff);
-    REQUIRE(duration == 3u);
+  REQUIRE(startVol == Dynamic::mf);
+  REQUIRE(endVol == Dynamic::ff);
+  REQUIRE(duration == 3u);
 
-    action.undo();
-    REQUIRE(!pos.HasVolumeSwell());
+  action.undo();
+  REQUIRE(!pos.HasVolumeSwell());
 }

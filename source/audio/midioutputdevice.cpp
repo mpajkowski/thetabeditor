@@ -22,223 +22,204 @@
 #include <score/dynamic.h>
 #include <score/generalmidi.h>
 
-MidiOutputDevice::MidiOutputDevice() : myMidiOut(nullptr)
+MidiOutputDevice::MidiOutputDevice()
+  : myMidiOut(nullptr)
 {
-    myMaxVolumes.fill(Midi::MAX_MIDI_CHANNEL_VOLUME);
-    myActiveVolumes.fill(Dynamic::fff);
+  myMaxVolumes.fill(Midi::MAX_MIDI_CHANNEL_VOLUME);
+  myActiveVolumes.fill(Dynamic::fff);
 
-    // Create all MIDI APIs supported on this platform.
-    std::vector<RtMidi::Api> apis;
-    RtMidi::getCompiledApi(apis);
+  // Create all MIDI APIs supported on this platform.
+  std::vector<RtMidi::Api> apis;
+  RtMidi::getCompiledApi(apis);
 
-    for (const RtMidi::Api &api : apis)
-    {
-        try
-        {
-            myMidiOuts.emplace_back(new RtMidiOut(api));
-        }
-        catch (...)
-        {
-            // continue anyway, another api might work
-            // found on mac that the Core API kept failing after repeated
-            // creations and the exceptions weren't caught
-            // TODO investigate why.
-        }
+  for (const RtMidi::Api& api : apis) {
+    try {
+      myMidiOuts.emplace_back(new RtMidiOut(api));
+    } catch (...) {
+      // continue anyway, another api might work
+      // found on mac that the Core API kept failing after repeated
+      // creations and the exceptions weren't caught
+      // TODO investigate why.
     }
+  }
 }
 
-MidiOutputDevice::~MidiOutputDevice()
+MidiOutputDevice::~MidiOutputDevice() {}
+
+void MidiOutputDevice::sendMessage(const std::vector<uint8_t>& data)
 {
+  // FIXME - fix const correctness in RtMidi api.
+  myMidiOut->sendMessage(const_cast<std::vector<uint8_t>*>(&data));
 }
 
-void MidiOutputDevice::sendMessage(const std::vector<uint8_t> &data)
+bool MidiOutputDevice::sendMidiMessage(unsigned char a, unsigned char b, unsigned char c)
 {
-    // FIXME - fix const correctness in RtMidi api.
-    myMidiOut->sendMessage(const_cast<std::vector<uint8_t> *>(&data));
+  std::vector<uint8_t> message;
+
+  message.push_back(a);
+
+  if (b <= 127)
+    message.push_back(b);
+
+  if (c <= 127)
+    message.push_back(c);
+
+  try {
+    myMidiOut->sendMessage(&message);
+  } catch (...) {
+    return false;
+  }
+
+  return true;
 }
 
-bool MidiOutputDevice::sendMidiMessage(unsigned char a, unsigned char b,
-                                       unsigned char c)
+bool MidiOutputDevice::initialize(size_t preferredApi, unsigned int preferredPort)
 {
-    std::vector<uint8_t> message;
+  if (myMidiOut)
+    myMidiOut->closePort(); // Close any open ports.
 
-    message.push_back(a);
+  if (preferredApi >= myMidiOuts.size())
+    return false;
 
-    if (b <= 127)
-        message.push_back(b);
+  myMidiOut = myMidiOuts[preferredApi].get();
+  unsigned int num_ports = myMidiOut->getPortCount();
 
-    if (c <= 127)
-        message.push_back(c);
+  if (num_ports == 0)
+    return false;
 
-    try
-    {
-        myMidiOut->sendMessage(&message);
-    }
-    catch (...)
-    {
-        return false;
-    }
+  try {
+    myMidiOut->openPort(preferredPort);
+  } catch (...) {
+    return false;
+  }
 
-    return true;
-}
-
-bool MidiOutputDevice::initialize(size_t preferredApi,
-                                  unsigned int preferredPort)
-{
-    if (myMidiOut)
-        myMidiOut->closePort(); // Close any open ports.
-
-    if (preferredApi >= myMidiOuts.size())
-        return false;
-
-    myMidiOut = myMidiOuts[preferredApi].get();
-    unsigned int num_ports = myMidiOut->getPortCount();
-
-    if (num_ports == 0)
-        return false;
-
-    try
-    {
-        myMidiOut->openPort(preferredPort);
-    }
-    catch (...)
-    {
-        return false;
-    }
-
-    return true;
+  return true;
 }
 
 size_t MidiOutputDevice::getApiCount()
 {
-    return myMidiOuts.size();
+  return myMidiOuts.size();
 }
 
 unsigned int MidiOutputDevice::getPortCount(size_t api)
 {
-    assert(api < myMidiOuts.size() && "Programming error, api doesn't exist");
-    return myMidiOuts[api]->getPortCount();
+  assert(api < myMidiOuts.size() && "Programming error, api doesn't exist");
+  return myMidiOuts[api]->getPortCount();
 }
 
 std::string MidiOutputDevice::getPortName(size_t api, unsigned int port)
 {
-    assert(api < myMidiOuts.size() && "Programming error, api doesn't exist");
-    return myMidiOuts[api]->getPortName(port);
+  assert(api < myMidiOuts.size() && "Programming error, api doesn't exist");
+  return myMidiOuts[api]->getPortName(port);
 }
 
 bool MidiOutputDevice::setPatch(int channel, uint8_t patch)
 {
-    if (patch > 127)
-    {
-        patch = 127;
-    }
+  if (patch > 127) {
+    patch = 127;
+  }
 
-    // MIDI program change:
-    // - first parameter is 0xC0-0xCF with C being the id and 0-F being the
-    //   channel (0-15).
-    // - second parameter is the new patch (0-127).
-    return sendMidiMessage(ProgramChange + channel, patch, -1);
+  // MIDI program change:
+  // - first parameter is 0xC0-0xCF with C being the id and 0-F being the
+  //   channel (0-15).
+  // - second parameter is the new patch (0-127).
+  return sendMidiMessage(ProgramChange + channel, patch, -1);
 }
 
 bool MidiOutputDevice::setVolume(int channel, uint8_t volume)
 {
-    assert(volume <= 127);
+  assert(volume <= 127);
 
-    myActiveVolumes[channel] = volume;
+  myActiveVolumes[channel] = volume;
 
-    return sendMidiMessage(
-        ControlChange + channel, ChannelVolume,
-        static_cast<int>((volume / 127.0) * myMaxVolumes[channel]));
+  return sendMidiMessage(
+    ControlChange + channel, ChannelVolume, static_cast<int>((volume / 127.0) * myMaxVolumes[channel]));
 }
 
 bool MidiOutputDevice::setPan(int channel, uint8_t pan)
 {
-    if (pan > 127)
-        pan = 127;
+  if (pan > 127)
+    pan = 127;
 
-    // MIDI control change
-    // first parameter is 0xB0-0xBF with B being the id and 0-F being the
-    // channel (0-15) second parameter is the control to change (0-127), 10 is
-    // channel pan third parameter is the new pan (0-127)
-    return sendMidiMessage(ControlChange + channel, PanChange, pan);
+  // MIDI control change
+  // first parameter is 0xB0-0xBF with B being the id and 0-F being the
+  // channel (0-15) second parameter is the control to change (0-127), 10 is
+  // channel pan third parameter is the new pan (0-127)
+  return sendMidiMessage(ControlChange + channel, PanChange, pan);
 }
 
 bool MidiOutputDevice::setPitchBend(int channel, uint8_t bend)
 {
-    if (bend > 127)
-        bend = 127;
+  if (bend > 127)
+    bend = 127;
 
-    return sendMidiMessage(PitchWheel + channel, 0, bend);
+  return sendMidiMessage(PitchWheel + channel, 0, bend);
 }
 
 bool MidiOutputDevice::playNote(int channel, uint8_t pitch, uint8_t velocity)
 {
-    if (pitch > 127)
-    {
-        pitch = 127;
-    }
+  if (pitch > 127) {
+    pitch = 127;
+  }
 
-    if (velocity == 0)
-    {
-        velocity = 1;
-    }
-    else if (velocity > 127)
-    {
-        velocity = 127;
-    }
+  if (velocity == 0) {
+    velocity = 1;
+  } else if (velocity > 127) {
+    velocity = 127;
+  }
 
-    // MIDI note on
-    // first parameter 0x90-9x9F with 9 being the id and 0-F being the channel
-    // (0-15) second parameter is the pitch of the note (0-127), 60 would be a
-    // 'middle C' third parameter is the velocity of the note (1-127), 0 is not
-    // allowed, 64 would be no velocity
-    return sendMidiMessage(NoteOn + channel, pitch, velocity);
+  // MIDI note on
+  // first parameter 0x90-9x9F with 9 being the id and 0-F being the channel
+  // (0-15) second parameter is the pitch of the note (0-127), 60 would be a
+  // 'middle C' third parameter is the velocity of the note (1-127), 0 is not
+  // allowed, 64 would be no velocity
+  return sendMidiMessage(NoteOn + channel, pitch, velocity);
 }
 
 bool MidiOutputDevice::stopNote(int channel, uint8_t pitch)
 {
-    if (pitch > 127)
-        pitch = 127;
+  if (pitch > 127)
+    pitch = 127;
 
-    // MIDI note off
-    // first parameter 0x80-9x8F with 8 being the id and 0-F being the channel
-    // (0-15) second parameter is the pitch of the note (0-127), 60 would be a
-    // 'middle C'
-    return sendMidiMessage(NoteOff + channel, pitch, 127);
+  // MIDI note off
+  // first parameter 0x80-9x8F with 8 being the id and 0-F being the channel
+  // (0-15) second parameter is the pitch of the note (0-127), 60 would be a
+  // 'middle C'
+  return sendMidiMessage(NoteOff + channel, pitch, 127);
 }
 
 bool MidiOutputDevice::setVibrato(int channel, uint8_t modulation)
 {
-    if (modulation > 127)
-        modulation = 127;
+  if (modulation > 127)
+    modulation = 127;
 
-    return sendMidiMessage(ControlChange + channel, ModWheel, modulation);
+  return sendMidiMessage(ControlChange + channel, ModWheel, modulation);
 }
 
 bool MidiOutputDevice::setSustain(int channel, bool sustainOn)
 {
-    const uint8_t value = sustainOn ? 127 : 0;
+  const uint8_t value = sustainOn ? 127 : 0;
 
-    return sendMidiMessage(ControlChange + channel, HoldPedal, value);
+  return sendMidiMessage(ControlChange + channel, HoldPedal, value);
 }
 
 void MidiOutputDevice::setPitchBendRange(int channel, uint8_t semiTones)
 {
-    sendMidiMessage(ControlChange + channel, RpnMsb, 0);
-    sendMidiMessage(ControlChange + channel, RpnLsb, 0);
-    sendMidiMessage(ControlChange + channel, DataEntryCoarse, semiTones);
-    sendMidiMessage(ControlChange + channel, DataEntryFine, 0);
+  sendMidiMessage(ControlChange + channel, RpnMsb, 0);
+  sendMidiMessage(ControlChange + channel, RpnLsb, 0);
+  sendMidiMessage(ControlChange + channel, DataEntryCoarse, semiTones);
+  sendMidiMessage(ControlChange + channel, DataEntryFine, 0);
 }
 
 void MidiOutputDevice::setChannelMaxVolume(int channel, uint8_t newMaxVolume)
 {
-    assert(newMaxVolume <= 127);
+  assert(newMaxVolume <= 127);
 
-    const bool maxVolumeChanged = myMaxVolumes[channel] != newMaxVolume;
-    myMaxVolumes[channel] = newMaxVolume;
+  const bool maxVolumeChanged = myMaxVolumes[channel] != newMaxVolume;
+  myMaxVolumes[channel] = newMaxVolume;
 
-    // If the new volume is different from the existing volume, send out a MIDI
-    // message
-    if (maxVolumeChanged)
-        setVolume(channel, myActiveVolumes[channel]);
+  // If the new volume is different from the existing volume, send out a MIDI
+  // message
+  if (maxVolumeChanged)
+    setVolume(channel, myActiveVolumes[channel]);
 }

@@ -18,23 +18,23 @@
 #include "alterationofpacedialog.h"
 #include "ui_alterationofpacedialog.h"
 
-AlterationOfPaceDialog::AlterationOfPaceDialog(QWidget *parent)
-    : QDialog(parent), ui(new Ui::AlterationOfPaceDialog)
+AlterationOfPaceDialog::AlterationOfPaceDialog(QWidget* parent)
+  : QDialog(parent)
+  , ui(new Ui::AlterationOfPaceDialog)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    ui->typeComboBox->addItem("Accelerando (accel.)", TempoMarker::Accelerando);
-    ui->typeComboBox->addItem("Ritardando (rit.)", TempoMarker::Ritardando);
+  ui->typeComboBox->addItem("Accelerando (accel.)", TempoMarker::Accelerando);
+  ui->typeComboBox->addItem("Ritardando (rit.)", TempoMarker::Ritardando);
 }
 
 AlterationOfPaceDialog::~AlterationOfPaceDialog()
 {
-    delete ui;
+  delete ui;
 }
 
-TempoMarker::AlterationOfPaceType AlterationOfPaceDialog::
-    getAlterationOfPaceType() const
+TempoMarker::AlterationOfPaceType AlterationOfPaceDialog::getAlterationOfPaceType() const
 {
-    return static_cast<TempoMarker::AlterationOfPaceType>(
-        ui->typeComboBox->itemData(ui->typeComboBox->currentIndex()).toInt());
+  return static_cast<TempoMarker::AlterationOfPaceType>(
+    ui->typeComboBox->itemData(ui->typeComboBox->currentIndex()).toInt());
 }

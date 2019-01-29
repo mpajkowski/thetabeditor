@@ -25,107 +25,106 @@
 class DirectionSymbol
 {
 public:
-    enum SymbolType
-    {
-        Coda,
-        DoubleCoda,
-        Segno,
-        SegnoSegno,
-        Fine,
-        DaCapo,
-        DalSegno,
-        DalSegnoSegno,
-        ToCoda,
-        ToDoubleCoda,
-        DaCapoAlCoda,
-        DaCapoAlDoubleCoda,
-        DalSegnoAlCoda,
-        DalSegnoAlDoubleCoda,
-        DalSegnoSegnoAlCoda,
-        DalSegnoSegnoAlDoubleCoda,
-        DaCapoAlFine,
-        DalSegnoAlFine,
-        DalSegnoSegnoAlFine,
-        NumSymbolTypes
-    };
+  enum SymbolType
+  {
+    Coda,
+    DoubleCoda,
+    Segno,
+    SegnoSegno,
+    Fine,
+    DaCapo,
+    DalSegno,
+    DalSegnoSegno,
+    ToCoda,
+    ToDoubleCoda,
+    DaCapoAlCoda,
+    DaCapoAlDoubleCoda,
+    DalSegnoAlCoda,
+    DalSegnoAlDoubleCoda,
+    DalSegnoSegnoAlCoda,
+    DalSegnoSegnoAlDoubleCoda,
+    DaCapoAlFine,
+    DalSegnoAlFine,
+    DalSegnoSegnoAlFine,
+    NumSymbolTypes
+  };
 
-    enum ActiveSymbolType
-    {
-        ActiveNone,
-        ActiveDaCapo,
-        ActiveDalSegno,
-        ActiveDalSegnoSegno
-    };
+  enum ActiveSymbolType
+  {
+    ActiveNone,
+    ActiveDaCapo,
+    ActiveDalSegno,
+    ActiveDalSegnoSegno
+  };
 
-    DirectionSymbol();
-    DirectionSymbol(SymbolType type, ActiveSymbolType activeType = ActiveNone,
-                    int repeatNumber = 0);
+  DirectionSymbol();
+  DirectionSymbol(SymbolType type, ActiveSymbolType activeType = ActiveNone, int repeatNumber = 0);
 
-    bool operator==(const DirectionSymbol &other) const;
+  bool operator==(const DirectionSymbol& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Return the type of this symbol.
-    SymbolType getSymbolType() const;
-    /// Return the symbol type that this symbol is active for.
-    ActiveSymbolType getActiveSymbolType() const;
-    /// Return the repeat number that this symbol is active on.
-    int getRepeatNumber() const;
+  /// Return the type of this symbol.
+  SymbolType getSymbolType() const;
+  /// Return the symbol type that this symbol is active for.
+  ActiveSymbolType getActiveSymbolType() const;
+  /// Return the repeat number that this symbol is active on.
+  int getRepeatNumber() const;
 
 private:
-    SymbolType mySymbolType;
-    ActiveSymbolType myActiveSymbolType;
-    int myRepeatNumber;
+  SymbolType mySymbolType;
+  ActiveSymbolType myActiveSymbolType;
+  int myRepeatNumber;
 };
 
 class Direction
 {
 public:
-    typedef std::vector<DirectionSymbol>::iterator SymbolIterator;
-    typedef std::vector<DirectionSymbol>::const_iterator SymbolConstIterator;
+  typedef std::vector<DirectionSymbol>::iterator SymbolIterator;
+  typedef std::vector<DirectionSymbol>::const_iterator SymbolConstIterator;
 
-    Direction();
-    explicit Direction(int position);
+  Direction();
+  explicit Direction(int position);
 
-    bool operator==(const Direction &other) const;
+  bool operator==(const Direction& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the position within the system where the direction is anchored.
-    int getPosition() const;
-    /// Sets the position within the system where the direction is anchored.
-    void setPosition(int position);
+  /// Returns the position within the system where the direction is anchored.
+  int getPosition() const;
+  /// Sets the position within the system where the direction is anchored.
+  void setPosition(int position);
 
-    /// Returns the set of symbols in the direction.
-    boost::iterator_range<SymbolIterator> getSymbols();
-    /// Returns the set of symbols in the direction.
-    boost::iterator_range<SymbolConstIterator> getSymbols() const;
+  /// Returns the set of symbols in the direction.
+  boost::iterator_range<SymbolIterator> getSymbols();
+  /// Returns the set of symbols in the direction.
+  boost::iterator_range<SymbolConstIterator> getSymbols() const;
 
-    /// Adds a new symbol to the direction.
-    void insertSymbol(const DirectionSymbol &symbol);
-    /// Removes a symbol from the direction.
-    void removeSymbol(int index);
+  /// Adds a new symbol to the direction.
+  void insertSymbol(const DirectionSymbol& symbol);
+  /// Removes a symbol from the direction.
+  void removeSymbol(int index);
 
 private:
-    int myPosition;
-    std::vector<DirectionSymbol> mySymbols;
+  int myPosition;
+  std::vector<DirectionSymbol> mySymbols;
 };
 
-template <class Archive>
-void DirectionSymbol::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void DirectionSymbol::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("symbol_type", mySymbolType);
-    ar("active_symbol", myActiveSymbolType);
-    ar("repeat_number", myRepeatNumber);
+  ar("symbol_type", mySymbolType);
+  ar("active_symbol", myActiveSymbolType);
+  ar("repeat_number", myRepeatNumber);
 }
 
-template <class Archive>
-void Direction::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void Direction::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("position", myPosition);
-    ar("symbols", mySymbols);
+  ar("position", myPosition);
+  ar("symbols", mySymbols);
 }
 
 #endif

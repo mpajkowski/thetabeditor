@@ -24,28 +24,27 @@
 class QButtonGroup;
 class QComboBox;
 
-namespace Ui
-{
+namespace Ui {
 class BendDialog;
 }
 
 class BendDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    BendDialog(QWidget *parent);
-    ~BendDialog();
+  BendDialog(QWidget* parent);
+  ~BendDialog();
 
-    Bend getBend() const;
+  Bend getBend() const;
 
 private:
-    void initBendPitches();
-    void initDrawPoints(QComboBox *c);
-    void handleBendTypeChanged();
+  void initBendPitches();
+  void initDrawPoints(QComboBox* c);
+  void handleBendTypeChanged();
 
-    Ui::BendDialog *ui;
-    QButtonGroup *myDurationButtonGroup;
+  Ui::BendDialog* ui;
+  QButtonGroup* myDurationButtonGroup;
 };
 
 #endif

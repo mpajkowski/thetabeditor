@@ -22,14 +22,13 @@ class QWidget;
 class ScoreLocation;
 class UndoManager;
 
-namespace Clipboard
-{
+namespace Clipboard {
 
 /// Stores the selected data on the clipboard.
-void copySelection(const ScoreLocation &location);
+void copySelection(const ScoreLocation& location);
 
 /// Pastes notes from the clipboard at the current position.
-void paste(QWidget *parent, UndoManager &undoManager, ScoreLocation &location);
+void paste(QWidget* parent, UndoManager& undoManager, ScoreLocation& location);
 
 /// Returns true if any data is on the clipboard.
 bool hasData();

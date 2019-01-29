@@ -27,80 +27,80 @@
 class Barline
 {
 public:
-    enum BarType
-    {
-        SingleBar,
-        DoubleBar,
-        FreeTimeBar,
-        RepeatStart,
-        RepeatEnd,
-        DoubleBarFine
-    };
+  enum BarType
+  {
+    SingleBar,
+    DoubleBar,
+    FreeTimeBar,
+    RepeatStart,
+    RepeatEnd,
+    DoubleBarFine
+  };
 
-    Barline();
-    Barline(int position, BarType type, int repeatCount = 0);
+  Barline();
+  Barline(int position, BarType type, int repeatCount = 0);
 
-    bool operator==(const Barline &other) const;
+  bool operator==(const Barline& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the position within the system where the barline is anchored.
-    int getPosition() const;
-    /// Sets the position within the system where the barline is anchored.
-    void setPosition(int position);
+  /// Returns the position within the system where the barline is anchored.
+  int getPosition() const;
+  /// Sets the position within the system where the barline is anchored.
+  void setPosition(int position);
 
-    /// Returns the type of barline (single, repeat end, etc).
-    BarType getBarType() const;
-    /// Sets the type of barline (single, repeat end, etc).
-    void setBarType(BarType type);
+  /// Returns the type of barline (single, repeat end, etc).
+  BarType getBarType() const;
+  /// Sets the type of barline (single, repeat end, etc).
+  void setBarType(BarType type);
 
-    /// Returns the repeat count (used by repeat end bars).
-    int getRepeatCount() const;
-    /// Sets the repeat count for repeat end bars.
-    void setRepeatCount(int count);
+  /// Returns the repeat count (used by repeat end bars).
+  int getRepeatCount() const;
+  /// Sets the repeat count for repeat end bars.
+  void setRepeatCount(int count);
 
-    /// Returns the key signature for the bar.
-    const KeySignature &getKeySignature() const;
-    /// Sets the key signature for the bar.
-    void setKeySignature(const KeySignature &key);
+  /// Returns the key signature for the bar.
+  const KeySignature& getKeySignature() const;
+  /// Sets the key signature for the bar.
+  void setKeySignature(const KeySignature& key);
 
-    /// Returns the time signature for the bar.
-    const TimeSignature &getTimeSignature() const;
-    /// Sets the time signature for the bar.
-    void setTimeSignature(const TimeSignature &time);
+  /// Returns the time signature for the bar.
+  const TimeSignature& getTimeSignature() const;
+  /// Sets the time signature for the bar.
+  void setTimeSignature(const TimeSignature& time);
 
-    /// Returns whether the barline has a rehearsal sign.
-    bool hasRehearsalSign() const;
-    /// Returns the rehearsal sign for the bar.
-    const RehearsalSign &getRehearsalSign() const;
-    RehearsalSign &getRehearsalSign();
-    /// Sets the rehearsal sign for the bar.
-    void setRehearsalSign(const RehearsalSign &sign);
-    /// Clears the rehearsal sign for the bar.
-    void clearRehearsalSign();
+  /// Returns whether the barline has a rehearsal sign.
+  bool hasRehearsalSign() const;
+  /// Returns the rehearsal sign for the bar.
+  const RehearsalSign& getRehearsalSign() const;
+  RehearsalSign& getRehearsalSign();
+  /// Sets the rehearsal sign for the bar.
+  void setRehearsalSign(const RehearsalSign& sign);
+  /// Clears the rehearsal sign for the bar.
+  void clearRehearsalSign();
 
-    /// Minimum valid number of repeats.
-    static const int MIN_REPEAT_COUNT;
+  /// Minimum valid number of repeats.
+  static const int MIN_REPEAT_COUNT;
 
 private:
-    int myPosition;
-    BarType myBarType;
-    int myRepeatCount;
-    KeySignature myKeySignature;
-    TimeSignature myTimeSignature;
-    boost::optional<RehearsalSign> myRehearsalSign;
+  int myPosition;
+  BarType myBarType;
+  int myRepeatCount;
+  KeySignature myKeySignature;
+  TimeSignature myTimeSignature;
+  boost::optional<RehearsalSign> myRehearsalSign;
 };
 
-template <class Archive>
-void Barline::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void Barline::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("position", myPosition);
-    ar("bar_type", myBarType);
-    ar("num_repeats", myRepeatCount);
-    ar("key_signature", myKeySignature);
-    ar("time_signature", myTimeSignature);
-    ar("rehearsal_sign", myRehearsalSign);
+  ar("position", myPosition);
+  ar("bar_type", myBarType);
+  ar("num_repeats", myRepeatCount);
+  ar("key_signature", myKeySignature);
+  ar("time_signature", myTimeSignature);
+  ar("rehearsal_sign", myRehearsalSign);
 }
 
 #endif

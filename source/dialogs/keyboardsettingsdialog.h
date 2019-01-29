@@ -23,8 +23,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace Ui
-{
+namespace Ui {
 class KeyboardSettingsDialog;
 }
 
@@ -33,63 +32,61 @@ class QTreeWidgetItem;
 
 class KeyboardSettingsDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    KeyboardSettingsDialog(QWidget *parent,
-                           const std::vector<Command *> &myCommands);
-    ~KeyboardSettingsDialog();
+  KeyboardSettingsDialog(QWidget* parent, const std::vector<Command*>& myCommands);
+  ~KeyboardSettingsDialog();
 
 private slots:
-    /// Reset the shortcut for the selected command to the value it had before
-    /// editing began.
-    void resetShortcut();
+  /// Reset the shortcut for the selected command to the value it had before
+  /// editing began.
+  void resetShortcut();
 
-    /// Reset the active command to its default shortcut.
-    void resetToDefaultShortcut();
+  /// Reset the active command to its default shortcut.
+  void resetToDefaultShortcut();
 
-    /// Switch the text in the shortcut editor when the selected command
-    /// changes.
-    void activeCommandChanged(QTreeWidgetItem *current,
-                              QTreeWidgetItem *previous);
+  /// Switch the text in the shortcut editor when the selected command
+  /// changes.
+  void activeCommandChanged(QTreeWidgetItem* current, QTreeWidgetItem* previous);
 
-    /// Save the shortcuts and close the dialog.
-    virtual void accept() override;
+  /// Save the shortcuts and close the dialog.
+  virtual void accept() override;
 
 private:
-    /// Performs setup such as loading the commands into the table widget, etc.
-    void initializeCommandTable();
+  /// Performs setup such as loading the commands into the table widget, etc.
+  void initializeCommandTable();
 
-    /// Capture the key presses as they are typed, in order to get the
-    /// key sequence.
-    virtual bool eventFilter(QObject *o, QEvent *e) override;
+  /// Capture the key presses as they are typed, in order to get the
+  /// key sequence.
+  virtual bool eventFilter(QObject* o, QEvent* e) override;
 
-    /// Process the key press and update the key sequence.
-    void processKeyPress(QKeyEvent *e);
+  /// Process the key press and update the key sequence.
+  void processKeyPress(QKeyEvent* e);
 
-    /// Save all of the shortcuts.
-    void saveShortcuts();
+  /// Save all of the shortcuts.
+  void saveShortcuts();
 
-    /// Updates the shortcut in the commands list and the shortcut editor.
-    /// If 'item' is not specified, the currently selected item will be used.
-    void setShortcut(const QKeySequence &shortcut, QTreeWidgetItem *item = 0);
+  /// Updates the shortcut in the commands list and the shortcut editor.
+  /// If 'item' is not specified, the currently selected item will be used.
+  void setShortcut(const QKeySequence& shortcut, QTreeWidgetItem* item = 0);
 
-    /// Get the Command corresponding to the currently selected row.
-    Command *activeCommand() const;
+  /// Get the Command corresponding to the currently selected row.
+  Command* activeCommand() const;
 
-    Ui::KeyboardSettingsDialog *ui;
-    std::vector<Command *> myCommands;
-    /// The known shortcuts (used when checking for duplicates).
-    std::unordered_map<std::string, int> myKnownShortcuts;
+  Ui::KeyboardSettingsDialog* ui;
+  std::vector<Command*> myCommands;
+  /// The known shortcuts (used when checking for duplicates).
+  std::unordered_map<std::string, int> myKnownShortcuts;
 
-    /// Corresponds to the columns used in the QTreeWidget for dealing
-    /// with the data.
-    enum Columns
-    {
-        CommandId,
-        CommandLabel,
-        CommandShortcut
-    };
+  /// Corresponds to the columns used in the QTreeWidget for dealing
+  /// with the data.
+  enum Columns
+  {
+    CommandId,
+    CommandLabel,
+    CommandShortcut
+  };
 };
 
 #endif

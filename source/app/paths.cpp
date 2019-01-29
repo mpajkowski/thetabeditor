@@ -22,55 +22,50 @@
 #include <app/appinfo.h>
 #include <boost/filesystem/detail/utf8_codecvt_facet.hpp>
 
-namespace Paths
-{
+namespace Paths {
 path getConfigDir()
 {
-    auto p = fromQString(
-        QStandardPaths::writableLocation(QStandardPaths::ConfigLocation));
+  auto p = fromQString(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation));
 
-    // On Linux, ConfigLocation is ~/.config, so append the application name.
+  // On Linux, ConfigLocation is ~/.config, so append the application name.
 #ifdef Q_OS_LINUX
-    return p / AppInfo::APPLICATION_ID;
+  return p / AppInfo::APPLICATION_ID;
 #else
-    return p;
+  return p;
 #endif
 }
 
 path getUserDataDir()
 {
-    return fromQString(
-        QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+  return fromQString(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
 }
 
 std::vector<path> getDataDirs()
 {
-    QStringList q_paths =
-        QStandardPaths::standardLocations(QStandardPaths::DataLocation);
-    q_paths.append(QString::fromStdString(AppInfo::getAbsolutePath("data")));
+  QStringList q_paths = QStandardPaths::standardLocations(QStandardPaths::DataLocation);
+  q_paths.append(QString::fromStdString(AppInfo::getAbsolutePath("data")));
 
-    std::vector<path> paths;
-    for (const QString &p : q_paths)
-        paths.push_back(fromQString(p));
+  std::vector<path> paths;
+  for (const QString& p : q_paths)
+    paths.push_back(fromQString(p));
 
-    return paths;
+  return paths;
 }
 
 path getHomeDir()
 {
-    return fromQString(
-        QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+  return fromQString(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
 }
 
-path fromQString(const QString &str)
+path fromQString(const QString& str)
 {
-    boost::filesystem::detail::utf8_codecvt_facet utf8;
-    return boost::filesystem::path(str.toStdString(), utf8);
+  boost::filesystem::detail::utf8_codecvt_facet utf8;
+  return boost::filesystem::path(str.toStdString(), utf8);
 }
 
-QString toQString(const path &str)
+QString toQString(const path& str)
 {
-    boost::filesystem::detail::utf8_codecvt_facet utf8;
-    return QString::fromStdString(str.string(utf8));
+  boost::filesystem::detail::utf8_codecvt_facet utf8;
+  return QString::fromStdString(str.string(utf8));
 }
 } // namespace Paths

@@ -25,14 +25,14 @@
 class RemoveTempoMarker : public QUndoCommand
 {
 public:
-    RemoveTempoMarker(const ScoreLocation &location);
+  RemoveTempoMarker(const ScoreLocation& location);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const TempoMarker myOriginalTempo;
+  ScoreLocation myLocation;
+  const TempoMarker myOriginalTempo;
 };
 
 #endif

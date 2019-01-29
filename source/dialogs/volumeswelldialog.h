@@ -21,8 +21,7 @@
 #include <QDialog>
 #include <boost/cstdint.hpp>
 
-namespace Ui
-{
+namespace Ui {
 class VolumeSwellDialog;
 }
 
@@ -31,27 +30,27 @@ class QButtonGroup;
 
 class VolumeSwellDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit VolumeSwellDialog(QWidget *parent, const Position *position);
-    ~VolumeSwellDialog();
+  explicit VolumeSwellDialog(QWidget* parent, const Position* position);
+  ~VolumeSwellDialog();
 
-    void accept();
+  void accept();
 
-    uint8_t getNewStartVolume() const;
-    uint8_t getNewEndVolume() const;
-    uint8_t getNewDuration() const;
+  uint8_t getNewStartVolume() const;
+  uint8_t getNewEndVolume() const;
+  uint8_t getNewDuration() const;
 
 private:
-    Ui::VolumeSwellDialog *ui;
+  Ui::VolumeSwellDialog* ui;
 
-    uint8_t newStartVolume;
-    uint8_t newEndVolume;
-    uint8_t newDuration;
+  uint8_t newStartVolume;
+  uint8_t newEndVolume;
+  uint8_t newDuration;
 
-    QButtonGroup *startVolumeLevels;
-    QButtonGroup *endVolumeLevels;
+  QButtonGroup* startVolumeLevels;
+  QButtonGroup* endVolumeLevels;
 };
 
 #endif // VOLUMESWELLDIALOG_H

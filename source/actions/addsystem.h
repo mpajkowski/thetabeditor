@@ -25,14 +25,14 @@ class Score;
 class AddSystem : public QUndoCommand
 {
 public:
-    AddSystem(Score &score, int index);
+  AddSystem(Score& score, int index);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    Score &myScore;
-    const int myIndex;
+  Score& myScore;
+  const int myIndex;
 };
 
 #endif

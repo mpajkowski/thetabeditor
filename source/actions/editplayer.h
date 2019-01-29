@@ -28,17 +28,17 @@ class Score;
 class EditPlayer : public QUndoCommand
 {
 public:
-    EditPlayer(Score &score, int playerIndex, const Player &player);
+  EditPlayer(Score& score, int playerIndex, const Player& player);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    Score &myScore;
-    const int myPlayerIndex;
-    const Player myNewPlayer;
-    const Player myOriginalPlayer;
-    std::vector<PlayerChange> myOriginalChanges;
+  Score& myScore;
+  const int myPlayerIndex;
+  const Player myNewPlayer;
+  const Player myOriginalPlayer;
+  std::vector<PlayerChange> myOriginalChanges;
 };
 
 #endif

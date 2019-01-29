@@ -19,43 +19,42 @@
 
 #include <rapidjson/error/en.h>
 
-namespace ScoreUtils
+namespace ScoreUtils {
+InputArchive::InputArchive(std::istream& is)
+  : myStream(is)
 {
-InputArchive::InputArchive(std::istream &is) : myStream(is)
-{
-    if (!is)
-        throw std::runtime_error("Could not open stream");
+  if (!is)
+    throw std::runtime_error("Could not open stream");
 
-    myDocument.ParseStream<0>(myStream);
+  myDocument.ParseStream<0>(myStream);
 
-    if (myDocument.HasParseError())
-    {
-        throw std::runtime_error("Parse error at offset " +
-                                 std::to_string(myDocument.GetErrorOffset()) +
-                                 ": " +
-                                 GetParseError_En(myDocument.GetParseError()));
-    }
+  if (myDocument.HasParseError()) {
+    throw std::runtime_error("Parse error at offset " + std::to_string(myDocument.GetErrorOffset()) + ": " +
+                             GetParseError_En(myDocument.GetParseError()));
+  }
 
-    myIterators.push(myDocument.MemberBegin());
+  myIterators.push(myDocument.MemberBegin());
 
-    (*this)("version", myVersion);
+  (*this)("version", myVersion);
 }
 
 FileVersion InputArchive::version() const
 {
-    return myVersion;
+  return myVersion;
 }
 
-OutputArchive::OutputArchive(std::ostream &os, FileVersion version)
-    : myWriteStream(os), myStream(myWriteStream), myVersion(version)
+OutputArchive::OutputArchive(std::ostream& os, FileVersion version)
+  : myWriteStream(os)
+  , myStream(myWriteStream)
+  , myVersion(version)
 {
-    myStream.StartObject();
+  myStream.StartObject();
 
-    (*this)("version", myVersion);
+  (*this)("version", myVersion);
 }
 
 OutputArchive::~OutputArchive()
 {
-    myStream.EndObject();
+  myStream.EndObject();
 }
 } // namespace ScoreUtils

@@ -26,17 +26,16 @@ class Position;
 class AddVolumeSwell : public QUndoCommand
 {
 public:
-    AddVolumeSwell(Position *position, uint8_t startVol, uint8_t endVol,
-                   uint8_t duration);
+  AddVolumeSwell(Position* position, uint8_t startVol, uint8_t endVol, uint8_t duration);
 
-    void redo();
-    void undo();
+  void redo();
+  void undo();
 
 private:
-    Position *position;
-    const uint8_t startVol;
-    const uint8_t endVol;
-    const uint8_t duration;
+  Position* position;
+  const uint8_t startVol;
+  const uint8_t endVol;
+  const uint8_t duration;
 };
 
 #endif // ADDVOLUMESWELL_H

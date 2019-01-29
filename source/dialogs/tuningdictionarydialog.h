@@ -20,8 +20,7 @@
 
 #include <QDialog>
 
-namespace Ui
-{
+namespace Ui {
 class TuningDictionaryDialog;
 }
 
@@ -31,26 +30,25 @@ class TuningDictionary;
 
 class TuningDictionaryDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit TuningDictionaryDialog(QWidget *parent,
-                                    TuningDictionary &dictionary);
-    ~TuningDictionaryDialog();
+  explicit TuningDictionaryDialog(QWidget* parent, TuningDictionary& dictionary);
+  ~TuningDictionaryDialog();
 
 private slots:
-    void onNumStringsChanged(int);
-    void onNewTuning();
-    void onDeleteTuning();
-    void onCurrentTuningChanged(QTreeWidgetItem *, QTreeWidgetItem *);
-    void onEditTuning();
+  void onNumStringsChanged(int);
+  void onNewTuning();
+  void onDeleteTuning();
+  void onCurrentTuningChanged(QTreeWidgetItem*, QTreeWidgetItem*);
+  void onEditTuning();
 
 private:
-    void onTuningModified();
-    Tuning *selectedTuning() const;
+  void onTuningModified();
+  Tuning* selectedTuning() const;
 
-    Ui::TuningDictionaryDialog *ui;
-    TuningDictionary &myDictionary;
+  Ui::TuningDictionaryDialog* ui;
+  TuningDictionary& myDictionary;
 };
 
 #endif

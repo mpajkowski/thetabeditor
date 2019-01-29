@@ -23,16 +23,16 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/AddTappedHarmonic", "")
 {
-    Note note;
-    myLocation.getPosition()->insertNote(note);
-    const int tappedFret = 17;
+  Note note;
+  myLocation.getPosition()->insertNote(note);
+  const int tappedFret = 17;
 
-    AddTappedHarmonic action(myLocation, tappedFret);
+  AddTappedHarmonic action(myLocation, tappedFret);
 
-    action.redo();
-    REQUIRE(myLocation.getNote()->hasTappedHarmonic());
-    REQUIRE(myLocation.getNote()->getTappedHarmonicFret() == tappedFret);
+  action.redo();
+  REQUIRE(myLocation.getNote()->hasTappedHarmonic());
+  REQUIRE(myLocation.getNote()->getTappedHarmonicFret() == tappedFret);
 
-    action.undo();
-    REQUIRE(!myLocation.getNote()->hasTappedHarmonic());
+  action.undo();
+  REQUIRE(!myLocation.getNote()->hasTappedHarmonic());
 }

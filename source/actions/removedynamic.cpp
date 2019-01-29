@@ -20,21 +20,21 @@
 #include <score/staff.h>
 #include <score/utils.h>
 
-RemoveDynamic::RemoveDynamic(const ScoreLocation &location)
-    : QUndoCommand(QObject::tr("Remove Dynamic")),
-      myLocation(location),
-      myOriginalDynamic(*ScoreUtils::findByPosition(
-          location.getStaff().getDynamics(), location.getPositionIndex()))
+RemoveDynamic::RemoveDynamic(const ScoreLocation& location)
+  : QUndoCommand(QObject::tr("Remove Dynamic"))
+  , myLocation(location)
+  , myOriginalDynamic(
+      *ScoreUtils::findByPosition(location.getStaff().getDynamics(), location.getPositionIndex()))
 {
-    setText(QObject::tr("Remove Dynamic"));
+  setText(QObject::tr("Remove Dynamic"));
 }
 
 void RemoveDynamic::redo()
 {
-    myLocation.getStaff().removeDynamic(myOriginalDynamic);
+  myLocation.getStaff().removeDynamic(myOriginalDynamic);
 }
 
 void RemoveDynamic::undo()
 {
-    myLocation.getStaff().insertDynamic(myOriginalDynamic);
+  myLocation.getStaff().insertDynamic(myOriginalDynamic);
 }

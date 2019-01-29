@@ -17,36 +17,36 @@
 
 #include "chordtext.h"
 
-ChordText::ChordText() : myPosition(0)
-{
-}
+ChordText::ChordText()
+  : myPosition(0)
+{}
 
-ChordText::ChordText(int position, const ChordName &name)
-    : myPosition(position), myChordName(name)
-{
-}
+ChordText::ChordText(int position, const ChordName& name)
+  : myPosition(position)
+  , myChordName(name)
+{}
 
-bool ChordText::operator==(const ChordText &other) const
+bool ChordText::operator==(const ChordText& other) const
 {
-    return myPosition == other.myPosition && myChordName == other.myChordName;
+  return myPosition == other.myPosition && myChordName == other.myChordName;
 }
 
 int ChordText::getPosition() const
 {
-    return myPosition;
+  return myPosition;
 }
 
 void ChordText::setPosition(int position)
 {
-    myPosition = position;
+  myPosition = position;
 }
 
-const ChordName &ChordText::getChordName() const
+const ChordName& ChordText::getChordName() const
 {
-    return myChordName;
+  return myChordName;
 }
 
-void ChordText::setChordName(const ChordName &name)
+void ChordText::setChordName(const ChordName& name)
 {
-    myChordName = name;
+  myChordName = name;
 }

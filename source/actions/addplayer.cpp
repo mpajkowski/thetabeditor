@@ -19,20 +19,19 @@
 
 #include <score/score.h>
 
-AddPlayer::AddPlayer(Score &score, const Player &player)
-    : QUndoCommand(QObject::tr("Add Player")),
-      myScore(score),
-      myPlayer(player),
-      myPlayerIndex(score.getPlayers().size())
-{
-}
+AddPlayer::AddPlayer(Score& score, const Player& player)
+  : QUndoCommand(QObject::tr("Add Player"))
+  , myScore(score)
+  , myPlayer(player)
+  , myPlayerIndex(score.getPlayers().size())
+{}
 
 void AddPlayer::redo()
 {
-    myScore.insertPlayer(myPlayer);
+  myScore.insertPlayer(myPlayer);
 }
 
 void AddPlayer::undo()
 {
-    myScore.removePlayer(myPlayerIndex);
+  myScore.removePlayer(myPlayerIndex);
 }

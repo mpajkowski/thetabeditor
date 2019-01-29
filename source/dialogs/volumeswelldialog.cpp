@@ -21,91 +21,87 @@
 #include <powertabdocument/dynamic.h>
 #include <powertabdocument/position.h>
 
-VolumeSwellDialog::VolumeSwellDialog(QWidget *parent, const Position *position)
-    : QDialog(parent), ui(new Ui::VolumeSwellDialog)
+VolumeSwellDialog::VolumeSwellDialog(QWidget* parent, const Position* position)
+  : QDialog(parent)
+  , ui(new Ui::VolumeSwellDialog)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    connect(ui->overCurNoteOpt, SIGNAL(toggled(bool)), ui->numNotesSpinBox,
-            SLOT(setDisabled(bool)));
+  connect(ui->overCurNoteOpt, SIGNAL(toggled(bool)), ui->numNotesSpinBox, SLOT(setDisabled(bool)));
 
-    ui->numNotesSpinBox->setMinimum(1);
-    ui->numNotesSpinBox->setMaximum(Position::MAX_VOLUME_SWELL_DURATION);
+  ui->numNotesSpinBox->setMinimum(1);
+  ui->numNotesSpinBox->setMaximum(Position::MAX_VOLUME_SWELL_DURATION);
 
-    // put the volume buttons in a QButtonGroup so that only one can be
-    // checked at a time
-    startVolumeLevels = new QButtonGroup(this);
-    startVolumeLevels->addButton(ui->volumeOffButtonStart, Dynamic::off);
-    startVolumeLevels->addButton(ui->pppButtonStart, Dynamic::ppp);
-    startVolumeLevels->addButton(ui->ppButtonStart, Dynamic::pp);
-    startVolumeLevels->addButton(ui->pButtonStart, Dynamic::p);
-    startVolumeLevels->addButton(ui->mpButtonStart, Dynamic::mp);
-    startVolumeLevels->addButton(ui->mfButtonStart, Dynamic::mf);
-    startVolumeLevels->addButton(ui->fButtonStart, Dynamic::f);
-    startVolumeLevels->addButton(ui->ffButtonStart, Dynamic::ff);
-    startVolumeLevels->addButton(ui->fffButtonStart, Dynamic::fff);
+  // put the volume buttons in a QButtonGroup so that only one can be
+  // checked at a time
+  startVolumeLevels = new QButtonGroup(this);
+  startVolumeLevels->addButton(ui->volumeOffButtonStart, Dynamic::off);
+  startVolumeLevels->addButton(ui->pppButtonStart, Dynamic::ppp);
+  startVolumeLevels->addButton(ui->ppButtonStart, Dynamic::pp);
+  startVolumeLevels->addButton(ui->pButtonStart, Dynamic::p);
+  startVolumeLevels->addButton(ui->mpButtonStart, Dynamic::mp);
+  startVolumeLevels->addButton(ui->mfButtonStart, Dynamic::mf);
+  startVolumeLevels->addButton(ui->fButtonStart, Dynamic::f);
+  startVolumeLevels->addButton(ui->ffButtonStart, Dynamic::ff);
+  startVolumeLevels->addButton(ui->fffButtonStart, Dynamic::fff);
 
-    endVolumeLevels = new QButtonGroup(this);
-    endVolumeLevels->addButton(ui->volumeOffButtonEnd, Dynamic::off);
-    endVolumeLevels->addButton(ui->pppButtonEnd, Dynamic::ppp);
-    endVolumeLevels->addButton(ui->ppButtonEnd, Dynamic::pp);
-    endVolumeLevels->addButton(ui->pButtonEnd, Dynamic::p);
-    endVolumeLevels->addButton(ui->mpButtonEnd, Dynamic::mp);
-    endVolumeLevels->addButton(ui->mfButtonEnd, Dynamic::mf);
-    endVolumeLevels->addButton(ui->fButtonEnd, Dynamic::f);
-    endVolumeLevels->addButton(ui->ffButtonEnd, Dynamic::ff);
-    endVolumeLevels->addButton(ui->fffButtonEnd, Dynamic::fff);
+  endVolumeLevels = new QButtonGroup(this);
+  endVolumeLevels->addButton(ui->volumeOffButtonEnd, Dynamic::off);
+  endVolumeLevels->addButton(ui->pppButtonEnd, Dynamic::ppp);
+  endVolumeLevels->addButton(ui->ppButtonEnd, Dynamic::pp);
+  endVolumeLevels->addButton(ui->pButtonEnd, Dynamic::p);
+  endVolumeLevels->addButton(ui->mpButtonEnd, Dynamic::mp);
+  endVolumeLevels->addButton(ui->mfButtonEnd, Dynamic::mf);
+  endVolumeLevels->addButton(ui->fButtonEnd, Dynamic::f);
+  endVolumeLevels->addButton(ui->ffButtonEnd, Dynamic::ff);
+  endVolumeLevels->addButton(ui->fffButtonEnd, Dynamic::fff);
 
-    // initialize with existing values
-    if (position->HasVolumeSwell())
-    {
-        uint8_t startVolume = 0, endVolume = 0, duration = 0;
-        position->GetVolumeSwell(startVolume, endVolume, duration);
+  // initialize with existing values
+  if (position->HasVolumeSwell()) {
+    uint8_t startVolume = 0, endVolume = 0, duration = 0;
+    position->GetVolumeSwell(startVolume, endVolume, duration);
 
-        startVolumeLevels->button(startVolume)->setChecked(true);
-        endVolumeLevels->button(endVolume)->setChecked(true);
+    startVolumeLevels->button(startVolume)->setChecked(true);
+    endVolumeLevels->button(endVolume)->setChecked(true);
 
-        if (duration == 0)
-            ui->overCurNoteOpt->setChecked(true);
-        else
-            ui->overFollowingNotesOpt->setChecked(true);
-    }
+    if (duration == 0)
+      ui->overCurNoteOpt->setChecked(true);
     else
-    {
-        ui->volumeOffButtonStart->setChecked(true);
-        ui->fffButtonEnd->setChecked(true);
-        ui->overCurNoteOpt->setChecked(true);
-    }
+      ui->overFollowingNotesOpt->setChecked(true);
+  } else {
+    ui->volumeOffButtonStart->setChecked(true);
+    ui->fffButtonEnd->setChecked(true);
+    ui->overCurNoteOpt->setChecked(true);
+  }
 
-    ui->buttonBox->setFocus();
+  ui->buttonBox->setFocus();
 }
 
 VolumeSwellDialog::~VolumeSwellDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 uint8_t VolumeSwellDialog::getNewStartVolume() const
 {
-    return newStartVolume;
+  return newStartVolume;
 }
 
 uint8_t VolumeSwellDialog::getNewEndVolume() const
 {
-    return newEndVolume;
+  return newEndVolume;
 }
 
 uint8_t VolumeSwellDialog::getNewDuration() const
 {
-    return newDuration;
+  return newDuration;
 }
 
 void VolumeSwellDialog::accept()
 {
-    newDuration =
-        ui->overCurNoteOpt->isChecked() ? 0 : ui->numNotesSpinBox->value();
-    newStartVolume = startVolumeLevels->checkedId();
-    newEndVolume = endVolumeLevels->checkedId();
+  newDuration = ui->overCurNoteOpt->isChecked() ? 0 : ui->numNotesSpinBox->value();
+  newStartVolume = startVolumeLevels->checkedId();
+  newEndVolume = endVolumeLevels->checkedId();
 
-    done(QDialog::Accepted);
+  done(QDialog::Accepted);
 }

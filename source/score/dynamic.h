@@ -23,47 +23,47 @@
 class Dynamic
 {
 public:
-    enum VolumeLevel
-    {
-        Off = 0,
-        ppp = 13,
-        pp = 26,
-        p = 39,
-        mp = 52,
-        mf = 65,
-        f = 78,
-        ff = 91,
-        fff = 104
-    };
+  enum VolumeLevel
+  {
+    Off = 0,
+    ppp = 13,
+    pp = 26,
+    p = 39,
+    mp = 52,
+    mf = 65,
+    f = 78,
+    ff = 91,
+    fff = 104
+  };
 
-    Dynamic();
-    Dynamic(int position, VolumeLevel level);
+  Dynamic();
+  Dynamic(int position, VolumeLevel level);
 
-    bool operator==(const Dynamic &other) const;
+  bool operator==(const Dynamic& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the position within the staff where the dynamic is anchored.
-    int getPosition() const;
-    /// Sets the position within the staff where the dynamic is anchored.
-    void setPosition(int position);
+  /// Returns the position within the staff where the dynamic is anchored.
+  int getPosition() const;
+  /// Sets the position within the staff where the dynamic is anchored.
+  void setPosition(int position);
 
-    /// Return the new volume that will be set.
-    VolumeLevel getVolume() const;
-    /// Set the new volume.
-    void setVolume(VolumeLevel level);
+  /// Return the new volume that will be set.
+  VolumeLevel getVolume() const;
+  /// Set the new volume.
+  void setVolume(VolumeLevel level);
 
 private:
-    int myPosition;
-    VolumeLevel myVolume;
+  int myPosition;
+  VolumeLevel myVolume;
 };
 
-template <class Archive>
-void Dynamic::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void Dynamic::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("position", myPosition);
-    ar("volume", myVolume);
+  ar("position", myPosition);
+  ar("volume", myVolume);
 }
 
 #endif

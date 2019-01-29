@@ -25,14 +25,14 @@
 class RemoveTextItem : public QUndoCommand
 {
 public:
-    RemoveTextItem(const ScoreLocation &location);
+  RemoveTextItem(const ScoreLocation& location);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const TextItem myOriginalText;
+  ScoreLocation myLocation;
+  const TextItem myOriginalText;
 };
 
 #endif

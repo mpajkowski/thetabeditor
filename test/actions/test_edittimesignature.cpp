@@ -22,31 +22,31 @@
 
 TEST_CASE("Actions/EditTimeSignature", "")
 {
-    Score score;
-    System system;
-    system.insertBarline(Barline(6, Barline::SingleBar));
-    score.insertSystem(system);
+  Score score;
+  System system;
+  system.insertBarline(Barline(6, Barline::SingleBar));
+  score.insertSystem(system);
 
-    TimeSignature newTime;
-    newTime.setBeatsPerMeasure(5);
-    newTime.setBeatValue(8);
+  TimeSignature newTime;
+  newTime.setBeatsPerMeasure(5);
+  newTime.setBeatValue(8);
 
-    ScoreLocation location(score, 0, 0, 6);
-    EditTimeSignature action(location, newTime);
+  ScoreLocation location(score, 0, 0, 6);
+  EditTimeSignature action(location, newTime);
 
-    action.redo();
-    {
-        const System &system = score.getSystems()[0];
-        REQUIRE_FALSE(system.getBarlines()[0].getTimeSignature() == newTime);
-        REQUIRE(system.getBarlines()[1].getTimeSignature() == newTime);
-        REQUIRE(system.getBarlines()[2].getTimeSignature() == newTime);
-        REQUIRE(!system.getBarlines()[2].getTimeSignature().isVisible());
-    }
+  action.redo();
+  {
+    const System& system = score.getSystems()[0];
+    REQUIRE_FALSE(system.getBarlines()[0].getTimeSignature() == newTime);
+    REQUIRE(system.getBarlines()[1].getTimeSignature() == newTime);
+    REQUIRE(system.getBarlines()[2].getTimeSignature() == newTime);
+    REQUIRE(!system.getBarlines()[2].getTimeSignature().isVisible());
+  }
 
-    action.undo();
-    {
-        const System &system = score.getSystems()[0];
-        REQUIRE_FALSE(system.getBarlines()[1].getTimeSignature() == newTime);
-        REQUIRE_FALSE(system.getBarlines()[2].getTimeSignature() == newTime);
-    }
+  action.undo();
+  {
+    const System& system = score.getSystems()[0];
+    REQUIRE_FALSE(system.getBarlines()[1].getTimeSignature() == newTime);
+    REQUIRE_FALSE(system.getBarlines()[2].getTimeSignature() == newTime);
+  }
 }

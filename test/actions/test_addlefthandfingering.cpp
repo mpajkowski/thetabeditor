@@ -21,17 +21,16 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/AddLeftHandFingering", "")
 {
-    Note note;
-    myLocation.getPosition()->insertNote(note);
+  Note note;
+  myLocation.getPosition()->insertNote(note);
 
-    LeftHandFingering fingering(LeftHandFingering::Finger::Index,
-                                LeftHandFingering::DisplayPosition::Right);
-    AddLeftHandFingering action(myLocation, fingering);
+  LeftHandFingering fingering(LeftHandFingering::Finger::Index, LeftHandFingering::DisplayPosition::Right);
+  AddLeftHandFingering action(myLocation, fingering);
 
-    action.redo();
-    REQUIRE(myLocation.getNote()->hasLeftHandFingering());
-    REQUIRE(myLocation.getNote()->getLeftHandFingering() == fingering);
+  action.redo();
+  REQUIRE(myLocation.getNote()->hasLeftHandFingering());
+  REQUIRE(myLocation.getNote()->getLeftHandFingering() == fingering);
 
-    action.undo();
-    REQUIRE(!myLocation.getNote()->hasLeftHandFingering());
+  action.undo();
+  REQUIRE(!myLocation.getNote()->hasLeftHandFingering());
 }

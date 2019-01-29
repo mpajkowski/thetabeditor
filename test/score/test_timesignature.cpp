@@ -22,53 +22,53 @@
 
 TEST_CASE("Score/TimeSignature/CutTime", "")
 {
-    TimeSignature time;
-    time.setMeterType(TimeSignature::CutTime);
+  TimeSignature time;
+  time.setMeterType(TimeSignature::CutTime);
 
-    REQUIRE(time.getMeterType() == TimeSignature::CutTime);
-    REQUIRE(time.getBeatsPerMeasure() == 2);
-    REQUIRE(time.getBeatValue() == 2);
+  REQUIRE(time.getMeterType() == TimeSignature::CutTime);
+  REQUIRE(time.getBeatsPerMeasure() == 2);
+  REQUIRE(time.getBeatValue() == 2);
 }
 
 TEST_CASE("Score/TimeSignature/Pulses", "")
 {
-    TimeSignature time;
+  TimeSignature time;
 
-    time.setBeatsPerMeasure(6);
+  time.setBeatsPerMeasure(6);
 
-    REQUIRE(time.isValidNumPulses(0));
-    REQUIRE(time.isValidNumPulses(1));
-    REQUIRE(time.isValidNumPulses(2));
-    REQUIRE(time.isValidNumPulses(3));
-    REQUIRE(time.isValidNumPulses(6));
+  REQUIRE(time.isValidNumPulses(0));
+  REQUIRE(time.isValidNumPulses(1));
+  REQUIRE(time.isValidNumPulses(2));
+  REQUIRE(time.isValidNumPulses(3));
+  REQUIRE(time.isValidNumPulses(6));
 
-    REQUIRE(!time.isValidNumPulses(4));
-    REQUIRE(!time.isValidNumPulses(7));
-    REQUIRE(!time.isValidNumPulses(12));
+  REQUIRE(!time.isValidNumPulses(4));
+  REQUIRE(!time.isValidNumPulses(7));
+  REQUIRE(!time.isValidNumPulses(12));
 }
 
 TEST_CASE("Score/TimeSignature/BeatAmount", "")
 {
-    TimeSignature time;
+  TimeSignature time;
 
-    time.setBeatValue(2);
-    REQUIRE(time.getBeatValue() == 2);
-    time.setBeatValue(32);
-    REQUIRE(time.getBeatValue() == 32);
-    time.setBeatValue(1);
-    REQUIRE(time.getBeatValue() == 1);
+  time.setBeatValue(2);
+  REQUIRE(time.getBeatValue() == 2);
+  time.setBeatValue(32);
+  REQUIRE(time.getBeatValue() == 32);
+  time.setBeatValue(1);
+  REQUIRE(time.getBeatValue() == 1);
 }
 
 TEST_CASE("Score/TimeSignature/Serialization", "")
 {
-    TimeSignature time;
-    time.setMeterType(TimeSignature::CutTime);
-    time.setBeatsPerMeasure(5);
-    time.setBeatValue(8);
-    TimeSignature::BeamingPattern pattern = { { 3, 2, 0, 0 } };
-    time.setBeamingPattern(pattern);
-    time.setNumPulses(5);
-    time.setVisible(false);
+  TimeSignature time;
+  time.setMeterType(TimeSignature::CutTime);
+  time.setBeatsPerMeasure(5);
+  time.setBeatValue(8);
+  TimeSignature::BeamingPattern pattern = { { 3, 2, 0, 0 } };
+  time.setBeamingPattern(pattern);
+  time.setNumPulses(5);
+  time.setVisible(false);
 
-    Serialization::test("time_signature", time);
+  Serialization::test("time_signature", time);
 }

@@ -21,8 +21,7 @@
 #include <QDialog>
 #include <score/chordname.h>
 
-namespace Ui
-{
+namespace Ui {
 class ChordNameDialog;
 }
 
@@ -32,30 +31,30 @@ class QCheckBox;
 
 class ChordNameDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit ChordNameDialog(QWidget *parent);
-    ~ChordNameDialog();
+  explicit ChordNameDialog(QWidget* parent);
+  ~ChordNameDialog();
 
-    const ChordName &getChordName() const;
+  const ChordName& getChordName() const;
 
 private slots:
-    void updateState();
-    void onTonicVariationClicked(QAbstractButton *clickedButton);
-    void onBassVariationClicked(QAbstractButton *clickedButton);
-    void onTonicChanged();
+  void updateState();
+  void onTonicVariationClicked(QAbstractButton* clickedButton);
+  void onBassVariationClicked(QAbstractButton* clickedButton);
+  void onTonicChanged();
 
 private:
-    void initCheckBox(QCheckBox *checkbox);
+  void initCheckBox(QCheckBox* checkbox);
 
-    Ui::ChordNameDialog *ui;
-    QButtonGroup *myTonicVariations;
-    QButtonGroup *myBassVariations;
-    QButtonGroup *myTonicKeys;
-    QButtonGroup *myBassKeys;
+  Ui::ChordNameDialog* ui;
+  QButtonGroup* myTonicVariations;
+  QButtonGroup* myBassVariations;
+  QButtonGroup* myTonicKeys;
+  QButtonGroup* myBassKeys;
 
-    ChordName myChord;
+  ChordName myChord;
 };
 
 #endif

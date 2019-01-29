@@ -20,27 +20,26 @@
 
 #include <QDialog>
 
-namespace Ui
-{
+namespace Ui {
 class TappedHarmonicDialog;
 }
 
 class TappedHarmonicDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit TappedHarmonicDialog(QWidget *parent, int originalFret);
-    ~TappedHarmonicDialog();
+  explicit TappedHarmonicDialog(QWidget* parent, int originalFret);
+  ~TappedHarmonicDialog();
 
-    int getTappedFret() const;
+  int getTappedFret() const;
 
 public slots:
-    virtual void accept() override;
+  virtual void accept() override;
 
 private:
-    Ui::TappedHarmonicDialog *ui;
-    const int myOriginalFret;
+  Ui::TappedHarmonicDialog* ui;
+  const int myOriginalFret;
 };
 
 #endif

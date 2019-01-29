@@ -27,66 +27,66 @@
 class ActivePlayer
 {
 public:
-    ActivePlayer();
-    ActivePlayer(int player, int instrument);
+  ActivePlayer();
+  ActivePlayer(int player, int instrument);
 
-    bool operator==(const ActivePlayer &other) const;
+  bool operator==(const ActivePlayer& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the zero-based identifier of the player.
-    int getPlayerNumber() const;
-    /// Returns the zero-based identifier of the instrument.
-    int getInstrumentNumber() const;
+  /// Returns the zero-based identifier of the player.
+  int getPlayerNumber() const;
+  /// Returns the zero-based identifier of the instrument.
+  int getInstrumentNumber() const;
 
 private:
-    int myPlayerNumber;
-    int myInstrumentNumber;
+  int myPlayerNumber;
+  int myInstrumentNumber;
 };
 
 class PlayerChange
 {
 public:
-    PlayerChange();
-    explicit PlayerChange(int position);
+  PlayerChange();
+  explicit PlayerChange(int position);
 
-    bool operator==(const PlayerChange &other) const;
+  bool operator==(const PlayerChange& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the position within the system where the change is anchored.
-    int getPosition() const;
-    /// Sets the position within the system where the change is anchored.
-    void setPosition(int position);
+  /// Returns the position within the system where the change is anchored.
+  int getPosition() const;
+  /// Sets the position within the system where the change is anchored.
+  void setPosition(int position);
 
-    /// Returns the set of active players in the given staff.
-    std::vector<ActivePlayer> getActivePlayers(int staff) const;
+  /// Returns the set of active players in the given staff.
+  std::vector<ActivePlayer> getActivePlayers(int staff) const;
 
-    /// Adds a new active player to a staff.
-    void insertActivePlayer(int staff, const ActivePlayer &player);
-    /// Removes an active player from a staff.
-    void removeActivePlayer(int staff, const ActivePlayer &player);
+  /// Adds a new active player to a staff.
+  void insertActivePlayer(int staff, const ActivePlayer& player);
+  /// Removes an active player from a staff.
+  void removeActivePlayer(int staff, const ActivePlayer& player);
 
 private:
-    int myPosition;
-    /// For each staff, there can be multiple active players (or none).
-    std::map<int, std::vector<ActivePlayer>> myActivePlayers;
+  int myPosition;
+  /// For each staff, there can be multiple active players (or none).
+  std::map<int, std::vector<ActivePlayer>> myActivePlayers;
 };
 
-template <class Archive>
-void ActivePlayer::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void ActivePlayer::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("player", myPlayerNumber);
-    ar("instrument", myInstrumentNumber);
+  ar("player", myPlayerNumber);
+  ar("instrument", myInstrumentNumber);
 }
 
-template <class Archive>
-void PlayerChange::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void PlayerChange::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("position", myPosition);
-    ar("active_players", myActivePlayers);
+  ar("position", myPosition);
+  ar("active_players", myActivePlayers);
 }
 
 #endif

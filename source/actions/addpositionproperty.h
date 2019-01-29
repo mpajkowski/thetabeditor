@@ -26,19 +26,19 @@
 class AddPositionProperty : public QUndoCommand
 {
 public:
-    AddPositionProperty(const ScoreLocation &location,
-                        Position::SimpleProperty property,
-                        const QString &positionDescription);
+  AddPositionProperty(const ScoreLocation& location,
+                      Position::SimpleProperty property,
+                      const QString& positionDescription);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Position::SimpleProperty myProperty;
-    /// Since setting a property may clear other properties, we need to save
-    /// a copy of the original positions.
-    std::vector<Position> myOriginalPositions;
+  ScoreLocation myLocation;
+  const Position::SimpleProperty myProperty;
+  /// Since setting a property may clear other properties, we need to save
+  /// a copy of the original positions.
+  std::vector<Position> myOriginalPositions;
 };
 
 #endif

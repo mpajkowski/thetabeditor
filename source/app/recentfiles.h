@@ -26,34 +26,33 @@ class SettingsManager;
 
 class RecentFiles : public QObject
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    RecentFiles(SettingsManager &settings_manager, QMenu *recent_files_menu,
-                QObject *parent = nullptr);
-    ~RecentFiles();
+  RecentFiles(SettingsManager& settings_manager, QMenu* recent_files_menu, QObject* parent = nullptr);
+  ~RecentFiles();
 
-    /// Adds a file to the recent documents list.
-    void add(const QString &fileName);
+  /// Adds a file to the recent documents list.
+  void add(const QString& fileName);
 
 signals:
-    void fileSelected(const QString &fileName);
+  void fileSelected(const QString& fileName);
 
 private slots:
-    /// Clears the recent files list.
-    void clear();
-    void handleFileSelection(const QString &fileName);
+  /// Clears the recent files list.
+  void clear();
+  void handleFileSelection(const QString& fileName);
 
 private:
-    void updateMenu();
+  void updateMenu();
 
-    /// Save the recent files list to disk.
-    void save();
+  /// Save the recent files list to disk.
+  void save();
 
-    static const int MAX_RECENT_FILES = 10;
-    SettingsManager &mySettingsManager;
-    QMenu *myRecentFilesMenu;
-    QStringList myRecentFiles;
+  static const int MAX_RECENT_FILES = 10;
+  SettingsManager& mySettingsManager;
+  QMenu* myRecentFilesMenu;
+  QStringList myRecentFiles;
 };
 
 #endif

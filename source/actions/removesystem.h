@@ -26,15 +26,15 @@ class Score;
 class RemoveSystem : public QUndoCommand
 {
 public:
-    RemoveSystem(Score &score, int index);
+  RemoveSystem(Score& score, int index);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    Score &myScore;
-    const int myIndex;
-    const System myOriginalSystem;
+  Score& myScore;
+  const int myIndex;
+  const System myOriginalSystem;
 };
 
 #endif

@@ -23,40 +23,38 @@
 
 class QLineEdit;
 
-namespace Ui
-{
+namespace Ui {
 class TimeSignatureDialog;
 }
 
 class TimeSignatureDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit TimeSignatureDialog(QWidget *parent,
-                                 const TimeSignature &currentTimeSignature);
-    ~TimeSignatureDialog();
+  explicit TimeSignatureDialog(QWidget* parent, const TimeSignature& currentTimeSignature);
+  ~TimeSignatureDialog();
 
-    /// Returns a new time signature using the values selected in the dialog.
-    TimeSignature getTimeSignature() const;
+  /// Returns a new time signature using the values selected in the dialog.
+  TimeSignature getTimeSignature() const;
 
 private slots:
-    virtual void accept() override;
-    void editTimeSignatureVisible(bool isVisible);
-    void editMetronomePulses(int selectedIndex);
-    void editCutTime(bool enabled);
-    void editCommonTime(bool enabled);
-    void editBeatValue(int selectedIndex);
-    void editBeatsPerMeasure(int beats);
+  virtual void accept() override;
+  void editTimeSignatureVisible(bool isVisible);
+  void editMetronomePulses(int selectedIndex);
+  void editCutTime(bool enabled);
+  void editCommonTime(bool enabled);
+  void editBeatValue(int selectedIndex);
+  void editBeatsPerMeasure(int beats);
 
 private:
-    /// Update the options in the metronome pulses combo box (the available
-    /// options for metronome pulses depend on the number of beats).
-    void updatePossiblePulseValues();
+  /// Update the options in the metronome pulses combo box (the available
+  /// options for metronome pulses depend on the number of beats).
+  void updatePossiblePulseValues();
 
-    Ui::TimeSignatureDialog *ui;
-    std::array<QLineEdit *, 4> myBeamingPatterns;
-    TimeSignature myTimeSignature;
+  Ui::TimeSignatureDialog* ui;
+  std::array<QLineEdit*, 4> myBeamingPatterns;
+  TimeSignature myTimeSignature;
 };
 
 #endif

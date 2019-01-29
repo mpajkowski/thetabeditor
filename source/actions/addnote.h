@@ -26,17 +26,16 @@
 class AddNote : public QUndoCommand
 {
 public:
-    AddNote(const ScoreLocation &location, const Note &note,
-            Position::DurationType duration);
+  AddNote(const ScoreLocation& location, const Note& note, Position::DurationType duration);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    boost::optional<Position> myOriginalPosition;
-    const Note myNote;
-    const Position::DurationType myDuration;
+  ScoreLocation myLocation;
+  boost::optional<Position> myOriginalPosition;
+  const Note myNote;
+  const Position::DurationType myDuration;
 };
 
 #endif

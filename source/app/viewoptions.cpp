@@ -17,6 +17,6 @@
 
 #include "viewoptions.h"
 
-ViewOptions::ViewOptions() : myZoom(100.0)
-{
-}
+ViewOptions::ViewOptions()
+  : myZoom(100.0)
+{}

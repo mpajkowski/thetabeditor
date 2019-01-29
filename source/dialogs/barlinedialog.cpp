@@ -18,59 +18,56 @@
 #include "barlinedialog.h"
 #include "ui_barlinedialog.h"
 
-BarlineDialog::BarlineDialog(QWidget *parent, Barline::BarType type,
-                             int repeats, bool isStartBar, bool isEndBar)
-    : QDialog(parent), ui(new Ui::BarlineDialog)
+BarlineDialog::BarlineDialog(QWidget* parent,
+                             Barline::BarType type,
+                             int repeats,
+                             bool isStartBar,
+                             bool isEndBar)
+  : QDialog(parent)
+  , ui(new Ui::BarlineDialog)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    ui->barlineTypeComboBox->addItem(tr("Single"), Barline::SingleBar);
-    ui->barlineTypeComboBox->addItem(tr("Double"), Barline::DoubleBar);
-    ui->barlineTypeComboBox->addItem(tr("Free Time"), Barline::FreeTimeBar);
+  ui->barlineTypeComboBox->addItem(tr("Single"), Barline::SingleBar);
+  ui->barlineTypeComboBox->addItem(tr("Double"), Barline::DoubleBar);
+  ui->barlineTypeComboBox->addItem(tr("Free Time"), Barline::FreeTimeBar);
 
-    if (!isEndBar)
-        ui->barlineTypeComboBox->addItem(tr("Repeat Start"),
-                                         Barline::RepeatStart);
+  if (!isEndBar)
+    ui->barlineTypeComboBox->addItem(tr("Repeat Start"), Barline::RepeatStart);
 
-    if (!isStartBar)
-    {
-        ui->barlineTypeComboBox->addItem(tr("Repeat End"), Barline::RepeatEnd);
-        ui->barlineTypeComboBox->addItem(tr("Double Bar Fine"),
-                                         Barline::DoubleBarFine);
-    }
+  if (!isStartBar) {
+    ui->barlineTypeComboBox->addItem(tr("Repeat End"), Barline::RepeatEnd);
+    ui->barlineTypeComboBox->addItem(tr("Double Bar Fine"), Barline::DoubleBarFine);
+  }
 
-    connect(ui->barlineTypeComboBox, SIGNAL(currentIndexChanged(int)), this,
-            SLOT(onBarlineTypeChanged(int)));
+  connect(ui->barlineTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onBarlineTypeChanged(int)));
 
-    ui->barlineTypeComboBox->setCurrentIndex(
-        ui->barlineTypeComboBox->findData(type));
-    onBarlineTypeChanged(type);
+  ui->barlineTypeComboBox->setCurrentIndex(ui->barlineTypeComboBox->findData(type));
+  onBarlineTypeChanged(type);
 
-    // Set limits for repeat count.
-    ui->repeatCountSpinBox->setMinimum(Barline::MIN_REPEAT_COUNT);
-    ui->repeatCountSpinBox->setValue(repeats);
+  // Set limits for repeat count.
+  ui->repeatCountSpinBox->setMinimum(Barline::MIN_REPEAT_COUNT);
+  ui->repeatCountSpinBox->setValue(repeats);
 }
 
 BarlineDialog::~BarlineDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 Barline::BarType BarlineDialog::getBarType() const
 {
-    return static_cast<Barline::BarType>(
-        ui->barlineTypeComboBox
-            ->itemData(ui->barlineTypeComboBox->currentIndex())
-            .toInt());
+  return static_cast<Barline::BarType>(
+    ui->barlineTypeComboBox->itemData(ui->barlineTypeComboBox->currentIndex()).toInt());
 }
 
 int BarlineDialog::getRepeatCount() const
 {
-    return ui->repeatCountSpinBox->value();
+  return ui->repeatCountSpinBox->value();
 }
 
 void BarlineDialog::onBarlineTypeChanged(int index)
 {
-    int newBarlineType = ui->barlineTypeComboBox->itemData(index).toInt();
-    ui->repeatCountSpinBox->setEnabled(newBarlineType == Barline::RepeatEnd);
+  int newBarlineType = ui->barlineTypeComboBox->itemData(index).toInt();
+  ui->repeatCountSpinBox->setEnabled(newBarlineType == Barline::RepeatEnd);
 }

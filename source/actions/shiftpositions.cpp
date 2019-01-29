@@ -19,39 +19,26 @@
 
 #include <score/system.h>
 
-ShiftPositions::ShiftPositions(const ScoreLocation &location,
-                               ShiftPositions::ShiftType type)
-    : QUndoCommand(type == Forward ? QObject::tr("Shift Forward")
-                                   : QObject::tr("Shift Backward")),
-      myLocation(location),
-      myShiftType(type)
-{
-}
+ShiftPositions::ShiftPositions(const ScoreLocation& location, ShiftPositions::ShiftType type)
+  : QUndoCommand(type == Forward ? QObject::tr("Shift Forward") : QObject::tr("Shift Backward"))
+  , myLocation(location)
+  , myShiftType(type)
+{}
 
 void ShiftPositions::redo()
 {
-    if (myShiftType == Forward)
-    {
-        SystemUtils::shiftForward(myLocation.getSystem(),
-                                  myLocation.getPositionIndex());
-    }
-    else
-    {
-        SystemUtils::shiftBackward(myLocation.getSystem(),
-                                   myLocation.getPositionIndex());
-    }
+  if (myShiftType == Forward) {
+    SystemUtils::shiftForward(myLocation.getSystem(), myLocation.getPositionIndex());
+  } else {
+    SystemUtils::shiftBackward(myLocation.getSystem(), myLocation.getPositionIndex());
+  }
 }
 
 void ShiftPositions::undo()
 {
-    if (myShiftType == Forward)
-    {
-        SystemUtils::shiftBackward(myLocation.getSystem(),
-                                   myLocation.getPositionIndex());
-    }
-    else
-    {
-        SystemUtils::shiftForward(myLocation.getSystem(),
-                                  myLocation.getPositionIndex());
-    }
+  if (myShiftType == Forward) {
+    SystemUtils::shiftBackward(myLocation.getSystem(), myLocation.getPositionIndex());
+  } else {
+    SystemUtils::shiftForward(myLocation.getSystem(), myLocation.getPositionIndex());
+  }
 }

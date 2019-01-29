@@ -20,36 +20,35 @@
 
 #include <score/note.h>
 
-TappedHarmonicDialog::TappedHarmonicDialog(QWidget *parent, int originalFret)
-    : QDialog(parent),
-      ui(new Ui::TappedHarmonicDialog()),
-      myOriginalFret(originalFret)
+TappedHarmonicDialog::TappedHarmonicDialog(QWidget* parent, int originalFret)
+  : QDialog(parent)
+  , ui(new Ui::TappedHarmonicDialog())
+  , myOriginalFret(originalFret)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    ui->currentFretSpinBox->setValue(myOriginalFret);
+  ui->currentFretSpinBox->setValue(myOriginalFret);
 
-    // Populate the list of available frets.
-    for (int offset : Harmonics::getValidFretOffsets())
-    {
-        const int tappedFret = myOriginalFret + offset;
+  // Populate the list of available frets.
+  for (int offset : Harmonics::getValidFretOffsets()) {
+    const int tappedFret = myOriginalFret + offset;
 
-        if (tappedFret <= Note::MAX_FRET_NUMBER)
-            ui->tappedFretComboBox->addItem(QString::number(tappedFret));
-    }
+    if (tappedFret <= Note::MAX_FRET_NUMBER)
+      ui->tappedFretComboBox->addItem(QString::number(tappedFret));
+  }
 }
 
 TappedHarmonicDialog::~TappedHarmonicDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 int TappedHarmonicDialog::getTappedFret() const
 {
-    return ui->tappedFretComboBox->currentText().toInt();
+  return ui->tappedFretComboBox->currentText().toInt();
 }
 
 void TappedHarmonicDialog::accept()
 {
-    done(Accepted);
+  done(Accepted);
 }

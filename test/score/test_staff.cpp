@@ -24,109 +24,103 @@
 
 TEST_CASE("Score/Staff/Clef", "")
 {
-    Staff staff;
+  Staff staff;
 
-    REQUIRE(staff.getClefType() == Staff::TrebleClef);
-    staff.setClefType(Staff::BassClef);
-    REQUIRE(staff.getClefType() == Staff::BassClef);
+  REQUIRE(staff.getClefType() == Staff::TrebleClef);
+  staff.setClefType(Staff::BassClef);
+  REQUIRE(staff.getClefType() == Staff::BassClef);
 }
 
 TEST_CASE("Score/Staff/Positions", "")
 {
-    Staff staff;
-    Voice &voice0 = staff.getVoices()[0];
-    Voice &voice1 = staff.getVoices()[1];
+  Staff staff;
+  Voice& voice0 = staff.getVoices()[0];
+  Voice& voice1 = staff.getVoices()[1];
 
-    REQUIRE(voice0.getPositions().size() == 0);
-    REQUIRE(voice1.getPositions().size() == 0);
+  REQUIRE(voice0.getPositions().size() == 0);
+  REQUIRE(voice1.getPositions().size() == 0);
 
-    Position pos1(3), pos2(5), pos3(1);
+  Position pos1(3), pos2(5), pos3(1);
 
-    voice1.insertPosition(pos1);
-    voice1.insertPosition(pos2);
-    voice1.insertPosition(pos3);
+  voice1.insertPosition(pos1);
+  voice1.insertPosition(pos2);
+  voice1.insertPosition(pos3);
 
-    REQUIRE(voice1.getPositions().size() == 3);
-    voice1.removePosition(pos1);
+  REQUIRE(voice1.getPositions().size() == 3);
+  voice1.removePosition(pos1);
 
-    REQUIRE(voice1.getPositions().size() == 2);
-    REQUIRE(voice1.getPositions()[0] == pos3);
-    REQUIRE(voice1.getPositions()[1] == pos2);
+  REQUIRE(voice1.getPositions().size() == 2);
+  REQUIRE(voice1.getPositions()[0] == pos3);
+  REQUIRE(voice1.getPositions()[1] == pos2);
 }
 
 TEST_CASE("Score/Staff/Dynamics", "")
 {
-    Staff staff;
+  Staff staff;
 
-    REQUIRE(staff.getDynamics().size() == 0);
+  REQUIRE(staff.getDynamics().size() == 0);
 
-    Dynamic dynamic(3, Dynamic::mf);
-    staff.insertDynamic(dynamic);
-    staff.insertDynamic(Dynamic(1, Dynamic::pp));
-    REQUIRE(staff.getDynamics().size() == 2);
-    REQUIRE(staff.getDynamics()[1] == dynamic);
+  Dynamic dynamic(3, Dynamic::mf);
+  staff.insertDynamic(dynamic);
+  staff.insertDynamic(Dynamic(1, Dynamic::pp));
+  REQUIRE(staff.getDynamics().size() == 2);
+  REQUIRE(staff.getDynamics()[1] == dynamic);
 
-    staff.removeDynamic(dynamic);
-    REQUIRE(staff.getDynamics().size() == 1);
+  staff.removeDynamic(dynamic);
+  REQUIRE(staff.getDynamics().size() == 1);
 }
 
 TEST_CASE("Score/Staff/Serialization", "")
 {
-    Staff staff;
-    staff.setClefType(Staff::BassClef);
-    staff.getVoices()[1].insertPosition(Position(42));
-    staff.insertDynamic(Dynamic(11, Dynamic::pp));
-    staff.setStringCount(7);
+  Staff staff;
+  staff.setClefType(Staff::BassClef);
+  staff.getVoices()[1].insertPosition(Position(42));
+  staff.insertDynamic(Dynamic(11, Dynamic::pp));
+  staff.setStringCount(7);
 
-    Serialization::test("staff", staff);
+  Serialization::test("staff", staff);
 }
 
 TEST_CASE("Score/Staff/GetPositionsInRange", "")
 {
-    Staff staff;
-    Position pos1(1), pos4(4), pos6(6), pos7(7), pos8(8);
-    Voice &voice = staff.getVoices()[0];
-    voice.insertPosition(pos1);
-    voice.insertPosition(pos4);
-    voice.insertPosition(pos6);
-    voice.insertPosition(pos7);
-    voice.insertPosition(pos8);
+  Staff staff;
+  Position pos1(1), pos4(4), pos6(6), pos7(7), pos8(8);
+  Voice& voice = staff.getVoices()[0];
+  voice.insertPosition(pos1);
+  voice.insertPosition(pos4);
+  voice.insertPosition(pos6);
+  voice.insertPosition(pos7);
+  voice.insertPosition(pos8);
 
-    REQUIRE(std::distance(
-                ScoreUtils::findInRange(voice.getPositions(), 9, 15).begin(),
-                ScoreUtils::findInRange(voice.getPositions(), 9, 15).end()) ==
-            0);
-    REQUIRE(std::distance(
-                ScoreUtils::findInRange(voice.getPositions(), 8, 10).begin(),
-                ScoreUtils::findInRange(voice.getPositions(), 8, 10).end()) ==
-            1);
-    REQUIRE(std::distance(
-                ScoreUtils::findInRange(voice.getPositions(), 4, 7).begin(),
-                ScoreUtils::findInRange(voice.getPositions(), 4, 7).end()) ==
-            3);
+  REQUIRE(std::distance(ScoreUtils::findInRange(voice.getPositions(), 9, 15).begin(),
+                        ScoreUtils::findInRange(voice.getPositions(), 9, 15).end()) == 0);
+  REQUIRE(std::distance(ScoreUtils::findInRange(voice.getPositions(), 8, 10).begin(),
+                        ScoreUtils::findInRange(voice.getPositions(), 8, 10).end()) == 1);
+  REQUIRE(std::distance(ScoreUtils::findInRange(voice.getPositions(), 4, 7).begin(),
+                        ScoreUtils::findInRange(voice.getPositions(), 4, 7).end()) == 3);
 }
 
 TEST_CASE("Score/Staff/GetNextNote", "")
 {
-    Staff staff;
-    Position pos1(1), pos4(4), pos6(6), pos7(7), pos8(8);
-    pos1.insertNote(Note(2, 1));
-    pos4.insertNote(Note(3, 1));
-    pos6.insertNote(Note(3, 0));
-    pos7.insertNote(Note(4, 2));
-    pos8.insertNote(Note(3, 2));
+  Staff staff;
+  Position pos1(1), pos4(4), pos6(6), pos7(7), pos8(8);
+  pos1.insertNote(Note(2, 1));
+  pos4.insertNote(Note(3, 1));
+  pos6.insertNote(Note(3, 0));
+  pos7.insertNote(Note(4, 2));
+  pos8.insertNote(Note(3, 2));
 
-    Voice &voice = staff.getVoices()[0];
-    voice.insertPosition(pos1);
-    voice.insertPosition(pos4);
-    voice.insertPosition(pos6);
-    voice.insertPosition(pos7);
-    voice.insertPosition(pos8);
+  Voice& voice = staff.getVoices()[0];
+  voice.insertPosition(pos1);
+  voice.insertPosition(pos4);
+  voice.insertPosition(pos6);
+  voice.insertPosition(pos7);
+  voice.insertPosition(pos8);
 
-    REQUIRE(!VoiceUtils::getNextNote(voice, 6, 5));
-    REQUIRE(VoiceUtils::getNextNote(voice, 6, 4));
-    REQUIRE(!VoiceUtils::getNextNote(voice, 6, 3));
+  REQUIRE(!VoiceUtils::getNextNote(voice, 6, 5));
+  REQUIRE(VoiceUtils::getNextNote(voice, 6, 4));
+  REQUIRE(!VoiceUtils::getNextNote(voice, 6, 3));
 
-    REQUIRE(!VoiceUtils::getPreviousNote(voice, 6, 2));
-    REQUIRE(VoiceUtils::getPreviousNote(voice, 6, 3));
+  REQUIRE(!VoiceUtils::getPreviousNote(voice, 6, 2));
+  REQUIRE(VoiceUtils::getPreviousNote(voice, 6, 3));
 }

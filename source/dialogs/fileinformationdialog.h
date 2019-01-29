@@ -24,28 +24,27 @@
 class Document;
 class QAbstractButton;
 
-namespace Ui
-{
+namespace Ui {
 class FileInformationDialog;
 }
 
 class FileInformationDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit FileInformationDialog(QWidget *parent, const Document &doc);
-    ~FileInformationDialog();
+  explicit FileInformationDialog(QWidget* parent, const Document& doc);
+  ~FileInformationDialog();
 
-    ScoreInfo getScoreInfo() const;
+  ScoreInfo getScoreInfo() const;
 
 private slots:
-    void handleSongTypeButtonClick(QAbstractButton *button);
-    void handleReleaseTypeChanged(int index);
-    void handleAuthorTypeChanged(bool traditional);
+  void handleSongTypeButtonClick(QAbstractButton* button);
+  void handleReleaseTypeChanged(int index);
+  void handleAuthorTypeChanged(bool traditional);
 
 private:
-    Ui::FileInformationDialog *ui;
+  Ui::FileInformationDialog* ui;
 };
 
 #endif

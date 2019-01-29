@@ -29,38 +29,36 @@ class ViewOptions;
 class CaretPainter : public QGraphicsItem
 {
 public:
-    CaretPainter(const Caret &caret, const ViewOptions &view_options);
+  CaretPainter(const Caret& caret, const ViewOptions& view_options);
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
-                       QWidget *) override;
+  virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) override;
 
-    virtual QRectF boundingRect() const override;
+  virtual QRectF boundingRect() const override;
 
-    void addSystemRect(const QRectF &rect);
-    void setSystemRect(int index, const QRectF &rect);
-    QRectF getCurrentSystemRect() const;
+  void addSystemRect(const QRectF& rect);
+  void setSystemRect(int index, const QRectF& rect);
+  QRectF getCurrentSystemRect() const;
 
-    void updatePosition();
+  void updatePosition();
 
-    typedef boost::signals2::signal<void()> LocationChangedSlot;
-    /// Register a listener for when the caret painter is updated.
-    boost::signals2::connection subscribeToMovement(
-        const LocationChangedSlot::slot_type &subscriber);
+  typedef boost::signals2::signal<void()> LocationChangedSlot;
+  /// Register a listener for when the caret painter is updated.
+  boost::signals2::connection subscribeToMovement(const LocationChangedSlot::slot_type& subscriber);
 
 private:
-    /// Redraw the caret painter whenever the caret moves.
-    void onLocationChanged();
+  /// Redraw the caret painter whenever the caret moves.
+  void onLocationChanged();
 
-    const Caret &myCaret;
-    const ViewOptions &myViewOptions;
-    std::unique_ptr<LayoutInfo> myLayout;
-    std::vector<QRectF> mySystemRects;
-    boost::signals2::scoped_connection myCaretConnection;
-    LocationChangedSlot onMyLocationChanged;
+  const Caret& myCaret;
+  const ViewOptions& myViewOptions;
+  std::unique_ptr<LayoutInfo> myLayout;
+  std::vector<QRectF> mySystemRects;
+  boost::signals2::scoped_connection myCaretConnection;
+  LocationChangedSlot onMyLocationChanged;
 
-    static const double PEN_WIDTH;
-    /// Spacing around a highlighted note.
-    static const double CARET_NOTE_SPACING;
+  static const double PEN_WIDTH;
+  /// Spacing around a highlighted note.
+  static const double CARET_NOTE_SPACING;
 };
 
 #endif // CARET_H

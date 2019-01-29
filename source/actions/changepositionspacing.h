@@ -27,14 +27,14 @@ class System;
 class ChangePositionSpacing : public QUndoCommand
 {
 public:
-    ChangePositionSpacing(boost::shared_ptr<System> system, uint8_t spacing);
-    virtual void undo();
-    virtual void redo();
+  ChangePositionSpacing(boost::shared_ptr<System> system, uint8_t spacing);
+  virtual void undo();
+  virtual void redo();
 
 private:
-    boost::shared_ptr<System> system;
-    const uint8_t newSpacing;
-    const uint8_t originalSpacing;
+  boost::shared_ptr<System> system;
+  const uint8_t newSpacing;
+  const uint8_t originalSpacing;
 };
 
 #endif // CHANGEPOSITIONSPACING_H

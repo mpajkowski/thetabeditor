@@ -21,30 +21,30 @@
 
 TEST_CASE("App/DocumentManager", "")
 {
-    DocumentManager manager;
+  DocumentManager manager;
 
-    REQUIRE(!manager.hasOpenDocuments());
+  REQUIRE(!manager.hasOpenDocuments());
 
-    manager.addDocument();
-    manager.addDocument();
-    manager.addDocument();
+  manager.addDocument();
+  manager.addDocument();
+  manager.addDocument();
 
-    REQUIRE(manager.hasOpenDocuments());
-    REQUIRE(manager.getCurrentDocumentIndex() == 2);
+  REQUIRE(manager.hasOpenDocuments());
+  REQUIRE(manager.getCurrentDocumentIndex() == 2);
 
-    manager.removeDocument(1);
-    REQUIRE(manager.getCurrentDocumentIndex() == 1);
+  manager.removeDocument(1);
+  REQUIRE(manager.getCurrentDocumentIndex() == 1);
 
-    manager.removeDocument(0);
-    REQUIRE(manager.getCurrentDocumentIndex() == 0);
-    manager.removeDocument(0);
+  manager.removeDocument(0);
+  REQUIRE(manager.getCurrentDocumentIndex() == 0);
+  manager.removeDocument(0);
 
-    REQUIRE(!manager.hasOpenDocuments());
+  REQUIRE(!manager.hasOpenDocuments());
 }
 
 TEST_CASE("App/Document", "")
 {
-    Document document;
+  Document document;
 
-    REQUIRE(!document.hasFilename());
+  REQUIRE(!document.hasFilename());
 }

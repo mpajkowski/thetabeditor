@@ -19,20 +19,19 @@
 
 #include <score/score.h>
 
-RemoveSystem::RemoveSystem(Score &score, int index)
-    : QUndoCommand(QObject::tr("Remove System")),
-      myScore(score),
-      myIndex(index),
-      myOriginalSystem(score.getSystems()[index])
-{
-}
+RemoveSystem::RemoveSystem(Score& score, int index)
+  : QUndoCommand(QObject::tr("Remove System"))
+  , myScore(score)
+  , myIndex(index)
+  , myOriginalSystem(score.getSystems()[index])
+{}
 
 void RemoveSystem::redo()
 {
-    myScore.removeSystem(myIndex);
+  myScore.removeSystem(myIndex);
 }
 
 void RemoveSystem::undo()
 {
-    myScore.insertSystem(myOriginalSystem, myIndex);
+  myScore.insertSystem(myOriginalSystem, myIndex);
 }

@@ -28,26 +28,22 @@
 class SimpleTextItem : public QGraphicsItem
 {
 public:
-    SimpleTextItem(const QString &text, const QFont &font,
-                   const QPen &pen = QPen(),
-                   const QBrush &background = QBrush(QColor(0, 0, 0, 0)));
+  SimpleTextItem(const QString& text,
+                 const QFont& font,
+                 const QPen& pen = QPen(),
+                 const QBrush& background = QBrush(QColor(0, 0, 0, 0)));
 
-    virtual QRectF boundingRect() const override
-    {
-        return myBoundingRect;
-    }
+  virtual QRectF boundingRect() const override { return myBoundingRect; }
 
-    virtual void paint(QPainter *painter,
-                       const QStyleOptionGraphicsItem *option,
-                       QWidget *widget) override;
+  virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 
 private:
-    const QString myText;
-    const QFont myFont;
-    const QPen myPen;
-    const QBrush myBackground;
-    QRectF myBoundingRect;
-    double myAscent;
+  const QString myText;
+  const QFont myFont;
+  const QPen myPen;
+  const QBrush myBackground;
+  QRectF myBoundingRect;
+  double myAscent;
 };
 
 #endif

@@ -19,62 +19,50 @@
 
 #include <score/score.h>
 
-RemovePlayer::RemovePlayer(Score &score, int index)
-    : QUndoCommand(QObject::tr("Remove Player")),
-      myScore(score),
-      myPlayer(score.getPlayers()[index]),
-      myPlayerIndex(index)
-{
-}
+RemovePlayer::RemovePlayer(Score& score, int index)
+  : QUndoCommand(QObject::tr("Remove Player"))
+  , myScore(score)
+  , myPlayer(score.getPlayers()[index])
+  , myPlayerIndex(index)
+{}
 
 void RemovePlayer::redo()
 {
-    myScore.removePlayer(myPlayerIndex);
+  myScore.removePlayer(myPlayerIndex);
 
-    // Remove the player from any player changes that it was involved in.
-    myOriginalChanges.clear();
-    for (System &system : myScore.getSystems())
-    {
-        for (PlayerChange &change : system.getPlayerChanges())
-        {
-            myOriginalChanges.push_back(change);
+  // Remove the player from any player changes that it was involved in.
+  myOriginalChanges.clear();
+  for (System& system : myScore.getSystems()) {
+    for (PlayerChange& change : system.getPlayerChanges()) {
+      myOriginalChanges.push_back(change);
 
-            for (unsigned int i = 0; i < system.getStaves().size(); ++i)
-            {
-                for (const ActivePlayer &activePlayer :
-                     change.getActivePlayers(i))
-                {
-                    if (activePlayer.getPlayerNumber() >= myPlayerIndex)
-                    {
-                        change.removeActivePlayer(i, activePlayer);
+      for (unsigned int i = 0; i < system.getStaves().size(); ++i) {
+        for (const ActivePlayer& activePlayer : change.getActivePlayers(i)) {
+          if (activePlayer.getPlayerNumber() >= myPlayerIndex) {
+            change.removeActivePlayer(i, activePlayer);
 
-                        // Shift player numbers.
-                        if (activePlayer.getPlayerNumber() > myPlayerIndex)
-                        {
-                            change.insertActivePlayer(
-                                i, ActivePlayer(
-                                       activePlayer.getPlayerNumber() - 1,
-                                       activePlayer.getInstrumentNumber()));
-                        }
-                    }
-                }
+            // Shift player numbers.
+            if (activePlayer.getPlayerNumber() > myPlayerIndex) {
+              change.insertActivePlayer(
+                i, ActivePlayer(activePlayer.getPlayerNumber() - 1, activePlayer.getInstrumentNumber()));
             }
+          }
         }
+      }
     }
+  }
 }
 
 void RemovePlayer::undo()
 {
-    myScore.insertPlayer(myPlayer, myPlayerIndex);
+  myScore.insertPlayer(myPlayer, myPlayerIndex);
 
-    // Restore the original player changes.
-    int i = 0;
-    for (System &system : myScore.getSystems())
-    {
-        for (PlayerChange &change : system.getPlayerChanges())
-        {
-            change = myOriginalChanges[i];
-            ++i;
-        }
+  // Restore the original player changes.
+  int i = 0;
+  for (System& system : myScore.getSystems()) {
+    for (PlayerChange& change : system.getPlayerChanges()) {
+      change = myOriginalChanges[i];
+      ++i;
     }
+  }
 }

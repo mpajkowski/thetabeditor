@@ -24,121 +24,121 @@
 class TempoMarker
 {
 public:
-    enum MarkerType
-    {
-        NotShown,
-        StandardMarker, ///< Standard bpm marker (i.e. quarter note = 120).
-        ListessoMarker, ///< Listesso (i.e. quarter note = half note).
-        AlterationOfPace ///< Accel. or rit.
-    };
+  enum MarkerType
+  {
+    NotShown,
+    StandardMarker,  ///< Standard bpm marker (i.e. quarter note = 120).
+    ListessoMarker,  ///< Listesso (i.e. quarter note = half note).
+    AlterationOfPace ///< Accel. or rit.
+  };
 
-    enum BeatType
-    {
-        Half,
-        HalfDotted,
-        Quarter,
-        QuarterDotted,
-        Eighth,
-        EighthDotted,
-        Sixteenth,
-        SixteenthDotted,
-        ThirtySecond,
-        ThirtySecondDotted
-    };
+  enum BeatType
+  {
+    Half,
+    HalfDotted,
+    Quarter,
+    QuarterDotted,
+    Eighth,
+    EighthDotted,
+    Sixteenth,
+    SixteenthDotted,
+    ThirtySecond,
+    ThirtySecondDotted
+  };
 
-    enum TripletFeelType
-    {
-        NoTripletFeel,
-        TripletFeelEighth,
-        TripletFeelSixteenth,
-        TripletFeelEighthOff,
-        TripletFeelSixteenthOff
-    };
+  enum TripletFeelType
+  {
+    NoTripletFeel,
+    TripletFeelEighth,
+    TripletFeelSixteenth,
+    TripletFeelEighthOff,
+    TripletFeelSixteenthOff
+  };
 
-    enum AlterationOfPaceType
-    {
-        NoAlterationOfPace,
-        Accelerando,
-        Ritardando
-    };
+  enum AlterationOfPaceType
+  {
+    NoAlterationOfPace,
+    Accelerando,
+    Ritardando
+  };
 
-    TempoMarker();
-    explicit TempoMarker(int position);
+  TempoMarker();
+  explicit TempoMarker(int position);
 
-    bool operator==(const TempoMarker &other) const;
+  bool operator==(const TempoMarker& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns the position within the system where the marker is anchored.
-    int getPosition() const;
-    /// Sets the position within the system where the marker is anchored.
-    void setPosition(int position);
+  /// Returns the position within the system where the marker is anchored.
+  int getPosition() const;
+  /// Sets the position within the system where the marker is anchored.
+  void setPosition(int position);
 
-    /// Returns the type of tempo marker (standard, listesso, etc).
-    MarkerType getMarkerType() const;
-    /// Sets the type of tempo marker (standard, listesso, etc).
-    void setMarkerType(MarkerType type);
+  /// Returns the type of tempo marker (standard, listesso, etc).
+  MarkerType getMarkerType() const;
+  /// Sets the type of tempo marker (standard, listesso, etc).
+  void setMarkerType(MarkerType type);
 
-    /// Returns the tempo marker's beat type (quarter, eighth, etc).
-    BeatType getBeatType() const;
-    /// Sets the tempo marker's beat type (quarter, eighth, etc).
-    void setBeatType(BeatType type);
+  /// Returns the tempo marker's beat type (quarter, eighth, etc).
+  BeatType getBeatType() const;
+  /// Sets the tempo marker's beat type (quarter, eighth, etc).
+  void setBeatType(BeatType type);
 
-    /// Returns the tempo marker's listesso beat type (quarter, eighth, etc).
-    BeatType getListessoBeatType() const;
-    /// Sets the tempo marker's listesso beat type (quarter, eighth, etc).
-    void setListessoBeatType(BeatType type);
+  /// Returns the tempo marker's listesso beat type (quarter, eighth, etc).
+  BeatType getListessoBeatType() const;
+  /// Sets the tempo marker's listesso beat type (quarter, eighth, etc).
+  void setListessoBeatType(BeatType type);
 
-    /// Returns the tempo marker's triplet feel (e.g. eighth).
-    TripletFeelType getTripletFeel() const;
-    /// Sets the tempo marker's triplet feel type.
-    void setTripletFeel(TripletFeelType type);
+  /// Returns the tempo marker's triplet feel (e.g. eighth).
+  TripletFeelType getTripletFeel() const;
+  /// Sets the tempo marker's triplet feel type.
+  void setTripletFeel(TripletFeelType type);
 
-    /// Returns whether the marker has an alteration of pace.
-    AlterationOfPaceType getAlterationOfPace() const;
-    /// Sets the marker's alteration of pace.
-    void setAlterationOfPace(AlterationOfPaceType type);
+  /// Returns whether the marker has an alteration of pace.
+  AlterationOfPaceType getAlterationOfPace() const;
+  /// Sets the marker's alteration of pace.
+  void setAlterationOfPace(AlterationOfPaceType type);
 
-    /// Returns the number of beats per minute for the beat type.
-    int getBeatsPerMinute() const;
-    /// Sets the number of beats per minute for the beat type.
-    void setBeatsPerMinute(int bpm);
+  /// Returns the number of beats per minute for the beat type.
+  int getBeatsPerMinute() const;
+  /// Sets the number of beats per minute for the beat type.
+  void setBeatsPerMinute(int bpm);
 
-    /// Returns a description of the tempo marker.
-    const std::string &getDescription() const;
-    /// Sets the description of the tempo marker.
-    void setDescription(const std::string &description);
+  /// Returns a description of the tempo marker.
+  const std::string& getDescription() const;
+  /// Sets the description of the tempo marker.
+  void setDescription(const std::string& description);
 
-    /// The minimum valid beats per minute.
-    static const int MIN_BEATS_PER_MINUTE;
-    /// The maximum valid beats per minute.
-    static const int MAX_BEATS_PER_MINUTE;
-    /// The default number of beats per minute.
-    static const int DEFAULT_BEATS_PER_MINUTE;
+  /// The minimum valid beats per minute.
+  static const int MIN_BEATS_PER_MINUTE;
+  /// The maximum valid beats per minute.
+  static const int MAX_BEATS_PER_MINUTE;
+  /// The default number of beats per minute.
+  static const int DEFAULT_BEATS_PER_MINUTE;
 
 private:
-    int myPosition;
-    MarkerType myMarkerType;
-    BeatType myBeatType;
-    BeatType myListessoBeatType;
-    TripletFeelType myTripletFeel;
-    AlterationOfPaceType myAlterationOfPace;
-    int myBeatsPerMinute;
-    std::string myDescription;
+  int myPosition;
+  MarkerType myMarkerType;
+  BeatType myBeatType;
+  BeatType myListessoBeatType;
+  TripletFeelType myTripletFeel;
+  AlterationOfPaceType myAlterationOfPace;
+  int myBeatsPerMinute;
+  std::string myDescription;
 };
 
-template <class Archive>
-void TempoMarker::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void TempoMarker::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("position", myPosition);
-    ar("marker_type", myMarkerType);
-    ar("beat_type", myBeatType);
-    ar("listesso_type", myListessoBeatType);
-    ar("triplet_feel", myTripletFeel);
-    ar("alteration_of_pace", myAlterationOfPace);
-    ar("bpm", myBeatsPerMinute);
-    ar("description", myDescription);
+  ar("position", myPosition);
+  ar("marker_type", myMarkerType);
+  ar("beat_type", myBeatType);
+  ar("listesso_type", myListessoBeatType);
+  ar("triplet_feel", myTripletFeel);
+  ar("alteration_of_pace", myAlterationOfPace);
+  ar("bpm", myBeatsPerMinute);
+  ar("description", myDescription);
 }
 
 #endif

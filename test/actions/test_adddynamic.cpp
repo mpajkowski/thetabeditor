@@ -22,20 +22,20 @@
 
 TEST_CASE("Actions/AddDynamic", "")
 {
-    Score score;
-    System system;
-    Staff staff;
-    system.insertStaff(staff);
-    score.insertSystem(system);
+  Score score;
+  System system;
+  Staff staff;
+  system.insertStaff(staff);
+  score.insertSystem(system);
 
-    Dynamic dynamic(6, Dynamic::mp);
-    ScoreLocation location(score, 0, 0, 6);
-    AddDynamic action(location, dynamic);
+  Dynamic dynamic(6, Dynamic::mp);
+  ScoreLocation location(score, 0, 0, 6);
+  AddDynamic action(location, dynamic);
 
-    action.redo();
-    REQUIRE(location.getStaff().getDynamics().size() == 1);
-    REQUIRE(location.getStaff().getDynamics()[0].getVolume() == Dynamic::mp);
+  action.redo();
+  REQUIRE(location.getStaff().getDynamics().size() == 1);
+  REQUIRE(location.getStaff().getDynamics()[0].getVolume() == Dynamic::mp);
 
-    action.undo();
-    REQUIRE(location.getStaff().getDynamics().size() == 0);
+  action.undo();
+  REQUIRE(location.getStaff().getDynamics().size() == 0);
 }

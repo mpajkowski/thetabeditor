@@ -23,20 +23,20 @@
 
 TEST_CASE("Actions/RemoveBarline", "")
 {
-    Score score;
-    System system;
+  Score score;
+  System system;
 
-    ScoreLocation location(score, 0, 0, 6);
-    Barline barline(6, Barline::SingleBar);
-    system.insertBarline(barline);
-    score.insertSystem(system);
+  ScoreLocation location(score, 0, 0, 6);
+  Barline barline(6, Barline::SingleBar);
+  system.insertBarline(barline);
+  score.insertSystem(system);
 
-    RemoveBarline action(location);
+  RemoveBarline action(location);
 
-    action.redo();
-    REQUIRE(location.getSystem().getBarlines().size() == 2);
+  action.redo();
+  REQUIRE(location.getSystem().getBarlines().size() == 2);
 
-    action.undo();
-    REQUIRE(location.getSystem().getBarlines().size() == 3);
-    REQUIRE(location.getSystem().getBarlines()[1] == barline);
+  action.undo();
+  REQUIRE(location.getSystem().getBarlines().size() == 3);
+  REQUIRE(location.getSystem().getBarlines()[1] == barline);
 }

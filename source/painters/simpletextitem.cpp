@@ -19,27 +19,33 @@
 
 #include <QPainter>
 
-SimpleTextItem::SimpleTextItem(const QString &text, const QFont &font,
-                               const QPen &pen, const QBrush &background)
-    : myText(text), myFont(font), myPen(pen), myBackground(background)
+SimpleTextItem::SimpleTextItem(const QString& text,
+                               const QFont& font,
+                               const QPen& pen,
+                               const QBrush& background)
+  : myText(text)
+  , myFont(font)
+  , myPen(pen)
+  , myBackground(background)
 {
-    QFontMetricsF fm(myFont);
-    myAscent = fm.ascent();
-    myBoundingRect = QRectF(0, 0, fm.width(myText), fm.height());
+  QFontMetricsF fm(myFont);
+  myAscent = fm.ascent();
+  myBoundingRect = QRectF(0, 0, fm.width(myText), fm.height());
 }
 
-void SimpleTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *,
-                           QWidget *)
+void SimpleTextItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
 
-    // Draw the background rectangle. Avoid to cover other elements
-    // by drawing only 1/3 of the rectangle, vertically centered.
-    painter->fillRect(
-        myBoundingRect.x(), myBoundingRect.y() + myBoundingRect.height() / 3,
-        myBoundingRect.width(), myBoundingRect.height() / 3, myBackground);
+  // Draw the background rectangle. Avoid to cover other elements
+  // by drawing only 1/3 of the rectangle, vertically centered.
+  painter->fillRect(myBoundingRect.x(),
+                    myBoundingRect.y() + myBoundingRect.height() / 3,
+                    myBoundingRect.width(),
+                    myBoundingRect.height() / 3,
+                    myBackground);
 
-    painter->setPen(myPen);
-    painter->setFont(myFont);
-    // Match the way that QSimpleTextItem aligns text.
-    painter->drawText(0, myAscent, myText);
+  painter->setPen(myPen);
+  painter->setFont(myFont);
+  // Match the way that QSimpleTextItem aligns text.
+  painter->drawText(0, myAscent, myText);
 }

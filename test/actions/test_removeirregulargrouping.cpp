@@ -22,21 +22,21 @@
 
 TEST_CASE("Actions/RemoveIrregularGrouping", "")
 {
-    Score score;
-    System system;
-    Staff staff;
-    system.insertStaff(staff);
-    score.insertSystem(system);
+  Score score;
+  System system;
+  Staff staff;
+  system.insertStaff(staff);
+  score.insertSystem(system);
 
-    IrregularGrouping group(17, 5, 3, 2);
-    ScoreLocation location(score, 0, 0, 6);
-    location.getVoice().insertIrregularGrouping(group);
+  IrregularGrouping group(17, 5, 3, 2);
+  ScoreLocation location(score, 0, 0, 6);
+  location.getVoice().insertIrregularGrouping(group);
 
-    RemoveIrregularGrouping action(location, group);
+  RemoveIrregularGrouping action(location, group);
 
-    action.redo();
-    REQUIRE(location.getVoice().getIrregularGroupings().size() == 0);
+  action.redo();
+  REQUIRE(location.getVoice().getIrregularGroupings().size() == 0);
 
-    action.undo();
-    REQUIRE(location.getVoice().getIrregularGroupings().size() == 1);
+  action.undo();
+  REQUIRE(location.getVoice().getIrregularGroupings().size() == 1);
 }

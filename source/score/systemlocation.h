@@ -22,37 +22,38 @@
 #include <memory>
 
 /// Convenience class to represent a location in a system.
-class SystemLocation :
-    // Generate != from operator==
-    boost::equality_comparable<SystemLocation>,
-    // Generate <=, >, >= from operator<
-    boost::less_than_comparable<SystemLocation>
+class SystemLocation
+  :
+  // Generate != from operator==
+  boost::equality_comparable<SystemLocation>
+  ,
+  // Generate <=, >, >= from operator<
+  boost::less_than_comparable<SystemLocation>
 {
 public:
-    SystemLocation();
-    SystemLocation(int system, int position);
+  SystemLocation();
+  SystemLocation(int system, int position);
 
-    bool operator<(const SystemLocation &location) const;
-    bool operator==(const SystemLocation &location) const;
+  bool operator<(const SystemLocation& location) const;
+  bool operator==(const SystemLocation& location) const;
 
-    void setSystem(int system);
-    int getSystem() const;
+  void setSystem(int system);
+  int getSystem() const;
 
-    void setPosition(int position);
-    int getPosition() const;
+  void setPosition(int position);
+  int getPosition() const;
 
 private:
-    int mySystem;
-    int myPosition;
+  int mySystem;
+  int myPosition;
 };
 
-namespace std
-{
+namespace std {
 /// Enable the use of SystemLocation as a key for std::unordered_map, etc.
-template <>
+template<>
 struct hash<SystemLocation>
 {
-    size_t operator()(const SystemLocation &location) const;
+  size_t operator()(const SystemLocation& location) const;
 };
 } // namespace std
 

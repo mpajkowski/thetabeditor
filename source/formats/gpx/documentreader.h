@@ -30,100 +30,97 @@ class Score;
 class TimeSignature;
 class Tuning;
 
-namespace Gpx
-{
+namespace Gpx {
 
 struct Bar
 {
-    int id;
-    std::vector<int> voiceIds;
+  int id;
+  std::vector<int> voiceIds;
 };
 
 struct Voice
 {
-    int id;
-    std::vector<int> beatIds;
+  int id;
+  std::vector<int> beatIds;
 };
 
 struct Beat
 {
-    int id;
-    int rhythmId;
-    std::string arpeggioType;
-    std::string brushDirection;
-    std::string freeText;
-    bool tremoloPicking;
-    bool graceNote;
-    std::vector<int> noteIds;
+  int id;
+  int rhythmId;
+  std::string arpeggioType;
+  std::string brushDirection;
+  std::string freeText;
+  bool tremoloPicking;
+  bool graceNote;
+  std::vector<int> noteIds;
 };
 
 struct Rhythm
 {
-    int id;
-    int noteValue;
-    bool dotted;
-    bool doubleDotted;
+  int id;
+  int noteValue;
+  bool dotted;
+  bool doubleDotted;
 };
 
 struct TabNote
 {
-    int id;
-    bool tied;
-    bool ghostNote;
-    int accentType;
-    std::string vibratoType;
-    bool letRing;
-    int trillNote; ///< Note value is stored in MIDI format (0-127)
-    pugi::xml_node properties;
+  int id;
+  bool tied;
+  bool ghostNote;
+  int accentType;
+  std::string vibratoType;
+  bool letRing;
+  int trillNote; ///< Note value is stored in MIDI format (0-127)
+  pugi::xml_node properties;
 };
 
 struct Automation
 {
-    std::string type;
-    bool linear;
-    int bar;
-    double position;
-    bool visible;
-    std::vector<int> value;
+  std::string type;
+  bool linear;
+  int bar;
+  double position;
+  bool visible;
+  std::vector<int> value;
 };
 
 class DocumentReader
 {
 public:
-    DocumentReader(const std::string &xml);
+  DocumentReader(const std::string& xml);
 
-    void readScore(Score &score);
+  void readScore(Score& score);
 
 private:
-    /// Loads the header information (song title, artist, etc).
-    void readHeader(Score &score);
-    void readTracks(Score &score);
-    void readBars();
-    void readVoices();
-    void readBeats();
-    void readRhythms();
-    void readNotes();
-    void readAutomations();
+  /// Loads the header information (song title, artist, etc).
+  void readHeader(Score& score);
+  void readTracks(Score& score);
+  void readBars();
+  void readVoices();
+  void readBeats();
+  void readRhythms();
+  void readNotes();
+  void readAutomations();
 
-    /// Assembles the bars from the previously-read data.
-    void readMasterBars(Score &score);
+  /// Assembles the bars from the previously-read data.
+  void readMasterBars(Score& score);
 
-    void readBarlineType(const pugi::xml_node &masterBar, Barline &barline);
-    void readKeySignature(const pugi::xml_node &masterBar, KeySignature &key);
-    void readTimeSignature(const pugi::xml_node &masterBar,
-                           TimeSignature &timeSignature);
-    Note convertNote(int noteId, Position &position,
-                     const Tuning &tuning) const;
+  void readBarlineType(const pugi::xml_node& masterBar, Barline& barline);
+  void readKeySignature(const pugi::xml_node& masterBar, KeySignature& key);
+  void readTimeSignature(const pugi::xml_node& masterBar, TimeSignature& timeSignature);
+  Note convertNote(int noteId, Position& position, const Tuning& tuning) const;
 
-    pugi::xml_document myXmlData;
-    pugi::xml_node myFile;
+  pugi::xml_document myXmlData;
+  pugi::xml_node myFile;
 
-    std::map<int, Gpx::Bar> myBars;
-    std::map<int, Gpx::Voice> myVoices;
-    std::map<int, Gpx::Beat> myBeats;
-    std::map<int, Gpx::Rhythm> myRhythms;
-    std::map<int, Gpx::TabNote> myNotes;
-    std::map<int, Gpx::Automation> myAutomations;
+  std::map<int, Gpx::Bar> myBars;
+  std::map<int, Gpx::Voice> myVoices;
+  std::map<int, Gpx::Beat> myBeats;
+  std::map<int, Gpx::Rhythm> myRhythms;
+  std::map<int, Gpx::TabNote> myNotes;
+  std::map<int, Gpx::Automation> myAutomations;
 };
 } // namespace Gpx
 

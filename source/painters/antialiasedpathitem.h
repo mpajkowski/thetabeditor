@@ -25,11 +25,9 @@
 class AntialiasedPathItem : public QGraphicsPathItem
 {
 public:
-    AntialiasedPathItem(const QPainterPath &path);
+  AntialiasedPathItem(const QPainterPath& path);
 
-    virtual void paint(QPainter *painter,
-                       const QStyleOptionGraphicsItem *option,
-                       QWidget *widget) override;
+  virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 };
 
 #endif

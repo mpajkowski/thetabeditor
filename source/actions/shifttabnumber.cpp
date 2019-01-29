@@ -23,52 +23,47 @@
 #include <powertabdocument/staff.h>
 
 ShiftTabNumber::ShiftTabNumber(boost::shared_ptr<Staff> staff,
-                               Position *position, Note *note, uint32_t voice,
+                               Position* position,
+                               Note* note,
+                               uint32_t voice,
                                Position::ShiftType direction,
-                               const Tuning &tuning)
-    : voice(voice),
-      staff(staff),
-      position(position),
-      note(note),
-      shiftUp(direction == Position::SHIFT_UP),
-      tuning(tuning)
+                               const Tuning& tuning)
+  : voice(voice)
+  , staff(staff)
+  , position(position)
+  , note(note)
+  , shiftUp(direction == Position::SHIFT_UP)
+  , tuning(tuning)
 {
-    setText(shiftUp ? QObject::tr("Shift Tab Number Up")
-                    : QObject::tr("Shift Tab Number Down"));
+  setText(shiftUp ? QObject::tr("Shift Tab Number Up") : QObject::tr("Shift Tab Number Down"));
 
-    prevNote =
-        staff->GetAdjacentNoteOnString(Staff::PrevNote, position, note, voice);
-    if (prevNote)
-    {
-        origPrevNote = *prevNote;
-    }
+  prevNote = staff->GetAdjacentNoteOnString(Staff::PrevNote, position, note, voice);
+  if (prevNote) {
+    origPrevNote = *prevNote;
+  }
 
-    nextNote =
-        staff->GetAdjacentNoteOnString(Staff::NextNote, position, note, voice);
-    if (nextNote)
-    {
-        origNextNote = *nextNote;
-    }
+  nextNote = staff->GetAdjacentNoteOnString(Staff::NextNote, position, note, voice);
+  if (nextNote) {
+    origNextNote = *nextNote;
+  }
 
-    origNote = *note;
+  origNote = *note;
 }
 
 void ShiftTabNumber::redo()
 {
-    staff->ShiftTabNumber(position, note, voice, shiftUp, tuning);
+  staff->ShiftTabNumber(position, note, voice, shiftUp, tuning);
 }
 
 void ShiftTabNumber::undo()
 {
-    *note = origNote;
+  *note = origNote;
 
-    if (prevNote)
-    {
-        *prevNote = origPrevNote;
-    }
+  if (prevNote) {
+    *prevNote = origPrevNote;
+  }
 
-    if (nextNote)
-    {
-        *nextNote = origNextNote;
-    }
+  if (nextNote) {
+    *nextNote = origNextNote;
+  }
 }

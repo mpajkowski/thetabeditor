@@ -21,23 +21,22 @@
 
 class QComboBox;
 
-namespace Ui
-{
+namespace Ui {
 class LeftHandFingeringDialog;
 }
 
 class LeftHandFingeringDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    LeftHandFingeringDialog(QWidget *parent);
-    ~LeftHandFingeringDialog();
+  LeftHandFingeringDialog(QWidget* parent);
+  ~LeftHandFingeringDialog();
 
-    LeftHandFingering getLeftHandFingering() const;
+  LeftHandFingering getLeftHandFingering() const;
 
 private:
-    Ui::LeftHandFingeringDialog *ui;
+  Ui::LeftHandFingeringDialog* ui;
 };
 
 #endif

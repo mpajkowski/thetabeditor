@@ -19,21 +19,19 @@
 
 #include <score/score.h>
 
-EditFileInformation::EditFileInformation(const ScoreLocation &location,
-                                         const ScoreInfo &scoreInfo)
-    : QUndoCommand(QObject::tr("Edit File Information")),
-      myLocation(location),
-      myScoreInfo(scoreInfo),
-      myOriginalScoreInfo(location.getScore().getScoreInfo())
-{
-}
+EditFileInformation::EditFileInformation(const ScoreLocation& location, const ScoreInfo& scoreInfo)
+  : QUndoCommand(QObject::tr("Edit File Information"))
+  , myLocation(location)
+  , myScoreInfo(scoreInfo)
+  , myOriginalScoreInfo(location.getScore().getScoreInfo())
+{}
 
 void EditFileInformation::redo()
 {
-    myLocation.getScore().setScoreInfo(myScoreInfo);
+  myLocation.getScore().setScoreInfo(myScoreInfo);
 }
 
 void EditFileInformation::undo()
 {
-    myLocation.getScore().setScoreInfo(myOriginalScoreInfo);
+  myLocation.getScore().setScoreInfo(myOriginalScoreInfo);
 }

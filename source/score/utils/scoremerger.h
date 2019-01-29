@@ -20,9 +20,8 @@
 
 class Score;
 
-namespace ScoreMerger
-{
-void merge(Score &dest, Score &guitar_score, Score &bass_score);
+namespace ScoreMerger {
+void merge(Score& dest, Score& guitar_score, Score& bass_score);
 }
 
 #endif

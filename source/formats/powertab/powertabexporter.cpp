@@ -25,20 +25,17 @@
 #include <score/serialization.h>
 
 PowerTabExporter::PowerTabExporter()
-    : FileFormatExporter(getPowerTabFileFormat())
-{
-}
+  : FileFormatExporter(getPowerTabFileFormat())
+{}
 
-void PowerTabExporter::save(const boost::filesystem::path &filename,
-                            const Score &score)
+void PowerTabExporter::save(const boost::filesystem::path& filename, const Score& score)
 {
-    // Use gzip to compress the resulting data.
-    boost::filesystem::ofstream file(filename,
-                                     std::ios::out | std::ios::binary);
-    boost::iostreams::filtering_ostreambuf out;
-    out.push(boost::iostreams::gzip_compressor());
-    out.push(file);
+  // Use gzip to compress the resulting data.
+  boost::filesystem::ofstream file(filename, std::ios::out | std::ios::binary);
+  boost::iostreams::filtering_ostreambuf out;
+  out.push(boost::iostreams::gzip_compressor());
+  out.push(file);
 
-    std::ostream compressed_output(&out);
-    ScoreUtils::save(compressed_output, "score", score);
+  std::ostream compressed_output(&out);
+  ScoreUtils::save(compressed_output, "score", score);
 }

@@ -19,21 +19,22 @@
 
 #include <score/voice.h>
 
-AddMultiBarRest::AddMultiBarRest(const ScoreLocation &location, int count)
-    : QUndoCommand(QObject::tr("Add Multi-Bar Rest")), myLocation(location)
+AddMultiBarRest::AddMultiBarRest(const ScoreLocation& location, int count)
+  : QUndoCommand(QObject::tr("Add Multi-Bar Rest"))
+  , myLocation(location)
 {
-    myPosition.setPosition(location.getPositionIndex());
-    myPosition.setDurationType(Position::WholeNote);
-    myPosition.setRest(true);
-    myPosition.setMultiBarRest(count);
+  myPosition.setPosition(location.getPositionIndex());
+  myPosition.setDurationType(Position::WholeNote);
+  myPosition.setRest(true);
+  myPosition.setMultiBarRest(count);
 }
 
 void AddMultiBarRest::redo()
 {
-    myLocation.getVoice().insertPosition(myPosition);
+  myLocation.getVoice().insertPosition(myPosition);
 }
 
 void AddMultiBarRest::undo()
 {
-    myLocation.getVoice().removePosition(myPosition);
+  myLocation.getVoice().removePosition(myPosition);
 }

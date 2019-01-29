@@ -22,20 +22,20 @@
 
 TEST_CASE("Actions/RemoveDirection", "")
 {
-    Score score;
-    System system;
-    Direction direction(6);
-    direction.insertSymbol(DirectionSymbol());
-    system.insertDirection(direction);
-    score.insertSystem(system);
+  Score score;
+  System system;
+  Direction direction(6);
+  direction.insertSymbol(DirectionSymbol());
+  system.insertDirection(direction);
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0, 6);
-    RemoveDirection action(location);
+  ScoreLocation location(score, 0, 0, 6);
+  RemoveDirection action(location);
 
-    action.redo();
-    REQUIRE(location.getSystem().getDirections().empty());
+  action.redo();
+  REQUIRE(location.getSystem().getDirections().empty());
 
-    action.undo();
-    REQUIRE(location.getSystem().getDirections().size() == 1);
-    REQUIRE(location.getSystem().getDirections().front() == direction);
+  action.undo();
+  REQUIRE(location.getSystem().getDirections().size() == 1);
+  REQUIRE(location.getSystem().getDirections().front() == direction);
 }

@@ -19,81 +19,77 @@
 
 #include "utils.h"
 
-Staff::Staff() : myClefType(TrebleClef), myStringCount(6)
-{
-}
+Staff::Staff()
+  : myClefType(TrebleClef)
+  , myStringCount(6)
+{}
 
 Staff::Staff(int stringCount)
-    : myClefType(TrebleClef), myStringCount(stringCount)
-{
-}
+  : myClefType(TrebleClef)
+  , myStringCount(stringCount)
+{}
 
-bool Staff::operator==(const Staff &other) const
+bool Staff::operator==(const Staff& other) const
 {
-    return myClefType == other.myClefType &&
-           myStringCount == other.myStringCount && myVoices == other.myVoices &&
-           myDynamics == other.myDynamics;
+  return myClefType == other.myClefType && myStringCount == other.myStringCount &&
+         myVoices == other.myVoices && myDynamics == other.myDynamics;
 }
 
 Staff::ClefType Staff::getClefType() const
 {
-    return myClefType;
+  return myClefType;
 }
 
 void Staff::setClefType(ClefType type)
 {
-    myClefType = type;
+  myClefType = type;
 }
 
 int Staff::getStringCount() const
 {
-    return myStringCount;
+  return myStringCount;
 }
 
 void Staff::setStringCount(int count)
 {
-    myStringCount = count;
+  myStringCount = count;
 
-    // Clean up notes / positions that are no longer valid.
-    for (Voice &voice : myVoices)
-    {
-        for (Position &pos : voice.getPositions())
-        {
-            pos.removeNotes(
-                [=](const Note &note) { return note.getString() >= count; });
-        }
-
-        voice.removePositions(
-            [](const Position &pos) { return pos.getNotes().empty(); });
+  // Clean up notes / positions that are no longer valid.
+  for (Voice& voice : myVoices) {
+    for (Position& pos : voice.getPositions()) {
+      pos.removeNotes([=](const Note& note) { return note.getString() >= count; });
     }
+
+    voice.removePositions([](const Position& pos) { return pos.getNotes().empty(); });
+  }
 }
 
 boost::iterator_range<Staff::VoiceIterator> Staff::getVoices()
 {
-    return boost::make_iterator_range(myVoices);
+  return boost::make_iterator_range(myVoices);
 }
 
 boost::iterator_range<Staff::VoiceConstIterator> Staff::getVoices() const
 {
-    return boost::make_iterator_range(myVoices);
+  return boost::make_iterator_range(myVoices);
 }
 
 boost::iterator_range<Staff::DynamicIterator> Staff::getDynamics()
 {
-    return boost::make_iterator_range(myDynamics);
+  return boost::make_iterator_range(myDynamics);
 }
 
 boost::iterator_range<Staff::DynamicConstIterator> Staff::getDynamics() const
 {
-    return boost::make_iterator_range(myDynamics);
+  return boost::make_iterator_range(myDynamics);
 }
 
-void Staff::insertDynamic(const Dynamic &dynamic)
+void Staff::insertDynamic(const Dynamic& dynamic)
 {
-    ScoreUtils::insertObject(myDynamics, dynamic);
+  ScoreUtils::insertObject(myDynamics, dynamic);
 }
 
-void Staff::removeDynamic(const Dynamic &dynamic)
+void Staff::removeDynamic(const Dynamic& dynamic)
 {
-    ScoreUtils::removeObject(myDynamics, dynamic);
+  ScoreUtils::removeObject(myDynamics, dynamic);
 }

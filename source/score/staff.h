@@ -28,77 +28,76 @@
 class Staff
 {
 public:
-    enum
-    {
-        NUM_VOICES = 2 ///< Number of voices in a staff.
-    };
+  enum
+  {
+    NUM_VOICES = 2 ///< Number of voices in a staff.
+  };
 
-    enum ClefType
-    {
-        TrebleClef,
-        BassClef
-    };
+  enum ClefType
+  {
+    TrebleClef,
+    BassClef
+  };
 
-    typedef std::array<Voice, NUM_VOICES> VoiceList;
-    typedef VoiceList::iterator VoiceIterator;
-    typedef VoiceList::const_iterator VoiceConstIterator;
-    typedef std::vector<Dynamic>::iterator DynamicIterator;
-    typedef std::vector<Dynamic>::const_iterator DynamicConstIterator;
+  typedef std::array<Voice, NUM_VOICES> VoiceList;
+  typedef VoiceList::iterator VoiceIterator;
+  typedef VoiceList::const_iterator VoiceConstIterator;
+  typedef std::vector<Dynamic>::iterator DynamicIterator;
+  typedef std::vector<Dynamic>::const_iterator DynamicConstIterator;
 
-    Staff();
-    explicit Staff(int stringCount);
+  Staff();
+  explicit Staff(int stringCount);
 
-    bool operator==(const Staff &other) const;
+  bool operator==(const Staff& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    /// Returns whether the staff is a treble or bass clef.
-    ClefType getClefType() const;
-    /// Sets the staff's clef type.
-    void setClefType(ClefType type);
+  /// Returns whether the staff is a treble or bass clef.
+  ClefType getClefType() const;
+  /// Sets the staff's clef type.
+  void setClefType(ClefType type);
 
-    /// Returns the number of strings in the tab staff.
-    int getStringCount() const;
-    /// Sets the number of strings in the tab staff.
-    /// If the number of strings is being reduced, some notes may be removed.
-    void setStringCount(int count);
+  /// Returns the number of strings in the tab staff.
+  int getStringCount() const;
+  /// Sets the number of strings in the tab staff.
+  /// If the number of strings is being reduced, some notes may be removed.
+  void setStringCount(int count);
 
-    /// Returns the voices in the staff.
-    boost::iterator_range<VoiceIterator> getVoices();
-    /// Returns the voices in the staff.
-    boost::iterator_range<VoiceConstIterator> getVoices() const;
+  /// Returns the voices in the staff.
+  boost::iterator_range<VoiceIterator> getVoices();
+  /// Returns the voices in the staff.
+  boost::iterator_range<VoiceConstIterator> getVoices() const;
 
-    /// Returns the set of dynamics in the staff.
-    boost::iterator_range<DynamicIterator> getDynamics();
-    /// Returns the set of dynamics in the staff.
-    boost::iterator_range<DynamicConstIterator> getDynamics() const;
+  /// Returns the set of dynamics in the staff.
+  boost::iterator_range<DynamicIterator> getDynamics();
+  /// Returns the set of dynamics in the staff.
+  boost::iterator_range<DynamicConstIterator> getDynamics() const;
 
-    /// Adds a new dynamic to the staff.
-    void insertDynamic(const Dynamic &dynamic);
-    /// Removes the specified dynamic from the staff.
-    void removeDynamic(const Dynamic &dynamic);
+  /// Adds a new dynamic to the staff.
+  void insertDynamic(const Dynamic& dynamic);
+  /// Removes the specified dynamic from the staff.
+  void removeDynamic(const Dynamic& dynamic);
 
 private:
-    ClefType myClefType;
-    int myStringCount;
-    std::array<Voice, NUM_VOICES> myVoices;
-    std::vector<Dynamic> myDynamics;
+  ClefType myClefType;
+  int myStringCount;
+  std::array<Voice, NUM_VOICES> myVoices;
+  std::vector<Dynamic> myDynamics;
 };
 
-template <class Archive>
-void Staff::serialize(Archive &ar, const FileVersion version)
+template<class Archive>
+void Staff::serialize(Archive& ar, const FileVersion version)
 {
-    if (version < FileVersion::VIEW_FILTERS)
-    {
-        int view_type = 0;
-        ar("view_type", view_type);
-    }
+  if (version < FileVersion::VIEW_FILTERS) {
+    int view_type = 0;
+    ar("view_type", view_type);
+  }
 
-    ar("clef_type", myClefType);
-    ar("string_count", myStringCount);
-    ar("voices", myVoices);
-    ar("dynamics", myDynamics);
+  ar("clef_type", myClefType);
+  ar("string_count", myStringCount);
+  ar("voices", myVoices);
+  ar("dynamics", myDynamics);
 }
 
 #endif

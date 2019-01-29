@@ -22,44 +22,43 @@
 
 #include <score/note.h>
 
-TrillDialog::TrillDialog(QWidget *parent, int originalFret)
-    : QDialog(parent), ui(new Ui::TrillDialog), myOriginalFret(originalFret)
+TrillDialog::TrillDialog(QWidget* parent, int originalFret)
+  : QDialog(parent)
+  , ui(new Ui::TrillDialog)
+  , myOriginalFret(originalFret)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 
-    ui->currentFretSpinBox->setValue(originalFret);
+  ui->currentFretSpinBox->setValue(originalFret);
 
-    ui->trillFretSpinBox->setMinimum(Note::MIN_FRET_NUMBER);
-    ui->trillFretSpinBox->setMaximum(Note::MAX_FRET_NUMBER);
-    ui->trillFretSpinBox->setValue(0);
+  ui->trillFretSpinBox->setMinimum(Note::MIN_FRET_NUMBER);
+  ui->trillFretSpinBox->setMaximum(Note::MAX_FRET_NUMBER);
+  ui->trillFretSpinBox->setValue(0);
 
-    ui->trillFretSpinBox->selectAll();
+  ui->trillFretSpinBox->selectAll();
 }
 
 TrillDialog::~TrillDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 int TrillDialog::getTrilledFret() const
 {
-    return ui->trillFretSpinBox->value();
+  return ui->trillFretSpinBox->value();
 }
 
 void TrillDialog::accept()
 {
-    if (getTrilledFret() == myOriginalFret)
-    {
-        QMessageBox msgBox(this);
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setWindowTitle(tr("Trill"));
-        msgBox.setText(tr("The trilled fret number cannot be the same as the "
-                          "original fret number."));
-        msgBox.exec();
-        ui->trillFretSpinBox->setFocus();
-    }
-    else
-    {
-        done(Accepted);
-    }
+  if (getTrilledFret() == myOriginalFret) {
+    QMessageBox msgBox(this);
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setWindowTitle(tr("Trill"));
+    msgBox.setText(tr("The trilled fret number cannot be the same as the "
+                      "original fret number."));
+    msgBox.exec();
+    ui->trillFretSpinBox->setFocus();
+  } else {
+    done(Accepted);
+  }
 }

@@ -23,18 +23,17 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/AddArtificialHarmonic", "")
 {
-    Note note;
-    myLocation.getPosition()->insertNote(note);
+  Note note;
+  myLocation.getPosition()->insertNote(note);
 
-    ArtificialHarmonic harmonic(ChordName::D, ChordName::Flat,
-                                ArtificialHarmonic::Octave::Octave15ma);
+  ArtificialHarmonic harmonic(ChordName::D, ChordName::Flat, ArtificialHarmonic::Octave::Octave15ma);
 
-    AddArtificialHarmonic action(myLocation, harmonic);
+  AddArtificialHarmonic action(myLocation, harmonic);
 
-    action.redo();
-    REQUIRE(myLocation.getNote()->hasArtificialHarmonic());
-    REQUIRE(myLocation.getNote()->getArtificialHarmonic() == harmonic);
+  action.redo();
+  REQUIRE(myLocation.getNote()->hasArtificialHarmonic());
+  REQUIRE(myLocation.getNote()->getArtificialHarmonic() == harmonic);
 
-    action.undo();
-    REQUIRE(!myLocation.getNote()->hasArtificialHarmonic());
+  action.undo();
+  REQUIRE(!myLocation.getNote()->hasArtificialHarmonic());
 }

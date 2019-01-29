@@ -26,15 +26,15 @@
 class AddRest : public QUndoCommand
 {
 public:
-    AddRest(const ScoreLocation &location, Position::DurationType duration);
+  AddRest(const ScoreLocation& location, Position::DurationType duration);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    boost::optional<Position> myOriginalPosition;
-    const Position::DurationType myDuration;
+  ScoreLocation myLocation;
+  boost::optional<Position> myOriginalPosition;
+  const Position::DurationType myDuration;
 };
 
 #endif

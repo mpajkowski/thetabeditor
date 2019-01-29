@@ -21,17 +21,16 @@
 #include "scorepage.h"
 #include <app/skinmanager.h>
 
-Toolbox::Toolbox(TheTabEditor *mainWindow,
-                 boost::shared_ptr<SkinManager> skinManager)
-    : scorePage(new ScorePage(mainWindow, skinManager)),
-      notePage(new NotePage(mainWindow, skinManager))
+Toolbox::Toolbox(TheTabEditor* mainWindow, boost::shared_ptr<SkinManager> skinManager)
+  : scorePage(new ScorePage(mainWindow, skinManager))
+  , notePage(new NotePage(mainWindow, skinManager))
 {
-    setMaximumWidth(350);
-    setIconSize(QSize(48, 48));
-    setTabPosition(QTabWidget::West);
+  setMaximumWidth(350);
+  setIconSize(QSize(48, 48));
+  setTabPosition(QTabWidget::West);
 
-    setStyleSheet(skinManager->getToolboxTabStyle());
+  setStyleSheet(skinManager->getToolboxTabStyle());
 
-    addTab(scorePage, QIcon(":/icons/toolbox_score.png"), "");
-    addTab(notePage, QIcon(":/icons/toolbox_note.png"), "");
+  addTab(scorePage, QIcon(":/icons/toolbox_score.png"), "");
+  addTab(notePage, QIcon(":/icons/toolbox_note.png"), "");
 }

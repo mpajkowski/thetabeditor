@@ -26,18 +26,17 @@
 class AddNoteProperty : public QUndoCommand
 {
 public:
-    AddNoteProperty(const ScoreLocation &location,
-                    Note::SimpleProperty property, const QString &description);
+  AddNoteProperty(const ScoreLocation& location, Note::SimpleProperty property, const QString& description);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Note::SimpleProperty myProperty;
-    /// Since setting a property may clear other properties, we need to save
-    /// a copy of the original notes.
-    std::vector<Note> myOriginalNotes;
+  ScoreLocation myLocation;
+  const Note::SimpleProperty myProperty;
+  /// Since setting a property may clear other properties, we need to save
+  /// a copy of the original notes.
+  std::vector<Note> myOriginalNotes;
 };
 
 #endif

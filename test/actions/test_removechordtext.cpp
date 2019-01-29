@@ -22,19 +22,19 @@
 
 TEST_CASE("Actions/RemoveChordText", "")
 {
-    Score score;
-    System system;
-    ChordText text(6, ChordName());
-    system.insertChord(text);
-    score.insertSystem(system);
+  Score score;
+  System system;
+  ChordText text(6, ChordName());
+  system.insertChord(text);
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0, 6);
-    RemoveChordText action(location);
+  ScoreLocation location(score, 0, 0, 6);
+  RemoveChordText action(location);
 
-    action.redo();
-    REQUIRE(location.getSystem().getChords().empty());
+  action.redo();
+  REQUIRE(location.getSystem().getChords().empty());
 
-    action.undo();
-    REQUIRE(location.getSystem().getChords().size() == 1);
-    REQUIRE(location.getSystem().getChords().front() == text);
+  action.undo();
+  REQUIRE(location.getSystem().getChords().size() == 1);
+  REQUIRE(location.getSystem().getChords().front() == text);
 }

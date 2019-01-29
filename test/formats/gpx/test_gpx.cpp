@@ -23,13 +23,13 @@
 
 TEST_CASE("Formats/GpxImport/Text", "")
 {
-    Score score;
-    GpxImporter importer;
-    importer.load(AppInfo::getAbsolutePath("data/text.gpx"), score);
+  Score score;
+  GpxImporter importer;
+  importer.load(AppInfo::getAbsolutePath("data/text.gpx"), score);
 
-    const System &system = score.getSystems()[0];
+  const System& system = score.getSystems()[0];
 
-    REQUIRE(system.getTextItems().size() == 1);
-    REQUIRE(system.getTextItems()[0].getPosition() == 9);
-    REQUIRE(system.getTextItems()[0].getContents() == "foo");
+  REQUIRE(system.getTextItems().size() == 1);
+  REQUIRE(system.getTextItems()[0].getPosition() == 9);
+  REQUIRE(system.getTextItems()[0].getContents() == "foo");
 }

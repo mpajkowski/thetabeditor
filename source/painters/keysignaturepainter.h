@@ -29,36 +29,32 @@ class ClickPubSub;
 class KeySignaturePainter : public QGraphicsItem
 {
 public:
-    KeySignaturePainter(const LayoutConstPtr &layout, const KeySignature &key,
-                        const ScoreLocation &location,
-                        const std::shared_ptr<ClickPubSub> &pubsub);
+  KeySignaturePainter(const LayoutConstPtr& layout,
+                      const KeySignature& key,
+                      const ScoreLocation& location,
+                      const std::shared_ptr<ClickPubSub>& pubsub);
 
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *,
-                       QWidget *) override;
-    virtual QRectF boundingRect() const override
-    {
-        return myBounds;
-    }
+  virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) override;
+  virtual QRectF boundingRect() const override { return myBounds; }
 
 private:
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *) override;
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *) override;
+  virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+  virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+  virtual void hoverEnterEvent(QGraphicsSceneHoverEvent*) override;
+  virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent*) override;
 
-    LayoutConstPtr myLayout;
-    const KeySignature &myKeySignature;
-    const ScoreLocation myLocation;
-    std::shared_ptr<ClickPubSub> myPubSub;
-    QFont myMusicFont;
-    const QRectF myBounds;
-    QVector<double> myFlatPositions;
-    QVector<double> mySharpPositions;
+  LayoutConstPtr myLayout;
+  const KeySignature& myKeySignature;
+  const ScoreLocation myLocation;
+  std::shared_ptr<ClickPubSub> myPubSub;
+  QFont myMusicFont;
+  const QRectF myBounds;
+  QVector<double> myFlatPositions;
+  QVector<double> mySharpPositions;
 
-    void adjustHeightOffset(QVector<double> &lst);
-    void drawAccidentals(QVector<double> &positions, QChar accidental,
-                         QPainter *painter);
-    void initAccidentalPositions();
+  void adjustHeightOffset(QVector<double>& lst);
+  void drawAccidentals(QVector<double>& positions, QChar accidental, QPainter* painter);
+  void initAccidentalPositions();
 };
 
 #endif

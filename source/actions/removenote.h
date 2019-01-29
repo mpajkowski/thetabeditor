@@ -27,15 +27,15 @@
 class RemoveNote : public QUndoCommand
 {
 public:
-    RemoveNote(const ScoreLocation &location);
+  RemoveNote(const ScoreLocation& location);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Note myNote;
-    std::unique_ptr<RemovePosition> myRemovePosAction;
+  ScoreLocation myLocation;
+  const Note myNote;
+  std::unique_ptr<RemovePosition> myRemovePosAction;
 };
 
 #endif

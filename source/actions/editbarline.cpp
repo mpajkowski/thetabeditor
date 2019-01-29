@@ -17,25 +17,23 @@
 
 #include "editbarline.h"
 
-EditBarline::EditBarline(const ScoreLocation &location, Barline::BarType type,
-                         int repeats)
-    : QUndoCommand(QObject::tr("Edit Barline Type")),
-      myLocation(location),
-      myBarType(type),
-      myOriginalBarType(location.getBarline()->getBarType()),
-      myRepeats(repeats),
-      myOriginalRepeats(location.getBarline()->getRepeatCount())
-{
-}
+EditBarline::EditBarline(const ScoreLocation& location, Barline::BarType type, int repeats)
+  : QUndoCommand(QObject::tr("Edit Barline Type"))
+  , myLocation(location)
+  , myBarType(type)
+  , myOriginalBarType(location.getBarline()->getBarType())
+  , myRepeats(repeats)
+  , myOriginalRepeats(location.getBarline()->getRepeatCount())
+{}
 
 void EditBarline::redo()
 {
-    myLocation.getBarline()->setBarType(myBarType);
-    myLocation.getBarline()->setRepeatCount(myRepeats);
+  myLocation.getBarline()->setBarType(myBarType);
+  myLocation.getBarline()->setRepeatCount(myRepeats);
 }
 
 void EditBarline::undo()
 {
-    myLocation.getBarline()->setBarType(myOriginalBarType);
-    myLocation.getBarline()->setRepeatCount(myOriginalRepeats);
+  myLocation.getBarline()->setBarType(myOriginalBarType);
+  myLocation.getBarline()->setRepeatCount(myOriginalRepeats);
 }

@@ -27,17 +27,16 @@ class RhythmSlash;
 class RhythmSlashPainter : public PainterBase
 {
 public:
-    RhythmSlashPainter(boost::shared_ptr<const RhythmSlash> rhythmSlash);
+  RhythmSlashPainter(boost::shared_ptr<const RhythmSlash> rhythmSlash);
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-               QWidget *widget);
+  void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 
-    static const double STEM_OFFSET;
-    static const double NOTE_HEAD_OFFSET;
+  static const double STEM_OFFSET;
+  static const double NOTE_HEAD_OFFSET;
 
 private:
-    boost::shared_ptr<const RhythmSlash> rhythmSlash;
-    QFont musicFont;
+  boost::shared_ptr<const RhythmSlash> rhythmSlash;
+  QFont musicFont;
 };
 
 #endif // RHYTHMSLASHPAINTER_H

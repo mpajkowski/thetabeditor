@@ -23,10 +23,9 @@
 class PowerTabImporter : public FileFormatImporter
 {
 public:
-    PowerTabImporter();
+  PowerTabImporter();
 
-    virtual void load(const boost::filesystem::path &filename,
-                      Score &score) override;
+  virtual void load(const boost::filesystem::path& filename, Score& score) override;
 };
 
 #endif

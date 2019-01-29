@@ -3,8 +3,7 @@
 
 #include <QDialog>
 
-namespace Ui
-{
+namespace Ui {
 class GoToRehearsalSignDialog;
 }
 
@@ -13,21 +12,21 @@ class ScoreLocation;
 
 class GoToRehearsalSignDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit GoToRehearsalSignDialog(QWidget *parent, const Score &score);
-    ~GoToRehearsalSignDialog();
+  explicit GoToRehearsalSignDialog(QWidget* parent, const Score& score);
+  ~GoToRehearsalSignDialog();
 
-    /// Returns the location of the selected rehearsal sign.
-    ScoreLocation getLocation() const;
+  /// Returns the location of the selected rehearsal sign.
+  ScoreLocation getLocation() const;
 
 public slots:
-    virtual void accept() override;
+  virtual void accept() override;
 
 private:
-    Ui::GoToRehearsalSignDialog *ui;
-    const Score &myScore;
+  Ui::GoToRehearsalSignDialog* ui;
+  const Score& myScore;
 };
 
 #endif

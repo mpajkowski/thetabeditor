@@ -22,21 +22,21 @@
 
 TEST_CASE("Actions/AddMultiBarRest", "")
 {
-    Score score;
-    System system;
-    Staff staff;
-    system.insertStaff(staff);
-    score.insertSystem(system);
+  Score score;
+  System system;
+  Staff staff;
+  system.insertStaff(staff);
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0, 6);
+  ScoreLocation location(score, 0, 0, 6);
 
-    AddMultiBarRest action(location, 3);
+  AddMultiBarRest action(location, 3);
 
-    action.redo();
-    REQUIRE(location.getPosition());
-    REQUIRE(location.getPosition()->hasMultiBarRest());
-    REQUIRE(location.getPosition()->getMultiBarRestCount() == 3);
+  action.redo();
+  REQUIRE(location.getPosition());
+  REQUIRE(location.getPosition()->hasMultiBarRest());
+  REQUIRE(location.getPosition()->getMultiBarRestCount() == 3);
 
-    action.undo();
-    REQUIRE(!location.getPosition());
+  action.undo();
+  REQUIRE(!location.getPosition());
 }

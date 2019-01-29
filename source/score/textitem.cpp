@@ -17,36 +17,36 @@
 
 #include "textitem.h"
 
-TextItem::TextItem() : myPosition(0)
-{
-}
+TextItem::TextItem()
+  : myPosition(0)
+{}
 
-TextItem::TextItem(int position, const std::string &contents)
-    : myPosition(position), myContents(contents)
-{
-}
+TextItem::TextItem(int position, const std::string& contents)
+  : myPosition(position)
+  , myContents(contents)
+{}
 
-bool TextItem::operator==(const TextItem &other) const
+bool TextItem::operator==(const TextItem& other) const
 {
-    return myPosition == other.myPosition && myContents == other.myContents;
+  return myPosition == other.myPosition && myContents == other.myContents;
 }
 
 int TextItem::getPosition() const
 {
-    return myPosition;
+  return myPosition;
 }
 
 void TextItem::setPosition(int position)
 {
-    myPosition = position;
+  myPosition = position;
 }
 
-const std::string &TextItem::getContents() const
+const std::string& TextItem::getContents() const
 {
-    return myContents;
+  return myContents;
 }
 
-void TextItem::setContents(const std::string &contents)
+void TextItem::setContents(const std::string& contents)
 {
-    myContents = contents;
+  myContents = contents;
 }

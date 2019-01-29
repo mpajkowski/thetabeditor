@@ -26,16 +26,15 @@ class Position;
 class TremoloBarPainter : public PainterBase
 {
 public:
-    TremoloBarPainter(const Position *position, double width);
+  TremoloBarPainter(const Position* position, double width);
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-               QWidget *widget);
+  void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 
 private:
-    const Position *position;
-    double width;
+  const Position* position;
+  double width;
 
-    QFont textFont;
+  QFont textFont;
 };
 
 #endif // TREMOLOBARPAINTER_H

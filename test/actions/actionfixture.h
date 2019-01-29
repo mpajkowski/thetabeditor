@@ -23,25 +23,26 @@
 
 struct ActionFixture
 {
-    ActionFixture() : myLocation(myScore)
-    {
-        System system;
-        Staff staff(6);
-        Position position(42);
-        position.insertNote(Note(2, 3));
-        position.insertNote(Note(5, 1));
-        staff.getVoices().front().insertPosition(position);
+  ActionFixture()
+    : myLocation(myScore)
+  {
+    System system;
+    Staff staff(6);
+    Position position(42);
+    position.insertNote(Note(2, 3));
+    position.insertNote(Note(5, 1));
+    staff.getVoices().front().insertPosition(position);
 
-        system.insertStaff(staff);
-        myScore.insertSystem(system);
+    system.insertStaff(staff);
+    myScore.insertSystem(system);
 
-        myLocation.setPositionIndex(42);
-        myLocation.setSelectionStart(42);
-        myLocation.setString(2);
-    }
+    myLocation.setPositionIndex(42);
+    myLocation.setSelectionStart(42);
+    myLocation.setString(2);
+  }
 
-    Score myScore;
-    ScoreLocation myLocation;
+  Score myScore;
+  ScoreLocation myLocation;
 };
 
 #endif

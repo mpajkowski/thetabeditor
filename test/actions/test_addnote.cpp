@@ -22,58 +22,58 @@
 
 TEST_CASE("Actions/AddNote", "")
 {
-    Score score;
-    System system;
-    Staff staff;
-    Voice &voice = staff.getVoices().front();
+  Score score;
+  System system;
+  Staff staff;
+  Voice& voice = staff.getVoices().front();
 
-    Position rest(7);
-    rest.setRest(true);
-    voice.insertPosition(rest);
+  Position rest(7);
+  rest.setRest(true);
+  voice.insertPosition(rest);
 
-    Position pos(8);
-    pos.insertNote(Note(1, 13));
-    voice.insertPosition(pos);
+  Position pos(8);
+  pos.insertNote(Note(1, 13));
+  voice.insertPosition(pos);
 
-    system.insertStaff(staff);
-    score.insertSystem(system);
+  system.insertStaff(staff);
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0, 6);
+  ScoreLocation location(score, 0, 0, 6);
 
-    // Add a note to an empty location.
-    AddNote action1(location, Note(2, 3), Position::QuarterNote);
+  // Add a note to an empty location.
+  AddNote action1(location, Note(2, 3), Position::QuarterNote);
 
-    action1.redo();
-    REQUIRE(location.getPosition());
-    REQUIRE(location.getPosition()->getDurationType() == Position::QuarterNote);
-    REQUIRE(location.getPosition()->getNotes().size() == 1);
+  action1.redo();
+  REQUIRE(location.getPosition());
+  REQUIRE(location.getPosition()->getDurationType() == Position::QuarterNote);
+  REQUIRE(location.getPosition()->getNotes().size() == 1);
 
-    action1.undo();
-    REQUIRE(!location.getPosition());
+  action1.undo();
+  REQUIRE(!location.getPosition());
 
-    // Add a note to a rest.
-    location.setPositionIndex(7);
-    AddNote action2(location, Note(2, 3), Position::QuarterNote);
+  // Add a note to a rest.
+  location.setPositionIndex(7);
+  AddNote action2(location, Note(2, 3), Position::QuarterNote);
 
-    action2.redo();
-    REQUIRE(location.getPosition());
-    REQUIRE(!location.getPosition()->isRest());
-    REQUIRE(location.getPosition()->getNotes().size() == 1);
+  action2.redo();
+  REQUIRE(location.getPosition());
+  REQUIRE(!location.getPosition()->isRest());
+  REQUIRE(location.getPosition()->getNotes().size() == 1);
 
-    action2.undo();
-    REQUIRE(location.getPosition());
-    REQUIRE(location.getPosition()->isRest());
-    REQUIRE(location.getPosition()->getNotes().size() == 0);
+  action2.undo();
+  REQUIRE(location.getPosition());
+  REQUIRE(location.getPosition()->isRest());
+  REQUIRE(location.getPosition()->getNotes().size() == 0);
 
-    // Add a note to an existing position.
-    location.setPositionIndex(8);
-    AddNote action3(location, Note(2, 3), Position::QuarterNote);
+  // Add a note to an existing position.
+  location.setPositionIndex(8);
+  AddNote action3(location, Note(2, 3), Position::QuarterNote);
 
-    action3.redo();
-    REQUIRE(location.getPosition());
-    REQUIRE(location.getPosition()->getNotes().size() == 2);
+  action3.redo();
+  REQUIRE(location.getPosition());
+  REQUIRE(location.getPosition()->getNotes().size() == 2);
 
-    action3.undo();
-    REQUIRE(location.getPosition());
-    REQUIRE(location.getPosition()->getNotes().size() == 1);
+  action3.undo();
+  REQUIRE(location.getPosition());
+  REQUIRE(location.getPosition()->getNotes().size() == 1);
 }

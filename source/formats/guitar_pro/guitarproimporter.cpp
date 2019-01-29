@@ -29,489 +29,443 @@
 static const int POSITIONS_PER_SYSTEM = 35;
 
 GuitarProImporter::GuitarProImporter()
-    : FileFormatImporter(
-          FileFormat("Guitar Pro 3, 4, 5", { "gp3", "gp4", "gp5" }))
+  : FileFormatImporter(FileFormat("Guitar Pro 3, 4, 5", { "gp3", "gp4", "gp5" }))
+{}
+
+void GuitarProImporter::load(const boost::filesystem::path& filename, Score& score)
 {
+  boost::filesystem::ifstream in(filename, std::ios::binary | std::ios::in);
+  Gp::InputStream stream(in);
+
+  Gp::Document document;
+  document.load(stream);
+
+  ScoreInfo info;
+  convertHeader(document.myHeader, info);
+  score.setScoreInfo(info);
+
+  convertPlayers(document, score);
+  convertScore(document, score);
+  ScoreUtils::addStandardFilters(score);
+
+  // Automatically set the rehearsal sign letters to "A", "B", etc.
+  ScoreUtils::adjustRehearsalSigns(score);
+
+  // Format the score.
+  ScoreUtils::polishScore(score);
 }
 
-void GuitarProImporter::load(const boost::filesystem::path &filename,
-                             Score &score)
+void GuitarProImporter::convertHeader(const Gp::Header& header, ScoreInfo& info)
 {
-    boost::filesystem::ifstream in(filename, std::ios::binary | std::ios::in);
-    Gp::InputStream stream(in);
+  SongData song;
 
-    Gp::Document document;
-    document.load(stream);
+  song.setTitle(header.myTitle);
+  song.setArtist(header.myArtist);
+  song.setAudioReleaseInfo(SongData::AudioReleaseInfo(SongData::AudioReleaseInfo::ReleaseType::Single,
+                                                      header.myAlbum,
+                                                      boost::gregorian::day_clock::local_day().year(),
+                                                      false));
+  song.setAuthorInfo(SongData::AuthorInfo(header.myComposer, header.myLyricist));
+  song.setCopyright(header.myCopyright);
+  song.setTranscriber(header.myTranscriber);
 
-    ScoreInfo info;
-    convertHeader(document.myHeader, info);
-    score.setScoreInfo(info);
+  // Merge the instructions and comments into the performance notes.
+  std::string comments;
+  if (!header.myInstructions.empty())
+    comments += header.myInstructions + "\n";
+  for (const std::string& comment : header.myNotices)
+    comments += comment;
+  song.setPerformanceNotes(comments);
 
-    convertPlayers(document, score);
-    convertScore(document, score);
-    ScoreUtils::addStandardFilters(score);
+  // Merge lyrics together.
+  std::string lyrics;
+  for (const Gp::Header::LyricLine& line : header.myLyrics)
+    lyrics += line.myContents;
+  song.setLyrics(lyrics);
 
-    // Automatically set the rehearsal sign letters to "A", "B", etc.
-    ScoreUtils::adjustRehearsalSigns(score);
-
-    // Format the score.
-    ScoreUtils::polishScore(score);
+  info.setSongData(song);
 }
 
-void GuitarProImporter::convertHeader(const Gp::Header &header, ScoreInfo &info)
+void GuitarProImporter::convertPlayers(const Gp::Document& doc, Score& score)
 {
-    SongData song;
+  for (const Gp::Track& track : doc.myTracks) {
+    Player player;
+    Tuning tuning;
 
-    song.setTitle(header.myTitle);
-    song.setArtist(header.myArtist);
-    song.setAudioReleaseInfo(SongData::AudioReleaseInfo(
-        SongData::AudioReleaseInfo::ReleaseType::Single, header.myAlbum,
-        boost::gregorian::day_clock::local_day().year(), false));
-    song.setAuthorInfo(
-        SongData::AuthorInfo(header.myComposer, header.myLyricist));
-    song.setCopyright(header.myCopyright);
-    song.setTranscriber(header.myTranscriber);
+    player.setDescription(track.myName);
 
-    // Merge the instructions and comments into the performance notes.
-    std::string comments;
-    if (!header.myInstructions.empty())
-        comments += header.myInstructions + "\n";
-    for (const std::string &comment : header.myNotices)
-        comments += comment;
-    song.setPerformanceNotes(comments);
+    tuning.setNotes(track.myTuning);
+    tuning.setCapo(track.myCapo);
 
-    // Merge lyrics together.
-    std::string lyrics;
-    for (const Gp::Header::LyricLine &line : header.myLyrics)
-        lyrics += line.myContents;
-    song.setLyrics(lyrics);
+    const Gp::Channel& channel = doc.myChannels[track.myChannelIndex];
+    player.setMidiPreset(channel.myInstrument);
+    player.setMaxVolume(channel.myVolume);
+    player.setPan(channel.myBalance);
 
-    info.setSongData(song);
+    player.setTuning(tuning);
+    score.insertPlayer(player);
+  }
 }
 
-void GuitarProImporter::convertPlayers(const Gp::Document &doc, Score &score)
+int GuitarProImporter::convertBarline(const Gp::Measure& measure,
+                                      const Gp::Measure* prevMeasure,
+                                      const Gp::Measure* nextMeasure,
+                                      System& system,
+                                      int start,
+                                      int end,
+                                      KeySignature& lastKeySig,
+                                      TimeSignature& lastTimeSig)
 {
-    for (const Gp::Track &track : doc.myTracks)
-    {
-        Player player;
-        Tuning tuning;
+  Barline bar;
+  bar.setPosition(start);
 
-        player.setDescription(track.myName);
+  if (prevMeasure && prevMeasure->myIsDoubleBar)
+    bar.setBarType(Barline::DoubleBar);
+  else if (measure.myIsRepeatBegin)
+    bar.setBarType(Barline::RepeatStart);
+  else if (!measure.myIsRepeatBegin && prevMeasure && prevMeasure->myRepeatEnd) {
+    bar.setBarType(Barline::RepeatEnd);
+  }
 
-        tuning.setNotes(track.myTuning);
-        tuning.setCapo(track.myCapo);
+  if (measure.myMarker)
+    bar.setRehearsalSign(RehearsalSign("", *measure.myMarker));
 
-        const Gp::Channel &channel = doc.myChannels[track.myChannelIndex];
-        player.setMidiPreset(channel.myInstrument);
-        player.setMaxVolume(channel.myVolume);
-        player.setPan(channel.myBalance);
+  if (measure.myKeyChange) {
+    KeySignature key;
+    key.setVisible(true);
 
-        player.setTuning(tuning);
-        score.insertPlayer(player);
-    }
-}
+    // Guitar Pro uses 0 for C, 1 for G, ..., -1 for F, -2 for Bb, ...,
+    // whereas Power Tab uses 0 for 1, 1 for G, 1 for F, etc.
+    const int numAccidentals = measure.myKeyChange.get().first;
 
-int GuitarProImporter::convertBarline(const Gp::Measure &measure,
-                                      const Gp::Measure *prevMeasure,
-                                      const Gp::Measure *nextMeasure,
-                                      System &system, int start, int end,
-                                      KeySignature &lastKeySig,
-                                      TimeSignature &lastTimeSig)
-{
-    Barline bar;
-    bar.setPosition(start);
-
-    if (prevMeasure && prevMeasure->myIsDoubleBar)
-        bar.setBarType(Barline::DoubleBar);
-    else if (measure.myIsRepeatBegin)
-        bar.setBarType(Barline::RepeatStart);
-    else if (!measure.myIsRepeatBegin && prevMeasure &&
-             prevMeasure->myRepeatEnd)
-    {
-        bar.setBarType(Barline::RepeatEnd);
+    // Create a cancellation if necessary.
+    if (numAccidentals == 0 && lastKeySig.getNumAccidentals() > 0) {
+      key.setCancellation();
+      key.setNumAccidentals(lastKeySig.getNumAccidentals());
+      key.setSharps(lastKeySig.usesSharps());
+    } else {
+      key.setSharps(numAccidentals >= 0);
+      key.setNumAccidentals(std::abs(measure.myKeyChange->first));
     }
 
-    if (measure.myMarker)
-        bar.setRehearsalSign(RehearsalSign("", *measure.myMarker));
+    key.setKeyType(static_cast<KeySignature::KeyType>(measure.myKeyChange->second));
+    bar.setKeySignature(key);
 
-    if (measure.myKeyChange)
-    {
-        KeySignature key;
-        key.setVisible(true);
+    // Future copies of this key signature should not be shown.
+    key.setVisible(false);
+    lastKeySig = key;
+  } else
+    bar.setKeySignature(lastKeySig);
 
-        // Guitar Pro uses 0 for C, 1 for G, ..., -1 for F, -2 for Bb, ...,
-        // whereas Power Tab uses 0 for 1, 1 for G, 1 for F, etc.
-        const int numAccidentals = measure.myKeyChange.get().first;
+  if (measure.myTimeSignatureChange) {
+    TimeSignature time;
+    time.setVisible(true);
 
-        // Create a cancellation if necessary.
-        if (numAccidentals == 0 && lastKeySig.getNumAccidentals() > 0)
-        {
-            key.setCancellation();
-            key.setNumAccidentals(lastKeySig.getNumAccidentals());
-            key.setSharps(lastKeySig.usesSharps());
-        }
-        else
-        {
-            key.setSharps(numAccidentals >= 0);
-            key.setNumAccidentals(std::abs(measure.myKeyChange->first));
-        }
+    time.setBeatsPerMeasure(measure.myTimeSignatureChange->first);
+    time.setNumPulses(measure.myTimeSignatureChange->first);
+    time.setBeatValue(measure.myTimeSignatureChange->second);
+    bar.setTimeSignature(time);
 
-        key.setKeyType(
-            static_cast<KeySignature::KeyType>(measure.myKeyChange->second));
-        bar.setKeySignature(key);
+    // Future copies of this time signature should not be shown.
+    time.setVisible(false);
+    lastTimeSig = time;
+  } else
+    bar.setTimeSignature(lastTimeSig);
 
-        // Future copies of this key signature should not be shown.
-        key.setVisible(false);
-        lastKeySig = key;
-    }
-    else
-        bar.setKeySignature(lastKeySig);
+  // Insert at the correct location.
+  if (start == 0)
+    system.getBarlines().front() = bar;
+  else
+    system.insertBarline(bar);
 
-    if (measure.myTimeSignatureChange)
-    {
-        TimeSignature time;
-        time.setVisible(true);
+  // Split adjacent repeat start/end bars into separate barlines.
+  if (measure.myRepeatEnd && (!nextMeasure || nextMeasure->myIsRepeatBegin)) {
+    bar.setPosition(end);
+    bar.setBarType(Barline::RepeatEnd);
+    bar.setRepeatCount(measure.myRepeatEnd.get());
 
-        time.setBeatsPerMeasure(measure.myTimeSignatureChange->first);
-        time.setNumPulses(measure.myTimeSignatureChange->first);
-        time.setBeatValue(measure.myTimeSignatureChange->second);
-        bar.setTimeSignature(time);
-
-        // Future copies of this time signature should not be shown.
-        time.setVisible(false);
-        lastTimeSig = time;
-    }
-    else
-        bar.setTimeSignature(lastTimeSig);
+    // Hide key signatures and time signatures.
+    KeySignature key(bar.getKeySignature());
+    key.setVisible(false);
+    bar.setKeySignature(key);
+    TimeSignature time(bar.getTimeSignature());
+    time.setVisible(false);
+    bar.setTimeSignature(time);
 
     // Insert at the correct location.
-    if (start == 0)
-        system.getBarlines().front() = bar;
+    if (end > POSITIONS_PER_SYSTEM || !nextMeasure)
+      system.getBarlines().back() = bar;
     else
-        system.insertBarline(bar);
+      system.insertBarline(bar);
 
-    // Split adjacent repeat start/end bars into separate barlines.
-    if (measure.myRepeatEnd && (!nextMeasure || nextMeasure->myIsRepeatBegin))
-    {
-        bar.setPosition(end);
-        bar.setBarType(Barline::RepeatEnd);
-        bar.setRepeatCount(measure.myRepeatEnd.get());
+    ++end;
+  }
 
-        // Hide key signatures and time signatures.
-        KeySignature key(bar.getKeySignature());
-        key.setVisible(false);
-        bar.setKeySignature(key);
-        TimeSignature time(bar.getTimeSignature());
-        time.setVisible(false);
-        bar.setTimeSignature(time);
+  return end;
+}
 
-        // Insert at the correct location.
-        if (end > POSITIONS_PER_SYSTEM || !nextMeasure)
-            system.getBarlines().back() = bar;
+void GuitarProImporter::convertAlternateEndings(const Gp::Measure& measure, System& system, int position)
+{
+  // Each bit represent an alternate ending from 1 to 8.
+  if (measure.myAlternateEnding) {
+    AlternateEnding ending(position);
+    ;
+
+    std::bitset<8> bits(measure.myAlternateEnding.get());
+    for (int i = 0; i < 8; ++i) {
+      if (bits.test(i))
+        ending.addNumber(i + 1);
+    }
+
+    system.insertAlternateEnding(ending);
+  }
+}
+
+void GuitarProImporter::convertIrregularGroupings(const std::vector<Gp::Beat>& beats,
+                                                  const std::vector<int>& positions,
+                                                  Voice& voice)
+{
+  boost::optional<int> currentGroup;
+  int startPos = -1;
+  int numerator = -1;
+  int denominator = -1;
+  int count = -1;
+  for (size_t i = 0; i < beats.size(); ++i) {
+    const Gp::Beat& beat = beats[i];
+
+    if (beat.myIrregularGrouping) {
+      if (!currentGroup || *currentGroup != *beat.myIrregularGrouping) {
+        currentGroup = beat.myIrregularGrouping;
+        startPos = positions[i];
+        numerator = 1;
+        denominator = beat.myDuration;
+        count = 1;
+      } else {
+        // Add up the note durations until the numerator is divisble by
+        // the group size.
+        if (beat.myDuration >= denominator)
+          numerator = numerator * (beat.myDuration / denominator) + 1;
         else
-            system.insertBarline(bar);
+          numerator += denominator / beat.myDuration;
+        ++count;
 
-        ++end;
-    }
+        if ((numerator % *currentGroup) == 0) {
+          // The denominator of the irregular grouping is the nearest
+          // power of 2 (from below).
+          const int notesPlayedOver = std::pow(2, std::floor(std::log(*currentGroup) / std::log(2.0)));
 
-    return end;
-}
+          IrregularGrouping group(startPos, count, *currentGroup, notesPlayedOver);
+          voice.insertIrregularGrouping(group);
 
-void GuitarProImporter::convertAlternateEndings(const Gp::Measure &measure,
-                                                System &system, int position)
-{
-    // Each bit represent an alternate ending from 1 to 8.
-    if (measure.myAlternateEnding)
-    {
-        AlternateEnding ending(position);
-        ;
-
-        std::bitset<8> bits(measure.myAlternateEnding.get());
-        for (int i = 0; i < 8; ++i)
-        {
-            if (bits.test(i))
-                ending.addNumber(i + 1);
+          currentGroup.reset();
         }
-
-        system.insertAlternateEnding(ending);
-    }
+      }
+    } else
+      currentGroup.reset();
+  }
 }
 
-void GuitarProImporter::convertIrregularGroupings(
-    const std::vector<Gp::Beat> &beats, const std::vector<int> &positions,
-    Voice &voice)
+void GuitarProImporter::convertScore(const Gp::Document& doc, Score& score)
 {
-    boost::optional<int> currentGroup;
-    int startPos = -1;
-    int numerator = -1;
-    int denominator = -1;
-    int count = -1;
-    for (size_t i = 0; i < beats.size(); ++i)
-    {
-        const Gp::Beat &beat = beats[i];
+  System system;
+  KeySignature lastKeySig;
+  TimeSignature lastTimeSig;
 
-        if (beat.myIrregularGrouping)
-        {
-            if (!currentGroup || *currentGroup != *beat.myIrregularGrouping)
-            {
-                currentGroup = beat.myIrregularGrouping;
-                startPos = positions[i];
-                numerator = 1;
-                denominator = beat.myDuration;
-                count = 1;
-            }
-            else
-            {
-                // Add up the note durations until the numerator is divisble by
-                // the group size.
-                if (beat.myDuration >= denominator)
-                    numerator = numerator * (beat.myDuration / denominator) + 1;
-                else
-                    numerator += denominator / beat.myDuration;
-                ++count;
+  // Add a staff for each player.
+  for (const Player& player : score.getPlayers())
+    system.insertStaff(Staff(player.getTuning().getStringCount()));
 
-                if ((numerator % *currentGroup) == 0)
-                {
-                    // The denominator of the irregular grouping is the nearest
-                    // power of 2 (from below).
-                    const int notesPlayedOver = std::pow(
-                        2, std::floor(std::log(*currentGroup) / std::log(2.0)));
+  // Add initial tempo marker.
+  {
+    TempoMarker marker;
+    marker.setPosition(0);
+    marker.setBeatsPerMinute(doc.myStartTempo);
+    system.insertTempoMarker(marker);
+  }
 
-                    IrregularGrouping group(startPos, count, *currentGroup,
-                                            notesPlayedOver);
-                    voice.insertIrregularGrouping(group);
+  // Add an initial player change.
+  {
+    // Set up an initial player change.
+    PlayerChange change;
+    for (unsigned int i = 0; i < score.getPlayers().size(); ++i)
+      change.insertActivePlayer(i, ActivePlayer(i, i));
+    system.insertPlayerChange(change);
+  }
 
-                    currentGroup.reset();
-                }
-            }
-        }
-        else
-            currentGroup.reset();
-    }
-}
+  int startPos = 0;
+  for (size_t m = 0; m < doc.myMeasures.size(); ++m) {
+    const Gp::Measure& measure = doc.myMeasures[m];
 
-void GuitarProImporter::convertScore(const Gp::Document &doc, Score &score)
-{
-    System system;
-    KeySignature lastKeySig;
-    TimeSignature lastTimeSig;
+    // Try to create a new system every so often.
+    if (startPos > POSITIONS_PER_SYSTEM) {
+      system.getBarlines().back().setPosition(startPos + 1);
+      score.insertSystem(system);
+      system = System();
 
-    // Add a staff for each player.
-    for (const Player &player : score.getPlayers())
+      // Add a staff for each player.
+      for (const Player& player : score.getPlayers())
         system.insertStaff(Staff(player.getTuning().getStringCount()));
 
-    // Add initial tempo marker.
-    {
-        TempoMarker marker;
-        marker.setPosition(0);
-        marker.setBeatsPerMinute(doc.myStartTempo);
-        system.insertTempoMarker(marker);
+      startPos = 0;
     }
 
-    // Add an initial player change.
-    {
-        // Set up an initial player change.
-        PlayerChange change;
-        for (unsigned int i = 0; i < score.getPlayers().size(); ++i)
-            change.insertActivePlayer(i, ActivePlayer(i, i));
-        system.insertPlayerChange(change);
-    }
+    // For each player, import the notes from the current measure.
+    int nextPos = startPos;
+    for (unsigned int i = 0; i < score.getPlayers().size(); ++i) {
+      Staff& staff = system.getStaves()[i];
+      const Gp::Staff& gp_staff = measure.myStaves[i];
 
-    int startPos = 0;
-    for (size_t m = 0; m < doc.myMeasures.size(); ++m)
-    {
-        const Gp::Measure &measure = doc.myMeasures[m];
+      for (size_t v = 0; v < gp_staff.myVoices.size(); ++v) {
+        // Start inserting notes after the barline.
+        int currentPos = (startPos != 0) ? startPos + 1 : 0;
+        Voice& voice = staff.getVoices()[v];
+        std::vector<int> positions;
 
-        // Try to create a new system every so often.
-        if (startPos > POSITIONS_PER_SYSTEM)
-        {
-            system.getBarlines().back().setPosition(startPos + 1);
-            score.insertSystem(system);
-            system = System();
-
-            // Add a staff for each player.
-            for (const Player &player : score.getPlayers())
-                system.insertStaff(Staff(player.getTuning().getStringCount()));
-
-            startPos = 0;
+        for (const Gp::Beat& beat : gp_staff.myVoices[v]) {
+          currentPos = convertBeat(beat, system, voice, currentPos);
+          positions.push_back(currentPos - 1);
         }
 
-        // For each player, import the notes from the current measure.
-        int nextPos = startPos;
-        for (unsigned int i = 0; i < score.getPlayers().size(); ++i)
-        {
-            Staff &staff = system.getStaves()[i];
-            const Gp::Staff &gp_staff = measure.myStaves[i];
+        convertIrregularGroupings(gp_staff.myVoices[v], positions, voice);
 
-            for (size_t v = 0; v < gp_staff.myVoices.size(); ++v)
-            {
-                // Start inserting notes after the barline.
-                int currentPos = (startPos != 0) ? startPos + 1 : 0;
-                Voice &voice = staff.getVoices()[v];
-                std::vector<int> positions;
-
-                for (const Gp::Beat &beat : gp_staff.myVoices[v])
-                {
-                    currentPos = convertBeat(beat, system, voice, currentPos);
-                    positions.push_back(currentPos - 1);
-                }
-
-                convertIrregularGroupings(gp_staff.myVoices[v], positions,
-                                          voice);
-
-                nextPos = std::max(nextPos, currentPos);
-            }
-        }
-
-        // Import the barline, key signature, etc.
-        const Gp::Measure *prevMeasure =
-            (m > 0) ? &doc.myMeasures[m - 1] : nullptr;
-        const Gp::Measure *nextMeasure =
-            (m < doc.myMeasures.size() - 1) ? &doc.myMeasures[m + 1] : nullptr;
-        nextPos = convertBarline(measure, prevMeasure, nextMeasure, system,
-                                 startPos, nextPos, lastKeySig, lastTimeSig);
-
-        // Check for alternate endings.
-        convertAlternateEndings(measure, system, startPos);
-
-        startPos = nextPos;
+        nextPos = std::max(nextPos, currentPos);
+      }
     }
 
-    // Insert the final system.
-    Barline &lastBar = system.getBarlines().back();
-    lastBar.setPosition(startPos + 1);
-    if (lastBar.getBarType() != Barline::RepeatEnd)
-        lastBar.setBarType(Barline::DoubleBarFine);
+    // Import the barline, key signature, etc.
+    const Gp::Measure* prevMeasure = (m > 0) ? &doc.myMeasures[m - 1] : nullptr;
+    const Gp::Measure* nextMeasure = (m < doc.myMeasures.size() - 1) ? &doc.myMeasures[m + 1] : nullptr;
+    nextPos =
+      convertBarline(measure, prevMeasure, nextMeasure, system, startPos, nextPos, lastKeySig, lastTimeSig);
 
-    score.insertSystem(system);
+    // Check for alternate endings.
+    convertAlternateEndings(measure, system, startPos);
+
+    startPos = nextPos;
+  }
+
+  // Insert the final system.
+  Barline& lastBar = system.getBarlines().back();
+  lastBar.setPosition(startPos + 1);
+  if (lastBar.getBarType() != Barline::RepeatEnd)
+    lastBar.setBarType(Barline::DoubleBarFine);
+
+  score.insertSystem(system);
 }
 
-int GuitarProImporter::convertBeat(const Gp::Beat &beat, System &system,
-                                   Voice &voice, int position)
+int GuitarProImporter::convertBeat(const Gp::Beat& beat, System& system, Voice& voice, int position)
 {
-    // Check for grace notes.
-    {
-        Position gracePos(position);
-        for (const Gp::Note &gpNote : beat.myNotes)
-        {
-            if (gpNote.myGraceNote)
-            {
-                Note note;
-                note.setString(gpNote.myString);
-                note.setFretNumber(gpNote.myGraceNote->myFret);
-
-                switch (gpNote.myGraceNote->myTransition)
-                {
-                    case Gp::GraceNote::HammerTransition:
-                        note.setProperty(Note::HammerOnOrPullOff);
-                        break;
-                    case Gp::GraceNote::SlideTransition:
-                        note.setProperty(Note::ShiftSlide);
-                        break;
-                    default:
-                        break;
-                }
-
-                gracePos.insertNote(note);
-                gracePos.setDurationType(static_cast<Position::DurationType>(
-                    gpNote.myGraceNote->myDuration));
-            }
-        }
-
-        if (!gracePos.getNotes().empty())
-        {
-            gracePos.setProperty(Position::Acciaccatura);
-            voice.insertPosition(gracePos);
-            ++position;
-        }
-    }
-
-    if (beat.myText &&
-        !ScoreUtils::findByPosition(system.getTextItems(), position))
-    {
-        TextItem text(position, *beat.myText);
-        system.insertTextItem(text);
-    }
-
-    if (beat.myTempoChange &&
-        !ScoreUtils::findByPosition(system.getTempoMarkers(), position))
-    {
-        TempoMarker marker(position);
-        marker.setBeatsPerMinute(*beat.myTempoChange);
-        system.insertTempoMarker(marker);
-    }
-
-    if (beat.myIsEmpty)
-        return position + 1;
-
-    Position pos(position);
-    pos.setRest(beat.myIsRest);
-    pos.setDurationType(static_cast<Position::DurationType>(beat.myDuration));
-    pos.setProperty(Position::Dotted, beat.myIsDotted);
-    pos.setProperty(Position::PickStrokeUp, beat.myPickstrokeUp);
-    pos.setProperty(Position::PickStrokeDown, beat.myPickstrokeDown);
-    pos.setProperty(Position::Tap, beat.myIsTapped);
-
-    bool hasVibratoNote = beat.myIsVibrato;
-    bool hasTremoloPickedNote = beat.myIsTremoloPicked;
-    bool hasStaccatoNote = false;
-    bool hasMarcatoNote = false;
-    bool hasSforzandoNote = false;
-    bool hasPalmMutedNote = false;
-    bool hasLetRingNote = false;
-
-    for (const Gp::Note &gp_note : beat.myNotes)
-    {
+  // Check for grace notes.
+  {
+    Position gracePos(position);
+    for (const Gp::Note& gpNote : beat.myNotes) {
+      if (gpNote.myGraceNote) {
         Note note;
-        note.setString(gp_note.myString);
-        note.setFretNumber(gp_note.myFret);
+        note.setString(gpNote.myString);
+        note.setFretNumber(gpNote.myGraceNote->myFret);
 
-        note.setProperty(Note::Tied, gp_note.myIsTied);
-        note.setProperty(Note::Muted, gp_note.myIsMuted);
-        note.setProperty(Note::HammerOnOrPullOff,
-                         gp_note.myIsHammerOnOrPullOff);
-        note.setProperty(Note::NaturalHarmonic, gp_note.myIsNaturalHarmonic ||
-                                                    beat.myIsNaturalHarmonic);
-        note.setProperty(Note::GhostNote, gp_note.myIsGhostNote);
-        note.setProperty(Note::ShiftSlide, gp_note.myIsShiftSlide);
-        note.setProperty(Note::LegatoSlide, gp_note.myIsLegatoSlide);
-        note.setProperty(Note::SlideIntoFromAbove, gp_note.myIsSlideInAbove);
-        note.setProperty(Note::SlideIntoFromBelow, gp_note.myIsSlideInBelow);
-        note.setProperty(Note::SlideOutOfUpwards, gp_note.myIsSlideOutUp);
-        note.setProperty(Note::SlideOutOfDownwards, gp_note.myIsSlideOutDown);
-        note.setProperty(Note::Octave8va, beat.myOctave8va);
-        note.setProperty(Note::Octave8vb, beat.myOctave8vb);
-        note.setProperty(Note::Octave15ma, beat.myOctave15ma);
-        note.setProperty(Note::Octave15mb, beat.myOctave15mb);
+        switch (gpNote.myGraceNote->myTransition) {
+          case Gp::GraceNote::HammerTransition:
+            note.setProperty(Note::HammerOnOrPullOff);
+            break;
+          case Gp::GraceNote::SlideTransition:
+            note.setProperty(Note::ShiftSlide);
+            break;
+          default:
+            break;
+        }
 
-        if (gp_note.myTrilledFret)
-            note.setTrilledFret(*gp_note.myTrilledFret);
-
-        // TODO - copy harmonics from the beat.
-        // TODO - import bends.
-        // TODO - import dynamics.
-
-        hasVibratoNote |= gp_note.myIsVibrato;
-        hasTremoloPickedNote |= gp_note.myIsTremoloPicked;
-        hasStaccatoNote |= gp_note.myIsStaccato;
-        hasMarcatoNote |= gp_note.myHasAccent;
-        hasSforzandoNote |= gp_note.myHasHeavyAccent;
-        hasPalmMutedNote |= gp_note.myHasPalmMute;
-        hasLetRingNote |= gp_note.myIsLetRing;
-
-        pos.insertNote(note);
+        gracePos.insertNote(note);
+        gracePos.setDurationType(static_cast<Position::DurationType>(gpNote.myGraceNote->myDuration));
+      }
     }
 
-    pos.setProperty(Position::Vibrato, hasVibratoNote);
-    pos.setProperty(Position::TremoloPicking, hasTremoloPickedNote);
-    pos.setProperty(Position::Staccato, hasStaccatoNote);
-    pos.setProperty(Position::Marcato, hasMarcatoNote);
-    pos.setProperty(Position::Sforzando, hasSforzandoNote);
-    pos.setProperty(Position::PalmMuting, hasPalmMutedNote);
-    pos.setProperty(Position::LetRing, hasLetRingNote);
+    if (!gracePos.getNotes().empty()) {
+      gracePos.setProperty(Position::Acciaccatura);
+      voice.insertPosition(gracePos);
+      ++position;
+    }
+  }
 
-    voice.insertPosition(pos);
+  if (beat.myText && !ScoreUtils::findByPosition(system.getTextItems(), position)) {
+    TextItem text(position, *beat.myText);
+    system.insertTextItem(text);
+  }
+
+  if (beat.myTempoChange && !ScoreUtils::findByPosition(system.getTempoMarkers(), position)) {
+    TempoMarker marker(position);
+    marker.setBeatsPerMinute(*beat.myTempoChange);
+    system.insertTempoMarker(marker);
+  }
+
+  if (beat.myIsEmpty)
     return position + 1;
+
+  Position pos(position);
+  pos.setRest(beat.myIsRest);
+  pos.setDurationType(static_cast<Position::DurationType>(beat.myDuration));
+  pos.setProperty(Position::Dotted, beat.myIsDotted);
+  pos.setProperty(Position::PickStrokeUp, beat.myPickstrokeUp);
+  pos.setProperty(Position::PickStrokeDown, beat.myPickstrokeDown);
+  pos.setProperty(Position::Tap, beat.myIsTapped);
+
+  bool hasVibratoNote = beat.myIsVibrato;
+  bool hasTremoloPickedNote = beat.myIsTremoloPicked;
+  bool hasStaccatoNote = false;
+  bool hasMarcatoNote = false;
+  bool hasSforzandoNote = false;
+  bool hasPalmMutedNote = false;
+  bool hasLetRingNote = false;
+
+  for (const Gp::Note& gp_note : beat.myNotes) {
+    Note note;
+    note.setString(gp_note.myString);
+    note.setFretNumber(gp_note.myFret);
+
+    note.setProperty(Note::Tied, gp_note.myIsTied);
+    note.setProperty(Note::Muted, gp_note.myIsMuted);
+    note.setProperty(Note::HammerOnOrPullOff, gp_note.myIsHammerOnOrPullOff);
+    note.setProperty(Note::NaturalHarmonic, gp_note.myIsNaturalHarmonic || beat.myIsNaturalHarmonic);
+    note.setProperty(Note::GhostNote, gp_note.myIsGhostNote);
+    note.setProperty(Note::ShiftSlide, gp_note.myIsShiftSlide);
+    note.setProperty(Note::LegatoSlide, gp_note.myIsLegatoSlide);
+    note.setProperty(Note::SlideIntoFromAbove, gp_note.myIsSlideInAbove);
+    note.setProperty(Note::SlideIntoFromBelow, gp_note.myIsSlideInBelow);
+    note.setProperty(Note::SlideOutOfUpwards, gp_note.myIsSlideOutUp);
+    note.setProperty(Note::SlideOutOfDownwards, gp_note.myIsSlideOutDown);
+    note.setProperty(Note::Octave8va, beat.myOctave8va);
+    note.setProperty(Note::Octave8vb, beat.myOctave8vb);
+    note.setProperty(Note::Octave15ma, beat.myOctave15ma);
+    note.setProperty(Note::Octave15mb, beat.myOctave15mb);
+
+    if (gp_note.myTrilledFret)
+      note.setTrilledFret(*gp_note.myTrilledFret);
+
+    // TODO - copy harmonics from the beat.
+    // TODO - import bends.
+    // TODO - import dynamics.
+
+    hasVibratoNote |= gp_note.myIsVibrato;
+    hasTremoloPickedNote |= gp_note.myIsTremoloPicked;
+    hasStaccatoNote |= gp_note.myIsStaccato;
+    hasMarcatoNote |= gp_note.myHasAccent;
+    hasSforzandoNote |= gp_note.myHasHeavyAccent;
+    hasPalmMutedNote |= gp_note.myHasPalmMute;
+    hasLetRingNote |= gp_note.myIsLetRing;
+
+    pos.insertNote(note);
+  }
+
+  pos.setProperty(Position::Vibrato, hasVibratoNote);
+  pos.setProperty(Position::TremoloPicking, hasTremoloPickedNote);
+  pos.setProperty(Position::Staccato, hasStaccatoNote);
+  pos.setProperty(Position::Marcato, hasMarcatoNote);
+  pos.setProperty(Position::Sforzando, hasSforzandoNote);
+  pos.setProperty(Position::PalmMuting, hasPalmMutedNote);
+  pos.setProperty(Position::LetRing, hasLetRingNote);
+
+  voice.insertPosition(pos);
+  return position + 1;
 }
 
 #if 0

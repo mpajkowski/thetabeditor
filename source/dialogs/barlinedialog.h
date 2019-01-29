@@ -21,28 +21,26 @@
 #include <QDialog>
 #include <score/barline.h>
 
-namespace Ui
-{
+namespace Ui {
 class BarlineDialog;
 }
 
 class BarlineDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit BarlineDialog(QWidget *parent, Barline::BarType type, int repeats,
-                           bool isStartBar, bool isEndBar);
-    ~BarlineDialog();
+  explicit BarlineDialog(QWidget* parent, Barline::BarType type, int repeats, bool isStartBar, bool isEndBar);
+  ~BarlineDialog();
 
-    Barline::BarType getBarType() const;
-    int getRepeatCount() const;
+  Barline::BarType getBarType() const;
+  int getRepeatCount() const;
 
 private slots:
-    void onBarlineTypeChanged(int);
+  void onBarlineTypeChanged(int);
 
 private:
-    Ui::BarlineDialog *ui;
+  Ui::BarlineDialog* ui;
 };
 
 #endif

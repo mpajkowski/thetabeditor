@@ -23,17 +23,17 @@
 
 TEST_CASE_METHOD(ActionFixture, "Actions/AddNoteProperty", "")
 {
-    myLocation.getNote()->setProperty(Note::Octave8va);
+  myLocation.getNote()->setProperty(Note::Octave8va);
 
-    AddNoteProperty action(myLocation, Note::Octave8vb, "Octave 8vb");
+  AddNoteProperty action(myLocation, Note::Octave8vb, "Octave 8vb");
 
-    // Ensure that mutually exclusive properties are cleared and reset as
-    // needed.
-    action.redo();
-    REQUIRE(myLocation.getNote()->hasProperty(Note::Octave8vb));
-    REQUIRE(!myLocation.getNote()->hasProperty(Note::Octave8va));
+  // Ensure that mutually exclusive properties are cleared and reset as
+  // needed.
+  action.redo();
+  REQUIRE(myLocation.getNote()->hasProperty(Note::Octave8vb));
+  REQUIRE(!myLocation.getNote()->hasProperty(Note::Octave8va));
 
-    action.undo();
-    REQUIRE(!myLocation.getNote()->hasProperty(Note::Octave8vb));
-    REQUIRE(myLocation.getNote()->hasProperty(Note::Octave8va));
+  action.undo();
+  REQUIRE(!myLocation.getNote()->hasProperty(Note::Octave8vb));
+  REQUIRE(myLocation.getNote()->hasProperty(Note::Octave8va));
 }

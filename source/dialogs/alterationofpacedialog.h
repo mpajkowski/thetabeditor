@@ -21,23 +21,22 @@
 #include <QDialog>
 #include <score/tempomarker.h>
 
-namespace Ui
-{
+namespace Ui {
 class AlterationOfPaceDialog;
 }
 
 class AlterationOfPaceDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit AlterationOfPaceDialog(QWidget *parent);
-    ~AlterationOfPaceDialog();
+  explicit AlterationOfPaceDialog(QWidget* parent);
+  ~AlterationOfPaceDialog();
 
-    TempoMarker::AlterationOfPaceType getAlterationOfPaceType() const;
+  TempoMarker::AlterationOfPaceType getAlterationOfPaceType() const;
 
 private:
-    Ui::AlterationOfPaceDialog *ui;
+  Ui::AlterationOfPaceDialog* ui;
 };
 
 #endif

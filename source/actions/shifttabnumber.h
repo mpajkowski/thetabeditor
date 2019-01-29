@@ -31,25 +31,28 @@ class Tuning;
 class ShiftTabNumber : public QUndoCommand
 {
 public:
-    ShiftTabNumber(boost::shared_ptr<Staff> staff, Position *position,
-                   Note *note, uint32_t voice, Position::ShiftType direction,
-                   const Tuning &tuning);
-    void undo();
-    void redo();
+  ShiftTabNumber(boost::shared_ptr<Staff> staff,
+                 Position* position,
+                 Note* note,
+                 uint32_t voice,
+                 Position::ShiftType direction,
+                 const Tuning& tuning);
+  void undo();
+  void redo();
 
 private:
-    uint32_t voice;
-    boost::shared_ptr<Staff> staff;
-    Position *position;
-    Note *note;
-    const bool shiftUp;
-    const Tuning &tuning;
+  uint32_t voice;
+  boost::shared_ptr<Staff> staff;
+  Position* position;
+  Note* note;
+  const bool shiftUp;
+  const Tuning& tuning;
 
-    Note *prevNote;
-    Note *nextNote;
-    Note origPrevNote;
-    Note origNextNote;
-    Note origNote;
+  Note* prevNote;
+  Note* nextNote;
+  Note origPrevNote;
+  Note origNextNote;
+  Note origNote;
 };
 
 #endif // SHIFTTABNUMBER_H

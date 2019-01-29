@@ -23,29 +23,28 @@
 
 class FilterRule;
 
-namespace Ui
-{
+namespace Ui {
 class FilterRuleWidget;
 }
 
 class FilterRuleWidget : public QWidget
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit FilterRuleWidget(QWidget *parent);
-    ~FilterRuleWidget();
+  explicit FilterRuleWidget(QWidget* parent);
+  ~FilterRuleWidget();
 
-    void update(const FilterRule &filter);
+  void update(const FilterRule& filter);
 
 signals:
-    void changed(const FilterRule &);
-    void removeRequested();
+  void changed(const FilterRule&);
+  void removeRequested();
 
 private:
-    void updateRule();
+  void updateRule();
 
-    std::unique_ptr<Ui::FilterRuleWidget> ui;
+  std::unique_ptr<Ui::FilterRuleWidget> ui;
 };
 
 #endif

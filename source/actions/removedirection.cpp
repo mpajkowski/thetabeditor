@@ -20,20 +20,19 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemoveDirection::RemoveDirection(const ScoreLocation &location)
-    : QUndoCommand(QObject::tr("Remove Musical Direction")),
-      myLocation(location),
-      myOriginalDirection(*ScoreUtils::findByPosition(
-          location.getSystem().getDirections(), location.getPositionIndex()))
-{
-}
+RemoveDirection::RemoveDirection(const ScoreLocation& location)
+  : QUndoCommand(QObject::tr("Remove Musical Direction"))
+  , myLocation(location)
+  , myOriginalDirection(
+      *ScoreUtils::findByPosition(location.getSystem().getDirections(), location.getPositionIndex()))
+{}
 
 void RemoveDirection::redo()
 {
-    myLocation.getSystem().removeDirection(myOriginalDirection);
+  myLocation.getSystem().removeDirection(myOriginalDirection);
 }
 
 void RemoveDirection::undo()
 {
-    myLocation.getSystem().insertDirection(myOriginalDirection);
+  myLocation.getSystem().insertDirection(myOriginalDirection);
 }

@@ -24,30 +24,30 @@
 class ChordText
 {
 public:
-    ChordText();
-    ChordText(int position, const ChordName &name);
+  ChordText();
+  ChordText(int position, const ChordName& name);
 
-    bool operator==(const ChordText &other) const;
+  bool operator==(const ChordText& other) const;
 
-    template <class Archive>
-    void serialize(Archive &ar, const FileVersion version);
+  template<class Archive>
+  void serialize(Archive& ar, const FileVersion version);
 
-    int getPosition() const;
-    void setPosition(int position);
+  int getPosition() const;
+  void setPosition(int position);
 
-    const ChordName &getChordName() const;
-    void setChordName(const ChordName &name);
+  const ChordName& getChordName() const;
+  void setChordName(const ChordName& name);
 
 private:
-    int myPosition;
-    ChordName myChordName;
+  int myPosition;
+  ChordName myChordName;
 };
 
-template <class Archive>
-void ChordText::serialize(Archive &ar, const FileVersion /*version*/)
+template<class Archive>
+void ChordText::serialize(Archive& ar, const FileVersion /*version*/)
 {
-    ar("position", myPosition);
-    ar("chord_name", myChordName);
+  ar("position", myPosition);
+  ar("chord_name", myChordName);
 }
 
 #endif

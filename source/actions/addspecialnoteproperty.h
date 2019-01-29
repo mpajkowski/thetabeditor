@@ -25,99 +25,94 @@
 
 /// Helper class to reduce code duplication for adding special note properties
 /// such as bends or trills.
-template <typename T>
+template<typename T>
 class AddSpecialNoteProperty : public QUndoCommand
 {
 public:
-    typedef std::function<void(Note *, T)> Setter;
-    typedef std::function<void(Note *)> Clearer;
+  typedef std::function<void(Note*, T)> Setter;
+  typedef std::function<void(Note*)> Clearer;
 
-    AddSpecialNoteProperty(const ScoreLocation &location, const QString &text,
-                           const T &value, const Setter &setter,
-                           const Clearer &clearer)
-        : QUndoCommand(text),
-          myLocation(location),
-          myValue(value),
-          mySetter(setter),
-          myClearer(clearer)
-    {
-    }
+  AddSpecialNoteProperty(const ScoreLocation& location,
+                         const QString& text,
+                         const T& value,
+                         const Setter& setter,
+                         const Clearer& clearer)
+    : QUndoCommand(text)
+    , myLocation(location)
+    , myValue(value)
+    , mySetter(setter)
+    , myClearer(clearer)
+  {}
 
-    virtual void redo() override
-    {
-        mySetter(myLocation.getNote(), myValue);
-    }
+  virtual void redo() override { mySetter(myLocation.getNote(), myValue); }
 
-    virtual void undo() override
-    {
-        myClearer(myLocation.getNote());
-    }
+  virtual void undo() override { myClearer(myLocation.getNote()); }
 
 private:
-    ScoreLocation myLocation;
-    const T myValue;
-    Setter mySetter;
-    Clearer myClearer;
+  ScoreLocation myLocation;
+  const T myValue;
+  Setter mySetter;
+  Clearer myClearer;
 };
 
 class AddTappedHarmonic : public AddSpecialNoteProperty<int>
 {
 public:
-    AddTappedHarmonic(const ScoreLocation &location, int fret)
-        : AddSpecialNoteProperty<int>(location,
-                                      QObject::tr("Add Tapped Harmonic"), fret,
-                                      std::mem_fn(&Note::setTappedHarmonicFret),
-                                      std::mem_fn(&Note::clearTappedHarmonic))
-    {
-    }
+  AddTappedHarmonic(const ScoreLocation& location, int fret)
+    : AddSpecialNoteProperty<int>(location,
+                                  QObject::tr("Add Tapped Harmonic"),
+                                  fret,
+                                  std::mem_fn(&Note::setTappedHarmonicFret),
+                                  std::mem_fn(&Note::clearTappedHarmonic))
+  {}
 };
 
 class AddTrill : public AddSpecialNoteProperty<int>
 {
 public:
-    AddTrill(const ScoreLocation &location, int fret)
-        : AddSpecialNoteProperty<int>(location, QObject::tr("Add Trill"), fret,
-                                      std::mem_fn(&Note::setTrilledFret),
-                                      std::mem_fn(&Note::clearTrill))
-    {
-    }
+  AddTrill(const ScoreLocation& location, int fret)
+    : AddSpecialNoteProperty<int>(location,
+                                  QObject::tr("Add Trill"),
+                                  fret,
+                                  std::mem_fn(&Note::setTrilledFret),
+                                  std::mem_fn(&Note::clearTrill))
+  {}
 };
 
 class AddArtificialHarmonic : public AddSpecialNoteProperty<ArtificialHarmonic>
 {
 public:
-    AddArtificialHarmonic(const ScoreLocation &location,
-                          const ArtificialHarmonic &harmonic)
-        : AddSpecialNoteProperty<ArtificialHarmonic>(
-              location, QObject::tr("Add Artificial Harmonic"), harmonic,
-              std::mem_fn(&Note::setArtificialHarmonic),
-              std::mem_fn(&Note::clearArtificialHarmonic))
-    {
-    }
+  AddArtificialHarmonic(const ScoreLocation& location, const ArtificialHarmonic& harmonic)
+    : AddSpecialNoteProperty<ArtificialHarmonic>(location,
+                                                 QObject::tr("Add Artificial Harmonic"),
+                                                 harmonic,
+                                                 std::mem_fn(&Note::setArtificialHarmonic),
+                                                 std::mem_fn(&Note::clearArtificialHarmonic))
+  {}
 };
 
 class AddBend : public AddSpecialNoteProperty<Bend>
 {
 public:
-    AddBend(const ScoreLocation &location, const Bend &bend)
-        : AddSpecialNoteProperty<Bend>(location, QObject::tr("Add Bend"), bend,
-                                       std::mem_fn(&Note::setBend),
-                                       std::mem_fn(&Note::clearBend))
-    {
-    }
+  AddBend(const ScoreLocation& location, const Bend& bend)
+    : AddSpecialNoteProperty<Bend>(location,
+                                   QObject::tr("Add Bend"),
+                                   bend,
+                                   std::mem_fn(&Note::setBend),
+                                   std::mem_fn(&Note::clearBend))
+  {}
 };
 
 class AddLeftHandFingering : public AddSpecialNoteProperty<LeftHandFingering>
 {
 public:
-    AddLeftHandFingering(const ScoreLocation &location,
-                         const LeftHandFingering &fingering)
-        : AddSpecialNoteProperty<LeftHandFingering>(
-              location, QObject::tr("Add Left Hand Fingering"), fingering,
-              std::mem_fn(&Note::setLeftHandFingering),
-              std::mem_fn(&Note::clearLeftHandFingering))
-    {
-    }
+  AddLeftHandFingering(const ScoreLocation& location, const LeftHandFingering& fingering)
+    : AddSpecialNoteProperty<LeftHandFingering>(location,
+                                                QObject::tr("Add Left Hand Fingering"),
+                                                fingering,
+                                                std::mem_fn(&Note::setLeftHandFingering),
+                                                std::mem_fn(&Note::clearLeftHandFingering))
+  {}
 };
 
 #endif

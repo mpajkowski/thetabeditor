@@ -23,38 +23,38 @@
 
 TEST_CASE("Score/ChordName/Serialization", "")
 {
-    ChordName name;
-    name.setNoChord(true);
-    name.setBrackets(true);
-    name.setTonicVariation(ChordName::DoubleFlat);
-    name.setTonicKey(ChordName::D);
+  ChordName name;
+  name.setNoChord(true);
+  name.setBrackets(true);
+  name.setTonicVariation(ChordName::DoubleFlat);
+  name.setTonicKey(ChordName::D);
 
-    Serialization::test("chord_name", name);
+  Serialization::test("chord_name", name);
 }
 
 TEST_CASE("Score/ChordName/ToString", "")
 {
-    ChordName chord;
+  ChordName chord;
 
-    chord.setNoChord(true);
-    REQUIRE(boost::lexical_cast<std::string>(chord) == "N.C.");
+  chord.setNoChord(true);
+  REQUIRE(boost::lexical_cast<std::string>(chord) == "N.C.");
 
-    chord.setBrackets(true);
-    chord.setTonicKey(ChordName::F);
-    chord.setTonicVariation(ChordName::Flat);
-    chord.setBassKey(ChordName::F);
-    chord.setBassVariation(ChordName::Flat);
-    chord.setFormula(ChordName::Major7th);
-    REQUIRE(boost::lexical_cast<std::string>(chord) == "N.C.(Fbmaj7)");
+  chord.setBrackets(true);
+  chord.setTonicKey(ChordName::F);
+  chord.setTonicVariation(ChordName::Flat);
+  chord.setBassKey(ChordName::F);
+  chord.setBassVariation(ChordName::Flat);
+  chord.setFormula(ChordName::Major7th);
+  REQUIRE(boost::lexical_cast<std::string>(chord) == "N.C.(Fbmaj7)");
 
-    chord.setModification(ChordName::Extended11th);
-    REQUIRE(boost::lexical_cast<std::string>(chord) == "N.C.(Fbmaj11)");
-    chord.setModification(ChordName::Extended11th, false);
+  chord.setModification(ChordName::Extended11th);
+  REQUIRE(boost::lexical_cast<std::string>(chord) == "N.C.(Fbmaj11)");
+  chord.setModification(ChordName::Extended11th, false);
 
-    chord.setNoChord(false);
-    chord.setTonicVariation(ChordName::Sharp);
-    chord.setBassKey(ChordName::C);
-    chord.setBassVariation(ChordName::Sharp);
-    chord.setModification(ChordName::Flatted9th);
-    REQUIRE(boost::lexical_cast<std::string>(chord) == "(F#maj7b9/C#)");
+  chord.setNoChord(false);
+  chord.setTonicVariation(ChordName::Sharp);
+  chord.setBassKey(ChordName::C);
+  chord.setBassVariation(ChordName::Sharp);
+  chord.setModification(ChordName::Flatted9th);
+  REQUIRE(boost::lexical_cast<std::string>(chord) == "(F#maj7b9/C#)");
 }

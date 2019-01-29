@@ -26,19 +26,19 @@
 class EditStaff : public QUndoCommand
 {
 public:
-    EditStaff(const ScoreLocation &location, Staff::ClefType clef, int strings);
+  EditStaff(const ScoreLocation& location, Staff::ClefType clef, int strings);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    static void addPlayerChangeAtStart(Score &score, int system_index);
+  static void addPlayerChangeAtStart(Score& score, int system_index);
 
-    ScoreLocation myLocation;
-    System myOriginalSystem;
-    boost::optional<System> myOriginalNextSystem;
-    Staff::ClefType myClef;
-    int myNumStrings;
+  ScoreLocation myLocation;
+  System myOriginalSystem;
+  boost::optional<System> myOriginalNextSystem;
+  Staff::ClefType myClef;
+  int myNumStrings;
 };
 
 #endif

@@ -22,42 +22,41 @@
 
 TEST_CASE("Actions/AddRest", "")
 {
-    Score score;
-    System system;
-    Staff staff;
-    Position pos(7, Position::EighthNote);
-    pos.insertNote(Note(1, 2));
-    staff.getVoices()[0].insertPosition(pos);
-    system.insertStaff(staff);
-    score.insertSystem(system);
+  Score score;
+  System system;
+  Staff staff;
+  Position pos(7, Position::EighthNote);
+  pos.insertNote(Note(1, 2));
+  staff.getVoices()[0].insertPosition(pos);
+  system.insertStaff(staff);
+  score.insertSystem(system);
 
-    ScoreLocation location(score, 0, 0, 6);
+  ScoreLocation location(score, 0, 0, 6);
 
-    // Add a rest to an empty location.
-    AddRest action1(location, Position::HalfNote);
+  // Add a rest to an empty location.
+  AddRest action1(location, Position::HalfNote);
 
-    action1.redo();
-    REQUIRE(location.getPosition());
-    REQUIRE(location.getPosition()->getDurationType() == Position::HalfNote);
-    REQUIRE(location.getPosition()->isRest());
+  action1.redo();
+  REQUIRE(location.getPosition());
+  REQUIRE(location.getPosition()->getDurationType() == Position::HalfNote);
+  REQUIRE(location.getPosition()->isRest());
 
-    action1.undo();
-    REQUIRE(!location.getPosition());
+  action1.undo();
+  REQUIRE(!location.getPosition());
 
-    // Add rest to an existing position.
-    location.setPositionIndex(7);
-    AddRest action2(location, Position::SixteenthNote);
+  // Add rest to an existing position.
+  location.setPositionIndex(7);
+  AddRest action2(location, Position::SixteenthNote);
 
-    action2.redo();
-    REQUIRE(location.getPosition());
-    REQUIRE(location.getPosition()->isRest());
-    REQUIRE(location.getPosition()->getDurationType() ==
-            Position::SixteenthNote);
-    REQUIRE(location.getPosition()->getNotes().size() == 0);
+  action2.redo();
+  REQUIRE(location.getPosition());
+  REQUIRE(location.getPosition()->isRest());
+  REQUIRE(location.getPosition()->getDurationType() == Position::SixteenthNote);
+  REQUIRE(location.getPosition()->getNotes().size() == 0);
 
-    action2.undo();
-    REQUIRE(location.getPosition());
-    REQUIRE(!location.getPosition()->isRest());
-    REQUIRE(location.getPosition()->getDurationType() == Position::EighthNote);
-    REQUIRE(location.getPosition()->getNotes().size() == 1);
+  action2.undo();
+  REQUIRE(location.getPosition());
+  REQUIRE(!location.getPosition()->isRest());
+  REQUIRE(location.getPosition()->getDurationType() == Position::EighthNote);
+  REQUIRE(location.getPosition()->getNotes().size() == 1);
 }

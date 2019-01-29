@@ -21,37 +21,36 @@
 #include <QDialog>
 #include <score/direction.h>
 
-namespace Ui
-{
+namespace Ui {
 class DirectionDialog;
 }
 
 class DirectionDialog : public QDialog
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit DirectionDialog(QWidget *parent);
-    ~DirectionDialog();
+  explicit DirectionDialog(QWidget* parent);
+  ~DirectionDialog();
 
-    Direction getDirection() const;
+  Direction getDirection() const;
 
-    virtual void accept() override;
+  virtual void accept() override;
 
 private slots:
-    /// Adds a new direction symbol.
-    void onAddDirection();
-    /// Remove the active direction symbol.
-    void onRemoveDirection();
-    /// When the active symbol is changed, save the current symbol and load data
-    /// for the new symbol.
-    void onSymbolIndexChanged(int);
+  /// Adds a new direction symbol.
+  void onAddDirection();
+  /// Remove the active direction symbol.
+  void onRemoveDirection();
+  /// When the active symbol is changed, save the current symbol and load data
+  /// for the new symbol.
+  void onSymbolIndexChanged(int);
 
 private:
-    Ui::DirectionDialog *ui;
+  Ui::DirectionDialog* ui;
 
-    Direction myDirection;
-    int myCurrentSymbol;
+  Direction myDirection;
+  int myCurrentSymbol;
 };
 
 #endif

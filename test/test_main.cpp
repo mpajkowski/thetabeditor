@@ -19,11 +19,11 @@
 #include <QCoreApplication>
 #include <catch.hpp>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-    // Initialize QCoreApplication for any tests that use
-    // QCoreApplication::applicationDirPath().
-    QCoreApplication app(argc, argv);
+  // Initialize QCoreApplication for any tests that use
+  // QCoreApplication::applicationDirPath().
+  QCoreApplication app(argc, argv);
 
-    return Catch::Session().run(argc, argv);
+  return Catch::Session().run(argc, argv);
 }

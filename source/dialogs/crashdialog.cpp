@@ -22,23 +22,23 @@
 #include <QPlainTextEdit>
 #include <app/appinfo.h>
 
-CrashDialog::CrashDialog(const QString &stacktrace, QWidget *parent)
-    : QDialog(parent), ui(new Ui::CrashDialog)
+CrashDialog::CrashDialog(const QString& stacktrace, QWidget* parent)
+  : QDialog(parent)
+  , ui(new Ui::CrashDialog)
 {
-    ui->setupUi(this);
-    ui->stacktraceText->setPlainText(stacktrace);
+  ui->setupUi(this);
+  ui->stacktraceText->setPlainText(stacktrace);
 
-    connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(ui->reportBugButton, SIGNAL(clicked()), this,
-            SLOT(launchBugReport()));
+  connect(ui->closeButton, SIGNAL(clicked()), this, SLOT(accept()));
+  connect(ui->reportBugButton, SIGNAL(clicked()), this, SLOT(launchBugReport()));
 }
 
 CrashDialog::~CrashDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 void CrashDialog::launchBugReport()
 {
-    QDesktopServices::openUrl(QUrl(AppInfo::BUG_TRACKER_URL));
+  QDesktopServices::openUrl(QUrl(AppInfo::BUG_TRACKER_URL));
 }

@@ -20,32 +20,31 @@
 
 #include <QMessageBox>
 
-TextItemDialog::TextItemDialog(QWidget *parent)
-    : QDialog(parent), ui(new Ui::TextItemDialog)
+TextItemDialog::TextItemDialog(QWidget* parent)
+  : QDialog(parent)
+  , ui(new Ui::TextItemDialog)
 {
-    ui->setupUi(this);
+  ui->setupUi(this);
 }
 
 TextItemDialog::~TextItemDialog()
 {
-    delete ui;
+  delete ui;
 }
 
 std::string TextItemDialog::getContents() const
 {
-    return ui->contentsTextEdit->toPlainText().toStdString();
+  return ui->contentsTextEdit->toPlainText().toStdString();
 }
 
 void TextItemDialog::accept()
 {
-    if (ui->contentsTextEdit->toPlainText().isEmpty())
-    {
-        QMessageBox msgBox(this);
-        msgBox.setIcon(QMessageBox::Warning);
-        msgBox.setWindowTitle(tr("Text"));
-        msgBox.setText(tr("The text cannot be empty."));
-        msgBox.exec();
-    }
-    else
-        done(Accepted);
+  if (ui->contentsTextEdit->toPlainText().isEmpty()) {
+    QMessageBox msgBox(this);
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setWindowTitle(tr("Text"));
+    msgBox.setText(tr("The text cannot be empty."));
+    msgBox.exec();
+  } else
+    done(Accepted);
 }

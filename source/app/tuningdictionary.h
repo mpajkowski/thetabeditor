@@ -25,31 +25,30 @@
 class TuningDictionary
 {
 public:
-    /// Saves the tuning dictionary to a file.
-    void save() const;
+  /// Saves the tuning dictionary to a file.
+  void save() const;
 
-    /// Loads the tuning dictionary in a separate thread.
-    void loadInBackground();
+  /// Loads the tuning dictionary in a separate thread.
+  void loadInBackground();
 
-    /// Returns all tunings with the specified number of strings.
-    void findTunings(int numStrings, std::vector<Tuning *> &tunings);
-    void findTunings(int numStrings,
-                     std::vector<const Tuning *> &tunings) const;
+  /// Returns all tunings with the specified number of strings.
+  void findTunings(int numStrings, std::vector<Tuning*>& tunings);
+  void findTunings(int numStrings, std::vector<const Tuning*>& tunings) const;
 
-    /// Adds a new tuning to the tuning dictionary.
-    void addTuning(const Tuning &tuning);
+  /// Adds a new tuning to the tuning dictionary.
+  void addTuning(const Tuning& tuning);
 
-    /// Removes the specified tuning from the dictionary.
-    void removeTuning(const Tuning &tuning);
+  /// Removes the specified tuning from the dictionary.
+  void removeTuning(const Tuning& tuning);
 
 private:
-    /// Loads the tuning dictionary from a file.
-    static std::vector<Tuning> load();
+  /// Loads the tuning dictionary from a file.
+  static std::vector<Tuning> load();
 
-    void ensureLoaded() const;
+  void ensureLoaded() const;
 
-    mutable std::future<std::vector<Tuning>> myFuture;
-    std::vector<Tuning> myTunings;
+  mutable std::future<std::vector<Tuning>> myFuture;
+  std::vector<Tuning> myTunings;
 };
 
 #endif

@@ -20,15 +20,13 @@
 #include <QAbstractButton>
 #include <QAction>
 
-void connectButtonToAction(QAbstractButton *button, const QAction *action)
+void connectButtonToAction(QAbstractButton* button, const QAction* action)
 {
-    QObject::connect(button, SIGNAL(clicked()), action, SLOT(trigger()));
-    QObject::connect(action, SIGNAL(toggled(bool)), button,
-                     SLOT(setChecked(bool)));
+  QObject::connect(button, SIGNAL(clicked()), action, SLOT(trigger()));
+  QObject::connect(action, SIGNAL(toggled(bool)), button, SLOT(setChecked(bool)));
 
-    button->setEnabled(action->isEnabled());
-    // ensure that the button is enabled/disabled whenever the QAction is
-    // enabled/disabled
-    QObject::connect(action, &QAction::changed,
-                     [=]() { button->setEnabled(action->isEnabled()); });
+  button->setEnabled(action->isEnabled());
+  // ensure that the button is enabled/disabled whenever the QAction is
+  // enabled/disabled
+  QObject::connect(action, &QAction::changed, [=]() { button->setEnabled(action->isEnabled()); });
 }

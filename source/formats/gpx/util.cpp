@@ -17,12 +17,12 @@
 
 #include "util.h"
 
-uint32_t Gpx::Util::readUInt(const std::vector<uint8_t> &bytes, size_t index)
+uint32_t Gpx::Util::readUInt(const std::vector<uint8_t>& bytes, size_t index)
 {
-    const uint32_t n1 = bytes[index];
-    const uint32_t n2 = bytes[index + 1];
-    const uint32_t n3 = bytes[index + 2];
-    const uint32_t n4 = bytes[index + 3];
+  const uint32_t n1 = bytes[index];
+  const uint32_t n2 = bytes[index + 1];
+  const uint32_t n3 = bytes[index + 2];
+  const uint32_t n4 = bytes[index + 3];
 
-    return n1 | (n2 << 8) | (n3 << 16) | (n4 << 24);
+  return n1 | (n2 << 8) | (n3 << 16) | (n4 << 24);
 }

@@ -25,15 +25,15 @@
 class RemoveStaff : public QUndoCommand
 {
 public:
-    RemoveStaff(const ScoreLocation &location);
+  RemoveStaff(const ScoreLocation& location);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Staff myOriginalStaff;
-    const int myIndex;
+  ScoreLocation myLocation;
+  const Staff myOriginalStaff;
+  const int myIndex;
 };
 
 #endif

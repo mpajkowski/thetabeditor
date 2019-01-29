@@ -26,16 +26,16 @@
 class RemovePositionProperty : public QUndoCommand
 {
 public:
-    RemovePositionProperty(const ScoreLocation &location,
-                           Position::SimpleProperty property,
-                           const QString &positionDescription);
+  RemovePositionProperty(const ScoreLocation& location,
+                         Position::SimpleProperty property,
+                         const QString& positionDescription);
 
-    virtual void redo() override;
-    virtual void undo() override;
+  virtual void redo() override;
+  virtual void undo() override;
 
 private:
-    ScoreLocation myLocation;
-    const Position::SimpleProperty myProperty;
+  ScoreLocation myLocation;
+  const Position::SimpleProperty myProperty;
 };
 
 #endif

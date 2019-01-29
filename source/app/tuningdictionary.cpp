@@ -24,85 +24,79 @@
 #include <score/serialization.h>
 #include <stdexcept>
 
-static const char *theTuningDictFilename = "tunings.json";
+static const char* theTuningDictFilename = "tunings.json";
 
 std::vector<Tuning> TuningDictionary::load()
 {
-    for (boost::filesystem::path dir : Paths::getDataDirs())
-    {
-        auto path = dir / theTuningDictFilename;
-        if (!boost::filesystem::exists(path))
-            continue;
+  for (boost::filesystem::path dir : Paths::getDataDirs()) {
+    auto path = dir / theTuningDictFilename;
+    if (!boost::filesystem::exists(path))
+      continue;
 
-        boost::filesystem::ifstream file(path);
+    boost::filesystem::ifstream file(path);
 
-        std::vector<Tuning> tunings;
-        ScoreUtils::load(file, "tunings", tunings);
-        return tunings;
-    }
+    std::vector<Tuning> tunings;
+    ScoreUtils::load(file, "tunings", tunings);
+    return tunings;
+  }
 
-    throw std::runtime_error("Could not locate tuning dictionary.");
+  throw std::runtime_error("Could not locate tuning dictionary.");
 }
 
 void TuningDictionary::save() const
 {
-    auto dir = Paths::getUserDataDir();
-    boost::filesystem::create_directories(dir);
+  auto dir = Paths::getUserDataDir();
+  boost::filesystem::create_directories(dir);
 
-    auto path = dir / theTuningDictFilename;
-    boost::filesystem::ofstream file(path);
-    if (!file)
-        throw std::runtime_error("Error opening file for writing.");
+  auto path = dir / theTuningDictFilename;
+  boost::filesystem::ofstream file(path);
+  if (!file)
+    throw std::runtime_error("Error opening file for writing.");
 
-    ensureLoaded();
-    ScoreUtils::save(file, "tunings", myTunings);
+  ensureLoaded();
+  ScoreUtils::save(file, "tunings", myTunings);
 }
 
 void TuningDictionary::loadInBackground()
 {
-    myFuture = std::async(std::launch::async, &TuningDictionary::load);
+  myFuture = std::async(std::launch::async, &TuningDictionary::load);
 }
 
-void TuningDictionary::findTunings(int numStrings,
-                                   std::vector<Tuning *> &tunings)
+void TuningDictionary::findTunings(int numStrings, std::vector<Tuning*>& tunings)
 {
-    ensureLoaded();
-    for (Tuning &tuning : myTunings)
-    {
-        if (tuning.getStringCount() == numStrings)
-            tunings.push_back(&tuning);
-    }
+  ensureLoaded();
+  for (Tuning& tuning : myTunings) {
+    if (tuning.getStringCount() == numStrings)
+      tunings.push_back(&tuning);
+  }
 }
 
-void TuningDictionary::findTunings(int numStrings,
-                                   std::vector<const Tuning *> &tunings) const
+void TuningDictionary::findTunings(int numStrings, std::vector<const Tuning*>& tunings) const
 {
-    ensureLoaded();
-    for (const Tuning &tuning : myTunings)
-    {
-        if (tuning.getStringCount() == numStrings)
-            tunings.push_back(&tuning);
-    }
+  ensureLoaded();
+  for (const Tuning& tuning : myTunings) {
+    if (tuning.getStringCount() == numStrings)
+      tunings.push_back(&tuning);
+  }
 }
 
-void TuningDictionary::addTuning(const Tuning &tuning)
+void TuningDictionary::addTuning(const Tuning& tuning)
 {
-    ensureLoaded();
-    myTunings.push_back(tuning);
+  ensureLoaded();
+  myTunings.push_back(tuning);
 }
 
-void TuningDictionary::removeTuning(const Tuning &tuning)
+void TuningDictionary::removeTuning(const Tuning& tuning)
 {
-    ensureLoaded();
-    myTunings.erase(std::remove(myTunings.begin(), myTunings.end(), tuning));
+  ensureLoaded();
+  myTunings.erase(std::remove(myTunings.begin(), myTunings.end(), tuning));
 }
 
 void TuningDictionary::ensureLoaded() const
 {
-    if (myFuture.valid())
-    {
-        // myTunings shouldn't be mutable in general.
-        auto me = const_cast<TuningDictionary *>(this);
-        me->myTunings = myFuture.get();
-    }
+  if (myFuture.valid()) {
+    // myTunings shouldn't be mutable in general.
+    auto me = const_cast<TuningDictionary*>(this);
+    me->myTunings = myFuture.get();
+  }
 }
