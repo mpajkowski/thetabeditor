@@ -29,6 +29,7 @@ Player::Player()
   : myDescription("Untitled")
   , myMaxVolume(MAX_VOLUME)
   , myPan(64)
+  , myIsPercussion(false)
 {}
 
 bool Player::operator==(const Player& other) const
