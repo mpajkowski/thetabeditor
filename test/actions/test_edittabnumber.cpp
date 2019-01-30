@@ -29,8 +29,8 @@ TEST_CASE_METHOD(ActionFixture, "Actions/EditTabNumber", "")
   EditTabNumber action(myLocation, 8);
 
   action.redo();
-  REQUIRE(myLocation.getNote()->getFretNumber() == 8);
-  REQUIRE(myLocation.getNote()->getTappedHarmonicFret() == 11);
+  REQUIRE(myLocation.getNote()->getFretNumber() == 58);
+  REQUIRE(myLocation.getNote()->getTappedHarmonicFret() == 61);
 
   action.undo();
   REQUIRE(myLocation.getNote()->getFretNumber() == 5);
@@ -39,16 +39,16 @@ TEST_CASE_METHOD(ActionFixture, "Actions/EditTabNumber", "")
 
 TEST_CASE_METHOD(ActionFixture, "Actions/EditTabNumber/HighTappedHarmonic", "")
 {
-  myLocation.getNote()->setFretNumber(5);
-  myLocation.getNote()->setTappedHarmonicFret(29);
+  myLocation.getNote()->setFretNumber(58);
+  myLocation.getNote()->setTappedHarmonicFret(89);
 
   EditTabNumber action(myLocation, 8);
 
   action.redo();
   REQUIRE(myLocation.getNote()->getFretNumber() == 8);
-  REQUIRE(!myLocation.getNote()->hasTappedHarmonic());
+  REQUIRE(myLocation.getNote()->hasTappedHarmonic());
 
   action.undo();
-  REQUIRE(myLocation.getNote()->getFretNumber() == 5);
-  REQUIRE(myLocation.getNote()->getTappedHarmonicFret() == 29);
+  REQUIRE(myLocation.getNote()->getFretNumber() == 58);
+  REQUIRE(myLocation.getNote()->getTappedHarmonicFret() == 89);
 }
