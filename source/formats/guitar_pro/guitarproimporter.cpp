@@ -93,6 +93,7 @@ void GuitarProImporter::convertPlayers(const Gp::Document& doc, Score& score)
     Tuning tuning;
 
     player.setDescription(track.myName);
+    player.setIsPercussion(track.myIsDrumTrack);
 
     tuning.setNotes(track.myTuning);
     tuning.setCapo(track.myCapo);

@@ -95,3 +95,13 @@ void Player::setMidiPreset(uint8_t preset)
 
   myMidiPreset = preset;
 }
+
+bool Player::isPercussion() const
+{
+  return myIsPercussion;
+}
+
+void Player::setIsPercussion(bool isPercussion)
+{
+  myIsPercussion = isPercussion;
+}
