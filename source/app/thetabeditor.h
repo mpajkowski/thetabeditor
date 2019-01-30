@@ -366,12 +366,12 @@ private:
   /// Edits the clef at the given location.
   void editClef(int system, int staff);
 
-
   /// Toggles a simple position property.
   void editSimplePositionProperty(Command* command, Position::SimpleProperty property);
   /// Toggles a simple note property.
   void editSimpleNoteProperty(Command* command, Note::SimpleProperty property);
 
+  // Common method - creating new players
   void addPlayerCommon(bool drummer);
 
   /// Helper function to insert a system at the given index.

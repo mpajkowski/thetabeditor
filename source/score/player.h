@@ -22,7 +22,6 @@
 #include "tuning.h"
 #include <cstdint>
 #include <string>
-#include <boost/variant/variant.hpp>
 
 class Player
 {
