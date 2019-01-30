@@ -1,15 +1,15 @@
 [submodule "external/Catch2"]
 	path = external/Catch2
-	url = git@github.com:catchorg/Catch2.git
+	url = ../../catchorg/Catch2.git
 [submodule "external/pugixml"]
 	path = external/pugixml
-	url = git@github.com:zeux/pugixml.git
+	url = ../../zeux/pugixml.git
 [submodule "external/rapidjson"]
 	path = external/rapidjson
-	url = git@github.com:Tencent/rapidjson.git
+	url = ../../Tencent/rapidjson.git
 [submodule "external/rtmidi"]
 	path = external/rtmidi
-	url = git@github.com:powertab/rtmidi.git
+	url = ../../powertab/rtmidi.git
 [submodule "external/withershins"]
 	path = external/withershins
-	url = git@github.com:cameronwhite/withershins.git
+	url = ../../cameronwhite/withershins.git
