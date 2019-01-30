@@ -69,6 +69,8 @@ public:
   /// Sets the capo for the tuning.
   void setCapo(int capo);
 
+  static Tuning createDrumsTuning();
+
   /// Minimum allowed number of strings in a tuning.
   static const int MIN_STRING_COUNT;
   /// Maximum allowed number of strings in a tuning.

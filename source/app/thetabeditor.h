@@ -244,6 +244,10 @@ private slots:
 
   /// Adds a new player to the score.
   void addPlayer();
+
+  /// Adds a new drummer to the score.
+  void addDrummer();
+
   /// Adds or removes a player change at the current location.
   void editPlayerChange();
   /// Edits the properties of a player.
@@ -366,6 +370,9 @@ private:
   void editSimplePositionProperty(Command* command, Position::SimpleProperty property);
   /// Toggles a simple note property.
   void editSimpleNoteProperty(Command* command, Note::SimpleProperty property);
+
+  // Common method - creating new players
+  void addPlayerCommon(bool drummer);
 
   /// Helper function to insert a system at the given index.
   void insertSystem(int index);
@@ -568,6 +575,7 @@ private:
 
   QMenu* myPlayerMenu;
   Command* myAddPlayerCommand;
+  Command* myAddDrummerCommand;
   Command* myAddInstrumentCommand;
   Command* myPlayerChangeCommand;
   Command* myShowTuningDictionaryCommand;
@@ -580,28 +588,6 @@ private:
 
   QMenu* myHelpMenu;
   Command* myReportBugCommand;
-
-#if 0
-
-private:
-    void changePositionSpacing(int offset);
-    void shiftTabNumber(int direction);
-
-private slots:
-    void editVolumeSwell();
-    void toggleGuitarVisible(uint32_t trackIndex, bool isVisible);
-
-private:
-    Toolbox* toolBox;
-    QSplitter* vertSplitter;
-    QSplitter* horSplitter;
-
-    Command* shiftTabNumUp; // shift tab numbers up/down by a string
-    Command* shiftTabNumDown;
-
-    Command* volumeSwellAct;
-
-#endif
 };
 
 #endif

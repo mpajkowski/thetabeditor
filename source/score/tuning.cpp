@@ -163,3 +163,11 @@ std::ostream& operator<<(std::ostream& os, const Tuning& t)
 
   return os;
 }
+
+Tuning Tuning::createDrumsTuning()
+{
+  static Tuning drumsTuning;
+  drumsTuning.setSharps(true);
+  drumsTuning.setNotes({0, 0, 0, 0, 0, 0});
+  return drumsTuning;
+}

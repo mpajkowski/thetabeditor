@@ -1272,6 +1272,16 @@ void TheTabEditor::editLeftHandFingering()
 
 void TheTabEditor::addPlayer()
 {
+  addPlayerCommon(false);
+}
+
+void TheTabEditor::addDrummer()
+{
+  addPlayerCommon(true);
+}
+
+void TheTabEditor::addPlayerCommon(bool drummer)
+{
   ScoreLocation& location = getLocation();
   Score& score = location.getScore();
   Player player;
@@ -1285,7 +1295,7 @@ void TheTabEditor::addPlayer()
 
     size_t i = score.getPlayers().size() + 1;
     while (true) {
-      const std::string name = "Player " + std::to_string(i);
+      const std::string name = (drummer ? "Drummer " : "Player ") + std::to_string(i);
 
       if (std::find(names.begin(), names.end(), name) == names.end()) {
         player.setDescription(name);
@@ -1296,7 +1306,15 @@ void TheTabEditor::addPlayer()
   }
 
   auto settings = mySettingsManager->getReadHandle();
-  player.setTuning(settings->get(Settings::DefaultTuning));
+
+  if (drummer) {
+    player.setTuning(Tuning::createDrumsTuning());
+    player.setMidiPreset(0);
+    player.setIsPercussion(true);
+  } else {
+    player.setTuning(settings->get(Settings::DefaultTuning));
+    player.setMidiPreset(settings->get(Settings::DefaultInstrumentPreset));
+  }
 
   myUndoManager->push(new AddPlayer(score, player), UndoManager::AFFECTS_ALL_SYSTEMS);
 }
@@ -1950,6 +1968,9 @@ void TheTabEditor::createCommands()
   myAddPlayerCommand = new Command(tr("Add Player"), "Player.AddPlayer", QKeySequence(), this);
   connect(myAddPlayerCommand, &QAction::triggered, this, &TheTabEditor::addPlayer);
 
+  myAddDrummerCommand = new Command(tr("Add Drummer"), "Player.AddDrummer", QKeySequence(), this);
+  connect(myAddDrummerCommand, &QAction::triggered, this, &TheTabEditor::addDrummer);
+
   myPlayerChangeCommand = new Command(tr("Player Change..."), "Player.PlayerChange", QKeySequence(), this);
   myPlayerChangeCommand->setCheckable(true);
   connect(myPlayerChangeCommand, SIGNAL(triggered()), this, SLOT(editPlayerChange()));
@@ -2161,11 +2182,6 @@ void TheTabEditor::createMenus()
   myPositionStaffMenu->addAction(myNextBarCommand);
   myPositionStaffMenu->addAction(myPrevBarCommand);
 
-#if 0
-    positionMenu->addSeparator();
-    positionMenu->addAction(shiftTabNumUp);
-    positionMenu->addAction(shiftTabNumDown);
-#endif
   myPositionMenu->addSeparator();
   myPositionMenu->addAction(myShiftForwardCommand);
   myPositionMenu->addAction(myShiftBackwardCommand);
@@ -2312,6 +2328,7 @@ void TheTabEditor::createMenus()
   // Player Menu.
   myPlayerMenu = menuBar()->addMenu(tr("&Player"));
   myPlayerMenu->addAction(myAddPlayerCommand);
+  myPlayerMenu->addAction(myAddDrummerCommand);
   myPlayerMenu->addAction(myPlayerChangeCommand);
   myPlayerMenu->addSeparator();
   myPlayerMenu->addAction(myShowTuningDictionaryCommand);

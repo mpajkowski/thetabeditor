@@ -56,6 +56,9 @@ public:
   uint8_t getMidiPreset() const;
   void setMidiPreset(uint8_t preset);
 
+  bool isPercussion() const;
+  void setIsPercussion(bool);
+
   static const uint8_t MIN_VOLUME;
   static const uint8_t MAX_VOLUME;
   static const uint8_t MIN_PAN;
@@ -67,6 +70,7 @@ private:
   uint8_t myPan;
   Tuning myTuning;
   uint8_t myMidiPreset;
+  bool myIsPercussion;
 };
 
 template<class Archive>
@@ -76,7 +80,8 @@ void Player::serialize(Archive& ar, const FileVersion /*version*/)
   ar("max_volume", myMaxVolume);
   ar("pan", myPan);
   ar("tuning", myTuning);
-  ar("my_midi_preset", myMidiPreset);
+  ar("midi_preset", myMidiPreset);
+  ar("is_percussion", myIsPercussion);
 }
 
 #endif

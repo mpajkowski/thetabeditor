@@ -29,6 +29,7 @@ Player::Player()
   : myDescription("Untitled")
   , myMaxVolume(MAX_VOLUME)
   , myPan(64)
+  , myIsPercussion(false)
 {}
 
 bool Player::operator==(const Player& other) const
@@ -94,4 +95,14 @@ void Player::setMidiPreset(uint8_t preset)
     throw std::out_of_range("Invalid MIDI preset");
 
   myMidiPreset = preset;
+}
+
+bool Player::isPercussion() const
+{
+  return myIsPercussion;
+}
+
+void Player::setIsPercussion(bool isPercussion)
+{
+  myIsPercussion = isPercussion;
 }

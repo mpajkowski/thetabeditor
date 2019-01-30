@@ -665,8 +665,16 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
         for (const ActivePlayer& active_player : active_players) {
           const int player_index = active_player.getPlayerNumber();
 
-          tracks[player_index].append(
-            MidiEvent::noteOn(current_tick, getChannel(active_player), pitch, velocity, system_location));
+          auto& player = score.getPlayers()[player_index];
+
+          if (!player.isPercussion()) {
+            tracks[player_index].append(
+              MidiEvent::noteOn(current_tick, getChannel(active_player), pitch, velocity, system_location));
+          } else {
+            // this is how drums in MIDI actually work.
+            tracks[player_index].append(
+              MidiEvent::noteOn(current_tick, METRONOME_CHANNEL, pitch, velocity, system_location));
+          }
         }
       }
       // If the note is tied, make sure that the pitch is the same as the
