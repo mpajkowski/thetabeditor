@@ -36,7 +36,6 @@ PlayerChangeDialog::PlayerChangeDialog(QWidget* parent,
   // Set up title row.
   auto titleLayout = new QHBoxLayout();
   titleLayout->addWidget(new QLabel(tr("Staff")));
-  titleLayout->addWidget(new QLabel(tr("Instrument")));
   titleLayout->setSpacing(spacing * 4);
   ui->formLayout->addRow(tr("Player"), titleLayout);
 
@@ -46,7 +45,6 @@ PlayerChangeDialog::PlayerChangeDialog(QWidget* parent,
     auto layout = new QHBoxLayout();
     layout->setSpacing(spacing);
     layout->addWidget(getStaffComboBox(numStrings, system));
-    layout->addWidget(getInstrumentComboBox(score));
 
     ui->formLayout->addRow(QString::fromStdString(player.getDescription() + ":"), layout);
   }
@@ -60,7 +58,6 @@ PlayerChangeDialog::PlayerChangeDialog(QWidget* parent,
         const int i = player.getPlayerNumber();
         const int idx = myStaffComboBoxes.at(i)->findData(staff);
         myStaffComboBoxes.at(i)->setCurrentIndex(idx < 0 ? 0 : idx);
-        myInstrumentComboBoxes.at(i)->setCurrentIndex(player.getInstrumentNumber());
       }
     }
   }
@@ -84,7 +81,7 @@ PlayerChange PlayerChangeDialog::getPlayerChange() const
     const int staff = myStaffComboBoxes[i]->itemData(myStaffComboBoxes[i]->currentIndex()).toInt();
     if (staff >= 0) {
       change.insertActivePlayer(staff,
-                                ActivePlayer(static_cast<int>(i), myInstrumentComboBoxes[i]->currentIndex()));
+                                ActivePlayer(static_cast<int>(i), static_cast<int>(i)));
     }
   }
 
@@ -104,14 +101,6 @@ QComboBox* PlayerChangeDialog::getStaffComboBox(int numStrings, const System& sy
       list->addItem(QString::number(i + 1), i);
     ++i;
   }
-
-  return list;
-}
-
-QComboBox* PlayerChangeDialog::getInstrumentComboBox(const Score&)
-{
-  auto list = new QComboBox(this);
-  myInstrumentComboBoxes.push_back(list);
 
   return list;
 }

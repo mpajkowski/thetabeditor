@@ -44,11 +44,9 @@ public:
 
 private:
   QComboBox* getStaffComboBox(int numStrings, const System& system);
-  QComboBox* getInstrumentComboBox(const Score& score);
 
   Ui::PlayerChangeDialog* ui;
   std::vector<QComboBox*> myStaffComboBoxes;
-  std::vector<QComboBox*> myInstrumentComboBoxes;
 };
 
 #endif
