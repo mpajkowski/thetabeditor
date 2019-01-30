@@ -23,7 +23,7 @@
 #include <stdexcept>
 
 const int Note::MIN_FRET_NUMBER = 0;
-const int Note::MAX_FRET_NUMBER = 29;
+const int Note::MAX_FRET_NUMBER = 99;
 
 namespace {
 /// Mapping of frets to pitch offsets (counted in half-steps or frets).

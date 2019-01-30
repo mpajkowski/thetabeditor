@@ -28,7 +28,8 @@ EditTabNumber::EditTabNumber(const ScoreLocation& location, int typedNumber)
   const int prevNumber = location.getNote()->getFretNumber();
   // If the old fret number was a 1 or 2 then we are typing a double digit
   // number.
-  if (prevNumber == 1 || prevNumber == 2)
+
+  if (prevNumber <= 8)
     myNewNumber = prevNumber * 10 + typedNumber;
   else
     myNewNumber = typedNumber;
