@@ -19,6 +19,8 @@
 
 #include <app/appinfo.h>
 #include <fstream>
+#include <string>
+#include <sstream>
 #include <util/settingstree.h>
 
 static const std::string theKey = "foo/bar";
