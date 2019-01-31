@@ -31,7 +31,7 @@ ChordName::ChordName()
   , myIsNoChord(false)
 {}
 
-bool ChordName::operator==(const ChordName& other) const
+bool ChordName::operator==(ChordName const& other) const
 {
   return myTonicKey == other.myTonicKey && myTonicVariation == other.myTonicVariation &&
          myBassKey == other.myBassKey && myBassVariation == other.myBassVariation &&
@@ -119,7 +119,7 @@ void ChordName::setTonicKey(Key key)
   myTonicKey = key;
 }
 
-std::ostream& operator<<(std::ostream& os, const ChordName& chord)
+std::ostream& operator<<(std::ostream& os, ChordName const& chord)
 {
   static std::string theKeys[] = { "C", "D", "E", "F", "G", "A", "B" };
   static std::string theVariations[] = { "bb", "b", "", "#", "x" };

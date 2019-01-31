@@ -27,7 +27,7 @@ public:
   IrregularGrouping();
   IrregularGrouping(int position, int length, int notesPlayed, int notesPlayedOver);
 
-  bool operator==(const IrregularGrouping& other) const;
+  bool operator==(IrregularGrouping const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -68,6 +68,6 @@ void IrregularGrouping::serialize(Archive& ar, const FileVersion /*version*/)
   ar("notes_played_over", myNotesPlayedOver);
 }
 
-std::ostream& operator<<(std::ostream& os, const IrregularGrouping& group);
+std::ostream& operator<<(std::ostream& os, IrregularGrouping const& group);
 
 #endif

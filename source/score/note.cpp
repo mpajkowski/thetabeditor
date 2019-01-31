@@ -49,7 +49,7 @@ Note::Note(int string, int fretNumber)
   , myTappedHarmonicFret(-1)
 {}
 
-bool Note::operator==(const Note& other) const
+bool Note::operator==(Note const& other) const
 {
   return myString == other.myString && myFretNumber == other.myFretNumber &&
          mySimpleProperties == other.mySimpleProperties && myTrilledFret == other.myTrilledFret &&
@@ -170,12 +170,12 @@ bool Note::hasArtificialHarmonic() const
   return myArtificialHarmonic.is_initialized();
 }
 
-const ArtificialHarmonic& Note::getArtificialHarmonic() const
+ArtificialHarmonic const& Note::getArtificialHarmonic() const
 {
   return myArtificialHarmonic.get();
 }
 
-void Note::setArtificialHarmonic(const ArtificialHarmonic& harmonic)
+void Note::setArtificialHarmonic(ArtificialHarmonic const& harmonic)
 {
   myArtificialHarmonic = harmonic;
 }
@@ -190,12 +190,12 @@ bool Note::hasBend() const
   return myBend.is_initialized();
 }
 
-const Bend& Note::getBend() const
+Bend const& Note::getBend() const
 {
   return myBend.get();
 }
 
-void Note::setBend(const Bend& bend)
+void Note::setBend(Bend const& bend)
 {
   myBend = bend;
 }
@@ -210,12 +210,12 @@ bool Note::hasLeftHandFingering() const
   return myLeftHandFingering.is_initialized();
 }
 
-const LeftHandFingering& Note::getLeftHandFingering() const
+LeftHandFingering const& Note::getLeftHandFingering() const
 {
   return myLeftHandFingering.get();
 }
 
-void Note::setLeftHandFingering(const LeftHandFingering& fingering)
+void Note::setLeftHandFingering(LeftHandFingering const& fingering)
 {
   myLeftHandFingering = fingering;
 }
@@ -225,7 +225,7 @@ void Note::clearLeftHandFingering()
   myLeftHandFingering.reset();
 }
 
-std::ostream& operator<<(std::ostream& os, const Note& note)
+std::ostream& operator<<(std::ostream& os, Note const& note)
 {
   // For muted notes, display 'x'.
   if (note.hasProperty(Note::Muted)) {
@@ -270,7 +270,7 @@ std::vector<int> Harmonics::getValidFretOffsets()
 {
   std::vector<int> frets;
 
-  for (const auto& pair : theHarmonicOffsets)
+  for (auto const& pair : theHarmonicOffsets)
     frets.push_back(pair.first);
 
   return frets;
@@ -296,7 +296,7 @@ ArtificialHarmonic::ArtificialHarmonic(ChordName::Key key,
   , myOctave(octave)
 {}
 
-bool ArtificialHarmonic::operator==(const ArtificialHarmonic& other) const
+bool ArtificialHarmonic::operator==(ArtificialHarmonic const& other) const
 {
   return myKey == other.myKey && myVariation == other.myVariation && myOctave == other.myOctave;
 }
@@ -339,7 +339,7 @@ Bend::Bend(BendType type,
   , myEndPoint(endPoint)
 {}
 
-bool Bend::operator==(const Bend& other) const
+bool Bend::operator==(Bend const& other) const
 {
   return myBendType == other.myBendType && myBentPitch == other.myBentPitch &&
          myReleasePitch == other.myReleasePitch && myDuration == other.myDuration &&
@@ -420,7 +420,7 @@ LeftHandFingering::LeftHandFingering(Finger finger, DisplayPosition pos)
   , myDisplayPosition(pos)
 {}
 
-bool LeftHandFingering::operator==(const LeftHandFingering& other) const
+bool LeftHandFingering::operator==(LeftHandFingering const& other) const
 {
   return myFinger == other.getFingerNumber() && myDisplayPosition == other.getDisplayPosition();
 }

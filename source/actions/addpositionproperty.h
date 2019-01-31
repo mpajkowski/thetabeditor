@@ -26,9 +26,9 @@
 class AddPositionProperty : public QUndoCommand
 {
 public:
-  AddPositionProperty(const ScoreLocation& location,
+  AddPositionProperty(ScoreLocation const& location,
                       Position::SimpleProperty property,
-                      const QString& positionDescription);
+                      QString const& positionDescription);
 
   virtual void redo() override;
   virtual void undo() override;

@@ -25,7 +25,7 @@
 class AddMultiBarRest : public QUndoCommand
 {
 public:
-  AddMultiBarRest(const ScoreLocation& location, int count);
+  AddMultiBarRest(ScoreLocation const& location, int count);
 
   virtual void redo() override;
   virtual void undo() override;

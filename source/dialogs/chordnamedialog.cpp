@@ -103,7 +103,7 @@ ChordNameDialog::~ChordNameDialog()
   delete ui;
 }
 
-const ChordName& ChordNameDialog::getChordName() const
+ChordName const& ChordNameDialog::getChordName() const
 {
   return myChord;
 }

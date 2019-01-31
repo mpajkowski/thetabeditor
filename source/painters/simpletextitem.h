@@ -28,10 +28,10 @@
 class SimpleTextItem : public QGraphicsItem
 {
 public:
-  SimpleTextItem(const QString& text,
-                 const QFont& font,
-                 const QPen& pen = QPen(),
-                 const QBrush& background = QBrush(QColor(0, 0, 0, 0)));
+  SimpleTextItem(QString const& text,
+                 QFont const& font,
+                 QPen const& pen = QPen(),
+                 QBrush const& background = QBrush(QColor(0, 0, 0, 0)));
 
   virtual QRectF boundingRect() const override { return myBoundingRect; }
 

@@ -19,7 +19,7 @@
 
 #include <score/system.h>
 
-AddAlternateEnding::AddAlternateEnding(const ScoreLocation& location, const AlternateEnding& ending)
+AddAlternateEnding::AddAlternateEnding(ScoreLocation const& location, AlternateEnding const& ending)
   : QUndoCommand(QObject::tr("Add Repeat Ending"))
   , myLocation(location)
   , myEnding(ending)

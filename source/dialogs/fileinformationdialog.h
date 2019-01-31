@@ -33,7 +33,7 @@ class FileInformationDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit FileInformationDialog(QWidget* parent, const Document& doc);
+  explicit FileInformationDialog(QWidget* parent, Document const& doc);
   ~FileInformationDialog();
 
   ScoreInfo getScoreInfo() const;

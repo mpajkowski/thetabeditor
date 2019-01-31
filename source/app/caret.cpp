@@ -22,7 +22,7 @@
 #include <score/score.h>
 #include <score/system.h>
 
-Caret::Caret(Score& score, const ViewOptions& options)
+Caret::Caret(Score& score, ViewOptions const& options)
   : myLocation(score)
   , myViewOptions(options)
   , myInPlaybackMode(false)
@@ -33,7 +33,7 @@ ScoreLocation& Caret::getLocation()
   return myLocation;
 }
 
-const ScoreLocation& Caret::getLocation() const
+ScoreLocation const& Caret::getLocation() const
 {
   return myLocation;
 }
@@ -102,7 +102,7 @@ void Caret::moveToStaff(int staff)
   const int increment = is_increasing ? 1 : -1;
   const int end = is_increasing ? num_staves : -1;
 
-  const Score& score = myLocation.getScore();
+  Score const& score = myLocation.getScore();
   const ViewFilter* filter =
     myViewOptions.getFilter() ? &score.getViewFilters()[*myViewOptions.getFilter()] : nullptr;
 
@@ -134,7 +134,7 @@ bool Caret::moveToNextBar()
 
 void Caret::moveToPrevBar()
 {
-  const System& system = myLocation.getSystem();
+  System const& system = myLocation.getSystem();
   const Barline* prevBar = system.getPreviousBarline(myLocation.getPositionIndex());
   if (prevBar)
     prevBar = system.getPreviousBarline(prevBar->getPosition());
@@ -146,7 +146,7 @@ void Caret::moveToPrevBar()
     moveToSystem(myLocation.getSystemIndex() - 1, true);
 
     // Move to the last barline if possible.
-    const System& newSystem = myLocation.getSystem();
+    System const& newSystem = myLocation.getSystem();
     const size_t count = newSystem.getBarlines().size();
     if (count > 2)
       moveToPosition(newSystem.getBarlines()[count - 2].getPosition());
@@ -200,7 +200,7 @@ bool Caret::moveToSystem(int system, bool keepStaff)
     return false;
 }
 
-void Caret::moveToLocation(const ScoreLocation& location)
+void Caret::moveToLocation(ScoreLocation const& location)
 {
   myLocation.setSystemIndex(location.getSystemIndex());
   myLocation.setStaffIndex(location.getStaffIndex());

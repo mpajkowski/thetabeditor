@@ -25,7 +25,7 @@
 class EditTimeSignature : public QUndoCommand
 {
 public:
-  EditTimeSignature(const ScoreLocation& location, const TimeSignature& newTimeSig);
+  EditTimeSignature(ScoreLocation const& location, TimeSignature const& newTimeSig);
 
   virtual void redo() override;
   virtual void undo() override;
@@ -33,7 +33,7 @@ public:
 private:
   /// Updates all of the time signatures following myLocation until a
   /// different time signature is reached.
-  void updateFollowingTimeSignatures(const TimeSignature& oldTime, const TimeSignature& newTime);
+  void updateFollowingTimeSignatures(TimeSignature const& oldTime, TimeSignature const& newTime);
 
   ScoreLocation myLocation;
   const TimeSignature myNewTime;

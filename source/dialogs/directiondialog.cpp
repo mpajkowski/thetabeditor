@@ -133,7 +133,7 @@ void DirectionDialog::onSymbolIndexChanged(int index)
   }
 
   if (index >= 0 && index < myDirection.getSymbols().size()) {
-    const DirectionSymbol& symbol = myDirection.getSymbols()[index];
+    DirectionSymbol const& symbol = myDirection.getSymbols()[index];
 
     ui->symbolComboBox->setCurrentIndex(symbol.getSymbolType());
     ui->activeSymbolComboBox->setCurrentIndex(symbol.getActiveSymbolType());

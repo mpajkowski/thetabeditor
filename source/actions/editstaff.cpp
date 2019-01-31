@@ -19,7 +19,7 @@
 
 #include <score/score.h>
 
-EditStaff::EditStaff(const ScoreLocation& location, Staff::ClefType clef, int strings)
+EditStaff::EditStaff(ScoreLocation const& location, Staff::ClefType clef, int strings)
   : QUndoCommand(QObject::tr("Edit Staff"))
   , myLocation(location)
   , myClef(clef)
@@ -55,7 +55,7 @@ void EditStaff::redo()
 
     // Clear out all active players in this staff.
     for (PlayerChange& change : system.getPlayerChanges()) {
-      for (const ActivePlayer& p : change.getActivePlayers(staff_index))
+      for (ActivePlayer const& p : change.getActivePlayers(staff_index))
         change.removeActivePlayer(staff_index, p);
     }
 

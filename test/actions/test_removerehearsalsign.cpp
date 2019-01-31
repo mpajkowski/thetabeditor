@@ -34,8 +34,8 @@ TEST_CASE("Actions/RemoveRehearsalSign", "")
 
   action.redo();
   {
-    const Barline& barline1 = score.getSystems()[0].getBarlines()[0];
-    const Barline& barline2 = score.getSystems()[0].getBarlines()[1];
+    Barline const& barline1 = score.getSystems()[0].getBarlines()[0];
+    Barline const& barline2 = score.getSystems()[0].getBarlines()[1];
     REQUIRE(!barline1.hasRehearsalSign());
     REQUIRE(barline2.hasRehearsalSign());
     REQUIRE(barline2.getRehearsalSign().getLetters() == "A");
@@ -43,8 +43,8 @@ TEST_CASE("Actions/RemoveRehearsalSign", "")
 
   action.undo();
   {
-    const Barline& barline1 = score.getSystems()[0].getBarlines()[0];
-    const Barline& barline2 = score.getSystems()[0].getBarlines()[1];
+    Barline const& barline1 = score.getSystems()[0].getBarlines()[0];
+    Barline const& barline2 = score.getSystems()[0].getBarlines()[1];
     REQUIRE(barline1.hasRehearsalSign());
     REQUIRE(barline1.getRehearsalSign().getLetters() == "A");
     REQUIRE(barline2.hasRehearsalSign());

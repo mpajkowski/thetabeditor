@@ -19,7 +19,7 @@
 
 #include <score/system.h>
 
-RemoveStaff::RemoveStaff(const ScoreLocation& location)
+RemoveStaff::RemoveStaff(ScoreLocation const& location)
   : QUndoCommand(QObject::tr("Remove Staff"))
   , myLocation(location)
   , myOriginalStaff(location.getStaff())

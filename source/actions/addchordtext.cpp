@@ -19,7 +19,7 @@
 
 #include <score/system.h>
 
-AddChordText::AddChordText(const ScoreLocation& location, const ChordText& text)
+AddChordText::AddChordText(ScoreLocation const& location, ChordText const& text)
   : QUndoCommand(QObject::tr("Add Chord Text"))
   , myLocation(location)
   , myText(text)

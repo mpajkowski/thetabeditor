@@ -27,7 +27,7 @@ public:
   TextItem();
   TextItem(int position, const std::string& contents);
 
-  bool operator==(const TextItem& other) const;
+  bool operator==(TextItem const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);

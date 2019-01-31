@@ -29,7 +29,7 @@ Document& DocumentManager::addDocument()
   return *myDocumentList.back();
 }
 
-Document& DocumentManager::addDefaultDocument(const SettingsManager& settings_manager)
+Document& DocumentManager::addDefaultDocument(SettingsManager const& settings_manager)
 {
   Document& doc = addDocument();
   Score& score = doc.getScore();
@@ -139,12 +139,12 @@ const Document::PathType& Document::getFilename() const
   return *myFilename;
 }
 
-void Document::setFilename(const PathType& filename)
+void Document::setFilename(PathType const& filename)
 {
   myFilename = filename;
 }
 
-const Score& Document::getScore() const
+Score const& Document::getScore() const
 {
   return myScore;
 }
@@ -163,7 +163,7 @@ void Document::validateViewOptions()
   }
 }
 
-const Caret& Document::getCaret() const
+Caret const& Document::getCaret() const
 {
   return myCaret;
 }

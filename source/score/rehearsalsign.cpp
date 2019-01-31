@@ -27,7 +27,7 @@ RehearsalSign::RehearsalSign(const std::string& letters, const std::string& desc
   , myDescription(description)
 {}
 
-bool RehearsalSign::operator==(const RehearsalSign& other) const
+bool RehearsalSign::operator==(RehearsalSign const& other) const
 {
   return myLetters == other.myLetters && myDescription == other.myDescription;
 }

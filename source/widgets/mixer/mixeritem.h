@@ -35,10 +35,10 @@ class MixerItem : public QWidget
 public:
   explicit MixerItem(QWidget* parent,
                      int playerIndex,
-                     const Player& player,
-                     const TuningDictionary& dictionary,
-                     const PlayerEditPubSub& editPubSub,
-                     const PlayerRemovePubSub& removePubSub);
+                     Player const& player,
+                     TuningDictionary const& dictionary,
+                     PlayerEditPubSub const& editPubSub,
+                     PlayerRemovePubSub const& removePubSub);
   ~MixerItem();
 
 private:
@@ -47,9 +47,9 @@ private:
   void onEdited(bool undoable);
 
   Ui::MixerItem* ui;
-  const TuningDictionary& myDictionary;
-  const PlayerEditPubSub& myEditPubSub;
-  const PlayerRemovePubSub& myRemovePubSub;
+  TuningDictionary const& myDictionary;
+  PlayerEditPubSub const& myEditPubSub;
+  PlayerRemovePubSub const& myRemovePubSub;
   const int myPlayerIndex;
   Tuning myTuning;
 };

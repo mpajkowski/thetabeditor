@@ -36,7 +36,7 @@ class PreferencesDialog : public QDialog
 public:
   explicit PreferencesDialog(QWidget* parent,
                              SettingsManager& settings_manager,
-                             const TuningDictionary& dictionary);
+                             TuningDictionary const& dictionary);
   ~PreferencesDialog();
 
 private slots:
@@ -50,7 +50,7 @@ private:
 
   Ui::PreferencesDialog* ui;
   SettingsManager& mySettingsManager;
-  const TuningDictionary& myDictionary;
+  TuningDictionary const& myDictionary;
   Tuning myDefaultTuning;
 };
 

@@ -19,10 +19,10 @@
 
 #include <QPainter>
 
-SimpleTextItem::SimpleTextItem(const QString& text,
-                               const QFont& font,
-                               const QPen& pen,
-                               const QBrush& background)
+SimpleTextItem::SimpleTextItem(QString const& text,
+                               QFont const& font,
+                               QPen const& pen,
+                               QBrush const& background)
   : myText(text)
   , myFont(font)
   , myPen(pen)

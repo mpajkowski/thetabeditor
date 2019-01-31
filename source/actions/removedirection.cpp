@@ -20,7 +20,7 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemoveDirection::RemoveDirection(const ScoreLocation& location)
+RemoveDirection::RemoveDirection(ScoreLocation const& location)
   : QUndoCommand(QObject::tr("Remove Musical Direction"))
   , myLocation(location)
   , myOriginalDirection(

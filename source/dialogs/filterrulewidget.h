@@ -35,10 +35,10 @@ public:
   explicit FilterRuleWidget(QWidget* parent);
   ~FilterRuleWidget();
 
-  void update(const FilterRule& filter);
+  void update(FilterRule const& filter);
 
 signals:
-  void changed(const FilterRule&);
+  void changed(FilterRule const&);
   void removeRequested();
 
 private:

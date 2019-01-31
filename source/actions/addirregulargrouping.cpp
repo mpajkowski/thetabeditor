@@ -19,7 +19,7 @@
 
 #include <score/voice.h>
 
-AddIrregularGrouping::AddIrregularGrouping(const ScoreLocation& location, const IrregularGrouping& group)
+AddIrregularGrouping::AddIrregularGrouping(ScoreLocation const& location, IrregularGrouping const& group)
   : myLocation(location)
   , myGroup(group)
 {

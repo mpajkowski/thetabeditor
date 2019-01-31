@@ -63,7 +63,7 @@ Tuning SettingValueConverter<Tuning>::from(const SettingsTree::SettingValue& v)
   return tuning;
 }
 
-SettingsTree::SettingValue SettingValueConverter<Tuning>::to(const Tuning& tuning)
+SettingsTree::SettingValue SettingValueConverter<Tuning>::to(Tuning const& tuning)
 {
   std::ostringstream ss;
   ss << tuning.getName() << " " << static_cast<int>(tuning.getMusicNotationOffset()) << " "
@@ -80,7 +80,7 @@ QByteArray SettingValueConverter<QByteArray>::from(const SettingsTree::SettingVa
   return QByteArray::fromBase64(QByteArray::fromStdString(boost::get<std::string>(v)));
 }
 
-SettingsTree::SettingValue SettingValueConverter<QByteArray>::to(const QByteArray& array)
+SettingsTree::SettingValue SettingValueConverter<QByteArray>::to(QByteArray const& array)
 {
   return array.toBase64().toStdString();
 }
@@ -90,7 +90,7 @@ QKeySequence SettingValueConverter<QKeySequence>::from(const SettingsTree::Setti
   return QKeySequence::fromString(QString::fromStdString(boost::get<std::string>(v)));
 }
 
-SettingsTree::SettingValue SettingValueConverter<QKeySequence>::to(const QKeySequence& seq)
+SettingsTree::SettingValue SettingValueConverter<QKeySequence>::to(QKeySequence const& seq)
 {
   return seq.toString().toStdString();
 }

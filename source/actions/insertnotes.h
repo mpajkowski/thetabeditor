@@ -27,7 +27,7 @@
 class InsertNotes : public QUndoCommand
 {
 public:
-  InsertNotes(const ScoreLocation& location,
+  InsertNotes(ScoreLocation const& location,
               const std::vector<Position>& positions,
               const std::vector<IrregularGrouping>& groups);
 

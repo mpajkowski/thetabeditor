@@ -87,7 +87,7 @@ public:
 
   ChordName();
 
-  bool operator==(const ChordName& other) const;
+  bool operator==(ChordName const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -140,6 +140,6 @@ void ChordName::serialize(Archive& ar, const FileVersion /*version*/)
   ar("no_chord", myIsNoChord);
 }
 
-std::ostream& operator<<(std::ostream& os, const ChordName& chord);
+std::ostream& operator<<(std::ostream& os, ChordName const& chord);
 
 #endif

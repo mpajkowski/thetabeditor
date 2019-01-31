@@ -45,20 +45,20 @@ public:
     DoubleFlat
   };
 
-  StdNotationNote(const Voice& voice,
-                  const Position& pos,
-                  const Note& note,
-                  const KeySignature& key,
-                  const Tuning& tuning,
+  StdNotationNote(Voice const& voice,
+                  Position const& pos,
+                  Note const& note,
+                  KeySignature const& key,
+                  Tuning const& tuning,
                   double y,
                   const boost::optional<int>& tie);
 
-  static void getNotesInStaff(const Score& score,
-                              const System& system,
+  static void getNotesInStaff(Score const& score,
+                              System const& system,
                               int systemIndex,
-                              const Staff& staff,
+                              Staff const& staff,
                               int staffIndex,
-                              const LayoutInfo& layout,
+                              LayoutInfo const& layout,
                               std::vector<StdNotationNote>& notes,
                               std::array<std::vector<NoteStem>, Staff::NUM_VOICES>& stemsByVoice,
                               std::array<std::vector<BeamGroup>, Staff::NUM_VOICES>& groupsByVoice);
@@ -82,18 +82,18 @@ public:
   void showAccidental();
 
   const boost::optional<int>& getTie() const;
-  const Voice& getVoice() const;
+  Voice const& getVoice() const;
 
 private:
   /// Return the offset of the note from the top of the staff.
-  static double getNoteLocation(const Staff& staff,
-                                const Note& note,
-                                const KeySignature& key,
-                                const Tuning& tuning);
+  static double getNoteLocation(Staff const& staff,
+                                Note const& note,
+                                KeySignature const& key,
+                                Tuning const& tuning);
 
   /// Returns the number of octaves (from -2 to 2) that the note is shifted
   /// by.
-  static int getOctaveOffset(const Note& note);
+  static int getOctaveOffset(Note const& note);
 
   /// Computes the accidental for the note.
   /// @param explicitSymbol If true, an accidental or natural sign will be
@@ -101,10 +101,10 @@ private:
   void computeAccidentalType(bool explicitSymbol);
 
   /// Returns the non-zero beaming patterns of the time signature.
-  static std::vector<uint8_t> getBeamingPatterns(const TimeSignature& timeSig);
+  static std::vector<uint8_t> getBeamingPatterns(TimeSignature const& timeSig);
 
   /// Calculates the beaming for a set of note stems.
-  static void computeBeaming(const TimeSignature& timeSig,
+  static void computeBeaming(TimeSignature const& timeSig,
                              std::vector<NoteStem>& stems,
                              size_t firstStemIndex,
                              std::vector<BeamGroup>& groups);
@@ -123,7 +123,7 @@ private:
   QChar myNoteHeadSymbol;
   AccidentalType myAccidentalType;
 
-  const Voice& myVoice;
+  Voice const& myVoice;
   const Position* myPosition;
   const Note* myNote;
   const KeySignature* myKey;

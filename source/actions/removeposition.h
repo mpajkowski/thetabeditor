@@ -26,7 +26,7 @@
 class RemovePosition : public QUndoCommand
 {
 public:
-  RemovePosition(const ScoreLocation& location, const QString& text = QObject::tr("Remove Position"));
+  RemovePosition(ScoreLocation const& location, QString const& text = QObject::tr("Remove Position"));
 
   virtual void redo() override;
   virtual void undo() override;

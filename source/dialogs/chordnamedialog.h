@@ -37,7 +37,7 @@ public:
   explicit ChordNameDialog(QWidget* parent);
   ~ChordNameDialog();
 
-  const ChordName& getChordName() const;
+  ChordName const& getChordName() const;
 
 private slots:
   void updateState();

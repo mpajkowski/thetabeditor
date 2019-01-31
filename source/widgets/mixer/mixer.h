@@ -30,21 +30,21 @@ class Mixer : public QWidget
 {
 public:
   Mixer(QWidget* parent,
-        const TuningDictionary& dictionary,
-        const PlayerEditPubSub& editPubSub,
-        const PlayerRemovePubSub& removePubSub);
+        TuningDictionary const& dictionary,
+        PlayerEditPubSub const& editPubSub,
+        PlayerRemovePubSub const& removePubSub);
 
   /// Clear and then populate the mixer.
-  void reset(const Score& score);
+  void reset(Score const& score);
 
   /// Removes all items from the mixer.
   void clear();
 
 private:
   QVBoxLayout* myLayout;
-  const TuningDictionary& myDictionary;
-  const PlayerEditPubSub& myEditPubSub;
-  const PlayerRemovePubSub& myRemovePubSub;
+  TuningDictionary const& myDictionary;
+  PlayerEditPubSub const& myEditPubSub;
+  PlayerRemovePubSub const& myRemovePubSub;
 };
 
 #endif

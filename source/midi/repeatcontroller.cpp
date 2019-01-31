@@ -17,13 +17,13 @@
 
 #include "repeatcontroller.h"
 
-RepeatController::RepeatController(const Score& score)
+RepeatController::RepeatController(Score const& score)
   : myDirectionIndex(score)
   , myRepeatIndex(score)
 {}
 
-bool RepeatController::checkForRepeat(const SystemLocation& prevLocation,
-                                      const SystemLocation& currentLocation,
+bool RepeatController::checkForRepeat(SystemLocation const& prevLocation,
+                                      SystemLocation const& currentLocation,
                                       SystemLocation& newLocation)
 {
   RepeatedSection* active_repeat = myRepeatIndex.findRepeat(currentLocation);

@@ -38,7 +38,7 @@ public:
   ArtificialHarmonic();
   ArtificialHarmonic(ChordName::Key key, ChordName::Variation variation, Octave octave);
 
-  bool operator==(const ArtificialHarmonic& other) const;
+  bool operator==(ArtificialHarmonic const& other) const;
 
   ChordName::Key getKey() const;
   ChordName::Variation getVariation() const;
@@ -88,7 +88,7 @@ public:
        DrawPoint startPoint = LowPoint,
        DrawPoint endPoint = MidPoint);
 
-  bool operator==(const Bend& other) const;
+  bool operator==(Bend const& other) const;
 
   BendType getType() const;
   int getBentPitch() const;
@@ -148,7 +148,7 @@ public:
   LeftHandFingering();
   LeftHandFingering(Finger finger, DisplayPosition pos = AboveLeft);
 
-  bool operator==(const LeftHandFingering& other) const;
+  bool operator==(LeftHandFingering const& other) const;
 
   /// Sets the finger this hint is showing.
   void setFinger(Finger finger);
@@ -197,7 +197,7 @@ public:
   Note();
   Note(int string, int fretNumber);
 
-  bool operator==(const Note& other) const;
+  bool operator==(Note const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -238,27 +238,27 @@ public:
   /// Returns whether the note has an artificial harmonic.
   bool hasArtificialHarmonic() const;
   /// Returns the artificial harmonic for this note.
-  const ArtificialHarmonic& getArtificialHarmonic() const;
+  ArtificialHarmonic const& getArtificialHarmonic() const;
   /// Adds an artificial harmonic to this note.
-  void setArtificialHarmonic(const ArtificialHarmonic& harmonic);
+  void setArtificialHarmonic(ArtificialHarmonic const& harmonic);
   /// Removes the artificial harmonic for this note.
   void clearArtificialHarmonic();
 
   /// Returns whether the note has a bend.
   bool hasBend() const;
   /// Returns the bend for this note.
-  const Bend& getBend() const;
+  Bend const& getBend() const;
   /// Adds a bend to this note.
-  void setBend(const Bend& bend);
+  void setBend(Bend const& bend);
   /// Removes the bend for this note.
   void clearBend();
 
   /// Returns whether the note has left hand fingering.
   bool hasLeftHandFingering() const;
   /// Returns the left hand fingering for this note.
-  const LeftHandFingering& getLeftHandFingering() const;
+  LeftHandFingering const& getLeftHandFingering() const;
   /// Adds left hand fingering to this note.
-  void setLeftHandFingering(const LeftHandFingering& fingering);
+  void setLeftHandFingering(LeftHandFingering const& fingering);
   /// Removes the left hand fingering for this note.
   void clearLeftHandFingering();
 
@@ -304,6 +304,6 @@ int getPitchOffset(int fretOffset);
 
 /// Creates a text representation of the note, including brackets for ghost
 /// notes, harmonics, etc.
-std::ostream& operator<<(std::ostream& os, const Note& note);
+std::ostream& operator<<(std::ostream& os, Note const& note);
 
 #endif

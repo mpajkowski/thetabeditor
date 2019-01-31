@@ -29,7 +29,7 @@ ActivePlayer::ActivePlayer(int player, int instrument)
   , myInstrumentNumber(instrument)
 {}
 
-bool ActivePlayer::operator==(const ActivePlayer& other) const
+bool ActivePlayer::operator==(ActivePlayer const& other) const
 {
   return myPlayerNumber == other.myPlayerNumber && myInstrumentNumber == other.myInstrumentNumber;
 }
@@ -52,7 +52,7 @@ PlayerChange::PlayerChange(int position)
   : myPosition(position)
 {}
 
-bool PlayerChange::operator==(const PlayerChange& other) const
+bool PlayerChange::operator==(PlayerChange const& other) const
 {
   return myPosition == other.myPosition && myActivePlayers == other.myActivePlayers;
 }
@@ -75,12 +75,12 @@ std::vector<ActivePlayer> PlayerChange::getActivePlayers(int staff) const
     return std::vector<ActivePlayer>();
 }
 
-void PlayerChange::insertActivePlayer(int staff, const ActivePlayer& player)
+void PlayerChange::insertActivePlayer(int staff, ActivePlayer const& player)
 {
   myActivePlayers[staff].push_back(player);
 }
 
-void PlayerChange::removeActivePlayer(int staff, const ActivePlayer& player)
+void PlayerChange::removeActivePlayer(int staff, ActivePlayer const& player)
 {
   std::vector<ActivePlayer>& playerList = myActivePlayers[staff];
   playerList.erase(std::remove(playerList.begin(), playerList.end(), player), playerList.end());

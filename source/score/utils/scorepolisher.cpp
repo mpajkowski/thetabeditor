@@ -27,7 +27,7 @@
 class TimeStamp
 {
 public:
-  bool operator<(const TimeStamp& other) const
+  bool operator<(TimeStamp const& other) const
   {
     if (myTime == other.myTime) {
       // Order the timestamps so that grace notes appear before the actual
@@ -56,7 +56,7 @@ static int getDefaultNoteSpacing(const boost::rational<int>& duration)
 }
 
 template<typename T>
-static void shiftItemsAtPosition(const T& items,
+static void shiftItemsAtPosition(T const& items,
                                  int position,
                                  int newPosition,
                                  std::unordered_set<const void*>& knownItems)
@@ -87,7 +87,7 @@ static void shiftAllItemsAtPosition(System& system,
   shiftItemsAtPosition(system.getAlternateEndings(), currentPosition, newPosition, knownItems);
 }
 
-static void computeTimestampPosition(const TimeStamp& timestamp,
+static void computeTimestampPosition(TimeStamp const& timestamp,
                                      int minPosition,
                                      std::map<TimeStamp, int>& timestampPositions)
 {
@@ -130,13 +130,13 @@ void ScoreUtils::polishSystem(System& system)
 
     // For each timestamp, compute the maximum position at that timestamp
     // for any staff.
-    for (const Staff& staff : system.getStaves()) {
-      for (const Voice& voice : staff.getVoices()) {
+    for (Staff const& staff : system.getStaves()) {
+      for (Voice const& voice : staff.getVoices()) {
         TimeStamp timestamp;
         boost::optional<int> grace_note;
         int currentPosition = 0;
 
-        for (const Position& position :
+        for (Position const& position :
              ScoreUtils::findInRange(voice.getPositions(), leftBar.getPosition(), rightBar->getPosition())) {
           if (position.hasProperty(Position::Acciaccatura))
             grace_note = grace_note.get_value_or(0) + 1;

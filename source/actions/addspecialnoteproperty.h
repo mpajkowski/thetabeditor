@@ -32,11 +32,11 @@ public:
   typedef std::function<void(Note*, T)> Setter;
   typedef std::function<void(Note*)> Clearer;
 
-  AddSpecialNoteProperty(const ScoreLocation& location,
-                         const QString& text,
-                         const T& value,
-                         const Setter& setter,
-                         const Clearer& clearer)
+  AddSpecialNoteProperty(ScoreLocation const& location,
+                         QString const& text,
+                         T const& value,
+                         Setter const& setter,
+                         Clearer const& clearer)
     : QUndoCommand(text)
     , myLocation(location)
     , myValue(value)
@@ -58,7 +58,7 @@ private:
 class AddTappedHarmonic : public AddSpecialNoteProperty<int>
 {
 public:
-  AddTappedHarmonic(const ScoreLocation& location, int fret)
+  AddTappedHarmonic(ScoreLocation const& location, int fret)
     : AddSpecialNoteProperty<int>(location,
                                   QObject::tr("Add Tapped Harmonic"),
                                   fret,
@@ -70,7 +70,7 @@ public:
 class AddTrill : public AddSpecialNoteProperty<int>
 {
 public:
-  AddTrill(const ScoreLocation& location, int fret)
+  AddTrill(ScoreLocation const& location, int fret)
     : AddSpecialNoteProperty<int>(location,
                                   QObject::tr("Add Trill"),
                                   fret,
@@ -82,7 +82,7 @@ public:
 class AddArtificialHarmonic : public AddSpecialNoteProperty<ArtificialHarmonic>
 {
 public:
-  AddArtificialHarmonic(const ScoreLocation& location, const ArtificialHarmonic& harmonic)
+  AddArtificialHarmonic(ScoreLocation const& location, ArtificialHarmonic const& harmonic)
     : AddSpecialNoteProperty<ArtificialHarmonic>(location,
                                                  QObject::tr("Add Artificial Harmonic"),
                                                  harmonic,
@@ -94,7 +94,7 @@ public:
 class AddBend : public AddSpecialNoteProperty<Bend>
 {
 public:
-  AddBend(const ScoreLocation& location, const Bend& bend)
+  AddBend(ScoreLocation const& location, Bend const& bend)
     : AddSpecialNoteProperty<Bend>(location,
                                    QObject::tr("Add Bend"),
                                    bend,
@@ -106,7 +106,7 @@ public:
 class AddLeftHandFingering : public AddSpecialNoteProperty<LeftHandFingering>
 {
 public:
-  AddLeftHandFingering(const ScoreLocation& location, const LeftHandFingering& fingering)
+  AddLeftHandFingering(ScoreLocation const& location, LeftHandFingering const& fingering)
     : AddSpecialNoteProperty<LeftHandFingering>(location,
                                                 QObject::tr("Add Left Hand Fingering"),
                                                 fingering,

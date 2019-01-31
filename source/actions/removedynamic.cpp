@@ -20,7 +20,7 @@
 #include <score/staff.h>
 #include <score/utils.h>
 
-RemoveDynamic::RemoveDynamic(const ScoreLocation& location)
+RemoveDynamic::RemoveDynamic(ScoreLocation const& location)
   : QUndoCommand(QObject::tr("Remove Dynamic"))
   , myLocation(location)
   , myOriginalDynamic(

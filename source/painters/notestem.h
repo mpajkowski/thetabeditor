@@ -31,8 +31,8 @@ public:
     StemDown
   };
 
-  NoteStem(const Voice& voice,
-           const Position& pos,
+  NoteStem(Voice const& voice,
+           Position const& pos,
            double x,
            double noteHeadWidth,
            const std::vector<double>& noteLocations);
@@ -59,12 +59,12 @@ public:
   bool hasMarcato() const;
 
   /// Returns true if the note should be part of a beam group.
-  static bool isBeamable(const NoteStem& stem);
+  static bool isBeamable(NoteStem const& stem);
   /// Returns true if the note should have a stem drawn.
-  static bool needsStem(const NoteStem& stem);
+  static bool needsStem(NoteStem const& stem);
   /// Returns true if the note could possibly have a flag drawn (e.g. an
   /// eighth note or a grace note).
-  static bool canHaveFlag(const NoteStem& stem);
+  static bool canHaveFlag(NoteStem const& stem);
 
   StemType getStemType() const;
   void setStemType(StemType type);
@@ -76,15 +76,15 @@ public:
   /// a common high/low height.
   static StemType formatGroup(std::vector<NoteStem>& stems, const std::vector<size_t>& group);
 
-  static const NoteStem& findHighestStem(const std::vector<NoteStem>& stems,
+  static NoteStem const& findHighestStem(const std::vector<NoteStem>& stems,
                                          const std::vector<size_t>& group);
-  static const NoteStem& findLowestStem(const std::vector<NoteStem>& stems, const std::vector<size_t>& group);
+  static NoteStem const& findLowestStem(const std::vector<NoteStem>& stems, const std::vector<size_t>& group);
 
   template<typename Iterator>
-  static const NoteStem& findHighestStem(Iterator begin, Iterator end);
+  static NoteStem const& findHighestStem(Iterator begin, Iterator end);
 
   template<typename Iterator>
-  static const NoteStem& findLowestStem(Iterator begin, Iterator end);
+  static NoteStem const& findLowestStem(Iterator begin, Iterator end);
 
 private:
   /// Sets a common direction for the stems, and returns that direction.
@@ -101,16 +101,16 @@ private:
 };
 
 template<typename Iterator>
-const NoteStem& NoteStem::findHighestStem(Iterator begin, Iterator end)
+NoteStem const& NoteStem::findHighestStem(Iterator begin, Iterator end)
 {
   return *std::min_element(
-    begin, end, [](const NoteStem& stem1, const NoteStem& stem2) { return stem1.getTop() < stem2.getTop(); });
+    begin, end, [](NoteStem const& stem1, NoteStem const& stem2) { return stem1.getTop() < stem2.getTop(); });
 }
 
 template<typename Iterator>
-const NoteStem& NoteStem::findLowestStem(Iterator begin, Iterator end)
+NoteStem const& NoteStem::findLowestStem(Iterator begin, Iterator end)
 {
-  return *std::max_element(begin, end, [](const NoteStem& stem1, const NoteStem& stem2) {
+  return *std::max_element(begin, end, [](NoteStem const& stem1, NoteStem const& stem2) {
     return stem1.getBottom() < stem2.getBottom();
   });
 }

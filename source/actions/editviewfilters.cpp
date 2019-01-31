@@ -41,6 +41,6 @@ void EditViewFilters::setViewFilters(const std::vector<ViewFilter>& filters)
   while (!myScore.getViewFilters().empty())
     myScore.removeViewFilter(myScore.getViewFilters().size() - 1);
 
-  for (const ViewFilter& filter : filters)
+  for (ViewFilter const& filter : filters)
     myScore.insertViewFilter(filter);
 }

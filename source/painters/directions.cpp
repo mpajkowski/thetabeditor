@@ -32,15 +32,15 @@ static QString theDirectionText[] = { "Coda",           "Double Coda",
                                       "D.C. al Fine",   "D.S. al Fine",
                                       "D.S.S. al Fine" };
 
-double SystemRenderer::drawDirections(const System& system, const LayoutInfo& layout, double height)
+double SystemRenderer::drawDirections(System const& system, LayoutInfo const& layout, double height)
 {
   double maxHeight = 0;
 
-  for (const Direction& direction : system.getDirections()) {
+  for (Direction const& direction : system.getDirections()) {
     double localHeight = 0;
     const double x = layout.getPositionX(direction.getPosition());
 
-    for (const DirectionSymbol& symbol : direction.getSymbols()) {
+    for (DirectionSymbol const& symbol : direction.getSymbols()) {
       QGraphicsItem* item = nullptr;
       switch (symbol.getSymbolType()) {
         case DirectionSymbol::Coda:

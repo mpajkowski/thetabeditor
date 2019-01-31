@@ -43,7 +43,7 @@ public:
 
   void setClean();
 
-  void beginMacro(const QString& text);
+  void beginMacro(QString const& text);
   void endMacro();
 
   static const int AFFECTS_ALL_SYSTEMS = -1;

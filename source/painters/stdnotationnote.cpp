@@ -36,11 +36,11 @@ static const std::unordered_map<char, int> theNotePositions = { { 'F', 0 }, { 'E
                                                                 { 'C', 3 }, { 'B', -3 }, { 'A', -2 },
                                                                 { 'G', -1 } };
 
-StdNotationNote::StdNotationNote(const Voice& voice,
-                                 const Position& pos,
-                                 const Note& note,
-                                 const KeySignature& key,
-                                 const Tuning& tuning,
+StdNotationNote::StdNotationNote(Voice const& voice,
+                                 Position const& pos,
+                                 Note const& note,
+                                 KeySignature const& key,
+                                 Tuning const& tuning,
                                  double y,
                                  const boost::optional<int>& tie)
   : myY(y)
@@ -76,12 +76,12 @@ StdNotationNote::StdNotationNote(const Voice& voice,
   computeAccidentalType(false);
 }
 
-void StdNotationNote::getNotesInStaff(const Score& score,
-                                      const System& system,
+void StdNotationNote::getNotesInStaff(Score const& score,
+                                      System const& system,
                                       int systemIndex,
-                                      const Staff& staff,
+                                      Staff const& staff,
                                       int staffIndex,
-                                      const LayoutInfo& layout,
+                                      LayoutInfo const& layout,
                                       std::vector<StdNotationNote>& notes,
                                       std::array<std::vector<NoteStem>, Staff::NUM_VOICES>& stemsByVoice,
                                       std::array<std::vector<BeamGroup>, Staff::NUM_VOICES>& groupsByVoice)
@@ -100,11 +100,11 @@ void StdNotationNote::getNotesInStaff(const Score& score,
   QFontMetricsF grace_fm(grace_font);
 
   int voiceIndex = 0;
-  for (const Voice& voice : staff.getVoices()) {
+  for (Voice const& voice : staff.getVoices()) {
     std::vector<NoteStem>& stems = stemsByVoice[voiceIndex];
     std::vector<BeamGroup>& groups = groupsByVoice[voiceIndex];
 
-    for (const Barline& bar : system.getBarlines()) {
+    for (Barline const& bar : system.getBarlines()) {
       const Barline* nextBar = system.getNextBarline(bar.getPosition());
       if (!nextBar)
         break;
@@ -114,7 +114,7 @@ void StdNotationNote::getNotesInStaff(const Score& score,
       // Store the current accidental for each line/space in the staff.
       std::map<int, AccidentalType> accidentals;
 
-      for (const Position& pos :
+      for (Position const& pos :
            ScoreUtils::findInRange(voice.getPositions(), bar.getPosition(), nextBar->getPosition())) {
         Q_ASSERT(pos.getPosition() == 0 || pos.getPosition() != bar.getPosition());
         Q_ASSERT(pos.getPosition() == 0 || pos.getPosition() != nextBar->getPosition());
@@ -142,7 +142,7 @@ void StdNotationNote::getNotesInStaff(const Score& score,
 
         const Position* prevPos = VoiceUtils::getPreviousPosition(voice, pos.getPosition());
 
-        for (const Note& note : pos.getNotes()) {
+        for (Note const& note : pos.getNotes()) {
           const Tuning tuning = player ? player->getTuning() : fallbackTuning;
           const double y = getNoteLocation(staff, note, bar.getKeySignature(), tuning);
 
@@ -193,10 +193,10 @@ double StdNotationNote::getY() const
   return myY;
 }
 
-double StdNotationNote::getNoteLocation(const Staff& staff,
-                                        const Note& note,
-                                        const KeySignature& key,
-                                        const Tuning& tuning)
+double StdNotationNote::getNoteLocation(Staff const& staff,
+                                        Note const& note,
+                                        KeySignature const& key,
+                                        Tuning const& tuning)
 {
   const int pitch = tuning.getNote(note.getString(), true) + note.getFretNumber();
 
@@ -222,7 +222,7 @@ double StdNotationNote::getNoteLocation(const Staff& staff,
   return y * 0.5 * LayoutInfo::STD_NOTATION_LINE_SPACING;
 }
 
-int StdNotationNote::getOctaveOffset(const Note& note)
+int StdNotationNote::getOctaveOffset(Note const& note)
 {
   if (note.hasProperty(Note::Octave8va))
     return 1;
@@ -263,7 +263,7 @@ void StdNotationNote::computeAccidentalType(bool explicitSymbol)
     myAccidentalType = NoAccidental;
 }
 
-std::vector<uint8_t> StdNotationNote::getBeamingPatterns(const TimeSignature& timeSig)
+std::vector<uint8_t> StdNotationNote::getBeamingPatterns(TimeSignature const& timeSig)
 {
   TimeSignature::BeamingPattern pattern(timeSig.getBeamingPattern());
   std::vector<uint8_t> beaming(pattern.begin(), pattern.end());
@@ -271,7 +271,7 @@ std::vector<uint8_t> StdNotationNote::getBeamingPatterns(const TimeSignature& ti
   return beaming;
 }
 
-void StdNotationNote::computeBeaming(const TimeSignature& timeSig,
+void StdNotationNote::computeBeaming(TimeSignature const& timeSig,
                                      std::vector<NoteStem>& stems,
                                      size_t firstStemIndex,
                                      std::vector<BeamGroup>& groups)
@@ -460,7 +460,7 @@ const boost::optional<int>& StdNotationNote::getTie() const
 {
   return myTie;
 }
-const Voice& StdNotationNote::getVoice() const
+Voice const& StdNotationNote::getVoice() const
 {
   return myVoice;
 }

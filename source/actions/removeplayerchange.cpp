@@ -20,7 +20,7 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemovePlayerChange::RemovePlayerChange(const ScoreLocation& location)
+RemovePlayerChange::RemovePlayerChange(ScoreLocation const& location)
   : QUndoCommand(QObject::tr("Remove Player Change"))
   , myLocation(location)
   , myPlayerChange(

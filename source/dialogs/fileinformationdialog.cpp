@@ -22,7 +22,7 @@
 #include <app/documentmanager.h>
 #include <app/paths.h>
 
-FileInformationDialog::FileInformationDialog(QWidget* parent, const Document& doc)
+FileInformationDialog::FileInformationDialog(QWidget* parent, Document const& doc)
   : QDialog(parent)
   , ui(new Ui::FileInformationDialog)
 {
@@ -47,7 +47,7 @@ FileInformationDialog::FileInformationDialog(QWidget* parent, const Document& do
   ui->lessonLevelButtonGroup->setId(ui->advancedLevelButton,
                                     static_cast<int>(LessonData::DifficultyLevel::Advanced));
 
-  const ScoreInfo& info = doc.getScore().getScoreInfo();
+  ScoreInfo const& info = doc.getScore().getScoreInfo();
 
   // Select either the song or lesson button.
   QAbstractButton* button = ui->songTypeButtonGroup->button(static_cast<int>(info.getScoreType()));
@@ -55,7 +55,7 @@ FileInformationDialog::FileInformationDialog(QWidget* parent, const Document& do
   button->click();
 
   if (info.getScoreType() == ScoreInfo::ScoreType::Song) {
-    const SongData& song = info.getSongData();
+    SongData const& song = info.getSongData();
     // Initialize song information.
     ui->songTitleValue->setText(QString::fromStdString(song.getTitle()));
     ui->songArtistValue->setText(QString::fromStdString(song.getArtist()));
@@ -104,7 +104,7 @@ FileInformationDialog::FileInformationDialog(QWidget* parent, const Document& do
     // Initialize lyrics.
     ui->lyricsValue->setPlainText(QString::fromStdString(song.getLyrics()));
   } else {
-    const LessonData& lesson = info.getLessonData();
+    LessonData const& lesson = info.getLessonData();
 
     ui->lessonTitleValue->setText(QString::fromStdString(lesson.getTitle()));
     ui->lessonSubtitleValue->setText(QString::fromStdString(lesson.getSubtitle()));

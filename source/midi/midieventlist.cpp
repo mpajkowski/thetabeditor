@@ -34,13 +34,13 @@ void MidiEventList::convertToDeltaTicks()
 
   // First, sort by timestamp. Events for different voices may have been added
   // out of order.
-  std::stable_sort(myEvents.begin(), myEvents.end(), [](const MidiEvent& a, const MidiEvent& b) {
+  std::stable_sort(myEvents.begin(), myEvents.end(), [](MidiEvent const& a, MidiEvent const& b) {
     return a.getTicks() < b.getTicks();
   });
 
   for (size_t i = myEvents.size() - 1; i >= 1; --i) {
     MidiEvent& event = myEvents[i];
-    const MidiEvent& prev_event = myEvents[i - 1];
+    MidiEvent const& prev_event = myEvents[i - 1];
     event.setTicks(event.getTicks() - prev_event.getTicks());
   }
 }
@@ -55,7 +55,7 @@ void MidiEventList::convertToAbsoluteTicks()
   }
 }
 
-void MidiEventList::concat(const MidiEventList& other)
+void MidiEventList::concat(MidiEventList const& other)
 {
   myEvents.reserve(myEvents.size() + other.myEvents.size());
   myEvents.insert(myEvents.end(), other.myEvents.begin(), other.myEvents.end());

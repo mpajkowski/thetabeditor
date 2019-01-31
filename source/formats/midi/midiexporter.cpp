@@ -77,12 +77,12 @@ static void writeVariableLength(std::ostream& os, uint32_t val)
   }
 }
 
-MidiExporter::MidiExporter(const SettingsManager& settings_manager)
+MidiExporter::MidiExporter(SettingsManager const& settings_manager)
   : FileFormatExporter(FileFormat("MIDI File", { "mid" }))
   , mySettingsManager(settings_manager)
 {}
 
-void MidiExporter::save(const boost::filesystem::path& filename, const Score& score)
+void MidiExporter::save(const boost::filesystem::path& filename, Score const& score)
 {
   boost::filesystem::ofstream os(filename, std::ios::out | std::ios::binary);
   os.exceptions(std::ios::failbit | std::ios::badbit | std::ios::eofbit);
@@ -104,11 +104,11 @@ void MidiExporter::save(const boost::filesystem::path& filename, const Score& sc
   file.load(score, options);
   writeHeader(os, file);
 
-  for (const MidiEventList& track : file.getTracks())
+  for (MidiEventList const& track : file.getTracks())
     writeTrack(os, track);
 }
 
-void MidiExporter::writeHeader(std::ostream& os, const MidiFile& file)
+void MidiExporter::writeHeader(std::ostream& os, MidiFile const& file)
 {
   // Chunk ID for the header chunk.
   os << "MThd";
@@ -123,7 +123,7 @@ void MidiExporter::writeHeader(std::ostream& os, const MidiFile& file)
   write(os, static_cast<uint16_t>(file.getTicksPerBeat()));
 }
 
-void MidiExporter::writeTrack(std::ostream& os, const MidiEventList& events)
+void MidiExporter::writeTrack(std::ostream& os, MidiEventList const& events)
 {
   // Chunk ID for a track chunk.
   os << "MTrk";
@@ -135,7 +135,7 @@ void MidiExporter::writeTrack(std::ostream& os, const MidiEventList& events)
 
   // Write out the MIDI events.
   const std::iostream::pos_type chunk_start_pos = os.tellp();
-  for (const MidiEvent& event : events) {
+  for (MidiEvent const& event : events) {
     writeVariableLength(os, event.getTicks());
     os.write(reinterpret_cast<const char*>(event.getData().data()), event.getData().size());
   }

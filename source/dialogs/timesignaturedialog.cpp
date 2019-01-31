@@ -20,7 +20,7 @@
 
 #include <QMessageBox>
 
-TimeSignatureDialog::TimeSignatureDialog(QWidget* parent, const TimeSignature& currentTimeSignature)
+TimeSignatureDialog::TimeSignatureDialog(QWidget* parent, TimeSignature const& currentTimeSignature)
   : QDialog(parent)
   , ui(new Ui::TimeSignatureDialog)
   , myTimeSignature(currentTimeSignature)

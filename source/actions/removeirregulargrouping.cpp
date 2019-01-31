@@ -19,8 +19,8 @@
 
 #include <score/voice.h>
 
-RemoveIrregularGrouping::RemoveIrregularGrouping(const ScoreLocation& location,
-                                                 const IrregularGrouping& group)
+RemoveIrregularGrouping::RemoveIrregularGrouping(ScoreLocation const& location,
+                                                 IrregularGrouping const& group)
   : QUndoCommand(QObject::tr("Remove Irregular Grouping"))
   , myLocation(location)
   , myGroup(group)

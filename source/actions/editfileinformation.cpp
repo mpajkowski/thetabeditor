@@ -19,7 +19,7 @@
 
 #include <score/score.h>
 
-EditFileInformation::EditFileInformation(const ScoreLocation& location, const ScoreInfo& scoreInfo)
+EditFileInformation::EditFileInformation(ScoreLocation const& location, ScoreInfo const& scoreInfo)
   : QUndoCommand(QObject::tr("Edit File Information"))
   , myLocation(location)
   , myScoreInfo(scoreInfo)

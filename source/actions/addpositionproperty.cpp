@@ -17,9 +17,9 @@
 
 #include "addpositionproperty.h"
 
-AddPositionProperty::AddPositionProperty(const ScoreLocation& location,
+AddPositionProperty::AddPositionProperty(ScoreLocation const& location,
                                          Position::SimpleProperty property,
-                                         const QString& positionDescription)
+                                         QString const& positionDescription)
   : QUndoCommand(QObject::tr("Set ") + positionDescription)
   , myLocation(location)
   , myProperty(property)

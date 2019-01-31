@@ -17,7 +17,7 @@
 
 #include "edittabnumber.h"
 
-EditTabNumber::EditTabNumber(const ScoreLocation& location, int typedNumber)
+EditTabNumber::EditTabNumber(ScoreLocation const& location, int typedNumber)
   : QUndoCommand(QObject::tr("Edit Tab Number"))
   , myLocation(location)
   , myOriginalNumber(location.getNote()->getFretNumber())

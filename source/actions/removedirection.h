@@ -25,7 +25,7 @@
 class RemoveDirection : public QUndoCommand
 {
 public:
-  RemoveDirection(const ScoreLocation& location);
+  RemoveDirection(ScoreLocation const& location);
 
   virtual void redo() override;
   virtual void undo() override;

@@ -26,7 +26,7 @@ TextItem::TextItem(int position, const std::string& contents)
   , myContents(contents)
 {}
 
-bool TextItem::operator==(const TextItem& other) const
+bool TextItem::operator==(TextItem const& other) const
 {
   return myPosition == other.myPosition && myContents == other.myContents;
 }

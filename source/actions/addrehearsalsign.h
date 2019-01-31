@@ -24,7 +24,7 @@
 class AddRehearsalSign : public QUndoCommand
 {
 public:
-  AddRehearsalSign(const ScoreLocation& location, const std::string& description);
+  AddRehearsalSign(ScoreLocation const& location, const std::string& description);
 
   virtual void redo() override;
   virtual void undo() override;

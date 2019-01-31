@@ -27,7 +27,7 @@ ShiftTabNumber::ShiftTabNumber(boost::shared_ptr<Staff> staff,
                                Note* note,
                                uint32_t voice,
                                Position::ShiftType direction,
-                               const Tuning& tuning)
+                               Tuning const& tuning)
   : voice(voice)
   , staff(staff)
   , position(position)

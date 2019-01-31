@@ -19,7 +19,7 @@
 
 #include <score/system.h>
 
-AddTempoMarker::AddTempoMarker(const ScoreLocation& location, const TempoMarker& marker)
+AddTempoMarker::AddTempoMarker(ScoreLocation const& location, TempoMarker const& marker)
   : QUndoCommand(marker.getMarkerType() == TempoMarker::AlterationOfPace
                    ? QObject::tr("Add Alteration of Pace")
                    : QObject::tr("Add Tempo Marker"))

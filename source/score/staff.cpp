@@ -29,7 +29,7 @@ Staff::Staff(int stringCount)
   , myStringCount(stringCount)
 {}
 
-bool Staff::operator==(const Staff& other) const
+bool Staff::operator==(Staff const& other) const
 {
   return myClefType == other.myClefType && myStringCount == other.myStringCount &&
          myVoices == other.myVoices && myDynamics == other.myDynamics;
@@ -57,10 +57,10 @@ void Staff::setStringCount(int count)
   // Clean up notes / positions that are no longer valid.
   for (Voice& voice : myVoices) {
     for (Position& pos : voice.getPositions()) {
-      pos.removeNotes([=](const Note& note) { return note.getString() >= count; });
+      pos.removeNotes([=](Note const& note) { return note.getString() >= count; });
     }
 
-    voice.removePositions([](const Position& pos) { return pos.getNotes().empty(); });
+    voice.removePositions([](Position const& pos) { return pos.getNotes().empty(); });
   }
 }
 
@@ -84,12 +84,12 @@ boost::iterator_range<Staff::DynamicConstIterator> Staff::getDynamics() const
   return boost::make_iterator_range(myDynamics);
 }
 
-void Staff::insertDynamic(const Dynamic& dynamic)
+void Staff::insertDynamic(Dynamic const& dynamic)
 {
   ScoreUtils::insertObject(myDynamics, dynamic);
 }
 
-void Staff::removeDynamic(const Dynamic& dynamic)
+void Staff::removeDynamic(Dynamic const& dynamic)
 {
   ScoreUtils::removeObject(myDynamics, dynamic);
 }

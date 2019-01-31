@@ -23,9 +23,9 @@
 #include <painters/musicfont.h>
 #include <score/timesignature.h>
 
-TimeSignaturePainter::TimeSignaturePainter(const LayoutConstPtr& layout,
-                                           const TimeSignature& time,
-                                           const ScoreLocation& location,
+TimeSignaturePainter::TimeSignaturePainter(LayoutConstPtr const& layout,
+                                           TimeSignature const& time,
+                                           ScoreLocation const& location,
                                            const std::shared_ptr<ClickPubSub>& pubsub)
   : myLayout(layout)
   , myTimeSignature(time)

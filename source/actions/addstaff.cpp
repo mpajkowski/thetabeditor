@@ -19,7 +19,7 @@
 
 #include <score/system.h>
 
-AddStaff::AddStaff(const ScoreLocation& location, const Staff& staff, int index)
+AddStaff::AddStaff(ScoreLocation const& location, Staff const& staff, int index)
   : QUndoCommand(QObject::tr("Add Staff"))
   , myLocation(location)
   , myStaff(staff)

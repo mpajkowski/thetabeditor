@@ -34,7 +34,7 @@ TEST_CASE("Actions/EditKeySignature", "")
 
   action.redo();
   {
-    const System& system = score.getSystems()[0];
+    System const& system = score.getSystems()[0];
     REQUIRE_FALSE(system.getBarlines()[0].getKeySignature() == newKey);
     REQUIRE(system.getBarlines()[1].getKeySignature() == newKey);
     REQUIRE(system.getBarlines()[2].getKeySignature() == newKey);
@@ -43,7 +43,7 @@ TEST_CASE("Actions/EditKeySignature", "")
 
   action.undo();
   {
-    const System& system = score.getSystems()[0];
+    System const& system = score.getSystems()[0];
     REQUIRE_FALSE(system.getBarlines()[1].getKeySignature() == newKey);
     REQUIRE_FALSE(system.getBarlines()[2].getKeySignature() == newKey);
   }

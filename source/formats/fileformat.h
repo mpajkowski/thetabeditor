@@ -30,7 +30,7 @@ class FileFormat
 public:
   FileFormat(const std::string& myName, const std::vector<std::string>& myFileExtensions);
 
-  bool operator==(const FileFormat& format) const;
+  bool operator==(FileFormat const& format) const;
 
   /// Returns a correctly formatted file filter for a Qt file dialog.
   /// e.g. "FileType (*.ext1 *.ext2)".
@@ -51,7 +51,7 @@ private:
 class FileFormatImporter
 {
 public:
-  FileFormatImporter(const FileFormat& myFormat);
+  FileFormatImporter(FileFormat const& myFormat);
   virtual ~FileFormatImporter();
 
   /// Imports the file into the given score.
@@ -69,12 +69,12 @@ private:
 class FileFormatExporter
 {
 public:
-  FileFormatExporter(const FileFormat& myFormat);
+  FileFormatExporter(FileFormat const& myFormat);
   virtual ~FileFormatExporter();
 
   /// Exports the given score to a file.
   /// @throw FileFormatException
-  virtual void save(const boost::filesystem::path& filename, const Score& score) = 0;
+  virtual void save(const boost::filesystem::path& filename, Score const& score) = 0;
 
   /// Returns the file format corresponding to this exporter.
   FileFormat fileFormat() const;

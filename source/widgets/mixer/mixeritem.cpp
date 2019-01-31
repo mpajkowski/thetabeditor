@@ -28,10 +28,10 @@
 
 MixerItem::MixerItem(QWidget* parent,
                      int playerIndex,
-                     const Player& player,
-                     const TuningDictionary& dictionary,
-                     const PlayerEditPubSub& editPubSub,
-                     const PlayerRemovePubSub& removePubSub)
+                     Player const& player,
+                     TuningDictionary const& dictionary,
+                     PlayerEditPubSub const& editPubSub,
+                     PlayerRemovePubSub const& removePubSub)
   : QWidget(parent)
   , ui(new Ui::MixerItem)
   , myDictionary(dictionary)

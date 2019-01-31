@@ -25,7 +25,7 @@
 class AddStaff : public QUndoCommand
 {
 public:
-  AddStaff(const ScoreLocation& location, const Staff& staff, int index);
+  AddStaff(ScoreLocation const& location, Staff const& staff, int index);
 
   virtual void redo() override;
   virtual void undo() override;

@@ -19,7 +19,7 @@
 
 #include <QCursor>
 
-ClickableGroup::ClickableGroup(const QString& tooltip, const Callback& callback)
+ClickableGroup::ClickableGroup(QString const& tooltip, Callback const& callback)
   : myCallback(callback)
 {
   setToolTip(tooltip);

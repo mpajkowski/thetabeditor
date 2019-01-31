@@ -36,19 +36,19 @@ class ViewOptions;
 class SystemRenderer
 {
 public:
-  SystemRenderer(const ScoreArea* score_area, const Score& score, const ViewOptions& view_options);
+  SystemRenderer(const ScoreArea* score_area, Score const& score, ViewOptions const& view_options);
 
-  QGraphicsItem* operator()(const System& system, int systemIndex);
+  QGraphicsItem* operator()(System const& system, int systemIndex);
 
 private:
   /// Draws the tab clef.
-  void drawTabClef(double x, const LayoutInfo& layout, const ScoreLocation& location);
+  void drawTabClef(double x, LayoutInfo const& layout, ScoreLocation const& location);
 
   /// Draws barlines, along with time signatures, rehearsal signs, etc.
-  void drawBarlines(const System& system, int systemIndex, const LayoutConstPtr& layout, bool isFirstStaff);
+  void drawBarlines(System const& system, int systemIndex, LayoutConstPtr const& layout, bool isFirstStaff);
 
   /// Draws the tab notes for all notes in the staff.
-  void drawTabNotes(const Staff& staff, const LayoutConstPtr& layout);
+  void drawTabNotes(Staff const& staff, LayoutConstPtr const& layout);
 
   /// Centers an item, by using its width to calculate the necessary
   /// offset from xmin.
@@ -59,85 +59,85 @@ private:
   static void centerSymbolVertically(QGraphicsItem& item, double y);
 
   /// Draws a arpeggio up/down at the given position.
-  void drawArpeggio(const Position& position, double x, const LayoutInfo& layout);
+  void drawArpeggio(Position const& position, double x, LayoutInfo const& layout);
 
   /// Draws system-level symbols such as alternate endings and tempo markers.
-  void drawSystemSymbols(const System& system, const LayoutInfo& layout);
+  void drawSystemSymbols(System const& system, LayoutInfo const& layout);
 
   /// Draws the bar number for the first bar in the system.
-  void drawBarNumber(int systemIndex, const LayoutInfo& layout);
+  void drawBarNumber(int systemIndex, LayoutInfo const& layout);
 
   /// Draws a divider line between system symbols.
   void drawDividerLine(double y);
 
   /// Draws all of the alternate endings in the system.
-  void drawAlternateEndings(const System& system, const LayoutInfo& layout, double height);
+  void drawAlternateEndings(System const& system, LayoutInfo const& layout, double height);
 
   /// Draws all of the tempo markers in the system.
-  void drawTempoMarkers(const System& system, const LayoutInfo& layout, double height);
+  void drawTempoMarkers(System const& system, LayoutInfo const& layout, double height);
 
   /// Draws all of the directions in the system.
-  double drawDirections(const System& system, const LayoutInfo& layout, double height);
+  double drawDirections(System const& system, LayoutInfo const& layout, double height);
 
   /// Draws all of the chord names in the system.
-  void drawChordText(const System& system, const LayoutInfo& layout, double height);
+  void drawChordText(System const& system, LayoutInfo const& layout, double height);
 
   /// Draws all of the text items in the system.
-  void drawTextItems(const System& system, const LayoutInfo& layout, double height);
+  void drawTextItems(System const& system, LayoutInfo const& layout, double height);
 
   /// Draws the text symbols that appear below the tab staff
   /// (hammerons, slides, etc).
-  void drawSymbolsBelowTabStaff(const LayoutInfo& layout);
+  void drawSymbolsBelowTabStaff(LayoutInfo const& layout);
 
   /// Creates a pick stroke symbol using the given character.
-  QGraphicsItem* createPickStroke(const QString& text);
+  QGraphicsItem* createPickStroke(QString const& text);
 
   /// Creates a plain text item - useful for symbols that don't use the
   /// music font (hammerons, slides, etc).
-  QGraphicsItem* createPlainTextSymbol(const QString& text, QFont::Style style);
+  QGraphicsItem* createPlainTextSymbol(QString const& text, QFont::Style style);
 
   /// Draws symbols that appear above the standard notation staff (e.g. 8va).
-  void drawSymbolsAboveStdNotationStaff(const LayoutInfo& layout);
+  void drawSymbolsAboveStdNotationStaff(LayoutInfo const& layout);
 
   /// Draws symbols that are grouped across multiple positions
   /// (i.e. consecutive "let ring" symbols).
-  QGraphicsItem* createConnectedSymbolGroup(const QString& text,
+  QGraphicsItem* createConnectedSymbolGroup(QString const& text,
                                             QFont::Style style,
                                             double width,
-                                            const LayoutInfo& layout);
+                                            LayoutInfo const& layout);
 
   /// Create a dashed line in the given location.
   void createDashedLine(QGraphicsItemGroup* group, double left, double right, double y);
 
   /// Draws symbols that appear below the standard notation staff (e.g. 8vb).
-  void drawSymbolsBelowStdNotationStaff(const LayoutInfo& layout);
+  void drawSymbolsBelowStdNotationStaff(LayoutInfo const& layout);
 
   /// Draws hammerons, pulloffs, etc in the tab staff.
-  void drawLegato(const Staff& staff, const LayoutInfo& layout);
+  void drawLegato(Staff const& staff, LayoutInfo const& layout);
 
   /// Draws player changes for the given staff.
-  void drawPlayerChanges(const System& system, int staffIndex, const LayoutInfo& layout);
+  void drawPlayerChanges(System const& system, int staffIndex, LayoutInfo const& layout);
 
   /// Draws the symbols that appear above the tab staff (e.g. vibrato).
-  void drawSymbolsAboveTabStaff(const Staff& staff, const LayoutInfo& layout);
+  void drawSymbolsAboveTabStaff(Staff const& staff, LayoutInfo const& layout);
 
   /// Draws a sequence of continuous music symbols (e.g. vibrato).
   QGraphicsItem* drawContinuousFontSymbols(QChar symbol, int width);
 
   /// Creates a tremolo picking symbol.
-  QGraphicsItem* createTremoloPicking(const LayoutInfo& layout);
+  QGraphicsItem* createTremoloPicking(LayoutInfo const& layout);
 
   /// Creates a trill symbol.
-  QGraphicsItem* createTrill(const LayoutInfo& layout);
+  QGraphicsItem* createTrill(LayoutInfo const& layout);
 
   /// Creates an artificial harmonic symbol.
-  QGraphicsItem* createArtificialHarmonicText(const Position& position);
+  QGraphicsItem* createArtificialHarmonicText(Position const& position);
 
   /// Creates a dynamic symbol.
-  QGraphicsItem* createDynamic(const Dynamic& dynamic);
+  QGraphicsItem* createDynamic(Dynamic const& dynamic);
 
   /// Draws a group of bends.
-  QGraphicsItem* createBendGroup(const SymbolGroup& group, const LayoutInfo& layout);
+  QGraphicsItem* createBendGroup(SymbolGroup const& group, LayoutInfo const& layout);
 
   /// Draws a single bend.
   void createBend(QGraphicsItemGroup* group,
@@ -149,41 +149,41 @@ private:
                   bool prebend);
 
   /// Draws notes, beams, and rests.
-  void drawStdNotation(const System& system, const Staff& staff, const LayoutInfo& layout);
+  void drawStdNotation(System const& system, Staff const& staff, LayoutInfo const& layout);
 
   /// Draws all ties in the voice.
-  void drawTies(const Voice& voice,
+  void drawTies(Voice const& voice,
                 const std::vector<StdNotationNote>& notes,
                 const std::vector<NoteStem>& stems,
-                const LayoutInfo& layout);
+                LayoutInfo const& layout);
 
   /// Draws all irregular groups in the voice.
-  void drawIrregularGroups(const Voice& voice, const std::vector<NoteStem>& stems);
+  void drawIrregularGroups(Voice const& voice, const std::vector<NoteStem>& stems);
 
   /// Draws a multi-bar rest symbol.
-  void drawMultiBarRest(const System& system,
-                        const Barline& leftBar,
-                        const LayoutInfo& layout,
+  void drawMultiBarRest(System const& system,
+                        Barline const& leftBar,
+                        LayoutInfo const& layout,
                         int measureCount);
 
   /// Draws a rest symbol.
-  void drawRest(const Position& pos, double x, const LayoutInfo& layout);
+  void drawRest(Position const& pos, double x, LayoutInfo const& layout);
 
   /// Draws ledger lines for all positions in the staff.
-  void drawLedgerLines(const LayoutInfo& layout,
+  void drawLedgerLines(LayoutInfo const& layout,
                        const std::map<int, double>& minNoteLocations,
                        const std::map<int, double>& maxNoteLocations,
                        const std::map<int, double>& noteHeadWidths);
 
   /// Draws all slides in a staff.
-  void drawSlides(const Staff& staff, const LayoutInfo& layout);
+  void drawSlides(Staff const& staff, LayoutInfo const& layout);
 
   /// Draws a single slide between the given positions.
-  void drawSlide(const LayoutInfo& layout, int string, bool slideUp, int position1, int position2) const;
+  void drawSlide(LayoutInfo const& layout, int string, bool slideUp, int position1, int position2) const;
 
   const ScoreArea* myScoreArea;
-  const Score& myScore;
-  const ViewOptions& myViewOptions;
+  Score const& myScore;
+  ViewOptions const& myViewOptions;
 
   QGraphicsRectItem* myParentSystem;
   QGraphicsItem* myParentStaff;

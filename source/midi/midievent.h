@@ -37,13 +37,13 @@ public:
     MetaMessage = 0xff
   };
 
-  inline bool operator<(const MidiEvent& other) const { return myTicks < other.myTicks; }
+  inline bool operator<(MidiEvent const& other) const { return myTicks < other.myTicks; }
 
   int getTicks() const { return myTicks; }
   void setTicks(int ticks) { myTicks = ticks; }
   uint8_t getStatusByte() const { return myData[0]; }
   const std::vector<uint8_t>& getData() const { return myData; }
-  const SystemLocation& getLocation() const { return myLocation; }
+  SystemLocation const& getLocation() const { return myLocation; }
 
   bool isTempoChange() const;
   int getTempo() const;
@@ -58,18 +58,18 @@ public:
                           uint8_t channel,
                           uint8_t pitch,
                           uint8_t velocity,
-                          const SystemLocation& location);
-  static MidiEvent noteOff(int ticks, uint8_t channel, uint8_t pitch, const SystemLocation& location);
+                          SystemLocation const& location);
+  static MidiEvent noteOff(int ticks, uint8_t channel, uint8_t pitch, SystemLocation const& location);
   static MidiEvent volumeChange(int ticks, uint8_t channel, uint8_t level);
   static MidiEvent programChange(int ticks, uint8_t channel, uint8_t preset);
   static MidiEvent modWheel(int ticks, uint8_t channel, uint8_t width);
   static MidiEvent holdPedal(int ticks, uint8_t channel, bool enabled);
   static MidiEvent pitchWheel(int ticks, uint8_t channel, uint8_t amount);
-  static MidiEvent positionChange(int ticks, const SystemLocation& location);
+  static MidiEvent positionChange(int ticks, SystemLocation const& location);
   static std::vector<MidiEvent> pitchWheelRange(int ticks, uint8_t channel, uint8_t semitones);
 
 private:
-  MidiEvent(int ticks, std::vector<uint8_t> data, const SystemLocation& location, int player, int instrument);
+  MidiEvent(int ticks, std::vector<uint8_t> data, SystemLocation const& location, int player, int instrument);
 
   int myTicks; // TODO - does this need to be 64-bit for absolute times?
   std::vector<uint8_t> myData;

@@ -25,7 +25,7 @@ Direction::Direction(int position)
   : myPosition(position)
 {}
 
-bool Direction::operator==(const Direction& other) const
+bool Direction::operator==(Direction const& other) const
 {
   return myPosition == other.myPosition && mySymbols == other.mySymbols;
 }
@@ -50,7 +50,7 @@ boost::iterator_range<Direction::SymbolConstIterator> Direction::getSymbols() co
   return boost::make_iterator_range(mySymbols);
 }
 
-void Direction::insertSymbol(const DirectionSymbol& symbol)
+void Direction::insertSymbol(DirectionSymbol const& symbol)
 {
   mySymbols.push_back(symbol);
 }
@@ -72,7 +72,7 @@ DirectionSymbol::DirectionSymbol(SymbolType type, ActiveSymbolType activeType, i
   , myRepeatNumber(repeatNumber)
 {}
 
-bool DirectionSymbol::operator==(const DirectionSymbol& other) const
+bool DirectionSymbol::operator==(DirectionSymbol const& other) const
 {
   return mySymbolType == other.mySymbolType && myActiveSymbolType == other.myActiveSymbolType &&
          myRepeatNumber == other.myRepeatNumber;

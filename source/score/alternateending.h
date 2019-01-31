@@ -37,7 +37,7 @@ public:
   AlternateEnding();
   explicit AlternateEnding(int position);
 
-  bool operator==(const AlternateEnding& other) const;
+  bool operator==(AlternateEnding const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -81,6 +81,6 @@ void AlternateEnding::serialize(Archive& ar, const FileVersion /*version*/)
 }
 
 /// Gets the alternate ending text (numbers + D.C./D.S./D.S.S.).
-std::ostream& operator<<(std::ostream& os, const AlternateEnding& ending);
+std::ostream& operator<<(std::ostream& os, AlternateEnding const& ending);
 
 #endif

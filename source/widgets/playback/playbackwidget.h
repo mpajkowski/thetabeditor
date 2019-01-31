@@ -32,15 +32,15 @@ class PlaybackWidget : public QWidget
   Q_OBJECT
 
 public:
-  explicit PlaybackWidget(const QAction& play_pause_command,
-                          const QAction& rewind_command,
-                          const QAction& stop_command,
-                          const QAction& metronome_command,
+  explicit PlaybackWidget(QAction const& play_pause_command,
+                          QAction const& rewind_command,
+                          QAction const& stop_command,
+                          QAction const& metronome_command,
                           QWidget* parent);
   ~PlaybackWidget();
 
   /// Reload any settings for the given score.
-  void reset(const Document& doc);
+  void reset(Document const& doc);
 
   /// Get the current playback speed.
   int getPlaybackSpeed() const;

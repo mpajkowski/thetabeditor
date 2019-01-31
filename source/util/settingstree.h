@@ -60,7 +60,7 @@ public:
   /// if not found.
   /// @throws std::exception If T does not match the value's type.
   template<typename T>
-  T get(const std::string& key, const T& default_val = T()) const;
+  T get(const std::string& key, T const& default_val = T()) const;
 
   /// Retrieve a list of values associated with the given key.
   template<typename T>
@@ -80,7 +80,7 @@ public:
 
   /// Set the value associated with the key.
   template<typename T>
-  void set(const std::string& key, const T& value);
+  void set(const std::string& key, T const& value);
 
   /// Since the implicit conversion from const char * to bool takes
   /// precedence over the implicit std::string constructor, add an explicit
@@ -92,7 +92,7 @@ public:
   void setList(const std::string& key, const std::vector<T>& values);
 
   template<typename T>
-  void set(const Setting<T>& setting, const T& value)
+  void set(const Setting<T>& setting, T const& value)
   {
     set(setting.myKey, value);
   }
@@ -114,7 +114,7 @@ public:
   void loadFromPlist();
 
 private:
-  void setImpl(const std::string& key, const SettingValue& value);
+  void setImpl(const std::string& key, SettingValue const& value);
   boost::optional<SettingValue> find(const std::string& key) const;
 
   SettingValue myTree;
@@ -124,13 +124,13 @@ private:
 template<typename T>
 struct SettingValueConverter
 {
-  static SettingsTree::SettingValue to(const T& t) { return t; }
+  static SettingsTree::SettingValue to(T const& t) { return t; }
 
   static T from(const SettingsTree::SettingValue& v) { return boost::get<T>(v); }
 };
 
 template<typename T>
-T SettingsTree::get(const std::string& key, const T& default_val) const
+T SettingsTree::get(const std::string& key, T const& default_val) const
 {
   boost::optional<SettingValue> val = find(key);
   return val ? SettingValueConverter<T>::from(*val) : default_val;
@@ -150,7 +150,7 @@ std::vector<T> SettingsTree::getList(const std::string& key) const
 }
 
 template<typename T>
-void SettingsTree::set(const std::string& key, const T& val)
+void SettingsTree::set(const std::string& key, T const& val)
 {
   setImpl(key, SettingValueConverter<T>::to(val));
 }

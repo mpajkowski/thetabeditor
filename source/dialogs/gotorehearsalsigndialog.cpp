@@ -10,7 +10,7 @@
 typedef std::pair<int, int> SystemAndPosition;
 Q_DECLARE_METATYPE(SystemAndPosition)
 
-GoToRehearsalSignDialog::GoToRehearsalSignDialog(QWidget* parent, const Score& score)
+GoToRehearsalSignDialog::GoToRehearsalSignDialog(QWidget* parent, Score const& score)
   : QDialog(parent)
   , ui(new Ui::GoToRehearsalSignDialog)
   , myScore(score)
@@ -19,11 +19,11 @@ GoToRehearsalSignDialog::GoToRehearsalSignDialog(QWidget* parent, const Score& s
 
   // Add all of the rehearsal signs in the score to the list.
   int systemIndex = 0;
-  for (const System& system : score.getSystems()) {
-    for (const Barline& barline : system.getBarlines()) {
+  for (System const& system : score.getSystems()) {
+    for (Barline const& barline : system.getBarlines()) {
       if (barline.hasRehearsalSign()) {
         SystemAndPosition location = std::make_pair(systemIndex, barline.getPosition());
-        const RehearsalSign& sign = barline.getRehearsalSign();
+        RehearsalSign const& sign = barline.getRehearsalSign();
 
         ui->rehearsalSignComboBox->addItem(
           QString("%1 -- %2")

@@ -20,7 +20,7 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemoveTempoMarker::RemoveTempoMarker(const ScoreLocation& location)
+RemoveTempoMarker::RemoveTempoMarker(ScoreLocation const& location)
   : myLocation(location)
   , myOriginalTempo(
       *ScoreUtils::findByPosition(location.getSystem().getTempoMarkers(), location.getPositionIndex()))

@@ -39,7 +39,7 @@ void ViewFilterDialog::setPresenter(ViewFilterPresenter* presenter)
     myPresenter->selectFilter(ui->filterList->currentRow());
   });
 
-  connect(ui->nameLineEdit, &QLineEdit::textEdited, [&](const QString& s) {
+  connect(ui->nameLineEdit, &QLineEdit::textEdited, [&](QString const& s) {
     myPresenter->editFilterDescription(s.toStdString());
   });
   connect(ui->addRuleButton, &QToolButton::clicked, [&]() { myPresenter->addRule(); });
@@ -83,7 +83,7 @@ void ViewFilterDialog::update(const std::vector<std::string>& names,
       ui->filterRuleLayout->addWidget(widget);
 
       connect(
-        widget, &FilterRuleWidget::changed, [=](const FilterRule& rule) { myPresenter->editRule(i, rule); });
+        widget, &FilterRuleWidget::changed, [=](FilterRule const& rule) { myPresenter->editRule(i, rule); });
       connect(widget, &FilterRuleWidget::removeRequested, [=]() { myPresenter->removeRule(i); });
     }
 

@@ -25,7 +25,7 @@
 class EditTabNumber : public QUndoCommand
 {
 public:
-  EditTabNumber(const ScoreLocation& location, int typedNumber);
+  EditTabNumber(ScoreLocation const& location, int typedNumber);
 
   virtual void redo() override;
   virtual void undo() override;

@@ -32,7 +32,7 @@ Player::Player()
   , myIsPercussion(false)
 {}
 
-bool Player::operator==(const Player& other) const
+bool Player::operator==(Player const& other) const
 {
   return myDescription == other.myDescription && myMaxVolume == other.myMaxVolume && myPan == other.myPan &&
          myTuning == other.myTuning && myMidiPreset == other.myMidiPreset;
@@ -74,12 +74,12 @@ void Player::setPan(uint8_t pan)
   myPan = pan;
 }
 
-const Tuning& Player::getTuning() const
+Tuning const& Player::getTuning() const
 {
   return myTuning;
 }
 
-void Player::setTuning(const Tuning& tuning)
+void Player::setTuning(Tuning const& tuning)
 {
   myTuning = tuning;
 }

@@ -28,13 +28,13 @@ class SystemLocation;
 class RepeatController
 {
 public:
-  RepeatController(const Score& score);
+  RepeatController(Score const& score);
 
   /// Checks if a repeat needs to be performed at the given location.
   /// @returns True if the playback position needs to be changed, and updates
   ///     the newLocation parameter with the new playback location.
-  bool checkForRepeat(const SystemLocation& prevLocation,
-                      const SystemLocation& currentLocation,
+  bool checkForRepeat(SystemLocation const& prevLocation,
+                      SystemLocation const& currentLocation,
                       SystemLocation& newLocation);
 
 private:

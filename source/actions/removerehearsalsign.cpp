@@ -20,7 +20,7 @@
 #include <score/barline.h>
 #include <score/score.h>
 
-RemoveRehearsalSign::RemoveRehearsalSign(const ScoreLocation& location)
+RemoveRehearsalSign::RemoveRehearsalSign(ScoreLocation const& location)
   : QUndoCommand(QObject::tr("Remove Rehearsal Sign"))
   , myLocation(location)
   , myRehearsalSign(location.getBarline()->getRehearsalSign())

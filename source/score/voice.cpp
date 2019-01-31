@@ -21,7 +21,7 @@
 
 Voice::Voice() {}
 
-bool Voice::operator==(const Voice& other) const
+bool Voice::operator==(Voice const& other) const
 {
   return myPositions == other.myPositions && myIrregularGroupings == other.myIrregularGroupings;
 }
@@ -36,12 +36,12 @@ boost::iterator_range<Voice::PositionConstIterator> Voice::getPositions() const
   return boost::make_iterator_range(myPositions);
 }
 
-void Voice::insertPosition(const Position& position)
+void Voice::insertPosition(Position const& position)
 {
   ScoreUtils::insertObject(myPositions, position);
 }
 
-void Voice::removePosition(const Position& position)
+void Voice::removePosition(Position const& position)
 {
   ScoreUtils::removeObject(myPositions, position);
 }
@@ -56,12 +56,12 @@ boost::iterator_range<Voice::IrregularGroupingConstIterator> Voice::getIrregular
   return boost::make_iterator_range(myIrregularGroupings);
 }
 
-void Voice::insertIrregularGrouping(const IrregularGrouping& group)
+void Voice::insertIrregularGrouping(IrregularGrouping const& group)
 {
   ScoreUtils::insertObject(myIrregularGroupings, group);
 }
 
-void Voice::removeIrregularGrouping(const IrregularGrouping& group)
+void Voice::removeIrregularGrouping(IrregularGrouping const& group)
 {
   ScoreUtils::removeObject(myIrregularGroupings, group);
 }

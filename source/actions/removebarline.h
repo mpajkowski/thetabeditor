@@ -25,7 +25,7 @@
 class RemoveBarline : public QUndoCommand
 {
 public:
-  RemoveBarline(const ScoreLocation& location);
+  RemoveBarline(ScoreLocation const& location);
 
   virtual void redo() override;
   virtual void undo() override;

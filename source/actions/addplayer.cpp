@@ -19,7 +19,7 @@
 
 #include <score/score.h>
 
-AddPlayer::AddPlayer(Score& score, const Player& player)
+AddPlayer::AddPlayer(Score& score, Player const& player)
   : QUndoCommand(QObject::tr("Add Player"))
   , myScore(score)
   , myPlayer(player)

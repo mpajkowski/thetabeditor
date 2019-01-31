@@ -29,14 +29,14 @@ class ViewOptions;
 class CaretPainter : public QGraphicsItem
 {
 public:
-  CaretPainter(const Caret& caret, const ViewOptions& view_options);
+  CaretPainter(Caret const& caret, ViewOptions const& view_options);
 
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) override;
 
   virtual QRectF boundingRect() const override;
 
-  void addSystemRect(const QRectF& rect);
-  void setSystemRect(int index, const QRectF& rect);
+  void addSystemRect(QRectF const& rect);
+  void setSystemRect(int index, QRectF const& rect);
   QRectF getCurrentSystemRect() const;
 
   void updatePosition();
@@ -49,8 +49,8 @@ private:
   /// Redraw the caret painter whenever the caret moves.
   void onLocationChanged();
 
-  const Caret& myCaret;
-  const ViewOptions& myViewOptions;
+  Caret const& myCaret;
+  ViewOptions const& myViewOptions;
   std::unique_ptr<LayoutInfo> myLayout;
   std::vector<QRectF> mySystemRects;
   boost::signals2::scoped_connection myCaretConnection;

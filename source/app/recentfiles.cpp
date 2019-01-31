@@ -47,13 +47,13 @@ void RecentFiles::save()
 {
   auto settings = mySettingsManager.getWriteHandle();
   std::vector<std::string> recent_files;
-  for (const QString& file : myRecentFiles)
+  for (QString const& file : myRecentFiles)
     recent_files.push_back(file.toStdString());
 
   settings->set(Settings::RecentFiles, recent_files);
 }
 
-void RecentFiles::add(const QString& fileName)
+void RecentFiles::add(QString const& fileName)
 {
   // If the filename is already in the list, move it to the front.
   myRecentFiles.removeOne(fileName);
@@ -76,7 +76,7 @@ void RecentFiles::updateMenu()
 {
   myRecentFilesMenu->clear();
 
-  for (const QString& fileName : myRecentFiles) {
+  for (QString const& fileName : myRecentFiles) {
     auto fileAction = new QAction(fileName, myRecentFilesMenu);
     myRecentFilesMenu->addAction(fileAction);
 
@@ -99,7 +99,7 @@ void RecentFiles::clear()
   updateMenu();
 }
 
-void RecentFiles::handleFileSelection(const QString& fileName)
+void RecentFiles::handleFileSelection(QString const& fileName)
 {
   emit fileSelected(fileName);
 }

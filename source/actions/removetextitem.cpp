@@ -20,7 +20,7 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemoveTextItem::RemoveTextItem(const ScoreLocation& location)
+RemoveTextItem::RemoveTextItem(ScoreLocation const& location)
   : QUndoCommand(QObject::tr("Remove Text"))
   , myLocation(location)
   , myOriginalText(

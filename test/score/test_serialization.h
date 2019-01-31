@@ -28,7 +28,7 @@ namespace Serialization {
 /// Basic test for the serialization code - we should be able to serialize
 /// and deserialize and object, and get an equivalent object back.
 template<typename T>
-void test(const char* name, const T& original)
+void test(const char* name, T const& original)
 {
   std::ostringstream output;
   ScoreUtils::save(output, name, original);

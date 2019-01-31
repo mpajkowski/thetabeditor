@@ -273,7 +273,7 @@ void GuitarProImporter::convertScore(const Gp::Document& doc, Score& score)
   TimeSignature lastTimeSig;
 
   // Add a staff for each player.
-  for (const Player& player : score.getPlayers())
+  for (Player const& player : score.getPlayers())
     system.insertStaff(Staff(player.getTuning().getStringCount()));
 
   // Add initial tempo marker.
@@ -304,7 +304,7 @@ void GuitarProImporter::convertScore(const Gp::Document& doc, Score& score)
       system = System();
 
       // Add a staff for each player.
-      for (const Player& player : score.getPlayers())
+      for (Player const& player : score.getPlayers())
         system.insertStaff(Staff(player.getTuning().getStringCount()));
 
       startPos = 0;

@@ -147,7 +147,7 @@ void KeyboardSettingsDialog::resetToDefaultShortcut()
   setShortcut(activeCommand()->defaultShortcut());
 }
 
-void KeyboardSettingsDialog::setShortcut(const QKeySequence& shortcut, QTreeWidgetItem* item)
+void KeyboardSettingsDialog::setShortcut(QKeySequence const& shortcut, QTreeWidgetItem* item)
 {
   if (!item)
     item = ui->commandsList->currentItem();

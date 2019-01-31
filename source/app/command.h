@@ -29,14 +29,14 @@ class Command : public QAction
   Q_OBJECT
 
 public:
-  Command(const QString& text, const QString& id, const QKeySequence& defaultShortcut, QObject* parent);
+  Command(QString const& text, QString const& id, QKeySequence const& defaultShortcut, QObject* parent);
 
   QString id() const;
   QKeySequence defaultShortcut() const;
 
   /// Loads the shortcut for the command - if there is not a customized
   /// shortcut in the settings file, then the default shortcut is used.
-  void load(const SettingsTree& settings);
+  void load(SettingsTree const& settings);
 
   /// Saves the command's shortcut.
   void save(SettingsTree& settings) const;

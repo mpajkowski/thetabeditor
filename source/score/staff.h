@@ -48,7 +48,7 @@ public:
   Staff();
   explicit Staff(int stringCount);
 
-  bool operator==(const Staff& other) const;
+  bool operator==(Staff const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -75,9 +75,9 @@ public:
   boost::iterator_range<DynamicConstIterator> getDynamics() const;
 
   /// Adds a new dynamic to the staff.
-  void insertDynamic(const Dynamic& dynamic);
+  void insertDynamic(Dynamic const& dynamic);
   /// Removes the specified dynamic from the staff.
-  void removeDynamic(const Dynamic& dynamic);
+  void removeDynamic(Dynamic const& dynamic);
 
 private:
   ClefType myClefType;

@@ -32,9 +32,9 @@ TEST_CASE("Actions/AddRehearsalSign", "")
   AddRehearsalSign action(location, "Verse");
 
   action.redo();
-  const Barline& barline = score.getSystems()[0].getBarlines()[1];
+  Barline const& barline = score.getSystems()[0].getBarlines()[1];
   REQUIRE(barline.hasRehearsalSign());
-  const RehearsalSign& sign = barline.getRehearsalSign();
+  RehearsalSign const& sign = barline.getRehearsalSign();
   REQUIRE(sign.getDescription() == "Verse");
   REQUIRE(sign.getLetters() == "B");
 

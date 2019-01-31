@@ -39,13 +39,13 @@ FilterRule::FilterRule(Subject subject, Operation op, int value)
   , myIntValue(value)
 {}
 
-bool FilterRule::operator==(const FilterRule& other) const
+bool FilterRule::operator==(FilterRule const& other) const
 {
   return mySubject == other.mySubject && myOperation == other.myOperation && myIntValue == other.myIntValue &&
          myStrValue == other.myStrValue;
 }
 
-bool FilterRule::accept(const Score& score, int system_index, int staff_index) const
+bool FilterRule::accept(Score const& score, int system_index, int staff_index) const
 {
   std::vector<const PlayerChange*> player_changes;
 
@@ -53,13 +53,13 @@ bool FilterRule::accept(const Score& score, int system_index, int staff_index) c
   if (current_players)
     player_changes.push_back(current_players);
 
-  for (const PlayerChange& change : score.getSystems()[system_index].getPlayerChanges()) {
+  for (PlayerChange const& change : score.getSystems()[system_index].getPlayerChanges()) {
     player_changes.push_back(&change);
   }
 
   bool has_active_players = false;
   for (const PlayerChange* change : player_changes) {
-    for (const ActivePlayer& player : change->getActivePlayers(staff_index)) {
+    for (ActivePlayer const& player : change->getActivePlayers(staff_index)) {
       has_active_players = true;
 
       if (accept(score, player))
@@ -71,9 +71,9 @@ bool FilterRule::accept(const Score& score, int system_index, int staff_index) c
   return !has_active_players;
 }
 
-bool FilterRule::accept(const Score& score, const ActivePlayer& p) const
+bool FilterRule::accept(Score const& score, ActivePlayer const& p) const
 {
-  const Player& player = score.getPlayers()[p.getPlayerNumber()];
+  Player const& player = score.getPlayers()[p.getPlayerNumber()];
 
   switch (mySubject) {
     case PLAYER_NAME:
@@ -102,7 +102,7 @@ bool FilterRule::accept(const Score& score, const ActivePlayer& p) const
 
 ViewFilter::ViewFilter() {}
 
-bool ViewFilter::operator==(const ViewFilter& other) const
+bool ViewFilter::operator==(ViewFilter const& other) const
 {
   return myDescription == other.myDescription && myRules == other.myRules;
 }
@@ -117,7 +117,7 @@ void ViewFilter::setDescription(const std::string& description)
   myDescription = description;
 }
 
-void ViewFilter::addRule(const FilterRule& rule)
+void ViewFilter::addRule(FilterRule const& rule)
 {
   myRules.push_back(rule);
 }
@@ -137,12 +137,12 @@ boost::iterator_range<ViewFilter::RuleConstIterator> ViewFilter::getRules() cons
   return boost::make_iterator_range(myRules);
 }
 
-bool ViewFilter::accept(const Score& score, int system_index, int staff_index) const
+bool ViewFilter::accept(Score const& score, int system_index, int staff_index) const
 {
   if (myRules.empty())
     return true;
 
-  for (const FilterRule& rule : myRules) {
+  for (FilterRule const& rule : myRules) {
     if (rule.accept(score, system_index, staff_index))
       return true;
   }
@@ -150,7 +150,7 @@ bool ViewFilter::accept(const Score& score, int system_index, int staff_index) c
   return false;
 }
 
-std::ostream& operator<<(std::ostream& os, const ViewFilter& filter)
+std::ostream& operator<<(std::ostream& os, ViewFilter const& filter)
 {
   os << filter.getDescription() << ": " << filter.getRules().size() << " rules";
 

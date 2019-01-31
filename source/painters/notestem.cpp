@@ -21,8 +21,8 @@
 #include <score/position.h>
 #include <score/voiceutils.h>
 
-NoteStem::NoteStem(const Voice& voice,
-                   const Position& pos,
+NoteStem::NoteStem(Voice const& voice,
+                   Position const& pos,
                    double x,
                    double noteHeadWidth,
                    const std::vector<double>& noteLocations)
@@ -122,19 +122,19 @@ bool NoteStem::isStaccato() const
   return myPosition->hasProperty(Position::Staccato);
 }
 
-bool NoteStem::isBeamable(const NoteStem& stem)
+bool NoteStem::isBeamable(NoteStem const& stem)
 {
   return !stem.myPosition->isRest() && !stem.myPosition->hasMultiBarRest() &&
          stem.myPosition->getDurationType() >= Position::EighthNote;
 }
 
-bool NoteStem::needsStem(const NoteStem& stem)
+bool NoteStem::needsStem(NoteStem const& stem)
 {
   return !stem.myPosition->isRest() && !stem.myPosition->hasMultiBarRest() &&
          (stem.isGraceNote() || stem.myPosition->getDurationType() != Position::WholeNote);
 }
 
-bool NoteStem::canHaveFlag(const NoteStem& stem)
+bool NoteStem::canHaveFlag(NoteStem const& stem)
 {
   return stem.myPosition->getDurationType() > Position::QuarterNote || stem.isGraceNote();
 }
@@ -223,14 +223,14 @@ NoteStem::StemType NoteStem::computeStemDirection(std::vector<NoteStem>& stems,
   return stemType;
 }
 
-const NoteStem& NoteStem::findHighestStem(const std::vector<NoteStem>& stems,
+NoteStem const& NoteStem::findHighestStem(const std::vector<NoteStem>& stems,
                                           const std::vector<size_t>& group)
 {
   return stems[*std::min_element(
     group.begin(), group.end(), [&](size_t i, size_t j) { return stems[i].getTop() < stems[j].getTop(); })];
 }
 
-const NoteStem& NoteStem::findLowestStem(const std::vector<NoteStem>& stems, const std::vector<size_t>& group)
+NoteStem const& NoteStem::findLowestStem(const std::vector<NoteStem>& stems, const std::vector<size_t>& group)
 {
   return stems[*std::max_element(group.begin(), group.end(), [&](size_t i, size_t j) {
     return stems[i].getBottom() < stems[j].getBottom();

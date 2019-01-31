@@ -19,7 +19,7 @@
 
 #include <score/system.h>
 
-AddTextItem::AddTextItem(const ScoreLocation& location, const TextItem& text)
+AddTextItem::AddTextItem(ScoreLocation const& location, TextItem const& text)
   : QUndoCommand(QObject::tr("Add Text"))
   , myLocation(location)
   , myText(text)

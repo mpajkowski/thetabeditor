@@ -25,7 +25,7 @@
 class RemoveTextItem : public QUndoCommand
 {
 public:
-  RemoveTextItem(const ScoreLocation& location);
+  RemoveTextItem(ScoreLocation const& location);
 
   virtual void redo() override;
   virtual void undo() override;

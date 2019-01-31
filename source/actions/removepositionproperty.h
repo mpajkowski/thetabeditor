@@ -26,9 +26,9 @@
 class RemovePositionProperty : public QUndoCommand
 {
 public:
-  RemovePositionProperty(const ScoreLocation& location,
+  RemovePositionProperty(ScoreLocation const& location,
                          Position::SimpleProperty property,
-                         const QString& positionDescription);
+                         QString const& positionDescription);
 
   virtual void redo() override;
   virtual void undo() override;

@@ -71,11 +71,11 @@ TEST_CASE("Actions/EditTuning", "")
   EditPlayer action(score, 0, newPlayer);
 
   action.redo();
-  const PlayerChange& newChange = score.getSystems()[0].getPlayerChanges()[0];
+  PlayerChange const& newChange = score.getSystems()[0].getPlayerChanges()[0];
   REQUIRE(newChange.getActivePlayers(0).size() == 1);
   REQUIRE(newChange.getActivePlayers(0)[0].getPlayerNumber() == 1);
 
   action.undo();
-  const PlayerChange& reverted = score.getSystems()[0].getPlayerChanges()[0];
+  PlayerChange const& reverted = score.getSystems()[0].getPlayerChanges()[0];
   REQUIRE(reverted.getActivePlayers(0).size() == 2);
 }

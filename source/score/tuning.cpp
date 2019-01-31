@@ -43,12 +43,12 @@ Tuning::Tuning()
   myNotes.push_back(Midi::MIDI_NOTE_E2);
 }
 
-bool Tuning::operator==(const Tuning& other) const
+bool Tuning::operator==(Tuning const& other) const
 {
   return myName == other.myName && isSameTuning(other);
 }
 
-bool Tuning::isSameTuning(const Tuning& other) const
+bool Tuning::isSameTuning(Tuning const& other) const
 {
   return myNotes == other.myNotes && myMusicNotationOffset == other.myMusicNotationOffset &&
          myUsesSharps == other.myUsesSharps && myCapo == other.myCapo;
@@ -151,7 +151,7 @@ void Tuning::setCapo(int capo)
   myCapo = capo;
 }
 
-std::ostream& operator<<(std::ostream& os, const Tuning& t)
+std::ostream& operator<<(std::ostream& os, Tuning const& t)
 {
   // Go from lowest to highest string
   for (int i = t.getStringCount(); i > 0; i--) {

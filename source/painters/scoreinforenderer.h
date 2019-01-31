@@ -22,7 +22,7 @@ class QGraphicsItem;
 class ScoreInfo;
 
 namespace ScoreInfoRenderer {
-QGraphicsItem* render(const ScoreInfo& score_info);
+QGraphicsItem* render(ScoreInfo const& score_info);
 }
 
 #endif

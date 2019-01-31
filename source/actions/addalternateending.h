@@ -25,7 +25,7 @@
 class AddAlternateEnding : public QUndoCommand
 {
 public:
-  AddAlternateEnding(const ScoreLocation& location, const AlternateEnding& ending);
+  AddAlternateEnding(ScoreLocation const& location, AlternateEnding const& ending);
 
   virtual void redo() override;
   virtual void undo() override;

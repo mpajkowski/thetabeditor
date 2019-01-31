@@ -34,10 +34,10 @@ static const ViewOptions theDefaultViewOptions;
 class ExpandedBar
 {
 public:
-  ExpandedBar(const SystemLocation& location,
+  ExpandedBar(SystemLocation const& location,
               bool is_expanded,
               int rest_count,
-              const Barline& start_bar,
+              Barline const& start_bar,
               int remaining_repeats,
               bool is_repeat_end,
               bool is_alt_ending)
@@ -50,14 +50,14 @@ public:
     , myAlternateEnding(is_alt_ending)
   {}
 
-  const SystemLocation& getLocation() const { return myLocation; }
+  SystemLocation const& getLocation() const { return myLocation; }
 
   int getMultiBarRestCount() const { return myMultiBarRestCount; }
   void setMultiBarRestCount(int count) { myMultiBarRestCount = count; }
 
   bool isExpanded() const { return myIsExpanded; }
 
-  const Barline& getStartBar() const { return myStartBar; }
+  Barline const& getStartBar() const { return myStartBar; }
   int getRemainingRepeats() const { return myRemainingRepeats; }
   bool isRepeatEnd() const { return myRepeatEnd; }
   bool isAlternateEnding() const { return myAlternateEnding; }
@@ -105,8 +105,8 @@ static void expandScore(Score& score, ExpandedBarList& expanded_bars)
   bool alternate_ending = false;
 
   while (true) {
-    const ScoreLocation& score_loc = caret.getLocation();
-    const System& system = score_loc.getSystem();
+    ScoreLocation const& score_loc = caret.getLocation();
+    System const& system = score_loc.getSystem();
     const Barline* prev_bar = system.getPreviousBarline(score_loc.getPositionIndex() + 1);
     const Barline* next_bar = system.getNextBarline(score_loc.getPositionIndex());
 
@@ -178,21 +178,21 @@ static void expandScore(Score& score, ExpandedBarList& expanded_bars)
   }
 }
 
-static void mergePlayers(Score& dest_score, const Score& guitar_score, const Score& bass_score)
+static void mergePlayers(Score& dest_score, Score const& guitar_score, Score const& bass_score)
 {
-  for (const Player& player : guitar_score.getPlayers())
+  for (Player const& player : guitar_score.getPlayers())
     dest_score.insertPlayer(player);
-  for (const Player& player : bass_score.getPlayers())
+  for (Player const& player : bass_score.getPlayers())
     dest_score.insertPlayer(player);
 }
 
-static void getPositionRange(const ScoreLocation& dest,
-                             const ScoreLocation& src,
+static void getPositionRange(ScoreLocation const& dest,
+                             ScoreLocation const& src,
                              int& offset,
                              int& left,
                              int& right)
 {
-  const System& src_system = src.getSystem();
+  System const& src_system = src.getSystem();
   const Barline* src_bar = src.getBarline();
   assert(src_bar);
   const Barline* next_src_bar = src_system.getNextBarline(src_bar->getPosition());
@@ -221,7 +221,7 @@ static int insertMultiBarRest(ScoreLocation& dest, ScoreLocation&, int count)
 }
 
 /// Copy notes from the source bar to the destination.
-static int copyNotes(ScoreLocation& dest, const ScoreLocation& src)
+static int copyNotes(ScoreLocation& dest, ScoreLocation const& src)
 {
   int offset, left, right;
   getPositionRange(dest, src, offset, left, right);
@@ -229,7 +229,7 @@ static int copyNotes(ScoreLocation& dest, const ScoreLocation& src)
   auto positions = ScoreUtils::findInRange(src.getVoice().getPositions(), left, right);
 
   if (!positions.empty()) {
-    for (const Position& pos : positions) {
+    for (Position const& pos : positions) {
       Position new_pos(pos);
       new_pos.setPosition(new_pos.getPosition() + offset);
       dest.getVoice().insertPosition(new_pos);
@@ -259,7 +259,7 @@ static int importNotes(ScoreLocation& dest_loc,
                        std::function<int(ScoreLocation&, ScoreLocation&)> action)
 {
   System& dest_system = dest_loc.getSystem();
-  const System& src_system = src_loc.getSystem();
+  System const& src_system = src_loc.getSystem();
 
   int offset, left, right;
   getPositionRange(dest_loc, src_loc, offset, left, right);
@@ -271,7 +271,7 @@ static int importNotes(ScoreLocation& dest_loc,
   for (unsigned int i = 0; i < src_system.getStaves().size(); ++i) {
     // Ensure that there are enough staves in the destination system.
     if ((!is_bass && num_guitar_staves <= i) || dest_system.getStaves().size() <= i + staff_offset) {
-      const Staff& src_staff = src_system.getStaves()[i];
+      Staff const& src_staff = src_system.getStaves()[i];
       Staff dest_staff(src_staff.getStringCount());
       dest_staff.setClefType(src_staff.getClefType());
       dest_system.insertStaff(dest_staff, i + staff_offset);
@@ -288,7 +288,7 @@ static int importNotes(ScoreLocation& dest_loc,
     // Import dynamics, but don't repeatedly do so when e.g. a multi-bar
     // rest was expanded.
     if (!is_expanded_bar) {
-      for (const Dynamic& dynamic :
+      for (Dynamic const& dynamic :
            ScoreUtils::findInRange(src_loc.getStaff().getDynamics(), left, right - 1)) {
         Dynamic new_dynamic(dynamic);
         new_dynamic.setPosition(dynamic.getPosition() + offset);
@@ -313,16 +313,16 @@ static void copySymbols(
   const boost::iterator_range<typename std::vector<Symbol>::const_iterator>& src_symbols,
   System& dest_system,
   const boost::iterator_range<typename std::vector<Symbol>::const_iterator>& dest_symbols,
-  void (System::*add_symbol)(const Symbol&),
+  void (System::*add_symbol)(Symbol const&),
   int offset,
   int left,
   int right)
 {
   std::unordered_set<int> filled_positions;
-  for (const Symbol& dest_symbol : dest_symbols)
+  for (Symbol const& dest_symbol : dest_symbols)
     filled_positions.insert(dest_symbol.getPosition());
 
-  for (const Symbol& src_symbol : ScoreUtils::findInRange(src_symbols, left, right - 1)) {
+  for (Symbol const& src_symbol : ScoreUtils::findInRange(src_symbols, left, right - 1)) {
     Symbol symbol(src_symbol);
     symbol.setPosition(src_symbol.getPosition() + offset);
 
@@ -336,14 +336,14 @@ static void copySymbols(
 }
 
 static void mergeSystemSymbols(ScoreLocation& dest_loc,
-                               const ScoreLocation& src_loc,
-                               const ExpandedBar& src_bar)
+                               ScoreLocation const& src_loc,
+                               ExpandedBar const& src_bar)
 {
   int offset, left, right;
   getPositionRange(dest_loc, src_loc, offset, left, right);
 
   System& dest_system = dest_loc.getSystem();
-  const System& src_system = src_loc.getSystem();
+  System const& src_system = src_loc.getSystem();
 
   if (!src_bar.isExpanded()) {
     copySymbols(src_system.getTempoMarkers(),
@@ -380,7 +380,7 @@ static void mergeSystemSymbols(ScoreLocation& dest_loc,
 static int copyContent(ScoreLocation& dest_loc,
                        int& num_guitar_staves,
                        Caret& src_caret,
-                       const ExpandedBar& src_bar,
+                       ExpandedBar const& src_bar,
                        bool is_bass)
 {
   src_caret.moveToSystem(src_bar.getLocation().getSystem(), false);
@@ -398,8 +398,8 @@ static int copyContent(ScoreLocation& dest_loc,
   }
 }
 
-static const PlayerChange* findPlayerChange(const ScoreLocation& dest_loc,
-                                            const ScoreLocation& src_loc,
+static const PlayerChange* findPlayerChange(ScoreLocation const& dest_loc,
+                                            ScoreLocation const& src_loc,
                                             ExpandedBarList::const_iterator src_bar,
                                             ExpandedBarList::const_iterator end_src_bar)
 {
@@ -415,8 +415,8 @@ static const PlayerChange* findPlayerChange(const ScoreLocation& dest_loc,
 }
 
 static void mergePlayerChanges(ScoreLocation& dest_loc,
-                               const ScoreLocation& guitar_loc,
-                               const ScoreLocation& bass_loc,
+                               ScoreLocation const& guitar_loc,
+                               ScoreLocation const& bass_loc,
                                ExpandedBarList::const_iterator guitar_bar,
                                ExpandedBarList::const_iterator end_guitar_bar,
                                ExpandedBarList::const_iterator bass_bar,
@@ -453,7 +453,7 @@ static void mergePlayerChanges(ScoreLocation& dest_loc,
     // Merge in data from only the active staves.
     if (guitar_change) {
       for (int i = 0; i < num_guitar_staves; ++i) {
-        for (const ActivePlayer& player : guitar_change->getActivePlayers(i)) {
+        for (ActivePlayer const& player : guitar_change->getActivePlayers(i)) {
           change.insertActivePlayer(i, player);
         }
       }
@@ -463,7 +463,7 @@ static void mergePlayerChanges(ScoreLocation& dest_loc,
     // staff/player/instrument numbers.
     if (bass_change) {
       for (unsigned int i = 0; i < bass_loc.getSystem().getStaves().size(); ++i) {
-        for (const ActivePlayer& player : bass_change->getActivePlayers(i)) {
+        for (ActivePlayer const& player : bass_change->getActivePlayers(i)) {
           change.insertActivePlayer(
             num_guitar_staves + i,
             ActivePlayer(
@@ -502,7 +502,7 @@ static void hideSignaturesAndRehearsalSign(Barline& bar)
 /// (e.g. some of the staves have different numbers of strings and/or are
 /// reordered). In such cases it is preferable to just move to a new system in
 /// the destination score.
-static bool areStavesIncompatible(const ScoreLocation& dest_loc,
+static bool areStavesIncompatible(ScoreLocation const& dest_loc,
                                   Caret& src_caret,
                                   ExpandedBarList::const_iterator src_bar,
                                   ExpandedBarList::const_iterator end_src_bar,
@@ -514,10 +514,10 @@ static bool areStavesIncompatible(const ScoreLocation& dest_loc,
 
   src_caret.moveToSystem(src_bar->getLocation().getSystem(), false);
   src_caret.moveToPosition(src_bar->getLocation().getPosition());
-  const ScoreLocation& src_loc = src_caret.getLocation();
+  ScoreLocation const& src_loc = src_caret.getLocation();
 
-  const System& dest_system = dest_loc.getSystem();
-  const System& src_system = src_loc.getSystem();
+  System const& dest_system = dest_loc.getSystem();
+  System const& src_system = src_loc.getSystem();
 
   for (int i = staff_begin; i < staff_end; ++i) {
     if ((i - staff_begin) < src_system.getStaves().size() &&
@@ -530,7 +530,7 @@ static bool areStavesIncompatible(const ScoreLocation& dest_loc,
   return false;
 }
 
-static bool areStavesIncompatible(const ScoreLocation& dest_loc,
+static bool areStavesIncompatible(ScoreLocation const& dest_loc,
                                   Caret& guitar_caret,
                                   Caret& bass_caret,
                                   ExpandedBarList::const_iterator guitar_bar,
@@ -560,9 +560,9 @@ static void insertNewSystem(Score& score)
 
 static void combineScores(Score& dest_score,
                           Score& guitar_score,
-                          const ExpandedBarList& guitar_bars,
+                          ExpandedBarList const& guitar_bars,
                           Score& bass_score,
-                          const ExpandedBarList& bass_bars)
+                          ExpandedBarList const& bass_bars)
 {
   mergePlayers(dest_score, guitar_score, bass_score);
 
@@ -574,9 +574,9 @@ static void combineScores(Score& dest_score,
   ScoreLocation& dest_loc = dest_caret.getLocation();
 
   Caret guitar_caret(guitar_score, theDefaultViewOptions);
-  const ScoreLocation& guitar_loc = guitar_caret.getLocation();
+  ScoreLocation const& guitar_loc = guitar_caret.getLocation();
   Caret bass_caret(bass_score, theDefaultViewOptions);
-  const ScoreLocation& bass_loc = bass_caret.getLocation();
+  ScoreLocation const& bass_loc = bass_caret.getLocation();
 
   auto guitar_bar = guitar_bars.begin();
   const auto end_guitar_bar = guitar_bars.end();

@@ -37,7 +37,7 @@ TimeSignature::TimeSignature()
   myBeamingPattern[3] = 0;
 }
 
-bool TimeSignature::operator==(const TimeSignature& other) const
+bool TimeSignature::operator==(TimeSignature const& other) const
 {
   return myMeterType == other.myMeterType && myBeatsPerMeasure == other.myBeatsPerMeasure &&
          myBeatValue == other.myBeatValue && myBeamingPattern == other.myBeamingPattern &&
@@ -105,7 +105,7 @@ TimeSignature::BeamingPattern TimeSignature::getBeamingPattern() const
   return myBeamingPattern;
 }
 
-void TimeSignature::setBeamingPattern(const BeamingPattern& pattern)
+void TimeSignature::setBeamingPattern(BeamingPattern const& pattern)
 {
   if (pattern[0] == 0)
     throw std::logic_error("Invalid beaming pattern");

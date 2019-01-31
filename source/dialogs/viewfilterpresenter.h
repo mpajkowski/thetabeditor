@@ -43,7 +43,7 @@ public:
 class ViewFilterPresenter
 {
 public:
-  ViewFilterPresenter(ViewFilterView& view, const Score& score);
+  ViewFilterPresenter(ViewFilterView& view, Score const& score);
 
   bool exec();
 
@@ -56,7 +56,7 @@ public:
 
   void addRule();
   void removeRule(int index);
-  void editRule(int index, const FilterRule& rule);
+  void editRule(int index, FilterRule const& rule);
 
 private:
   void updateView();

@@ -27,7 +27,7 @@ Dynamic::Dynamic(int position, VolumeLevel level)
   , myVolume(level)
 {}
 
-bool Dynamic::operator==(const Dynamic& other) const
+bool Dynamic::operator==(Dynamic const& other) const
 {
   return myPosition == other.myPosition && myVolume == other.myVolume;
 }

@@ -70,7 +70,7 @@ private:
   std::vector<IrregularGrouping> myGroups;
 };
 
-void Clipboard::copySelection(const ScoreLocation& location)
+void Clipboard::copySelection(ScoreLocation const& location)
 {
   const auto selectedPositions = location.getSelectedPositions();
   const int numStrings = location.getStaff().getStringCount();

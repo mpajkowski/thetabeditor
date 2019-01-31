@@ -31,7 +31,7 @@ System::System()
   myBarlines.push_back(endBar);
 }
 
-bool System::operator==(const System& other) const
+bool System::operator==(System const& other) const
 {
   return myStaves == other.myStaves && myBarlines == other.myBarlines &&
          myTempoMarkers == other.myTempoMarkers && myAlternateEndings == other.myAlternateEndings &&
@@ -49,12 +49,12 @@ boost::iterator_range<System::StaffConstIterator> System::getStaves() const
   return boost::make_iterator_range(myStaves);
 }
 
-void System::insertStaff(const Staff& staff)
+void System::insertStaff(Staff const& staff)
 {
   myStaves.push_back(staff);
 }
 
-void System::insertStaff(const Staff& staff, int index)
+void System::insertStaff(Staff const& staff, int index)
 {
   myStaves.insert(myStaves.begin() + index, staff);
 }
@@ -74,21 +74,21 @@ boost::iterator_range<System::BarlineConstIterator> System::getBarlines() const
   return boost::make_iterator_range(myBarlines);
 }
 
-void System::insertBarline(const Barline& barline)
+void System::insertBarline(Barline const& barline)
 {
   // Ensure that the end bar remains the end bar.
   myBarlines.back().setPosition(std::max(myBarlines.back().getPosition(), barline.getPosition() + 1));
   ScoreUtils::insertObject(myBarlines, barline);
 }
 
-void System::removeBarline(const Barline& barline)
+void System::removeBarline(Barline const& barline)
 {
   ScoreUtils::removeObject(myBarlines, barline);
 }
 
 const Barline* System::getPreviousBarline(int position) const
 {
-  for (const Barline& barline : boost::adaptors::reverse(myBarlines)) {
+  for (Barline const& barline : boost::adaptors::reverse(myBarlines)) {
     if (barline.getPosition() < position)
       return &barline;
   }
@@ -98,7 +98,7 @@ const Barline* System::getPreviousBarline(int position) const
 
 const Barline* System::getNextBarline(int position) const
 {
-  for (const Barline& barline : myBarlines) {
+  for (Barline const& barline : myBarlines) {
     if (barline.getPosition() > position)
       return &barline;
   }
@@ -126,12 +126,12 @@ boost::iterator_range<System::TempoMarkerConstIterator> System::getTempoMarkers(
   return boost::make_iterator_range(myTempoMarkers);
 }
 
-void System::insertTempoMarker(const TempoMarker& marker)
+void System::insertTempoMarker(TempoMarker const& marker)
 {
   ScoreUtils::insertObject(myTempoMarkers, marker);
 }
 
-void System::removeTempoMarker(const TempoMarker& marker)
+void System::removeTempoMarker(TempoMarker const& marker)
 {
   ScoreUtils::removeObject(myTempoMarkers, marker);
 }
@@ -146,12 +146,12 @@ boost::iterator_range<System::AlternateEndingConstIterator> System::getAlternate
   return boost::make_iterator_range(myAlternateEndings);
 }
 
-void System::insertAlternateEnding(const AlternateEnding& ending)
+void System::insertAlternateEnding(AlternateEnding const& ending)
 {
   ScoreUtils::insertObject(myAlternateEndings, ending);
 }
 
-void System::removeAlternateEnding(const AlternateEnding& ending)
+void System::removeAlternateEnding(AlternateEnding const& ending)
 {
   ScoreUtils::removeObject(myAlternateEndings, ending);
 }
@@ -166,12 +166,12 @@ boost::iterator_range<System::DirectionConstIterator> System::getDirections() co
   return boost::make_iterator_range(myDirections);
 }
 
-void System::insertDirection(const Direction& direction)
+void System::insertDirection(Direction const& direction)
 {
   ScoreUtils::insertObject(myDirections, direction);
 }
 
-void System::removeDirection(const Direction& direction)
+void System::removeDirection(Direction const& direction)
 {
   ScoreUtils::removeObject(myDirections, direction);
 }
@@ -186,12 +186,12 @@ boost::iterator_range<System::PlayerChangeConstIterator> System::getPlayerChange
   return boost::make_iterator_range(myPlayerChanges);
 }
 
-void System::insertPlayerChange(const PlayerChange& change)
+void System::insertPlayerChange(PlayerChange const& change)
 {
   ScoreUtils::insertObject(myPlayerChanges, change);
 }
 
-void System::removePlayerChange(const PlayerChange& change)
+void System::removePlayerChange(PlayerChange const& change)
 {
   ScoreUtils::removeObject(myPlayerChanges, change);
 }
@@ -206,12 +206,12 @@ boost::iterator_range<System::ChordTextConstIterator> System::getChords() const
   return boost::make_iterator_range(myChords);
 }
 
-void System::insertChord(const ChordText& chord)
+void System::insertChord(ChordText const& chord)
 {
   ScoreUtils::insertObject(myChords, chord);
 }
 
-void System::removeChord(const ChordText& chord)
+void System::removeChord(ChordText const& chord)
 {
   ScoreUtils::removeObject(myChords, chord);
 }
@@ -226,18 +226,18 @@ boost::iterator_range<System::TextItemConstIterator> System::getTextItems() cons
   return boost::make_iterator_range(myTextItems);
 }
 
-void System::insertTextItem(const TextItem& text)
+void System::insertTextItem(TextItem const& text)
 {
   ScoreUtils::insertObject(myTextItems, text);
 }
 
-void System::removeTextItem(const TextItem& text)
+void System::removeTextItem(TextItem const& text)
 {
   ScoreUtils::removeObject(myTextItems, text);
 }
 
 template<typename T>
-static void shift(const T& range, int position, int offset)
+static void shift(T const& range, int position, int offset)
 {
   for (auto& obj : range) {
     if (obj.getPosition() >= position)

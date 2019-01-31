@@ -25,7 +25,7 @@
 class EditFileInformation : public QUndoCommand
 {
 public:
-  EditFileInformation(const ScoreLocation& location, const ScoreInfo& scoreInfo);
+  EditFileInformation(ScoreLocation const& location, ScoreInfo const& scoreInfo);
 
   virtual void redo() override;
   virtual void undo() override;

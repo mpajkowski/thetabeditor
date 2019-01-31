@@ -34,8 +34,8 @@ public:
   class Handle
   {
   public:
-    Handle(const Handle&) = delete;
-    Handle& operator=(const Handle&) = delete;
+    Handle(Handle const&) = delete;
+    Handle& operator=(Handle const&) = delete;
 
     // TODO - change to a defaulted move constructor when VS2013 is no
     // longer supported.
@@ -89,8 +89,8 @@ public:
   };
 
   SettingsManager() = default;
-  SettingsManager(const SettingsManager&) = delete;
-  SettingsManager& operator=(const SettingsManager&) = delete;
+  SettingsManager(SettingsManager const&) = delete;
+  SettingsManager& operator=(SettingsManager const&) = delete;
 
   /// Obtain read access to the settings.
   ReadHandle getReadHandle() const { return ReadHandle(mySettings, myMutex); }

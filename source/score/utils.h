@@ -57,7 +57,7 @@ struct InPositionRange
   {}
 
   template<typename T>
-  bool operator()(const T& obj) const
+  bool operator()(T const& obj) const
   {
     return obj.getPosition() >= myLeft && obj.getPosition() <= myRight;
   }
@@ -79,11 +79,11 @@ boost::filtered_range<InPositionRange, Range> findInRange(Range range, int left,
 template<typename T>
 struct OrderByPosition
 {
-  bool operator()(const T& obj1, const T& obj2) const { return obj1.getPosition() < obj2.getPosition(); }
+  bool operator()(T const& obj1, T const& obj2) const { return obj1.getPosition() < obj2.getPosition(); }
 };
 
 template<typename T>
-void insertObject(std::vector<T>& objects, const T& obj)
+void insertObject(std::vector<T>& objects, T const& obj)
 {
   // Avoid sorting unless we actually need to. This improves performance
   // quite a bit when, for example, we are importing from other file
@@ -96,7 +96,7 @@ void insertObject(std::vector<T>& objects, const T& obj)
 }
 
 template<typename T>
-void removeObject(std::vector<T>& objects, const T& obj)
+void removeObject(std::vector<T>& objects, T const& obj)
 {
   objects.erase(std::remove(objects.begin(), objects.end(), obj), objects.end());
 }

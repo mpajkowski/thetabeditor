@@ -29,9 +29,9 @@ class TimeSignature;
 class TimeSignaturePainter : public QGraphicsItem
 {
 public:
-  TimeSignaturePainter(const LayoutConstPtr& layout,
-                       const TimeSignature& time,
-                       const ScoreLocation& location,
+  TimeSignaturePainter(LayoutConstPtr const& layout,
+                       TimeSignature const& time,
+                       ScoreLocation const& location,
                        const std::shared_ptr<ClickPubSub>& pubsub);
 
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) override;
@@ -48,7 +48,7 @@ private:
   void drawNumber(QPainter* painter, const double y, const int number) const;
 
   LayoutConstPtr myLayout;
-  const TimeSignature& myTimeSignature;
+  TimeSignature const& myTimeSignature;
   const ScoreLocation myLocation;
   std::shared_ptr<ClickPubSub> myPubSub;
   const QRectF myBounds;

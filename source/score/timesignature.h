@@ -33,7 +33,7 @@ public:
 
   TimeSignature();
 
-  bool operator==(const TimeSignature& other) const;
+  bool operator==(TimeSignature const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -59,7 +59,7 @@ public:
   /// Returns the beaming pattern for the measure.
   BeamingPattern getBeamingPattern() const;
   /// Sets the beaming pattern for the measure.
-  void setBeamingPattern(const BeamingPattern& pattern);
+  void setBeamingPattern(BeamingPattern const& pattern);
 
   /// Returns whether a number of metronome pulses is valid.
   bool isValidNumPulses(int pulses) const;

@@ -17,9 +17,9 @@
 
 #include "addnoteproperty.h"
 
-AddNoteProperty::AddNoteProperty(const ScoreLocation& location,
+AddNoteProperty::AddNoteProperty(ScoreLocation const& location,
                                  Note::SimpleProperty property,
-                                 const QString& description)
+                                 QString const& description)
   : QUndoCommand(QObject::tr("Set ") + description)
   , myLocation(location)
   , myProperty(property)

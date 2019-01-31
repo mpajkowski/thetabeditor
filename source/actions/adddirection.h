@@ -25,7 +25,7 @@
 class AddDirection : public QUndoCommand
 {
 public:
-  AddDirection(const ScoreLocation& location, const Direction& direction);
+  AddDirection(ScoreLocation const& location, Direction const& direction);
 
   virtual void redo() override;
   virtual void undo() override;

@@ -31,10 +31,10 @@ public:
   /// Convert the MIDI events from delta to absolute ticks.
   void convertToAbsoluteTicks();
 
-  void append(const MidiEvent& event) { myEvents.push_back(event); }
+  void append(MidiEvent const& event) { myEvents.push_back(event); }
   void append(MidiEvent&& event) { myEvents.push_back(std::forward<MidiEvent>(event)); }
 
-  void concat(const MidiEventList& other);
+  void concat(MidiEventList const& other);
 
   typedef std::vector<MidiEvent>::iterator iterator;
   typedef std::vector<MidiEvent>::const_iterator const_iterator;

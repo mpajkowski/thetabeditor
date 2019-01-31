@@ -21,7 +21,7 @@
 #include <boost/lexical_cast.hpp>
 #include <score/keysignature.h>
 
-KeySignatureDialog::KeySignatureDialog(QWidget* parent, const KeySignature& currentKey)
+KeySignatureDialog::KeySignatureDialog(QWidget* parent, KeySignature const& currentKey)
   : QDialog(parent)
   , ui(new Ui::KeySignatureDialog)
   , myIsModified(false)

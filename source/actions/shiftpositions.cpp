@@ -19,7 +19,7 @@
 
 #include <score/system.h>
 
-ShiftPositions::ShiftPositions(const ScoreLocation& location, ShiftPositions::ShiftType type)
+ShiftPositions::ShiftPositions(ScoreLocation const& location, ShiftPositions::ShiftType type)
   : QUndoCommand(type == Forward ? QObject::tr("Shift Forward") : QObject::tr("Shift Backward"))
   , myLocation(location)
   , myShiftType(type)

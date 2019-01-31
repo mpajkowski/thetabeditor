@@ -27,7 +27,7 @@ public:
   RehearsalSign();
   RehearsalSign(const std::string& letters, const std::string& description);
 
-  bool operator==(const RehearsalSign& other) const;
+  bool operator==(RehearsalSign const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);

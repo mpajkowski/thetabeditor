@@ -19,7 +19,7 @@
 
 #include <score/system.h>
 
-AddDirection::AddDirection(const ScoreLocation& location, const Direction& direction)
+AddDirection::AddDirection(ScoreLocation const& location, Direction const& direction)
   : QUndoCommand(QObject::tr("Add Musical Direction"))
   , myLocation(location)
   , myDirection(direction)

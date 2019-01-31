@@ -20,7 +20,7 @@
 #include <score/score.h>
 #include <score/system.h>
 
-RemoveBarline::RemoveBarline(const ScoreLocation& location)
+RemoveBarline::RemoveBarline(ScoreLocation const& location)
   : QUndoCommand(QObject::tr("Remove Barline"))
   , myLocation(location)
   , myOriginalBarline(*location.getBarline())

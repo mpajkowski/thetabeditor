@@ -53,7 +53,7 @@ public:
   FilterRule(Subject subject, std::string value);
   FilterRule(Subject subject, Operation op, int value);
 
-  bool operator==(const FilterRule& other) const;
+  bool operator==(FilterRule const& other) const;
 
   Subject getSubject() const { return mySubject; }
   Operation getOperation() const { return myOperation; }
@@ -64,10 +64,10 @@ public:
   void serialize(Archive& ar, const FileVersion version);
 
   /// Returns whether the given staff is visible.
-  bool accept(const Score& score, int system_index, int staff_index) const;
+  bool accept(Score const& score, int system_index, int staff_index) const;
 
 private:
-  bool accept(const Score& score, const ActivePlayer& player) const;
+  bool accept(Score const& score, ActivePlayer const& player) const;
 
   Subject mySubject;
   Operation myOperation;
@@ -84,7 +84,7 @@ public:
   typedef std::vector<FilterRule>::const_iterator RuleConstIterator;
 
   ViewFilter();
-  bool operator==(const ViewFilter& other) const;
+  bool operator==(ViewFilter const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -95,7 +95,7 @@ public:
   void setDescription(const std::string& description);
 
   /// Adds a new rule to the filter.
-  void addRule(const FilterRule& rule);
+  void addRule(FilterRule const& rule);
   /// Removes the specified rule from the filter.
   void removeRule(int index);
 
@@ -105,7 +105,7 @@ public:
   boost::iterator_range<RuleConstIterator> getRules() const;
 
   /// Returns whether the given staff is visible.
-  bool accept(const Score& score, int system_index, int staff_index) const;
+  bool accept(Score const& score, int system_index, int staff_index) const;
 
 private:
   std::string myDescription;
@@ -138,6 +138,6 @@ void ViewFilter::serialize(Archive& ar, const FileVersion /*version*/)
   ar("rules", myRules);
 }
 
-std::ostream& operator<<(std::ostream& os, const ViewFilter& filter);
+std::ostream& operator<<(std::ostream& os, ViewFilter const& filter);
 
 #endif

@@ -28,7 +28,7 @@ class Player
 public:
   Player();
 
-  bool operator==(const Player& other) const;
+  bool operator==(Player const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -49,9 +49,9 @@ public:
   void setPan(uint8_t pan);
 
   /// Returns the player's tuning.
-  const Tuning& getTuning() const;
+  Tuning const& getTuning() const;
   /// Sets the player's tuning.
-  void setTuning(const Tuning& tuning);
+  void setTuning(Tuning const& tuning);
 
   uint8_t getMidiPreset() const;
   void setMidiPreset(uint8_t preset);

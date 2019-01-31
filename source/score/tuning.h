@@ -29,9 +29,9 @@ class Tuning
 public:
   Tuning();
 
-  bool operator==(const Tuning& other) const;
+  bool operator==(Tuning const& other) const;
   /// This is like operator==, but ignores the name of the tuning.
-  bool isSameTuning(const Tuning& other) const;
+  bool isSameTuning(Tuning const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -104,6 +104,6 @@ void Tuning::serialize(Archive& ar, const FileVersion /*version*/)
 
 /// Returns a string representation of the tuning from low to
 /// high (e.g. "E A D G B E").
-std::ostream& operator<<(std::ostream& os, const Tuning& t);
+std::ostream& operator<<(std::ostream& os, Tuning const& t);
 
 #endif

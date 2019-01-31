@@ -33,7 +33,7 @@ SongData::AudioReleaseInfo::AudioReleaseInfo(ReleaseType type, const std::string
   , myIsLive(live)
 {}
 
-bool SongData::AudioReleaseInfo::operator==(const AudioReleaseInfo& other) const
+bool SongData::AudioReleaseInfo::operator==(AudioReleaseInfo const& other) const
 {
   return myReleaseType == other.myReleaseType && myTitle == other.myTitle && myYear == other.myYear &&
          myIsLive == other.myIsLive;
@@ -68,7 +68,7 @@ SongData::VideoReleaseInfo::VideoReleaseInfo(const std::string& title, bool live
   , myIsLive(live)
 {}
 
-bool SongData::VideoReleaseInfo::operator==(const VideoReleaseInfo& other) const
+bool SongData::VideoReleaseInfo::operator==(VideoReleaseInfo const& other) const
 {
   return myTitle == other.myTitle && myIsLive == other.myIsLive;
 }
@@ -92,7 +92,7 @@ SongData::BootlegInfo::BootlegInfo(const std::string& title, const boost::gregor
   , myDate(date)
 {}
 
-bool SongData::BootlegInfo::operator==(const BootlegInfo& other) const
+bool SongData::BootlegInfo::operator==(BootlegInfo const& other) const
 {
   return myTitle == other.myTitle && myDate == other.myDate;
 }
@@ -119,7 +119,7 @@ SongData::AuthorInfo::AuthorInfo(const std::string& composer, const std::string&
   , myLyricist(lyricist)
 {}
 
-bool SongData::AuthorInfo::operator==(const AuthorInfo& other) const
+bool SongData::AuthorInfo::operator==(AuthorInfo const& other) const
 {
   return myComposer == other.myComposer && myLyricist == other.myLyricist;
 }
@@ -139,7 +139,7 @@ SongData::SongData()
   , myAuthorInfo(AuthorInfo())
 {}
 
-bool SongData::operator==(const SongData& other) const
+bool SongData::operator==(SongData const& other) const
 {
   return myTitle == other.myTitle && myArtist == other.myArtist &&
          myAudioReleaseInfo == other.myAudioReleaseInfo && myVideoReleaseInfo == other.myVideoReleaseInfo &&
@@ -299,7 +299,7 @@ const std::string& SongData::getPerformanceNotes() const
   return myPerformanceNotes;
 }
 
-bool LessonData::operator==(const LessonData& other) const
+bool LessonData::operator==(LessonData const& other) const
 {
   return myTitle == other.myTitle && mySubtitle == other.mySubtitle && myMusicStyle == other.myMusicStyle &&
          myDifficultyLevel == other.myDifficultyLevel && myAuthor == other.myAuthor &&
@@ -380,7 +380,7 @@ ScoreInfo::ScoreInfo()
   : mySongData(SongData())
 {}
 
-bool ScoreInfo::operator==(const ScoreInfo& other) const
+bool ScoreInfo::operator==(ScoreInfo const& other) const
 {
   return mySongData == other.mySongData && myLessonData == other.myLessonData;
 }
@@ -390,7 +390,7 @@ ScoreInfo::ScoreType ScoreInfo::getScoreType() const
   return mySongData.is_initialized() ? ScoreType::Song : ScoreType::Lesson;
 }
 
-const SongData& ScoreInfo::getSongData() const
+SongData const& ScoreInfo::getSongData() const
 {
   if (!mySongData.is_initialized())
     throw std::logic_error("Invalid attempt to read song data");
@@ -398,13 +398,13 @@ const SongData& ScoreInfo::getSongData() const
   return *mySongData;
 }
 
-void ScoreInfo::setSongData(const SongData& data)
+void ScoreInfo::setSongData(SongData const& data)
 {
   mySongData = data;
   myLessonData.reset();
 }
 
-const LessonData& ScoreInfo::getLessonData() const
+LessonData const& ScoreInfo::getLessonData() const
 {
   if (!myLessonData.is_initialized())
     throw std::logic_error("Invalid attempt to read lesson data");
@@ -412,7 +412,7 @@ const LessonData& ScoreInfo::getLessonData() const
   return *myLessonData;
 }
 
-void ScoreInfo::setLessonData(const LessonData& data)
+void ScoreInfo::setLessonData(LessonData const& data)
 {
   myLessonData = data;
   mySongData.reset();

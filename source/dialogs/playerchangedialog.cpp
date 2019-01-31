@@ -23,8 +23,8 @@
 #include <score/score.h>
 
 PlayerChangeDialog::PlayerChangeDialog(QWidget* parent,
-                                       const Score& score,
-                                       const System& system,
+                                       Score const& score,
+                                       System const& system,
                                        const PlayerChange* currentPlayers)
   : QDialog(parent)
   , ui(new Ui::PlayerChangeDialog)
@@ -39,7 +39,7 @@ PlayerChangeDialog::PlayerChangeDialog(QWidget* parent,
   titleLayout->setSpacing(spacing * 4);
   ui->formLayout->addRow(tr("Player"), titleLayout);
 
-  for (const Player& player : score.getPlayers()) {
+  for (Player const& player : score.getPlayers()) {
     const int numStrings = player.getTuning().getStringCount();
 
     auto layout = new QHBoxLayout();
@@ -54,7 +54,7 @@ PlayerChangeDialog::PlayerChangeDialog(QWidget* parent,
     for (unsigned int staff = 0; staff < system.getStaves().size(); ++staff) {
       std::vector<ActivePlayer> players = currentPlayers->getActivePlayers(staff);
 
-      for (const ActivePlayer& player : players) {
+      for (ActivePlayer const& player : players) {
         const int i = player.getPlayerNumber();
         const int idx = myStaffComboBoxes.at(i)->findData(staff);
         myStaffComboBoxes.at(i)->setCurrentIndex(idx < 0 ? 0 : idx);
@@ -88,7 +88,7 @@ PlayerChange PlayerChangeDialog::getPlayerChange() const
   return change;
 }
 
-QComboBox* PlayerChangeDialog::getStaffComboBox(int numStrings, const System& system)
+QComboBox* PlayerChangeDialog::getStaffComboBox(int numStrings, System const& system)
 {
   auto list = new QComboBox(this);
   myStaffComboBoxes.push_back(list);
@@ -96,7 +96,7 @@ QComboBox* PlayerChangeDialog::getStaffComboBox(int numStrings, const System& sy
   list->addItem(tr("None"), -1);
 
   int i = 0;
-  for (const Staff& staff : system.getStaves()) {
+  for (Staff const& staff : system.getStaves()) {
     if (staff.getStringCount() == numStrings)
       list->addItem(QString::number(i + 1), i);
     ++i;

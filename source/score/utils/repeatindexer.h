@@ -32,20 +32,20 @@ class System;
 class RepeatedSection
 {
 public:
-  RepeatedSection(const SystemLocation& startBar);
+  RepeatedSection(SystemLocation const& startBar);
 
   /// Repeated sections are ordered by the position of their start bar.
-  bool operator<(const RepeatedSection& other) const;
+  bool operator<(RepeatedSection const& other) const;
 
   /// Adds a new end bar to the repeated section.
-  void addRepeatEndBar(const SystemLocation& location, int repeatCount);
+  void addRepeatEndBar(SystemLocation const& location, int repeatCount);
   /// Adds a new alternate ending to the repeated section.
-  void addAlternateEnding(const System& system, int system_index, const AlternateEnding& ending);
+  void addAlternateEnding(System const& system, int system_index, AlternateEnding const& ending);
 
   /// Returns the location of the start bar.
-  const SystemLocation& getStartBarLocation() const;
+  SystemLocation const& getStartBarLocation() const;
   /// Returns the location of the final end bar in the repeated section.
-  const SystemLocation& getLastEndBarLocation() const;
+  SystemLocation const& getLastEndBarLocation() const;
 
   /// Returns the number of alternate endings in the section.
   int getAlternateEndingCount() const;
@@ -62,7 +62,7 @@ public:
   /// Reset the repeat counters.
   void reset();
   int getCurrentRepeatNumber() const { return myActiveRepeat; }
-  SystemLocation performRepeat(const SystemLocation& loc);
+  SystemLocation performRepeat(SystemLocation const& loc);
 
 private:
   SystemLocation myStartBarLocation;
@@ -76,12 +76,12 @@ class RepeatIndexer
 public:
   typedef std::set<RepeatedSection>::const_iterator RepeatedSectionIterator;
 
-  RepeatIndexer(const Score& score);
+  RepeatIndexer(Score const& score);
 
   /// Given a location in the score, find the repeat that
   /// surrounds it (if possible).
-  const RepeatedSection* findRepeat(const SystemLocation& loc) const;
-  RepeatedSection* findRepeat(const SystemLocation& loc);
+  const RepeatedSection* findRepeat(SystemLocation const& loc) const;
+  RepeatedSection* findRepeat(SystemLocation const& loc);
 
   /// Returns a list of the repeated sections in the score.
   boost::iterator_range<RepeatedSectionIterator> getRepeats() const;

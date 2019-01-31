@@ -31,7 +31,7 @@ Q_DECLARE_METATYPE(MidiApiAndPort)
 
 PreferencesDialog::PreferencesDialog(QWidget* parent,
                                      SettingsManager& settings_manager,
-                                     const TuningDictionary& dictionary)
+                                     TuningDictionary const& dictionary)
   : QDialog(parent)
   , ui(new Ui::PreferencesDialog)
   , mySettingsManager(settings_manager)

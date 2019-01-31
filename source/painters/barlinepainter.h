@@ -29,9 +29,9 @@ class ClickPubSub;
 class BarlinePainter : public QGraphicsItem
 {
 public:
-  BarlinePainter(const LayoutConstPtr& layout,
-                 const Barline& barline,
-                 const ScoreLocation& location,
+  BarlinePainter(LayoutConstPtr const& layout,
+                 Barline const& barline,
+                 ScoreLocation const& location,
                  const std::shared_ptr<ClickPubSub>& pubsub);
 
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
@@ -48,7 +48,7 @@ private:
   void drawVerticalLines(QPainter* painter, double myX);
 
   LayoutConstPtr myLayout;
-  const Barline& myBarline;
+  Barline const& myBarline;
   QRectF myBounds;
   ScoreLocation myLocation;
   std::shared_ptr<ClickPubSub> myPubSub;

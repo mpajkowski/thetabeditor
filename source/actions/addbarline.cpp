@@ -19,7 +19,7 @@
 
 #include <score/system.h>
 
-AddBarline::AddBarline(const ScoreLocation& location, const Barline& barline)
+AddBarline::AddBarline(ScoreLocation const& location, Barline const& barline)
   : QUndoCommand(QObject::tr("Insert Barline"))
   , myLocation(location)
   , myBarline(barline)

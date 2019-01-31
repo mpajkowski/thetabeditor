@@ -17,9 +17,9 @@
 
 #include "removepositionproperty.h"
 
-RemovePositionProperty::RemovePositionProperty(const ScoreLocation& location,
+RemovePositionProperty::RemovePositionProperty(ScoreLocation const& location,
                                                Position::SimpleProperty property,
-                                               const QString& positionDescription)
+                                               QString const& positionDescription)
   : QUndoCommand(QObject::tr("Remove ") + positionDescription)
   , myLocation(location)
   , myProperty(property)

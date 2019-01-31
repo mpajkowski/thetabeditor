@@ -29,9 +29,9 @@ class ClickPubSub;
 class KeySignaturePainter : public QGraphicsItem
 {
 public:
-  KeySignaturePainter(const LayoutConstPtr& layout,
-                      const KeySignature& key,
-                      const ScoreLocation& location,
+  KeySignaturePainter(LayoutConstPtr const& layout,
+                      KeySignature const& key,
+                      ScoreLocation const& location,
                       const std::shared_ptr<ClickPubSub>& pubsub);
 
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) override;
@@ -44,7 +44,7 @@ private:
   virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent*) override;
 
   LayoutConstPtr myLayout;
-  const KeySignature& myKeySignature;
+  KeySignature const& myKeySignature;
   const ScoreLocation myLocation;
   std::shared_ptr<ClickPubSub> myPubSub;
   QFont myMusicFont;

@@ -22,7 +22,7 @@
 #include <QPlainTextEdit>
 #include <app/appinfo.h>
 
-CrashDialog::CrashDialog(const QString& stacktrace, QWidget* parent)
+CrashDialog::CrashDialog(QString const& stacktrace, QWidget* parent)
   : QDialog(parent)
   , ui(new Ui::CrashDialog)
 {

@@ -17,7 +17,7 @@
 
 #include "editbarline.h"
 
-EditBarline::EditBarline(const ScoreLocation& location, Barline::BarType type, int repeats)
+EditBarline::EditBarline(ScoreLocation const& location, Barline::BarType type, int repeats)
   : QUndoCommand(QObject::tr("Edit Barline Type"))
   , myLocation(location)
   , myBarType(type)

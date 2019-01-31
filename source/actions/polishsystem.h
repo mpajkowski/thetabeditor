@@ -27,7 +27,7 @@
 class PolishSystem : public QUndoCommand
 {
 public:
-  PolishSystem(const ScoreLocation& location);
+  PolishSystem(ScoreLocation const& location);
 
   virtual void redo() override;
   virtual void undo() override;

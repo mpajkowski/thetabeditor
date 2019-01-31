@@ -22,9 +22,9 @@
 
 const std::string theKeyPrefix("shortcuts/");
 
-Command::Command(const QString& text,
-                 const QString& id,
-                 const QKeySequence& default_shortcut,
+Command::Command(QString const& text,
+                 QString const& id,
+                 QKeySequence const& default_shortcut,
                  QObject* parent)
   : QAction(text, parent)
   , myId(id)
@@ -52,7 +52,7 @@ void Command::save(SettingsTree& settings) const
     settings.set(getSettingsKey(), shortcut());
 }
 
-void Command::load(const SettingsTree& settings)
+void Command::load(SettingsTree const& settings)
 {
   setShortcut(settings.get(getSettingsKey(), myDefaultShortcut));
 }

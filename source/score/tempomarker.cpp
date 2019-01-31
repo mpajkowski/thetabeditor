@@ -45,7 +45,7 @@ TempoMarker::TempoMarker(int position)
   , myDescription("")
 {}
 
-bool TempoMarker::operator==(const TempoMarker& other) const
+bool TempoMarker::operator==(TempoMarker const& other) const
 {
   return myPosition == other.myPosition && myMarkerType == other.myMarkerType &&
          myBeatType == other.myBeatType && myListessoBeatType == other.myListessoBeatType &&

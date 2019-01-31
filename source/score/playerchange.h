@@ -30,7 +30,7 @@ public:
   ActivePlayer();
   ActivePlayer(int player, int instrument);
 
-  bool operator==(const ActivePlayer& other) const;
+  bool operator==(ActivePlayer const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -51,7 +51,7 @@ public:
   PlayerChange();
   explicit PlayerChange(int position);
 
-  bool operator==(const PlayerChange& other) const;
+  bool operator==(PlayerChange const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -65,9 +65,9 @@ public:
   std::vector<ActivePlayer> getActivePlayers(int staff) const;
 
   /// Adds a new active player to a staff.
-  void insertActivePlayer(int staff, const ActivePlayer& player);
+  void insertActivePlayer(int staff, ActivePlayer const& player);
   /// Removes an active player from a staff.
-  void removeActivePlayer(int staff, const ActivePlayer& player);
+  void removeActivePlayer(int staff, ActivePlayer const& player);
 
 private:
   int myPosition;

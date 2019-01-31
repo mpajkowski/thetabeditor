@@ -32,7 +32,7 @@ void AddSystem::redo()
   // Carry over the staves, time signature, and key signature from the
   // previous system if possible.
   if (myIndex > 0) {
-    const System& prevSystem = myScore.getSystems()[myIndex - 1];
+    System const& prevSystem = myScore.getSystems()[myIndex - 1];
     KeySignature key = prevSystem.getBarlines().back().getKeySignature();
     TimeSignature time = prevSystem.getBarlines().back().getTimeSignature();
 
@@ -46,7 +46,7 @@ void AddSystem::redo()
     startBar.setKeySignature(key);
     startBar.setTimeSignature(time);
 
-    for (const Staff& old_staff : prevSystem.getStaves()) {
+    for (Staff const& old_staff : prevSystem.getStaves()) {
       Staff new_staff;
       new_staff.setClefType(old_staff.getClefType());
       new_staff.setStringCount(old_staff.getStringCount());

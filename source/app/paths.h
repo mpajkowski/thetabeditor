@@ -38,8 +38,8 @@ std::vector<path> getDataDirs();
 path getHomeDir();
 
 /// Convert a QString to a boost::filesystem::path.
-path fromQString(const QString& str);
+path fromQString(QString const& str);
 
 /// Convert a boost::filesystem::path to a QString.
-QString toQString(const path& str);
+QString toQString(path const& str);
 } // namespace Paths

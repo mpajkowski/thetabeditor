@@ -25,9 +25,9 @@ class ChordText
 {
 public:
   ChordText();
-  ChordText(int position, const ChordName& name);
+  ChordText(int position, ChordName const& name);
 
-  bool operator==(const ChordText& other) const;
+  bool operator==(ChordText const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -35,8 +35,8 @@ public:
   int getPosition() const;
   void setPosition(int position);
 
-  const ChordName& getChordName() const;
-  void setChordName(const ChordName& name);
+  ChordName const& getChordName() const;
+  void setChordName(ChordName const& name);
 
 private:
   int myPosition;

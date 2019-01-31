@@ -22,9 +22,9 @@
 #include <score/score.h>
 
 Mixer::Mixer(QWidget* parent,
-             const TuningDictionary& dictionary,
-             const PlayerEditPubSub& editPubSub,
-             const PlayerRemovePubSub& removePubSub)
+             TuningDictionary const& dictionary,
+             PlayerEditPubSub const& editPubSub,
+             PlayerRemovePubSub const& removePubSub)
   : QWidget(parent)
   , myDictionary(dictionary)
   , myEditPubSub(editPubSub)
@@ -36,7 +36,7 @@ Mixer::Mixer(QWidget* parent,
   setLayout(myLayout);
 }
 
-void Mixer::reset(const Score& score)
+void Mixer::reset(Score const& score)
 {
   clear();
 

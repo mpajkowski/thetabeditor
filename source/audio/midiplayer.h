@@ -33,24 +33,24 @@ class MidiPlayer : public QThread
   Q_OBJECT
 
 public:
-  MidiPlayer(SettingsManager& settings_manager, const ScoreLocation& start_location, int speed);
+  MidiPlayer(SettingsManager& settings_manager, ScoreLocation const& start_location, int speed);
   ~MidiPlayer();
 
   void changePlaybackSpeed(int new_speed);
 
-  const ScoreLocation& getStartLocation() const { return myStartLocation; }
+  ScoreLocation const& getStartLocation() const { return myStartLocation; }
 
 signals:
   // These signals are used to move the caret when a position change is
   // necessary
   void playbackSystemChanged(int system);
   void playbackPositionChanged(int position);
-  void error(const QString& msg);
+  void error(QString const& msg);
 
 private:
   virtual void run() override;
 
-  void performCountIn(MidiOutputDevice& device, const SystemLocation& location, int beat_duration);
+  void performCountIn(MidiOutputDevice& device, SystemLocation const& location, int beat_duration);
 
   void setIsPlaying(bool set);
   bool isPlaying() const;
@@ -58,7 +58,7 @@ private:
   void stopPlayback(MidiOutputDevice& device);
 
   SettingsManager& mySettingsManager;
-  const Score& myScore;
+  Score const& myScore;
   ScoreLocation myStartLocation;
   std::atomic<bool> myIsPlaying;
   std::atomic<bool> myMetronomeEnabled;

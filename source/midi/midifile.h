@@ -56,7 +56,7 @@ public:
 
   MidiFile();
 
-  void load(const Score& score, const LoadOptions& options);
+  void load(Score const& score, LoadOptions const& options);
 
   int getTicksPerBeat() const { return myTicksPerBeat; }
   std::vector<MidiEventList>& getTracks() { return myTracks; }
@@ -65,16 +65,16 @@ public:
 private:
   int generateMetronome(MidiEventList& event_list,
                         int current_tick,
-                        const System& system,
-                        const Barline& current_bar,
-                        const Barline& next_bar,
-                        const SystemLocation& location,
-                        const LoadOptions& options);
+                        System const& system,
+                        Barline const& current_bar,
+                        Barline const& next_bar,
+                        SystemLocation const& location,
+                        LoadOptions const& options);
 
   int addTempoEvent(MidiEventList& event_list,
                     int current_tick,
                     int current_tempo,
-                    const System& system,
+                    System const& system,
                     int bar_start,
                     int bar_end);
 
@@ -82,16 +82,16 @@ private:
                       uint8_t& active_bend,
                       int current_tick,
                       int current_tempo,
-                      const Score& score,
-                      const System& system,
+                      Score const& score,
+                      System const& system,
                       int system_index,
-                      const Staff& staff,
+                      Staff const& staff,
                       int staff_index,
-                      const Voice& voice,
+                      Voice const& voice,
                       int voice_index,
                       int bar_start,
                       int bar_end,
-                      const LoadOptions& options);
+                      LoadOptions const& options);
 
   int myTicksPerBeat;
   std::vector<MidiEventList> myTracks;

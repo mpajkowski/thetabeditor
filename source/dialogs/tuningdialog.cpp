@@ -25,7 +25,7 @@
 
 Q_DECLARE_METATYPE(const Tuning*)
 
-TuningDialog::TuningDialog(QWidget* parent, const Tuning& currentTuning, const TuningDictionary& dictionary)
+TuningDialog::TuningDialog(QWidget* parent, Tuning const& currentTuning, TuningDictionary const& dictionary)
   : QDialog(parent)
   , ui(new Ui::TuningDialog)
   , myDictionary(dictionary)
@@ -82,7 +82,7 @@ TuningDialog::~TuningDialog()
   delete ui;
 }
 
-void TuningDialog::initStringSelectors(const Tuning& currentTuning)
+void TuningDialog::initStringSelectors(Tuning const& currentTuning)
 {
   for (int i = 0; i < static_cast<int>(myStringSelectors.size()); i++) {
     QComboBox* selector = myStringSelectors[i];

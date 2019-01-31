@@ -29,7 +29,7 @@ SystemLocation::SystemLocation()
   , myPosition(0)
 {}
 
-bool SystemLocation::operator<(const SystemLocation& location) const
+bool SystemLocation::operator<(SystemLocation const& location) const
 {
   if (mySystem == location.mySystem)
     return myPosition < location.myPosition;
@@ -37,7 +37,7 @@ bool SystemLocation::operator<(const SystemLocation& location) const
     return mySystem < location.mySystem;
 }
 
-bool SystemLocation::operator==(const SystemLocation& location) const
+bool SystemLocation::operator==(SystemLocation const& location) const
 {
   return mySystem == location.mySystem && myPosition == location.myPosition;
 }
@@ -62,7 +62,7 @@ int SystemLocation::getSystem() const
   return mySystem;
 }
 
-size_t std::hash<SystemLocation>::operator()(const SystemLocation& location) const
+size_t std::hash<SystemLocation>::operator()(SystemLocation const& location) const
 {
   size_t seed = 0;
   boost::hash_combine(seed, location.getSystem());

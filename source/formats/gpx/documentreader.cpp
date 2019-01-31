@@ -363,7 +363,7 @@ void Gpx::DocumentReader::readMasterBars(Score& score)
   score.insertSystem(system);
 }
 
-void Gpx::DocumentReader::readBarlineType(const xml_node& masterBar, Barline& barline)
+void Gpx::DocumentReader::readBarlineType(xml_node const& masterBar, Barline& barline)
 {
   xml_node repeat_node = masterBar.child("Repeat");
 
@@ -382,7 +382,7 @@ void Gpx::DocumentReader::readBarlineType(const xml_node& masterBar, Barline& ba
     barline.setBarType(Barline::SingleBar);
 }
 
-void Gpx::DocumentReader::readKeySignature(const xml_node& masterBar, KeySignature& key)
+void Gpx::DocumentReader::readKeySignature(xml_node const& masterBar, KeySignature& key)
 {
   xml_node key_node = masterBar.child("Key");
 
@@ -401,7 +401,7 @@ void Gpx::DocumentReader::readKeySignature(const xml_node& masterBar, KeySignatu
     std::cerr << "Unknown key type: " << keyType << std::endl;
 }
 
-void Gpx::DocumentReader::readTimeSignature(const xml_node& masterBar, TimeSignature& timeSignature)
+void Gpx::DocumentReader::readTimeSignature(xml_node const& masterBar, TimeSignature& timeSignature)
 {
   const std::string timeString = masterBar.child_value("Time");
 
@@ -418,7 +418,7 @@ void Gpx::DocumentReader::readTimeSignature(const xml_node& masterBar, TimeSigna
     std::cerr << "Parsing of time signature failed!!" << std::endl;
 }
 
-Note Gpx::DocumentReader::convertNote(int noteId, Position& position, const Tuning& tuning) const
+Note Gpx::DocumentReader::convertNote(int noteId, Position& position, Tuning const& tuning) const
 {
   Gpx::TabNote gpxNote = myNotes.at(noteId);
   Note ptbNote;

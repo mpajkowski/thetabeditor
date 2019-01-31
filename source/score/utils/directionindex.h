@@ -29,18 +29,18 @@ class Score;
 class DirectionIndex
 {
 public:
-  DirectionIndex(const Score& score);
+  DirectionIndex(Score const& score);
 
   /// When moving from one location in the score to another, returns the new
   /// location that should be moved to (after taking directions into account).
-  SystemLocation performDirection(const SystemLocation& prevLocation,
-                                  const SystemLocation& currentLocation,
+  SystemLocation performDirection(SystemLocation const& prevLocation,
+                                  SystemLocation const& currentLocation,
                                   int activeRepeat);
 
 private:
   SystemLocation followDirection(DirectionSymbol::SymbolType symbol);
 
-  const Score& myScore;
+  Score const& myScore;
   DirectionSymbol::ActiveSymbolType myActiveSymbol;
 
   /// Used for looking up direction symbols at a given location.

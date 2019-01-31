@@ -20,7 +20,7 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemoveAlternateEnding::RemoveAlternateEnding(const ScoreLocation& location)
+RemoveAlternateEnding::RemoveAlternateEnding(ScoreLocation const& location)
   : QUndoCommand(QObject::tr("Remove Repeat Ending"))
   , myLocation(location)
   , myOriginalEnding(

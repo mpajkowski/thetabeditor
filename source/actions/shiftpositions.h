@@ -30,7 +30,7 @@ public:
     Backward
   };
 
-  ShiftPositions(const ScoreLocation& location, ShiftType type);
+  ShiftPositions(ScoreLocation const& location, ShiftType type);
 
   virtual void redo() override;
   virtual void undo() override;

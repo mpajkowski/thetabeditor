@@ -42,10 +42,10 @@ const double LayoutInfo::DEFAULT_POSITION_SPACING = 20;
 const double LayoutInfo::IRREGULAR_GROUP_HEIGHT = 9;
 const double LayoutInfo::IRREGULAR_GROUP_BEAM_SPACING = 3;
 
-LayoutInfo::LayoutInfo(const Score& score,
-                       const System& system,
+LayoutInfo::LayoutInfo(Score const& score,
+                       System const& system,
                        int systemIndex,
-                       const Staff& staff,
+                       Staff const& staff,
                        int staffIndex)
   : mySystem(system)
   , myStaff(staff)
@@ -86,7 +86,7 @@ double LayoutInfo::getSystemSymbolSpacing() const
 {
   double height = 0;
 
-  for (const Barline& barline : mySystem.getBarlines()) {
+  for (Barline const& barline : mySystem.getBarlines()) {
     if (barline.hasRehearsalSign()) {
       height += SYSTEM_SYMBOL_SPACING;
       break;
@@ -106,7 +106,7 @@ double LayoutInfo::getSystemSymbolSpacing() const
     height += SYSTEM_SYMBOL_SPACING;
 
   double directionHeight = 0;
-  for (const Direction& direction : mySystem.getDirections()) {
+  for (Direction const& direction : mySystem.getDirections()) {
     directionHeight = std::max(directionHeight, direction.getSymbols().size() * SYSTEM_SYMBOL_SPACING);
   }
 
@@ -186,7 +186,7 @@ int LayoutInfo::getNumPositions() const
 double LayoutInfo::getFirstPositionX() const
 {
   double width = CLEF_WIDTH;
-  const Barline& startBar = mySystem.getBarlines()[0];
+  Barline const& startBar = mySystem.getBarlines()[0];
 
   const double keyWidth = getWidth(startBar.getKeySignature());
   width += keyWidth;
@@ -230,7 +230,7 @@ int LayoutInfo::getPositionFromX(double x) const
   return maxPosition;
 }
 
-double LayoutInfo::getWidth(const KeySignature& key)
+double LayoutInfo::getWidth(KeySignature const& key)
 {
   double width = 0;
 
@@ -240,12 +240,12 @@ double LayoutInfo::getWidth(const KeySignature& key)
   return width;
 }
 
-double LayoutInfo::getWidth(const TimeSignature& time)
+double LayoutInfo::getWidth(TimeSignature const& time)
 {
   return time.isVisible() ? 18 : 0;
 }
 
-double LayoutInfo::getWidth(const Barline& bar)
+double LayoutInfo::getWidth(Barline const& bar)
 {
   double width = 0;
 
@@ -285,7 +285,7 @@ double LayoutInfo::getCumulativeBarlineWidths(int position) const
 
   const bool allBarlines = (position == -1);
 
-  for (const Barline& barline : mySystem.getBarlines()) {
+  for (Barline const& barline : mySystem.getBarlines()) {
     if (barline == mySystem.getBarlines().front() || barline == mySystem.getBarlines().back())
       continue;
 
@@ -299,7 +299,7 @@ double LayoutInfo::getCumulativeBarlineWidths(int position) const
 }
 
 template<typename Range>
-static void updateMaxPosition(int& max, const Range& range)
+static void updateMaxPosition(int& max, Range const& range)
 {
   for (auto& obj : range)
     max = std::max(max, obj.getPosition());
@@ -310,9 +310,9 @@ void LayoutInfo::computePositionSpacing()
   const double width = getFirstPositionX() + getCumulativeBarlineWidths();
 
   // Find the number of positions needed for the system.
-  for (const Staff& staff : mySystem.getStaves()) {
-    for (const Voice& voice : staff.getVoices()) {
-      for (const Position& position : voice.getPositions()) {
+  for (Staff const& staff : mySystem.getStaves()) {
+    for (Voice const& voice : staff.getVoices()) {
+      for (Position const& position : voice.getPositions()) {
         myNumPositions = std::max(myNumPositions, position.getPosition());
       }
     }
@@ -332,8 +332,8 @@ void LayoutInfo::computePositionSpacing()
 
 void LayoutInfo::calculateTabStaffBelowLayout()
 {
-  for (const Voice& voice : myStaff.getVoices()) {
-    for (const Position& pos : voice.getPositions()) {
+  for (Voice const& voice : myStaff.getVoices()) {
+    for (Position const& pos : voice.getPositions()) {
       int height = 1;
       const int leftPosition = pos.getPosition();
       const Position* nextPos = VoiceUtils::getNextPosition(voice, leftPosition);
@@ -396,7 +396,7 @@ void LayoutInfo::calculateStdNotationStaffAboveLayout()
   // Reserve space for notes and their stems.
   double minLocation = std::numeric_limits<double>::max();
   for (auto& stems : myStems) {
-    for (const NoteStem& stem : stems)
+    for (NoteStem const& stem : stems)
       minLocation = std::min(minLocation, stem.getTop());
   }
 
@@ -412,7 +412,7 @@ void LayoutInfo::calculateStdNotationStaffBelowLayout()
   // Reserve space for notes and their stems.
   double maxLocation = -std::numeric_limits<double>::max();
   for (auto& stems : myStems) {
-    for (const NoteStem& stem : stems)
+    for (NoteStem const& stem : stems)
       maxLocation = std::max(maxLocation, stem.getBottom());
   }
 
@@ -422,11 +422,11 @@ void LayoutInfo::calculateStdNotationStaffBelowLayout()
 
 void LayoutInfo::calculateOctaveSymbolLayout(std::vector<SymbolGroup>& symbols, bool aboveStaff)
 {
-  for (const Voice& voice : myStaff.getVoices()) {
+  for (Voice const& voice : myStaff.getVoices()) {
     SymbolGroup::SymbolType currentType = SymbolGroup::NoSymbol;
     int leftPos = 0;
 
-    for (const Position& pos : voice.getPositions()) {
+    for (Position const& pos : voice.getPositions()) {
       SymbolGroup::SymbolType type = SymbolGroup::NoSymbol;
 
       if (aboveStaff) {
@@ -470,7 +470,7 @@ void LayoutInfo::calculateTabStaffAboveLayout()
   const int staffIndex = std::find(mySystem.getStaves().begin(), mySystem.getStaves().end(), myStaff) -
                          mySystem.getStaves().begin();
 
-  for (const PlayerChange& change : mySystem.getPlayerChanges()) {
+  for (PlayerChange const& change : mySystem.getPlayerChanges()) {
     if (!change.getActivePlayers(staffIndex).empty()) {
       myTabStaffAboveSpacing = TAB_SYMBOL_SPACING;
       break;
@@ -482,8 +482,8 @@ void LayoutInfo::calculateTabStaffAboveLayout()
   std::vector<SymbolSet> symbolSets(getNumPositions() + 1);
 
   // Add symbols from each position.
-  for (const Voice& voice : myStaff.getVoices()) {
-    for (const Position& pos : voice.getPositions()) {
+  for (Voice const& voice : myStaff.getVoices()) {
+    for (Position const& pos : voice.getPositions()) {
       SymbolSet& set = symbolSets.at(pos.getPosition());
 
       if (pos.hasProperty(Position::LetRing))
@@ -518,7 +518,7 @@ void LayoutInfo::calculateTabStaffAboveLayout()
   }
 
   // Add dynamic symbols.
-  for (const Dynamic& dynamic : myStaff.getDynamics())
+  for (Dynamic const& dynamic : myStaff.getDynamics())
     symbolSets.at(dynamic.getPosition()).insert(SymbolGroup::Dynamic);
 
   // Now, we need to form symbol groups for symbols such as vibrato or let
@@ -541,7 +541,7 @@ void LayoutInfo::calculateTabStaffAboveLayout()
     int rightPos = 0;
 
     for (int i = 0; i < static_cast<int>(symbolSets.size()); ++i) {
-      const SymbolSet& set = symbolSets[i];
+      SymbolSet const& set = symbolSets[i];
 
       // Skip empty positions.
       if (set.empty())
@@ -597,7 +597,7 @@ void LayoutInfo::calculateTabStaffAboveLayout()
   myTabStaffAboveSpacing += getMaxHeight(myTabStaffAboveSymbols) * TAB_SYMBOL_SPACING;
 }
 
-static int getBendHeight(const Bend& bend)
+static int getBendHeight(Bend const& bend)
 {
   if (bend.getStartPoint() == Bend::HighPoint || bend.getEndPoint() == Bend::HighPoint) {
     return 3;
@@ -605,7 +605,7 @@ static int getBendHeight(const Bend& bend)
     return 2;
 }
 
-static int getBendEndPosition(const Voice& voice, const Bend& bend, int index)
+static int getBendEndPosition(Voice const& voice, Bend const& bend, int index)
 {
   // Move forward by the appropriate number of positions.
   index = boost::algorithm::clamp(index + bend.getDuration(), 0, voice.getPositions().size() - 1);
@@ -614,17 +614,17 @@ static int getBendEndPosition(const Voice& voice, const Bend& bend, int index)
 
 void LayoutInfo::calculateBendLayout(VerticalLayout& layout)
 {
-  for (const Voice& voice : myStaff.getVoices()) {
+  for (Voice const& voice : myStaff.getVoices()) {
     int leftPos = 0;
     int rightPos = 0;
     bool inGroup = false;
     int groupHeight = 0;
 
     for (unsigned int i = 0; i < voice.getPositions().size(); ++i) {
-      const Position& pos = voice.getPositions()[i];
+      Position const& pos = voice.getPositions()[i];
 
       const Bend* bend = nullptr;
-      for (const Note& note : pos.getNotes()) {
+      for (Note const& note : pos.getNotes()) {
         if (note.hasBend()) {
           bend = &note.getBend();
           break;
@@ -668,7 +668,7 @@ int LayoutInfo::getMaxHeight(const std::vector<SymbolGroup>& groups)
 {
   int maxHeight = 0;
 
-  for (const SymbolGroup& group : groups)
+  for (SymbolGroup const& group : groups)
     maxHeight = std::max(maxHeight, group.getHeight());
 
   return maxHeight;
@@ -677,7 +677,7 @@ int LayoutInfo::getMaxHeight(const std::vector<SymbolGroup>& groups)
 SymbolGroup::SymbolGroup(SymbolGroup::SymbolType symbol,
                          int leftPosition,
                          int rightPosition,
-                         const Voice& voice,
+                         Voice const& voice,
                          double width,
                          int height)
   : mySymbolType(symbol)
@@ -743,7 +743,7 @@ int SymbolGroup::getRightPosition() const
   return myRightPosition;
 }
 
-const Voice& SymbolGroup::getVoice() const
+Voice const& SymbolGroup::getVoice() const
 {
   return *myVoice;
 }

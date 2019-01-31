@@ -17,9 +17,9 @@
 
 #include "removenoteproperty.h"
 
-RemoveNoteProperty::RemoveNoteProperty(const ScoreLocation& location,
+RemoveNoteProperty::RemoveNoteProperty(ScoreLocation const& location,
                                        Note::SimpleProperty property,
-                                       const QString& description)
+                                       QString const& description)
   : QUndoCommand(QObject::tr("Remove ") + description)
   , myLocation(location)
   , myProperty(property)

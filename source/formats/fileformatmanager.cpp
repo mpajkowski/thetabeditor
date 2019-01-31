@@ -23,7 +23,7 @@
 #include <formats/powertab/powertabexporter.h>
 #include <formats/powertab/powertabimporter.h>
 
-FileFormatManager::FileFormatManager(const SettingsManager& settings_manager)
+FileFormatManager::FileFormatManager(SettingsManager const& settings_manager)
 {
   myImporters.emplace_back(new PowerTabImporter());
   myImporters.emplace_back(new GuitarProImporter());
@@ -57,7 +57,7 @@ std::string FileFormatManager::importFileFilter() const
     if (it != myImporters.begin())
       filterAll += " ";
 
-    const FileFormat& format = (*it)->fileFormat();
+    FileFormat const& format = (*it)->fileFormat();
     filterAll += format.allExtensions();
     filterOther += ";;" + format.fileFilter();
   }
@@ -69,7 +69,7 @@ std::string FileFormatManager::importFileFilter() const
 
 void FileFormatManager::importFile(Score& score,
                                    const boost::filesystem::path& filename,
-                                   const FileFormat& format)
+                                   FileFormat const& format)
 {
   for (auto& importer : myImporters) {
     if (importer->fileFormat() == format) {
@@ -95,9 +95,9 @@ std::string FileFormatManager::exportFileFilter() const
   return filter;
 }
 
-void FileFormatManager::exportFile(const Score& score,
+void FileFormatManager::exportFile(Score const& score,
                                    const boost::filesystem::path& filename,
-                                   const FileFormat& format)
+                                   FileFormat const& format)
 {
   for (auto& exporter : myExporters) {
     if (exporter->fileFormat() == format) {

@@ -32,7 +32,7 @@ class TimeSignatureDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit TimeSignatureDialog(QWidget* parent, const TimeSignature& currentTimeSignature);
+  explicit TimeSignatureDialog(QWidget* parent, TimeSignature const& currentTimeSignature);
   ~TimeSignatureDialog();
 
   /// Returns a new time signature using the values selected in the dialog.

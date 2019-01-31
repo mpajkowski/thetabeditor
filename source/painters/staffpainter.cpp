@@ -22,8 +22,8 @@
 #include <app/pubsub/clickpubsub.h>
 #include <cmath>
 
-StaffPainter::StaffPainter(const LayoutConstPtr& layout,
-                           const ScoreLocation& location,
+StaffPainter::StaffPainter(LayoutConstPtr const& layout,
+                           ScoreLocation const& location,
                            const std::shared_ptr<ClickPubSub>& pubsub)
   : myLayout(layout)
   , myPubSub(pubsub)

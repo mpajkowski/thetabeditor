@@ -39,7 +39,7 @@ public:
   Dynamic();
   Dynamic(int position, VolumeLevel level);
 
-  bool operator==(const Dynamic& other) const;
+  bool operator==(Dynamic const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);

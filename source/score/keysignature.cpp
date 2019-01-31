@@ -40,7 +40,7 @@ KeySignature::KeySignature(KeyType type, int accidentals, bool usesSharps)
   , myIsCancellation(false)
 {}
 
-bool KeySignature::operator==(const KeySignature& other) const
+bool KeySignature::operator==(KeySignature const& other) const
 {
   return myKeyType == other.myKeyType && myNumAccidentals == other.myNumAccidentals &&
          myUsesSharps == other.myUsesSharps && myIsVisible == other.myIsVisible &&
@@ -105,7 +105,7 @@ void KeySignature::setCancellation(bool cancellation)
   myIsCancellation = cancellation;
 }
 
-std::ostream& operator<<(std::ostream& os, const KeySignature& key)
+std::ostream& operator<<(std::ostream& os, KeySignature const& key)
 {
   const std::string type = (key.getKeyType() == KeySignature::Major) ? "Major" : "Minor";
   const std::string tonic =

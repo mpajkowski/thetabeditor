@@ -26,7 +26,7 @@ class Score;
 class AddPlayer : public QUndoCommand
 {
 public:
-  AddPlayer(Score& score, const Player& player);
+  AddPlayer(Score& score, Player const& player);
 
   virtual void redo() override;
   virtual void undo() override;

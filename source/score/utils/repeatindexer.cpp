@@ -21,24 +21,24 @@
 #include <score/utils.h>
 #include <stack>
 
-RepeatedSection::RepeatedSection(const SystemLocation& startBar)
+RepeatedSection::RepeatedSection(SystemLocation const& startBar)
   : myStartBarLocation(startBar)
   , myActiveRepeat(1)
 {}
 
-bool RepeatedSection::operator<(const RepeatedSection& other) const
+bool RepeatedSection::operator<(RepeatedSection const& other) const
 {
   return myStartBarLocation < other.myStartBarLocation;
 }
 
-void RepeatedSection::addRepeatEndBar(const SystemLocation& location, int repeatCount)
+void RepeatedSection::addRepeatEndBar(SystemLocation const& location, int repeatCount)
 {
   myRepeatEndBars[location] = repeatCount;
 }
 
-void RepeatedSection::addAlternateEnding(const System& system,
+void RepeatedSection::addAlternateEnding(System const& system,
                                          int system_index,
-                                         const AlternateEnding& ending)
+                                         AlternateEnding const& ending)
 {
   const Barline* bar = system.getPreviousBarline(ending.getPosition() + 1);
   assert(bar);
@@ -50,12 +50,12 @@ void RepeatedSection::addAlternateEnding(const System& system,
     myAlternateEndings[num] = location;
 }
 
-const SystemLocation& RepeatedSection::getStartBarLocation() const
+SystemLocation const& RepeatedSection::getStartBarLocation() const
 {
   return myStartBarLocation;
 }
 
-const SystemLocation& RepeatedSection::getLastEndBarLocation() const
+SystemLocation const& RepeatedSection::getLastEndBarLocation() const
 {
   assert(!myRepeatEndBars.empty());
   return myRepeatEndBars.rbegin()->first;
@@ -91,7 +91,7 @@ void RepeatedSection::reset()
   myActiveRepeat = 1;
 }
 
-SystemLocation RepeatedSection::performRepeat(const SystemLocation& loc)
+SystemLocation RepeatedSection::performRepeat(SystemLocation const& loc)
 {
   // Deal with alternate endings - if we are at the start of the first
   // alternate ending, we can branch off to other alternate endings depending
@@ -122,7 +122,7 @@ SystemLocation RepeatedSection::performRepeat(const SystemLocation& loc)
   }
 }
 
-RepeatIndexer::RepeatIndexer(const Score& score)
+RepeatIndexer::RepeatIndexer(Score const& score)
 {
   // There may be nested repeats, so maintain a stack of the active repeats
   // as we go through the score.
@@ -132,13 +132,13 @@ RepeatIndexer::RepeatIndexer(const Score& score)
   repeats.push(SystemLocation(0, 0));
 
   int systemIndex = 0;
-  for (const System& system : score.getSystems()) {
-    for (const Barline& bar : system.getBarlines()) {
+  for (System const& system : score.getSystems()) {
+    for (Barline const& bar : system.getBarlines()) {
       // Process repeat endings in this bar, unless we're at the last bar
       // of the system.
       const Barline* nextBar = system.getNextBarline(bar.getPosition());
       if (nextBar) {
-        for (const AlternateEnding& ending : ScoreUtils::findInRange(
+        for (AlternateEnding const& ending : ScoreUtils::findInRange(
                system.getAlternateEndings(), bar.getPosition(), nextBar->getPosition() - 1)) {
           // TODO - report unexpected alternate endings.
           if (!repeats.empty()) {
@@ -189,7 +189,7 @@ RepeatIndexer::RepeatIndexer(const Score& score)
   // TODO - report missing / extra alternate endings.
 }
 
-const RepeatedSection* RepeatIndexer::findRepeat(const SystemLocation& loc) const
+const RepeatedSection* RepeatIndexer::findRepeat(SystemLocation const& loc) const
 {
   auto repeat = myRepeats.upper_bound(loc);
 
@@ -203,7 +203,7 @@ const RepeatedSection* RepeatIndexer::findRepeat(const SystemLocation& loc) cons
   return nullptr;
 }
 
-RepeatedSection* RepeatIndexer::findRepeat(const SystemLocation& loc)
+RepeatedSection* RepeatIndexer::findRepeat(SystemLocation const& loc)
 {
   return const_cast<RepeatedSection*>(const_cast<const RepeatIndexer*>(this)->findRepeat(loc));
 }

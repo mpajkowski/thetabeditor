@@ -33,7 +33,7 @@ IrregularGrouping::IrregularGrouping(int position, int length, int notesPlayed, 
   , myNotesPlayedOver(notesPlayedOver)
 {}
 
-bool IrregularGrouping::operator==(const IrregularGrouping& other) const
+bool IrregularGrouping::operator==(IrregularGrouping const& other) const
 {
   return myPosition == other.myPosition && myLength == other.myLength &&
          myNotesPlayed == other.myNotesPlayed && myNotesPlayedOver == other.myNotesPlayedOver;
@@ -79,7 +79,7 @@ void IrregularGrouping::setNotesPlayedOver(int notes)
   myNotesPlayedOver = notes;
 }
 
-std::ostream& operator<<(std::ostream& os, const IrregularGrouping& group)
+std::ostream& operator<<(std::ostream& os, IrregularGrouping const& group)
 {
   os << group.getNotesPlayed();
 

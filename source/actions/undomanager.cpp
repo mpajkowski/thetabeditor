@@ -81,7 +81,7 @@ void UndoManager::onSystemChanged(int affectedSystem)
   emit redrawNeeded(affectedSystem);
 }
 
-void UndoManager::beginMacro(const QString& text)
+void UndoManager::beginMacro(QString const& text)
 {
   activeStack()->beginMacro(text);
 }

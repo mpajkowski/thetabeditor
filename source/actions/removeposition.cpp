@@ -20,7 +20,7 @@
 #include <score/staff.h>
 #include <score/voiceutils.h>
 
-RemovePosition::RemovePosition(const ScoreLocation& location, const QString& text)
+RemovePosition::RemovePosition(ScoreLocation const& location, QString const& text)
   : QUndoCommand(text)
   , myLocation(location)
   , myOriginalPosition(*location.getPosition())

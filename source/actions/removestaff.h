@@ -25,7 +25,7 @@
 class RemoveStaff : public QUndoCommand
 {
 public:
-  RemoveStaff(const ScoreLocation& location);
+  RemoveStaff(ScoreLocation const& location);
 
   virtual void redo() override;
   virtual void undo() override;

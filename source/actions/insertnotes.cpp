@@ -20,7 +20,7 @@
 #include <score/system.h>
 #include <score/voiceutils.h>
 
-InsertNotes::InsertNotes(const ScoreLocation& location,
+InsertNotes::InsertNotes(ScoreLocation const& location,
                          const std::vector<Position>& positions,
                          const std::vector<IrregularGrouping>& groups)
   : QUndoCommand(QObject::tr("Insert Notes"))
@@ -41,7 +41,7 @@ InsertNotes::InsertNotes(const ScoreLocation& location,
   const int startPos = myNewPositions.front().getPosition();
   const int endPos = myNewPositions.back().getPosition();
 
-  const System& system = location.getSystem();
+  System const& system = location.getSystem();
   const Position* nextPos = VoiceUtils::getNextPosition(location.getVoice(), startPos - 1);
   const Barline* nextBar = system.getNextBarline(startPos == 0 ? startPos : startPos - 1);
 
@@ -71,19 +71,19 @@ void InsertNotes::redo()
   }
 
   // Insert the new items.
-  for (const Position& pos : myNewPositions)
+  for (Position const& pos : myNewPositions)
     myLocation.getVoice().insertPosition(pos);
-  for (const IrregularGrouping& group : myNewGroups)
+  for (IrregularGrouping const& group : myNewGroups)
     myLocation.getVoice().insertIrregularGrouping(group);
 }
 
 void InsertNotes::undo()
 {
   // Remove the items that were added.
-  for (const Position& pos : myNewPositions)
+  for (Position const& pos : myNewPositions)
     myLocation.getVoice().removePosition(pos);
 
-  for (const IrregularGrouping& group : myNewGroups)
+  for (IrregularGrouping const& group : myNewGroups)
     myLocation.getVoice().removeIrregularGrouping(group);
 
   // Undo any shifting that was performed.

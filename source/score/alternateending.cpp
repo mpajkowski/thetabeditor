@@ -34,7 +34,7 @@ AlternateEnding::AlternateEnding(int position)
   : myPosition(position)
 {}
 
-bool AlternateEnding::operator==(const AlternateEnding& other) const
+bool AlternateEnding::operator==(AlternateEnding const& other) const
 {
   return myPosition == other.myPosition && myNumbers == other.myNumbers &&
          mySpecialEndings == other.mySpecialEndings;
@@ -101,7 +101,7 @@ void AlternateEnding::setDalSegnoSegno(bool set)
   mySpecialEndings[DalSegnoSegno] = set;
 }
 
-std::ostream& operator<<(std::ostream& os, const AlternateEnding& ending)
+std::ostream& operator<<(std::ostream& os, AlternateEnding const& ending)
 {
   const std::vector<int>& numbers = ending.getNumbers();
   std::vector<std::string> text;

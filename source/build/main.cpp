@@ -195,7 +195,7 @@ int main(int argc, char* argv[])
       socket.connectToServer(QCoreApplication::applicationFilePath(), QIODevice::WriteOnly);
       if (socket.waitForConnected(500)) {
         QTextStream out(&socket);
-        for (const QString& file : filesToOpen)
+        for (QString const& file : filesToOpen)
           out << file << "\n";
         socket.waitForBytesWritten();
         return EXIT_SUCCESS;

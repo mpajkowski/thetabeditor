@@ -45,7 +45,7 @@ TEST_CASE("Actions/RemovePlayer", "")
   REQUIRE(score.getPlayers().size() == 1);
   REQUIRE(score.getPlayers()[0] == player2);
   {
-    const PlayerChange& newChange = score.getSystems()[0].getPlayerChanges()[0];
+    PlayerChange const& newChange = score.getSystems()[0].getPlayerChanges()[0];
     REQUIRE(newChange.getActivePlayers(0).size() == 1);
     REQUIRE(newChange.getActivePlayers(0)[0].getPlayerNumber() == 0);
   }
@@ -55,7 +55,7 @@ TEST_CASE("Actions/RemovePlayer", "")
   REQUIRE(score.getPlayers()[0] == player1);
   REQUIRE(score.getPlayers()[1] == player2);
   {
-    const PlayerChange& newChange = score.getSystems()[0].getPlayerChanges()[0];
+    PlayerChange const& newChange = score.getSystems()[0].getPlayerChanges()[0];
     REQUIRE(newChange.getActivePlayers(0).size() == 2);
     REQUIRE(newChange.getActivePlayers(0)[0].getPlayerNumber() == 0);
     REQUIRE(newChange.getActivePlayers(0)[1].getPlayerNumber() == 1);

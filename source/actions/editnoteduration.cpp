@@ -17,7 +17,7 @@
 
 #include "editnoteduration.h"
 
-EditNoteDuration::EditNoteDuration(const ScoreLocation& location,
+EditNoteDuration::EditNoteDuration(ScoreLocation const& location,
                                    Position::DurationType duration,
                                    bool forRests)
   : QUndoCommand(forRests ? QObject::tr("Edit Rest Duration") : QObject::tr("Edit Note Duration"))

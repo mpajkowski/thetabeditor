@@ -40,7 +40,7 @@ public:
   Barline();
   Barline(int position, BarType type, int repeatCount = 0);
 
-  bool operator==(const Barline& other) const;
+  bool operator==(Barline const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -61,22 +61,22 @@ public:
   void setRepeatCount(int count);
 
   /// Returns the key signature for the bar.
-  const KeySignature& getKeySignature() const;
+  KeySignature const& getKeySignature() const;
   /// Sets the key signature for the bar.
-  void setKeySignature(const KeySignature& key);
+  void setKeySignature(KeySignature const& key);
 
   /// Returns the time signature for the bar.
-  const TimeSignature& getTimeSignature() const;
+  TimeSignature const& getTimeSignature() const;
   /// Sets the time signature for the bar.
-  void setTimeSignature(const TimeSignature& time);
+  void setTimeSignature(TimeSignature const& time);
 
   /// Returns whether the barline has a rehearsal sign.
   bool hasRehearsalSign() const;
   /// Returns the rehearsal sign for the bar.
-  const RehearsalSign& getRehearsalSign() const;
+  RehearsalSign const& getRehearsalSign() const;
   RehearsalSign& getRehearsalSign();
   /// Sets the rehearsal sign for the bar.
-  void setRehearsalSign(const RehearsalSign& sign);
+  void setRehearsalSign(RehearsalSign const& sign);
   /// Clears the rehearsal sign for the bar.
   void clearRehearsalSign();
 

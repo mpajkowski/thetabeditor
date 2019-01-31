@@ -63,7 +63,7 @@ static int getChannel(int player)
   return player;
 }
 
-static int getChannel(const ActivePlayer& player)
+static int getChannel(ActivePlayer const& player)
 {
   return getChannel(player.getPlayerNumber());
 }
@@ -72,7 +72,7 @@ static bool findPositionChange(MidiEventList& event_list,
                                int ticks,
                                bool record_position_changes,
                                RepeatController& repeat_controller,
-                               const SystemLocation& prev_location,
+                               SystemLocation const& prev_location,
                                SystemLocation& location)
 {
   SystemLocation new_location;
@@ -91,7 +91,7 @@ static bool findPositionChange(MidiEventList& event_list,
 static SystemLocation moveToNextBar(MidiEventList& event_list,
                                     int ticks,
                                     bool record_position_changes,
-                                    const System& system,
+                                    System const& system,
                                     SystemLocation location,
                                     int next_bar_pos,
                                     RepeatController& repeat_controller)
@@ -127,7 +127,7 @@ MidiFile::MidiFile()
   : myTicksPerBeat(0)
 {}
 
-void MidiFile::load(const Score& score, const LoadOptions& options)
+void MidiFile::load(Score const& score, LoadOptions const& options)
 {
   myTicksPerBeat = DEFAULT_PPQ;
 
@@ -141,7 +141,7 @@ void MidiFile::load(const Score& score, const LoadOptions& options)
   for (unsigned int i = 0; i < score.getPlayers().size(); ++i) {
     regular_tracks[i].append(MidiEvent::volumeChange(0, getChannel(i), Dynamic::fff));
 
-    for (const MidiEvent& event : MidiEvent::pitchWheelRange(0, getChannel(i), PITCH_BEND_RANGE)) {
+    for (MidiEvent const& event : MidiEvent::pitchWheelRange(0, getChannel(i), PITCH_BEND_RANGE)) {
       regular_tracks[i].append(event);
     }
   }
@@ -153,7 +153,7 @@ void MidiFile::load(const Score& score, const LoadOptions& options)
   int current_tempo = Midi::BEAT_DURATION_120_BPM;
 
   while (location.getSystem() < score.getSystems().size()) {
-    const System& system = score.getSystems()[location.getSystem()];
+    System const& system = score.getSystems()[location.getSystem()];
     const Barline* current_bar = ScoreUtils::findByPosition(system.getBarlines(), location.getPosition());
     const Barline* next_bar = system.getNextBarline(location.getPosition());
 
@@ -167,7 +167,7 @@ void MidiFile::load(const Score& score, const LoadOptions& options)
       master_track, start_tick, current_tempo, system, current_bar->getPosition(), next_bar->getPosition());
 
     for (unsigned int staff_index = 0; staff_index < system.getStaves().size(); ++staff_index) {
-      const Staff& staff = system.getStaves()[staff_index];
+      Staff const& staff = system.getStaves()[staff_index];
 
       for (unsigned int voice_index = 0; voice_index < staff.getVoices().size(); ++voice_index) {
         const int end_tick = addEventsForBar(regular_tracks,
@@ -216,13 +216,13 @@ void MidiFile::load(const Score& score, const LoadOptions& options)
 
 int MidiFile::generateMetronome(MidiEventList& event_list,
                                 int current_tick,
-                                const System& system,
-                                const Barline& current_bar,
-                                const Barline& next_bar,
-                                const SystemLocation& location,
-                                const LoadOptions& options)
+                                System const& system,
+                                Barline const& current_bar,
+                                Barline const& next_bar,
+                                SystemLocation const& location,
+                                LoadOptions const& options)
 {
-  const TimeSignature& time_sig = current_bar.getTimeSignature();
+  TimeSignature const& time_sig = current_bar.getTimeSignature();
 
   const int num_pulses = time_sig.getNumPulses();
   const int beats_per_measure = time_sig.getBeatsPerMeasure();
@@ -236,9 +236,9 @@ int MidiFile::generateMetronome(MidiEventList& event_list,
   // Check for multi-bar rests, as we need to generate more metronome events
   // to fill the extra bars.
   int num_repeats = 1;
-  for (const Staff& staff : system.getStaves()) {
-    for (const Voice& voice : staff.getVoices()) {
-      for (const Position& pos :
+  for (Staff const& staff : system.getStaves()) {
+    for (Voice const& voice : staff.getVoices()) {
+      for (Position const& pos :
            ScoreUtils::findInRange(voice.getPositions(), current_bar.getPosition(), next_bar.getPosition())) {
         if (pos.hasMultiBarRest()) {
           num_repeats = std::max(num_repeats, pos.getMultiBarRestCount());
@@ -267,14 +267,14 @@ int MidiFile::generateMetronome(MidiEventList& event_list,
 int MidiFile::addTempoEvent(MidiEventList& event_list,
                             int current_tick,
                             int current_tempo,
-                            const System& system,
+                            System const& system,
                             int bar_start,
                             int bar_end)
 {
   auto markers = ScoreUtils::findInRange(system.getTempoMarkers(), bar_start, bar_end - 1);
   // If multiple tempo markers occur in a bar, just choose the last one.
   if (!markers.empty()) {
-    const TempoMarker& marker = markers.back();
+    TempoMarker const& marker = markers.back();
 
     // Convert the values in the TempoMarker::BeatType enum to a factor that
     // will scale the bpm value to be in terms of quarter notes.
@@ -291,9 +291,9 @@ int MidiFile::addTempoEvent(MidiEventList& event_list,
   return current_tempo;
 }
 
-static int getWholeRestDuration(const System& system,
-                                const Voice& voice,
-                                const Position& pos,
+static int getWholeRestDuration(System const& system,
+                                Voice const& voice,
+                                Position const& pos,
                                 int bar_start,
                                 int bar_end,
                                 int original_duration)
@@ -309,13 +309,13 @@ static int getWholeRestDuration(const System& system,
 
   // Otherwise, extend the rest for the entire bar.
   const Barline* barline = ScoreUtils::findByPosition(system.getBarlines(), bar_start);
-  const TimeSignature& time_sig = barline->getTimeSignature();
+  TimeSignature const& time_sig = barline->getTimeSignature();
 
   return boost::rational_cast<int>(time_sig.getBeatsPerMeasure() *
                                    boost::rational<int>(4, time_sig.getBeatValue()));
 }
 
-static int getActualNotePitch(const Note& note, const Tuning& tuning)
+static int getActualNotePitch(Note const& note, Tuning const& tuning)
 {
   const int open_string_pitch = tuning.getNote(note.getString(), false) + tuning.getCapo();
   int pitch = open_string_pitch + note.getFretNumber();
@@ -340,7 +340,7 @@ static int getActualNotePitch(const Note& note, const Tuning& tuning)
 }
 
 /// Returns the appropriate note velocity type for the given position/note.
-static Velocity getNoteVelocity(const Position& pos, const Note& note)
+static Velocity getNoteVelocity(Position const& pos, Note const& note)
 {
   if (note.hasProperty(Note::GhostNote))
     return Velocity::GhostVelocity;
@@ -404,9 +404,9 @@ static void generateBends(std::vector<BendEventInfo>& bends,
                           int start_tick,
                           int duration,
                           int ppq,
-                          const Note& note)
+                          Note const& note)
 {
-  const Bend& bend = note.getBend();
+  Bend const& bend = note.getBend();
 
   const int bend_amount = boost::rational_cast<int>(DEFAULT_BEND + bend.getBentPitch() * BEND_QUARTER_TONE);
   const int release_amount =
@@ -477,7 +477,7 @@ static void generateSlides(std::vector<BendEventInfo>& bends,
                            int start_tick,
                            int note_duration,
                            int ppq,
-                           const Note& note,
+                           Note const& note,
                            const Note* next_note)
 {
   if (note.hasProperty(Note::ShiftSlide) || note.hasProperty(Note::LegatoSlide) ||
@@ -520,16 +520,16 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
                               uint8_t& active_bend,
                               int current_tick,
                               int current_tempo,
-                              const Score& score,
-                              const System& system,
+                              Score const& score,
+                              System const& system,
                               int system_index,
-                              const Staff& staff,
+                              Staff const& staff,
                               int staff_index,
-                              const Voice& voice,
+                              Voice const& voice,
                               int voice_index,
                               int bar_start,
                               int bar_end,
-                              const LoadOptions& options)
+                              LoadOptions const& options)
 {
   ScoreLocation location(score, system_index, staff_index, voice_index);
   const Voice* prev_voice = VoiceUtils::getAdjacentVoice(location, -1);
@@ -541,8 +541,8 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
     const PlayerChange* current_players = ScoreUtils::findByPosition(system.getPlayerChanges(), position);
 
     if (current_players) {
-      for (const ActivePlayer& player : current_players->getActivePlayers(staff_index)) {
-        const Player& p = score.getPlayers()[player.getPlayerNumber()];
+      for (ActivePlayer const& player : current_players->getActivePlayers(staff_index)) {
+        Player const& p = score.getPlayers()[player.getPlayerNumber()];
 
         tracks[player.getPlayerNumber()].append(
           MidiEvent::programChange(current_tick, getChannel(player), p.getMidiPreset()));
@@ -559,7 +559,7 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
     // Handle dynamics.
     const Dynamic* dynamic = ScoreUtils::findByPosition(staff.getDynamics(), position);
     if (dynamic) {
-      for (const ActivePlayer& player : active_players) {
+      for (ActivePlayer const& player : active_players) {
         tracks[player.getPlayerNumber()].append(
           MidiEvent::volumeChange(current_tick, getChannel(player), dynamic->getVolume()));
       }
@@ -605,7 +605,7 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
       const uint8_t width =
         pos->hasProperty(Position::Vibrato) ? options.myVibratoStrength : options.myWideVibratoStrength;
 
-      for (const ActivePlayer& player : active_players) {
+      for (ActivePlayer const& player : active_players) {
         const int channel = getChannel(player);
 
         // Add vibrato event, and an event to turn off the vibrato after
@@ -618,13 +618,13 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
 
     // Let ring events (applied to all notes in the position).
     if (pos->hasProperty(Position::LetRing) && !let_ring_active) {
-      for (const ActivePlayer& player : active_players) {
+      for (ActivePlayer const& player : active_players) {
         tracks[player.getPlayerNumber()].append(MidiEvent::holdPedal(current_tick, getChannel(player), true));
       }
 
       let_ring_active = true;
     } else if (!pos->hasProperty(Position::LetRing) && let_ring_active) {
-      for (const ActivePlayer& player : active_players) {
+      for (ActivePlayer const& player : active_players) {
         tracks[player.getPlayerNumber()].append(
           MidiEvent::holdPedal(current_tick, getChannel(player), false));
       }
@@ -635,7 +635,7 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
     // bar.
     else if (let_ring_active &&
              (pos == &ScoreUtils::findInRange(voice.getPositions(), bar_start, bar_end).back())) {
-      for (const ActivePlayer& player : active_players) {
+      for (ActivePlayer const& player : active_players) {
         tracks[player.getPlayerNumber()].append(
           MidiEvent::holdPedal(current_tick + duration, getChannel(player), false));
       }
@@ -643,7 +643,7 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
       let_ring_active = false;
     }
 
-    for (const Note& note : pos->getNotes()) {
+    for (Note const& note : pos->getNotes()) {
       // For arpeggios, delay the start of each note a small amount from
       // the last, and also adjust the duration correspondingly.
       if (pos->hasProperty(Position::ArpeggioDown) || pos->hasProperty(Position::ArpeggioUp)) {
@@ -656,13 +656,13 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
       // TODO - should we handle cases where different tunings are used
       // by players in the same staff?
       const int player_index = active_players.front().getPlayerNumber();
-      const Tuning& tuning = score.getPlayers()[player_index].getTuning();
+      Tuning const& tuning = score.getPlayers()[player_index].getTuning();
       int pitch = getActualNotePitch(note, tuning);
       const Velocity velocity = getNoteVelocity(*pos, note);
 
       // If this note is not tied to the previous note, play the note.
       if (!note.hasProperty(Note::Tied)) {
-        for (const ActivePlayer& active_player : active_players) {
+        for (ActivePlayer const& active_player : active_players) {
           const int player_index = active_player.getPlayerNumber();
 
           auto& player = score.getPlayers()[player_index];
@@ -726,8 +726,8 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
           generateBends(bend_events, active_bend, current_tick, duration, myTicksPerBeat, note);
         }
 
-        for (const BendEventInfo& event : bend_events) {
-          for (const ActivePlayer& player : active_players) {
+        for (BendEventInfo const& event : bend_events) {
+          for (ActivePlayer const& player : active_players) {
             tracks[player.getPlayerNumber()].append(
               MidiEvent::pitchWheel(event.myTick, getChannel(player), event.myBendAmount));
           }
@@ -750,7 +750,7 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
         for (int i = 0; i < num_notes; ++i) {
           const int tick = current_tick + i * trem_pick_duration;
 
-          for (const ActivePlayer& player : active_players) {
+          for (ActivePlayer const& player : active_players) {
             tracks[player.getPlayerNumber()].append(
               MidiEvent::noteOff(tick, getChannel(player), pitch, system_location));
           }
@@ -759,7 +759,7 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
           // tremolo picking).
           std::swap(pitch, other_pitch);
 
-          for (const ActivePlayer& player : active_players) {
+          for (ActivePlayer const& player : active_players) {
             tracks[player.getPlayerNumber()].append(
               MidiEvent::noteOn(tick, getChannel(player), pitch, velocity, system_location));
           }
@@ -788,7 +788,7 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
 
         int note_length = boost::rational_cast<int>(duration * factor);
 
-        for (const ActivePlayer& player : active_players) {
+        for (ActivePlayer const& player : active_players) {
           tracks[player.getPlayerNumber()].append(
             MidiEvent::noteOff(current_tick + note_length, getChannel(player), pitch, system_location));
         }

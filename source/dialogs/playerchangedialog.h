@@ -35,15 +35,15 @@ class PlayerChangeDialog : public QDialog
 
 public:
   explicit PlayerChangeDialog(QWidget* parent,
-                              const Score& score,
-                              const System& system,
+                              Score const& score,
+                              System const& system,
                               const PlayerChange* currentPlayers);
   ~PlayerChangeDialog();
 
   PlayerChange getPlayerChange() const;
 
 private:
-  QComboBox* getStaffComboBox(int numStrings, const System& system);
+  QComboBox* getStaffComboBox(int numStrings, System const& system);
 
   Ui::PlayerChangeDialog* ui;
   std::vector<QComboBox*> myStaffComboBoxes;

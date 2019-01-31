@@ -28,7 +28,7 @@
 #include <QAction>
 #include <QButtonGroup>
 
-static QString getShortcutHint(const QAction& action)
+static QString getShortcutHint(QAction const& action)
 {
   if (!action.shortcut().isEmpty()) {
     QString shortcut = action.shortcut().toString(QKeySequence::NativeText);
@@ -37,7 +37,7 @@ static QString getShortcutHint(const QAction& action)
     return "";
 }
 
-static QString extractPercent(const QString& text, const QLocale& locale)
+static QString extractPercent(QString const& text, QLocale const& locale)
 {
   QString number_only(text);
   number_only.remove(locale.percent());
@@ -62,10 +62,10 @@ private:
   QDoubleValidator myNumberValidator;
 };
 
-PlaybackWidget::PlaybackWidget(const QAction& play_pause_command,
-                               const QAction& rewind_command,
-                               const QAction& stop_command,
-                               const QAction& metronome_command,
+PlaybackWidget::PlaybackWidget(QAction const& play_pause_command,
+                               QAction const& rewind_command,
+                               QAction const& stop_command,
+                               QAction const& metronome_command,
                                QWidget* parent)
   : QWidget(parent)
   , ui(new Ui::PlaybackWidget)
@@ -118,7 +118,7 @@ PlaybackWidget::PlaybackWidget(const QAction& play_pause_command,
   connectButtonToAction(ui->rewindToStartButton, &rewind_command);
   connectButtonToAction(ui->stopButton, &stop_command);
 
-  connect(ui->zoomComboBox, &QComboBox::currentTextChanged, [=](const QString& text) {
+  connect(ui->zoomComboBox, &QComboBox::currentTextChanged, [=](QString const& text) {
     QLocale locale;
     double percentage = locale.toDouble(extractPercent(text, locale));
     percentage = validateZoom(percentage);
@@ -142,13 +142,13 @@ double PlaybackWidget::validateZoom(double percent)
   return boost::algorithm::clamp(percent, MIN_ZOOM, MAX_ZOOM);
 }
 
-void PlaybackWidget::reset(const Document& doc)
+void PlaybackWidget::reset(Document const& doc)
 {
   ui->filterComboBox->blockSignals(true);
 
   // Rebuild the filter list.
   ui->filterComboBox->clear();
-  for (const ViewFilter& filter : doc.getScore().getViewFilters()) {
+  for (ViewFilter const& filter : doc.getScore().getViewFilters()) {
     ui->filterComboBox->addItem(QString::fromStdString(filter.getDescription()));
   }
 

@@ -26,7 +26,7 @@
 class AddNoteProperty : public QUndoCommand
 {
 public:
-  AddNoteProperty(const ScoreLocation& location, Note::SimpleProperty property, const QString& description);
+  AddNoteProperty(ScoreLocation const& location, Note::SimpleProperty property, QString const& description);
 
   virtual void redo() override;
   virtual void undo() override;

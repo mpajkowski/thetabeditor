@@ -57,8 +57,8 @@ void SystemRenderer::centerSymbolVertically(QGraphicsItem& item, double y)
 }
 
 SystemRenderer::SystemRenderer(const ScoreArea* score_area,
-                               const Score& score,
-                               const ViewOptions& view_options)
+                               Score const& score,
+                               ViewOptions const& view_options)
   : myScoreArea(score_area)
   , myScore(score)
   , myViewOptions(view_options)
@@ -76,7 +76,7 @@ SystemRenderer::SystemRenderer(const ScoreArea* score_area,
   myRehearsalSignFont.setPixelSize(12);
 }
 
-QGraphicsItem* SystemRenderer::operator()(const System& system, int systemIndex)
+QGraphicsItem* SystemRenderer::operator()(System const& system, int systemIndex)
 {
   // Draw the bounding rectangle for the system.
   myParentSystem = new QGraphicsRectItem();
@@ -88,7 +88,7 @@ QGraphicsItem* SystemRenderer::operator()(const System& system, int systemIndex)
   // Draw each staff.
   double height = 0;
   int i = 0;
-  for (const Staff& staff : system.getStaves()) {
+  for (Staff const& staff : system.getStaves()) {
     if (filter && !filter->accept(myScore, systemIndex, i)) {
       ++i;
       continue;
@@ -146,7 +146,7 @@ QGraphicsItem* SystemRenderer::operator()(const System& system, int systemIndex)
   return myParentSystem;
 }
 
-void SystemRenderer::drawTabClef(double x, const LayoutInfo& layout, const ScoreLocation& location)
+void SystemRenderer::drawTabClef(double x, LayoutInfo const& layout, ScoreLocation const& location)
 {
   // Determine the size of the clef symbol based on the number of strings and
   // the line spacing.
@@ -165,11 +165,11 @@ void SystemRenderer::drawTabClef(double x, const LayoutInfo& layout, const Score
   group->setParentItem(myParentStaff);
 }
 
-void SystemRenderer::drawBarNumber(int systemIndex, const LayoutInfo& layout)
+void SystemRenderer::drawBarNumber(int systemIndex, LayoutInfo const& layout)
 {
   int number = 1;
   for (int i = 0; i < systemIndex; ++i) {
-    const System& system = myScore.getSystems()[i];
+    System const& system = myScore.getSystems()[i];
     number += static_cast<int>(system.getBarlines().size()) - 1;
   }
 
@@ -179,16 +179,16 @@ void SystemRenderer::drawBarNumber(int systemIndex, const LayoutInfo& layout)
   text->setParentItem(myParentStaff);
 }
 
-void SystemRenderer::drawBarlines(const System& system,
+void SystemRenderer::drawBarlines(System const& system,
                                   int systemIndex,
-                                  const LayoutConstPtr& layout,
+                                  LayoutConstPtr const& layout,
                                   bool isFirstStaff)
 {
-  for (const Barline& barline : system.getBarlines()) {
+  for (Barline const& barline : system.getBarlines()) {
     const ScoreLocation location(myScore, systemIndex, -1, barline.getPosition());
 
-    const KeySignature& keySig = barline.getKeySignature();
-    const TimeSignature& timeSig = barline.getTimeSignature();
+    KeySignature const& keySig = barline.getKeySignature();
+    TimeSignature const& timeSig = barline.getTimeSignature();
 
     BarlinePainter* barlinePainter =
       new BarlinePainter(layout, barline, location, myScoreArea->getClickPubSub());
@@ -245,7 +245,7 @@ void SystemRenderer::drawBarlines(const System& system,
     }
 
     if (barline.hasRehearsalSign() && isFirstStaff) {
-      const RehearsalSign& sign = barline.getRehearsalSign();
+      RehearsalSign const& sign = barline.getRehearsalSign();
       const int RECTANGLE_OFFSET = 4;
 
       auto signLetters = new SimpleTextItem(QString::fromStdString(sign.getLetters()), myRehearsalSignFont);
@@ -282,16 +282,16 @@ void SystemRenderer::drawBarlines(const System& system,
   }
 }
 
-void SystemRenderer::drawTabNotes(const Staff& staff, const LayoutConstPtr& layout)
+void SystemRenderer::drawTabNotes(Staff const& staff, LayoutConstPtr const& layout)
 {
-  for (const Voice& voice : staff.getVoices()) {
-    for (const Position& pos : voice.getPositions()) {
+  for (Voice const& voice : staff.getVoices()) {
+    for (Position const& pos : voice.getPositions()) {
       if (pos.isRest() || pos.getNotes().empty())
         continue;
 
       const double location = layout->getPositionX(pos.getPosition());
 
-      for (const Note& note : pos.getNotes()) {
+      for (Note const& note : pos.getNotes()) {
         const QString text = QString::fromStdString(boost::lexical_cast<std::string>(note));
 
         auto tabNote = new SimpleTextItem(text,
@@ -312,7 +312,7 @@ void SystemRenderer::drawTabNotes(const Staff& staff, const LayoutConstPtr& layo
   }
 }
 
-void SystemRenderer::drawArpeggio(const Position& position, double x, const LayoutInfo& layout)
+void SystemRenderer::drawArpeggio(Position const& position, double x, LayoutInfo const& layout)
 {
   // Get the highest and lowest strings used at this position, and
   // convert the string indices to positions on the staff.
@@ -341,13 +341,13 @@ void SystemRenderer::drawArpeggio(const Position& position, double x, const Layo
   endPoint->setParentItem(myParentStaff);
 }
 
-void SystemRenderer::drawSystemSymbols(const System& system, const LayoutInfo& layout)
+void SystemRenderer::drawSystemSymbols(System const& system, LayoutInfo const& layout)
 {
   double height = 0;
 
   // Allocate space for any rehearsal signs - they are drawn at the same
   // time as barlines.
-  for (const Barline& barline : system.getBarlines()) {
+  for (Barline const& barline : system.getBarlines()) {
     if (barline.hasRehearsalSign()) {
       height += LayoutInfo::SYSTEM_SYMBOL_SPACING;
       drawDividerLine(height);
@@ -395,12 +395,12 @@ void SystemRenderer::drawDividerLine(double y)
   line->setParentItem(myParentSystem);
 }
 
-void SystemRenderer::drawAlternateEndings(const System& system, const LayoutInfo& layout, double height)
+void SystemRenderer::drawAlternateEndings(System const& system, LayoutInfo const& layout, double height)
 {
   const double TOP_LINE_OFFSET = 2;
   const double TEXT_PADDING = 5;
 
-  for (const AlternateEnding& ending : system.getAlternateEndings()) {
+  for (AlternateEnding const& ending : system.getAlternateEndings()) {
     const double location = layout.getPositionX(ending.getPosition()) + 0.5 * layout.getPositionSpacing();
 
     // Draw the vertical line.
@@ -418,7 +418,7 @@ void SystemRenderer::drawAlternateEndings(const System& system, const LayoutInfo
     // The horizontal line either stretches to the next repeat end bar
     // in the system, or just to the next bar.
     double endX = 0;
-    for (const Barline& barline : system.getBarlines()) {
+    for (Barline const& barline : system.getBarlines()) {
       // Look for the next repeat end bar.
       if (barline.getPosition() > ending.getPosition() && barline.getBarType() == Barline::RepeatEnd) {
         endX = layout.getPositionX(barline.getPosition());
@@ -483,7 +483,7 @@ static QString getBeatTypeImage(TempoMarker::BeatType type)
   return file;
 }
 
-static QString getTripletFeelImage(const TempoMarker& tempo)
+static QString getTripletFeelImage(TempoMarker const& tempo)
 {
   switch (tempo.getTripletFeel()) {
     case TempoMarker::TripletFeelEighth:
@@ -500,9 +500,9 @@ static QString getTripletFeelImage(const TempoMarker& tempo)
   }
 }
 
-void SystemRenderer::drawTempoMarkers(const System& system, const LayoutInfo& layout, double height)
+void SystemRenderer::drawTempoMarkers(System const& system, LayoutInfo const& layout, double height)
 {
-  for (const TempoMarker& tempo : system.getTempoMarkers()) {
+  for (TempoMarker const& tempo : system.getTempoMarkers()) {
     if (tempo.getMarkerType() == TempoMarker::NotShown)
       continue;
 
@@ -581,9 +581,9 @@ void SystemRenderer::drawTempoMarkers(const System& system, const LayoutInfo& la
   }
 }
 
-void SystemRenderer::drawChordText(const System& system, const LayoutInfo& layout, double height)
+void SystemRenderer::drawChordText(System const& system, LayoutInfo const& layout, double height)
 {
-  for (const ChordText& chord : system.getChords()) {
+  for (ChordText const& chord : system.getChords()) {
     const double x = layout.getPositionX(chord.getPosition());
     const std::string text = boost::lexical_cast<std::string>(chord.getChordName());
 
@@ -594,10 +594,10 @@ void SystemRenderer::drawChordText(const System& system, const LayoutInfo& layou
   }
 }
 
-void SystemRenderer::drawTextItems(const System& system, const LayoutInfo& layout, double height)
+void SystemRenderer::drawTextItems(System const& system, LayoutInfo const& layout, double height)
 {
-  for (const TextItem& text : system.getTextItems()) {
-    const QString& contents = QString::fromStdString(text.getContents());
+  for (TextItem const& text : system.getTextItems()) {
+    QString const& contents = QString::fromStdString(text.getContents());
 
     // Note: the SimpleTextItem class is not used here since multi-line
     // support is needed.
@@ -655,15 +655,15 @@ void SystemRenderer::drawRhythmSlashes()
 
 #endif
 
-void SystemRenderer::drawLegato(const Staff& staff, const LayoutInfo& layout)
+void SystemRenderer::drawLegato(Staff const& staff, LayoutInfo const& layout)
 {
-  for (const Voice& voice : staff.getVoices()) {
+  for (Voice const& voice : staff.getVoices()) {
     std::map<int, int> arcs;
 
-    for (const Position& pos : voice.getPositions()) {
+    for (Position const& pos : voice.getPositions()) {
       const int position = pos.getPosition();
 
-      for (const Note& note : pos.getNotes()) {
+      for (Note const& note : pos.getNotes()) {
         const int string = note.getString();
 
         if (note.hasProperty(Note::HammerOnOrPullOff) || note.hasProperty(Note::LegatoSlide)) {
@@ -720,9 +720,9 @@ void SystemRenderer::drawLegato(const Staff& staff, const LayoutInfo& layout)
   }
 }
 
-void SystemRenderer::drawPlayerChanges(const System& system, int staffIndex, const LayoutInfo& layout)
+void SystemRenderer::drawPlayerChanges(System const& system, int staffIndex, LayoutInfo const& layout)
 {
-  for (const PlayerChange& change : system.getPlayerChanges()) {
+  for (PlayerChange const& change : system.getPlayerChanges()) {
     const std::vector<ActivePlayer> activePlayers = change.getActivePlayers(staffIndex);
 
     QString description;
@@ -745,11 +745,11 @@ void SystemRenderer::drawPlayerChanges(const System& system, int staffIndex, con
   }
 }
 
-void SystemRenderer::drawSlides(const Staff& staff, const LayoutInfo& layout)
+void SystemRenderer::drawSlides(Staff const& staff, LayoutInfo const& layout)
 {
-  for (const Voice& voice : staff.getVoices()) {
+  for (Voice const& voice : staff.getVoices()) {
     for (int string = 0; string < staff.getStringCount(); ++string) {
-      for (const Position& pos : voice.getPositions()) {
+      for (Position const& pos : voice.getPositions()) {
         const Note* note = Utils::findByString(pos, string);
         if (!note)
           continue;
@@ -784,7 +784,7 @@ void SystemRenderer::drawSlides(const Staff& staff, const LayoutInfo& layout)
   }
 }
 
-void SystemRenderer::drawSlide(const LayoutInfo& layout,
+void SystemRenderer::drawSlide(LayoutInfo const& layout,
                                int string,
                                bool slideUp,
                                int position1,
@@ -822,9 +822,9 @@ void SystemRenderer::drawSlide(const LayoutInfo& layout,
   slide->setParentItem(myParentStaff);
 }
 
-void SystemRenderer::drawSymbolsBelowTabStaff(const LayoutInfo& layout)
+void SystemRenderer::drawSymbolsBelowTabStaff(LayoutInfo const& layout)
 {
-  for (const SymbolGroup& symbolGroup : layout.getTabStaffBelowSymbols()) {
+  for (SymbolGroup const& symbolGroup : layout.getTabStaffBelowSymbols()) {
     QGraphicsItem* renderedSymbol = nullptr;
 
     switch (symbolGroup.getSymbolType()) {
@@ -874,7 +874,7 @@ void SystemRenderer::drawSymbolsBelowTabStaff(const LayoutInfo& layout)
   }
 }
 
-QGraphicsItem* SystemRenderer::createPickStroke(const QString& text)
+QGraphicsItem* SystemRenderer::createPickStroke(QString const& text)
 {
   auto textItem = new SimpleTextItem(text, myMusicNotationFont);
   textItem->setPos(2, 2 - myMusicFontMetrics.ascent());
@@ -886,7 +886,7 @@ QGraphicsItem* SystemRenderer::createPickStroke(const QString& text)
   return group;
 }
 
-QGraphicsItem* SystemRenderer::createPlainTextSymbol(const QString& text, QFont::Style style)
+QGraphicsItem* SystemRenderer::createPlainTextSymbol(QString const& text, QFont::Style style)
 {
   myPlainTextFont.setStyle(style);
 
@@ -902,16 +902,16 @@ QGraphicsItem* SystemRenderer::createPlainTextSymbol(const QString& text, QFont:
 }
 
 /// Creates the text portion of an artificial harmonic, which displays the note.
-QGraphicsItem* SystemRenderer::createArtificialHarmonicText(const Position& position)
+QGraphicsItem* SystemRenderer::createArtificialHarmonicText(Position const& position)
 {
   // Find the note that has the harmonic.
   auto it =
-    boost::range::find_if(position.getNotes(), [](const Note& note) { return note.hasArtificialHarmonic(); });
+    boost::range::find_if(position.getNotes(), [](Note const& note) { return note.hasArtificialHarmonic(); });
 
   Q_ASSERT(it != position.getNotes().end());
 
   // Build the text representation of the harmonic.
-  const ArtificialHarmonic& harmonic = it->getArtificialHarmonic();
+  ArtificialHarmonic const& harmonic = it->getArtificialHarmonic();
   ChordName name;
   name.setTonicKey(harmonic.getKey());
   name.setTonicVariation(harmonic.getVariation());
@@ -922,9 +922,9 @@ QGraphicsItem* SystemRenderer::createArtificialHarmonicText(const Position& posi
                                QFont::StyleNormal);
 }
 
-void SystemRenderer::drawSymbolsAboveTabStaff(const Staff& staff, const LayoutInfo& layout)
+void SystemRenderer::drawSymbolsAboveTabStaff(Staff const& staff, LayoutInfo const& layout)
 {
-  for (const SymbolGroup& symbolGroup : layout.getTabStaffAboveSymbols()) {
+  for (SymbolGroup const& symbolGroup : layout.getTabStaffAboveSymbols()) {
     QGraphicsItem* renderedSymbol = nullptr;
     const double width = symbolGroup.getWidth();
 
@@ -998,9 +998,9 @@ void SystemRenderer::drawSymbolsAboveTabStaff(const Staff& staff, const LayoutIn
   }
 }
 
-void SystemRenderer::drawSymbolsAboveStdNotationStaff(const LayoutInfo& layout)
+void SystemRenderer::drawSymbolsAboveStdNotationStaff(LayoutInfo const& layout)
 {
-  for (const SymbolGroup& symbolGroup : layout.getStdNotationStaffAboveSymbols()) {
+  for (SymbolGroup const& symbolGroup : layout.getStdNotationStaffAboveSymbols()) {
     QGraphicsItem* renderedSymbol = nullptr;
 
     switch (symbolGroup.getSymbolType()) {
@@ -1023,9 +1023,9 @@ void SystemRenderer::drawSymbolsAboveStdNotationStaff(const LayoutInfo& layout)
   }
 }
 
-void SystemRenderer::drawSymbolsBelowStdNotationStaff(const LayoutInfo& layout)
+void SystemRenderer::drawSymbolsBelowStdNotationStaff(LayoutInfo const& layout)
 {
-  for (const SymbolGroup& symbolGroup : layout.getStdNotationStaffBelowSymbols()) {
+  for (SymbolGroup const& symbolGroup : layout.getStdNotationStaffBelowSymbols()) {
     QGraphicsItem* renderedSymbol = nullptr;
 
     switch (symbolGroup.getSymbolType()) {
@@ -1049,10 +1049,10 @@ void SystemRenderer::drawSymbolsBelowStdNotationStaff(const LayoutInfo& layout)
   }
 }
 
-QGraphicsItem* SystemRenderer::createConnectedSymbolGroup(const QString& text,
+QGraphicsItem* SystemRenderer::createConnectedSymbolGroup(QString const& text,
                                                           QFont::Style style,
                                                           double width,
-                                                          const LayoutInfo& layout)
+                                                          LayoutInfo const& layout)
 {
   mySymbolTextFont.setStyle(style);
 
@@ -1089,7 +1089,7 @@ void SystemRenderer::createDashedLine(QGraphicsItemGroup* group, double left, do
 #if 0
 
 /// Creates a volume swell QGraphicsItem of the specified type
-QGraphicsItem* SystemRenderer::createVolumeSwell(uint8_t width, const StaffData& currentStaffInfo,
+QGraphicsItem* SystemRenderer::createVolumeSwell(uint8_t width, StaffData const& currentStaffInfo,
                                                  VolumeSwellType type)
 {
     double leftX = currentStaffInfo.positionWidth / 2.0;
@@ -1127,7 +1127,7 @@ QGraphicsItem* SystemRenderer::drawContinuousFontSymbols(QChar symbol, int width
   return group;
 }
 
-QGraphicsItem* SystemRenderer::createTremoloPicking(const LayoutInfo& layout)
+QGraphicsItem* SystemRenderer::createTremoloPicking(LayoutInfo const& layout)
 {
   const double offset = LayoutInfo::TAB_SYMBOL_SPACING / 3;
 
@@ -1143,7 +1143,7 @@ QGraphicsItem* SystemRenderer::createTremoloPicking(const LayoutInfo& layout)
   return group;
 }
 
-QGraphicsItem* SystemRenderer::createTrill(const LayoutInfo& layout)
+QGraphicsItem* SystemRenderer::createTrill(LayoutInfo const& layout)
 {
   QFont font(MusicFont::getFont(21));
 
@@ -1156,7 +1156,7 @@ QGraphicsItem* SystemRenderer::createTrill(const LayoutInfo& layout)
   return group;
 }
 
-QGraphicsItem* SystemRenderer::createDynamic(const Dynamic& dynamic)
+QGraphicsItem* SystemRenderer::createDynamic(Dynamic const& dynamic)
 {
   QString text = "fff";
   Dynamic::VolumeLevel volume = dynamic.getVolume();
@@ -1188,11 +1188,11 @@ QGraphicsItem* SystemRenderer::createDynamic(const Dynamic& dynamic)
   return group;
 }
 
-void SystemRenderer::drawStdNotation(const System& system, const Staff& staff, const LayoutInfo& layout)
+void SystemRenderer::drawStdNotation(System const& system, Staff const& staff, LayoutInfo const& layout)
 {
   // Draw rests.
-  for (const Voice& voice : staff.getVoices()) {
-    for (const Position& pos : voice.getPositions()) {
+  for (Voice const& voice : staff.getVoices()) {
+    for (Position const& pos : voice.getPositions()) {
       const double x = layout.getPositionX(pos.getPosition());
 
       const Barline* prevBar = system.getPreviousBarline(pos.getPosition());
@@ -1219,7 +1219,7 @@ void SystemRenderer::drawStdNotation(const System& system, const Staff& staff, c
   QFontMetricsF default_fm(default_font);
   QFontMetricsF grace_fm(grace_font);
 
-  for (const StdNotationNote& note : notes) {
+  for (StdNotationNote const& note : notes) {
     const QFont* font = note.isGraceNote() ? &grace_font : &default_font;
     const QFontMetricsF* fm = note.isGraceNote() ? &grace_fm : &default_fm;
 
@@ -1325,29 +1325,29 @@ void SystemRenderer::drawStdNotation(const System& system, const Staff& staff, c
     const std::vector<BeamGroup>& beamGroups = layout.getBeamGroups(v);
     const std::vector<NoteStem>& stems = layout.getNoteStems(v);
 
-    for (const BeamGroup& group : beamGroups) {
+    for (BeamGroup const& group : beamGroups) {
       group.drawStems(myParentStaff, stems, myMusicNotationFont, myMusicFontMetrics, layout);
     }
 
-    const Voice& voice = staff.getVoices()[v];
+    Voice const& voice = staff.getVoices()[v];
     drawIrregularGroups(voice, stems);
     drawTies(voice, notes, stems, layout);
   }
 }
 
-void SystemRenderer::drawTies(const Voice& voice,
+void SystemRenderer::drawTies(Voice const& voice,
                               const std::vector<StdNotationNote>& notes,
                               const std::vector<NoteStem>& stems,
-                              const LayoutInfo& layout)
+                              LayoutInfo const& layout)
 {
   const double height = 7;
 
-  for (const StdNotationNote& note : notes) {
+  for (StdNotationNote const& note : notes) {
     if (&note.getVoice() != &voice || !note.getTie())
       continue;
 
     const int pos = note.getPosition();
-    const NoteStem& stem = stems.at(ScoreUtils::findIndexByPosition(voice.getPositions(), pos));
+    NoteStem const& stem = stems.at(ScoreUtils::findIndexByPosition(voice.getPositions(), pos));
     const int prevPos = *note.getTie();
 
     // Draw to the centre of each position.
@@ -1371,12 +1371,12 @@ void SystemRenderer::drawTies(const Voice& voice,
   }
 }
 
-void SystemRenderer::drawIrregularGroups(const Voice& voice, const std::vector<NoteStem>& stems)
+void SystemRenderer::drawIrregularGroups(Voice const& voice, const std::vector<NoteStem>& stems)
 {
   VerticalLayout topLayout;
   VerticalLayout bottomLayout;
 
-  for (const IrregularGrouping& group : voice.getIrregularGroupings()) {
+  for (IrregularGrouping const& group : voice.getIrregularGroupings()) {
     const int index = ScoreUtils::findIndexByPosition(voice.getPositions(), group.getPosition());
     Q_ASSERT(index >= 0);
 
@@ -1444,9 +1444,9 @@ void SystemRenderer::drawIrregularGroups(const Voice& voice, const std::vector<N
   }
 }
 
-void SystemRenderer::drawMultiBarRest(const System& system,
-                                      const Barline& leftBar,
-                                      const LayoutInfo& layout,
+void SystemRenderer::drawMultiBarRest(System const& system,
+                                      Barline const& leftBar,
+                                      LayoutInfo const& layout,
                                       int measureCount)
 {
   const Barline* rightBar = system.getNextBarline(leftBar.getPosition());
@@ -1485,7 +1485,7 @@ void SystemRenderer::drawMultiBarRest(const System& system,
   horizontalLine->setParentItem(myParentStaff);
 }
 
-void SystemRenderer::drawRest(const Position& pos, double x, const LayoutInfo& layout)
+void SystemRenderer::drawRest(Position const& pos, double x, LayoutInfo const& layout)
 {
   // Position it approximately in the middle of the staff.
   double y = 2 * LayoutInfo::STD_NOTATION_LINE_SPACING - myMusicFontMetrics.ascent();
@@ -1545,7 +1545,7 @@ void SystemRenderer::drawRest(const Position& pos, double x, const LayoutInfo& l
   group->setParentItem(myParentStaff);
 }
 
-void SystemRenderer::drawLedgerLines(const LayoutInfo& layout,
+void SystemRenderer::drawLedgerLines(LayoutInfo const& layout,
                                      const std::map<int, double>& minNoteLocations,
                                      const std::map<int, double>& maxNoteLocations,
                                      const std::map<int, double>& noteHeadWidths)
@@ -1589,7 +1589,7 @@ void SystemRenderer::drawLedgerLines(const LayoutInfo& layout,
   ledgerlines->setParentItem(myParentStaff);
 }
 
-static double getBendHeight(Bend::DrawPoint point, const Note& note, const LayoutInfo& layout)
+static double getBendHeight(Bend::DrawPoint point, Note const& note, LayoutInfo const& layout)
 {
   if (point == Bend::LowPoint) {
     return layout.getTabLine(note.getString()) + 0.5 * layout.getTabLineSpacing();
@@ -1646,7 +1646,7 @@ void SystemRenderer::createBend(QGraphicsItemGroup* group,
   }
 }
 
-QGraphicsItem* SystemRenderer::createBendGroup(const SymbolGroup& group, const LayoutInfo& layout)
+QGraphicsItem* SystemRenderer::createBendGroup(SymbolGroup const& group, LayoutInfo const& layout)
 {
   auto itemGroup = new QGraphicsItemGroup();
   double prevX = 0.0;
@@ -1656,11 +1656,11 @@ QGraphicsItem* SystemRenderer::createBendGroup(const SymbolGroup& group, const L
     if (!pos)
       continue;
 
-    for (const Note& note : pos->getNotes()) {
+    for (Note const& note : pos->getNotes()) {
       if (!note.hasBend())
         continue;
 
-      const Bend& bend = note.getBend();
+      Bend const& bend = note.getBend();
       const Bend::BendType type = bend.getType();
 
       const double x = layout.getPositionX(i);

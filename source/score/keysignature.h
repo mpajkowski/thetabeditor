@@ -33,7 +33,7 @@ public:
   KeySignature();
   KeySignature(KeyType type, int accidentals, bool usesSharps);
 
-  bool operator==(const KeySignature& other) const;
+  bool operator==(KeySignature const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -86,6 +86,6 @@ void KeySignature::serialize(Archive& ar, const FileVersion /*version*/)
   ar("cancellation", myIsCancellation);
 }
 
-std::ostream& operator<<(std::ostream& os, const KeySignature& key);
+std::ostream& operator<<(std::ostream& os, KeySignature const& key);
 
 #endif

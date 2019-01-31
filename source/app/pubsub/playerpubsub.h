@@ -24,7 +24,7 @@ class Player;
 
 /// Provides a way to subscribe to or publish notifications about changes
 /// to a particular player.
-class PlayerEditPubSub : public PubSub<void(int, const Player&, bool)>
+class PlayerEditPubSub : public PubSub<void(int, Player const&, bool)>
 {};
 
 /// Notifications about a player being removed.

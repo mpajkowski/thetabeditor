@@ -19,7 +19,7 @@
 
 #include <score/voice.h>
 
-AddMultiBarRest::AddMultiBarRest(const ScoreLocation& location, int count)
+AddMultiBarRest::AddMultiBarRest(ScoreLocation const& location, int count)
   : QUndoCommand(QObject::tr("Add Multi-Bar Rest"))
   , myLocation(location)
 {

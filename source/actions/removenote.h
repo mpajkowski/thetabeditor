@@ -27,7 +27,7 @@
 class RemoveNote : public QUndoCommand
 {
 public:
-  RemoveNote(const ScoreLocation& location);
+  RemoveNote(ScoreLocation const& location);
 
   virtual void redo() override;
   virtual void undo() override;

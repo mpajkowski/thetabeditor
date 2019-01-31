@@ -27,7 +27,7 @@ PolishScore::PolishScore(Score& score)
 
 void PolishScore::redo()
 {
-  for (const System& system : myScore.getSystems())
+  for (System const& system : myScore.getSystems())
     myOriginalSystems.push_back(system);
 
   ScoreUtils::polishScore(myScore);

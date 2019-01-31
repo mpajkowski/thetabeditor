@@ -25,7 +25,7 @@
 class AddBarline : public QUndoCommand
 {
 public:
-  AddBarline(const ScoreLocation& location, const Barline& barline);
+  AddBarline(ScoreLocation const& location, Barline const& barline);
 
   virtual void redo() override;
   virtual void undo() override;

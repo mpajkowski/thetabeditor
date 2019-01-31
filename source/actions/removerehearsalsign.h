@@ -25,7 +25,7 @@
 class RemoveRehearsalSign : public QUndoCommand
 {
 public:
-  RemoveRehearsalSign(const ScoreLocation& location);
+  RemoveRehearsalSign(ScoreLocation const& location);
 
   virtual void redo() override;
   virtual void undo() override;

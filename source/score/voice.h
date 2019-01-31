@@ -34,7 +34,7 @@ public:
   typedef std::vector<IrregularGrouping>::iterator IrregularGroupingIterator;
   typedef std::vector<IrregularGrouping>::const_iterator IrregularGroupingConstIterator;
 
-  bool operator==(const Voice& other) const;
+  bool operator==(Voice const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -45,12 +45,12 @@ public:
   boost::iterator_range<PositionConstIterator> getPositions() const;
 
   /// Adds a new position to the voice.
-  void insertPosition(const Position& position);
+  void insertPosition(Position const& position);
   /// Removes any positions that satisfy the given predicate.
   template<typename Predicate>
   void removePositions(Predicate p);
   /// Removes the specified position from the voice.
-  void removePosition(const Position& position);
+  void removePosition(Position const& position);
 
   /// Returns the set of irregular groupings in the voice.
   boost::iterator_range<IrregularGroupingIterator> getIrregularGroupings();
@@ -58,9 +58,9 @@ public:
   boost::iterator_range<IrregularGroupingConstIterator> getIrregularGroupings() const;
 
   /// Adds a new irregular grouping to the voice.
-  void insertIrregularGrouping(const IrregularGrouping& group);
+  void insertIrregularGrouping(IrregularGrouping const& group);
   /// Removes the specified irregular grouping from the voice.
-  void removeIrregularGrouping(const IrregularGrouping& group);
+  void removeIrregularGrouping(IrregularGrouping const& group);
 
 private:
   std::vector<Position> myPositions;

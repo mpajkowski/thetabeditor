@@ -25,7 +25,7 @@
 class AddTextItem : public QUndoCommand
 {
 public:
-  AddTextItem(const ScoreLocation& location, const TextItem& text);
+  AddTextItem(ScoreLocation const& location, TextItem const& text);
 
   virtual void redo() override;
   virtual void undo() override;

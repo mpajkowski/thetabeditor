@@ -28,7 +28,7 @@ class Score;
 class EditPlayer : public QUndoCommand
 {
 public:
-  EditPlayer(Score& score, int playerIndex, const Player& player);
+  EditPlayer(Score& score, int playerIndex, Player const& player);
 
   virtual void redo() override;
   virtual void undo() override;

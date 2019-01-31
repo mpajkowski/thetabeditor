@@ -34,7 +34,7 @@ static const QString theAudioReleaseTypes[] = { "Single",       "EP",           
 
 static const QString theDifficulties[] = { "Beginner", "Intermediate", "Advanced" };
 
-static double getNextY(const QGraphicsItemGroup& group)
+static double getNextY(QGraphicsItemGroup const& group)
 {
   double bottom = group.boundingRect().bottom();
   if (!group.childItems().empty())
@@ -43,7 +43,7 @@ static double getNextY(const QGraphicsItemGroup& group)
   return bottom;
 }
 
-static void addCenteredText(QGraphicsItemGroup& group, QFont font, int font_size, const QString& text)
+static void addCenteredText(QGraphicsItemGroup& group, QFont font, int font_size, QString const& text)
 {
   font.setPointSize(font_size);
   auto text_item = new SimpleTextItem(text, font);
@@ -55,7 +55,7 @@ static void addCenteredText(QGraphicsItemGroup& group, QFont font, int font_size
   group.addToGroup(text_item);
 }
 
-static void renderReleaseInfo(QGraphicsItemGroup& group, const QFont& font, const SongData& song_data)
+static void renderReleaseInfo(QGraphicsItemGroup& group, QFont const& font, SongData const& song_data)
 {
   QString release_info;
 
@@ -94,7 +94,7 @@ static void renderReleaseInfo(QGraphicsItemGroup& group, const QFont& font, cons
 
 static void addAuthorText(QGraphicsItemGroup& group,
                           QFont font,
-                          const QString& text,
+                          QString const& text,
                           const double y,
                           bool right_align = false)
 {
@@ -115,7 +115,7 @@ static void addAuthorText(QGraphicsItemGroup& group,
   group.addToGroup(text_item);
 }
 
-static void renderAuthorInfo(QGraphicsItemGroup& group, QFont font, const SongData& song_data)
+static void renderAuthorInfo(QGraphicsItemGroup& group, QFont font, SongData const& song_data)
 {
   const double y = getNextY(group);
   QStringList author_lines;
@@ -159,7 +159,7 @@ static void renderAuthorInfo(QGraphicsItemGroup& group, QFont font, const SongDa
   }
 }
 
-static void renderSongInfo(QGraphicsItemGroup& group, const QFont& font, const SongData& song_data)
+static void renderSongInfo(QGraphicsItemGroup& group, QFont const& font, SongData const& song_data)
 {
   if (!song_data.getTitle().empty()) {
     addCenteredText(group, font, TITLE_SIZE, QString::fromStdString(song_data.getTitle()));
@@ -177,7 +177,7 @@ static void renderSongInfo(QGraphicsItemGroup& group, const QFont& font, const S
   renderAuthorInfo(group, font, song_data);
 }
 
-static void renderLessonInfo(QGraphicsItemGroup& group, const QFont& font, const LessonData& lesson_data)
+static void renderLessonInfo(QGraphicsItemGroup& group, QFont const& font, LessonData const& lesson_data)
 {
   if (!lesson_data.getTitle().empty()) {
     addCenteredText(group, font, TITLE_SIZE, QString::fromStdString(lesson_data.getTitle()));
@@ -201,7 +201,7 @@ static void renderLessonInfo(QGraphicsItemGroup& group, const QFont& font, const
   addAuthorText(group, font, level_text, y, /* right_align */ false);
 }
 
-QGraphicsItem* ScoreInfoRenderer::render(const ScoreInfo& score_info)
+QGraphicsItem* ScoreInfoRenderer::render(ScoreInfo const& score_info)
 {
   QFont font("Liberation Serif");
 

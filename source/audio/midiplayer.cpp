@@ -33,7 +33,7 @@
 
 static const int METRONOME_CHANNEL = 9;
 
-MidiPlayer::MidiPlayer(SettingsManager& settings_manager, const ScoreLocation& start_location, int speed)
+MidiPlayer::MidiPlayer(SettingsManager& settings_manager, ScoreLocation const& start_location, int speed)
   : mySettingsManager(settings_manager)
   , myScore(start_location.getScore())
   , myStartLocation(start_location)
@@ -154,7 +154,7 @@ void MidiPlayer::run()
 
     // Notify listeners of the current playback position.
     if (event->getLocation() != current_location) {
-      const SystemLocation& new_location = event->getLocation();
+      SystemLocation const& new_location = event->getLocation();
 
       // Don't move backwards unless a repeat occurred.
       if (new_location < current_location && !event->isPositionChange())
@@ -172,7 +172,7 @@ void MidiPlayer::run()
   stopPlayback(device);
 }
 
-void MidiPlayer::performCountIn(MidiOutputDevice& device, const SystemLocation& location, int beat_duration)
+void MidiPlayer::performCountIn(MidiOutputDevice& device, SystemLocation const& location, int beat_duration)
 {
   // Load preferences.
   uint8_t velocity;
@@ -188,12 +188,12 @@ void MidiPlayer::performCountIn(MidiOutputDevice& device, const SystemLocation& 
   }
 
   // Figure out the time signature where playback is starting.
-  const System& system = myScore.getSystems()[location.getSystem()];
+  System const& system = myScore.getSystems()[location.getSystem()];
   const Barline* barline = system.getPreviousBarline(location.getPosition());
   if (!barline)
     barline = &system.getBarlines().front();
 
-  const TimeSignature& time_sig = barline->getTimeSignature();
+  TimeSignature const& time_sig = barline->getTimeSignature();
 
   const int tick_duration = boost::rational_cast<int>(
     boost::rational<int>(4, time_sig.getBeatValue()) *

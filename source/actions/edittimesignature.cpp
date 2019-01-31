@@ -20,7 +20,7 @@
 #include <score/barline.h>
 #include <score/score.h>
 
-EditTimeSignature::EditTimeSignature(const ScoreLocation& location, const TimeSignature& newTimeSig)
+EditTimeSignature::EditTimeSignature(ScoreLocation const& location, TimeSignature const& newTimeSig)
   : QUndoCommand(QObject::tr("Edit Time Signature"))
   , myLocation(location)
   , myNewTime(newTimeSig)
@@ -39,8 +39,8 @@ void EditTimeSignature::undo()
   updateFollowingTimeSignatures(myNewTime, myOldTime);
 }
 
-void EditTimeSignature::updateFollowingTimeSignatures(const TimeSignature& oldTime,
-                                                      const TimeSignature& newTime)
+void EditTimeSignature::updateFollowingTimeSignatures(TimeSignature const& oldTime,
+                                                      TimeSignature const& newTime)
 {
   Score& score = myLocation.getScore();
   const size_t start_system_index = myLocation.getSystemIndex();
@@ -51,7 +51,7 @@ void EditTimeSignature::updateFollowingTimeSignatures(const TimeSignature& oldTi
         continue;
       }
 
-      const TimeSignature& currentTime = bar.getTimeSignature();
+      TimeSignature const& currentTime = bar.getTimeSignature();
       if (currentTime.getMeterType() == oldTime.getMeterType() &&
           currentTime.getBeatsPerMeasure() == oldTime.getBeatsPerMeasure() &&
           currentTime.getBeatValue() == oldTime.getBeatValue()) {

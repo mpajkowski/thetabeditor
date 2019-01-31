@@ -28,7 +28,7 @@
 
 static const double FRACTIONAL_BEAM_WIDTH = 5.0;
 
-static int getNumExtraBeams(const NoteStem& stem)
+static int getNumExtraBeams(NoteStem const& stem)
 {
   // 16th note gets 1 extra beam, 32nd gets two, etc.
   // Calculate log_2 of the note duration, and subtract three (so log_2(16) -
@@ -43,9 +43,9 @@ BeamGroup::BeamGroup(NoteStem::StemType direction, const std::vector<size_t>& st
 
 void BeamGroup::drawStems(QGraphicsItem* parent,
                           const std::vector<NoteStem>& stems,
-                          const QFont& musicFont,
-                          const QFontMetricsF& fm,
-                          const LayoutInfo& layout) const
+                          QFont const& musicFont,
+                          QFontMetricsF const& fm,
+                          LayoutInfo const& layout) const
 {
   QList<QGraphicsItem*> symbols;
   QPainterPath stemPath;
@@ -56,11 +56,11 @@ void BeamGroup::drawStems(QGraphicsItem* parent,
 
   auto begin = group_stems.begin();
   auto end = group_stems.end();
-  const NoteStem& firstStem = *begin;
-  const NoteStem& lastStem = *(end - 1);
+  NoteStem const& firstStem = *begin;
+  NoteStem const& lastStem = *(end - 1);
 
   // Draw each stem.
-  for (const NoteStem& stem : group_stems) {
+  for (NoteStem const& stem : group_stems) {
     stemPath.moveTo(stem.getX(), stem.getTop());
     stemPath.lineTo(stem.getX(), stem.getBottom());
 
@@ -159,9 +159,9 @@ void BeamGroup::drawExtraBeams(QPainterPath& path,
   }
 }
 
-QGraphicsItem* BeamGroup::createStaccato(const NoteStem& stem,
-                                         const QFont& musicFont,
-                                         const QFontMetricsF& fm)
+QGraphicsItem* BeamGroup::createStaccato(NoteStem const& stem,
+                                         QFont const& musicFont,
+                                         QFontMetricsF const& fm)
 {
   // Draw the dot near either the top or bottom note of the position,
   // depending on stem direction.
@@ -179,9 +179,9 @@ QGraphicsItem* BeamGroup::createStaccato(const NoteStem& stem,
   return dot;
 }
 
-QGraphicsItem* BeamGroup::createFermata(const NoteStem& stem,
-                                        const QFont& musicFont,
-                                        const LayoutInfo& layout)
+QGraphicsItem* BeamGroup::createFermata(NoteStem const& stem,
+                                        QFont const& musicFont,
+                                        LayoutInfo const& layout)
 {
   double y = 0;
 
@@ -205,7 +205,7 @@ QGraphicsItem* BeamGroup::createFermata(const NoteStem& stem,
   return fermata;
 }
 
-QGraphicsItem* BeamGroup::createAccent(const NoteStem& stem, const QFont& musicFont, const LayoutInfo& layout)
+QGraphicsItem* BeamGroup::createAccent(NoteStem const& stem, QFont const& musicFont, LayoutInfo const& layout)
 {
   double y = 0;
 
@@ -239,9 +239,9 @@ QGraphicsItem* BeamGroup::createAccent(const NoteStem& stem, const QFont& musicF
   return accent;
 }
 
-QGraphicsItem* BeamGroup::createNoteFlag(const NoteStem& stem,
-                                         const QFont& musicFont,
-                                         const QFontMetricsF& fm)
+QGraphicsItem* BeamGroup::createNoteFlag(NoteStem const& stem,
+                                         QFont const& musicFont,
+                                         QFontMetricsF const& fm)
 {
   Q_ASSERT(NoteStem::canHaveFlag(stem));
 

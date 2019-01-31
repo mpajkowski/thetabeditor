@@ -65,7 +65,7 @@ public:
   TempoMarker();
   explicit TempoMarker(int position);
 
-  bool operator==(const TempoMarker& other) const;
+  bool operator==(TempoMarker const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);

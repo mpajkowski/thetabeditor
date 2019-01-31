@@ -70,7 +70,7 @@ public:
   Position();
   explicit Position(int position, DurationType duration = EighthNote);
 
-  bool operator==(const Position& other) const;
+  bool operator==(Position const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -111,12 +111,12 @@ public:
   boost::iterator_range<NoteConstIterator> getNotes() const;
 
   /// Adds a new note to the position.
-  void insertNote(const Note& note);
+  void insertNote(Note const& note);
   /// Removes any notes that satisfy the given predicate.
   template<class Predicate>
   void removeNotes(Predicate p);
   /// Removes the specified note from the position.
-  void removeNote(const Note& note);
+  void removeNote(Note const& note);
 
 private:
   int myPosition;
@@ -143,12 +143,12 @@ void Position::removeNotes(Predicate p)
 }
 
 namespace Utils {
-const Note* findByString(const Position& pos, int string);
-bool hasNoteWithTappedHarmonic(const Position& pos);
-bool hasNoteWithArtificialHarmonic(const Position& pos);
-bool hasNoteWithTrill(const Position& pos);
-bool hasNoteWithBend(const Position& pos);
-bool hasNoteWithProperty(const Position& pos, Note::SimpleProperty property);
+const Note* findByString(Position const& pos, int string);
+bool hasNoteWithTappedHarmonic(Position const& pos);
+bool hasNoteWithArtificialHarmonic(Position const& pos);
+bool hasNoteWithTrill(Position const& pos);
+bool hasNoteWithBend(Position const& pos);
+bool hasNoteWithProperty(Position const& pos, Note::SimpleProperty property);
 } // namespace Utils
 
 #endif

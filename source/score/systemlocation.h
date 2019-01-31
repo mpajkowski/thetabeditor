@@ -34,8 +34,8 @@ public:
   SystemLocation();
   SystemLocation(int system, int position);
 
-  bool operator<(const SystemLocation& location) const;
-  bool operator==(const SystemLocation& location) const;
+  bool operator<(SystemLocation const& location) const;
+  bool operator==(SystemLocation const& location) const;
 
   void setSystem(int system);
   int getSystem() const;
@@ -53,7 +53,7 @@ namespace std {
 template<>
 struct hash<SystemLocation>
 {
-  size_t operator()(const SystemLocation& location) const;
+  size_t operator()(SystemLocation const& location) const;
 };
 } // namespace std
 

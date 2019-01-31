@@ -25,7 +25,7 @@
 class RemoveChordText : public QUndoCommand
 {
 public:
-  RemoveChordText(const ScoreLocation& location);
+  RemoveChordText(ScoreLocation const& location);
 
   virtual void redo() override;
   virtual void undo() override;

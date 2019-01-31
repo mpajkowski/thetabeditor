@@ -20,7 +20,7 @@
 #include <score/score.h>
 #include <score/utils.h>
 
-ScoreLocation::ScoreLocation(const Score& score, int system, int staff, int position, int voice, int string)
+ScoreLocation::ScoreLocation(Score const& score, int system, int staff, int position, int voice, int string)
   : myScore(score)
   , myWriteableScore(nullptr)
   , mySystemIndex(system)
@@ -47,7 +47,7 @@ Score& ScoreLocation::getScore()
   return *myWriteableScore;
 }
 
-const Score& ScoreLocation::getScore() const
+Score const& ScoreLocation::getScore() const
 {
   return myScore;
 }
@@ -64,7 +64,7 @@ void ScoreLocation::setPositionIndex(int position)
 
 const Position* ScoreLocation::getPosition() const
 {
-  for (const Position& pos : getVoice().getPositions()) {
+  for (Position const& pos : getVoice().getPositions()) {
     if (pos.getPosition() == myPositionIndex)
       return &pos;
   }
@@ -74,18 +74,18 @@ const Position* ScoreLocation::getPosition() const
 
 Position* ScoreLocation::getPosition()
 {
-  return const_cast<Position*>(const_cast<const ScoreLocation&>(*this).getPosition());
+  return const_cast<Position*>(const_cast<ScoreLocation const&>(*this).getPosition());
 }
 
 const Position* ScoreLocation::findMultiBarRest() const
 {
-  const System& system = getSystem();
+  System const& system = getSystem();
   const Barline* bar = getBarline();
   const Barline* nextBar = system.getNextBarline(bar->getPosition());
 
-  for (const Staff& staff : system.getStaves()) {
-    for (const Voice& voice : staff.getVoices()) {
-      for (const Position& pos :
+  for (Staff const& staff : system.getStaves()) {
+    for (Voice const& voice : staff.getVoices()) {
+      for (Position const& pos :
            ScoreUtils::findInRange(voice.getPositions(), bar->getPosition(), nextBar->getPosition())) {
         if (pos.hasMultiBarRest())
           return &pos;
@@ -98,12 +98,12 @@ const Position* ScoreLocation::findMultiBarRest() const
 
 bool ScoreLocation::isEmptyBar() const
 {
-  const System& system = getSystem();
+  System const& system = getSystem();
   const Barline* bar = getBarline();
   const Barline* nextBar = system.getNextBarline(bar->getPosition());
 
-  for (const Staff& staff : system.getStaves()) {
-    for (const Voice& voice : staff.getVoices()) {
+  for (Staff const& staff : system.getStaves()) {
+    for (Voice const& voice : staff.getVoices()) {
       if (!ScoreUtils::findInRange(voice.getPositions(), bar->getPosition(), nextBar->getPosition())
              .empty()) {
         return false;
@@ -146,7 +146,7 @@ std::vector<const Position*> ScoreLocation::getSelectedPositions() const
   const int min = std::min(myPositionIndex, mySelectionStart);
   const int max = std::max(myPositionIndex, mySelectionStart);
 
-  for (const Position& pos : getVoice().getPositions()) {
+  for (Position const& pos : getVoice().getPositions()) {
     if (pos.getPosition() >= min && pos.getPosition() <= max)
       positions.push_back(&pos);
   }
@@ -154,7 +154,7 @@ std::vector<const Position*> ScoreLocation::getSelectedPositions() const
   return positions;
 }
 
-const Voice& ScoreLocation::getVoice() const
+Voice const& ScoreLocation::getVoice() const
 {
   return getStaff().getVoices()[myVoiceIndex];
 }
@@ -174,7 +174,7 @@ void ScoreLocation::setStaffIndex(int staff)
   myStaffIndex = staff;
 }
 
-const Staff& ScoreLocation::getStaff() const
+Staff const& ScoreLocation::getStaff() const
 {
   return getSystem().getStaves()[myStaffIndex];
 }
@@ -194,7 +194,7 @@ void ScoreLocation::setSystemIndex(int system)
   mySystemIndex = system;
 }
 
-const System& ScoreLocation::getSystem() const
+System const& ScoreLocation::getSystem() const
 {
   return myScore.getSystems()[mySystemIndex];
 }
@@ -250,7 +250,7 @@ const Note* ScoreLocation::getNote() const
 
 Note* ScoreLocation::getNote()
 {
-  return const_cast<Note*>(const_cast<const ScoreLocation&>(*this).getNote());
+  return const_cast<Note*>(const_cast<ScoreLocation const&>(*this).getNote());
 }
 
 std::vector<Note*> ScoreLocation::getSelectedNotes()
@@ -286,12 +286,12 @@ std::vector<const IrregularGrouping*> ScoreLocation::getSelectedIrregularGroupin
   std::vector<const IrregularGrouping*> groups;
   const int min = std::min(myPositionIndex, mySelectionStart);
   const int max = std::max(myPositionIndex, mySelectionStart);
-  const Voice& voice = getVoice();
+  Voice const& voice = getVoice();
 
   if (!hasSelection())
     return groups;
 
-  for (const IrregularGrouping& group : voice.getIrregularGroupings()) {
+  for (IrregularGrouping const& group : voice.getIrregularGroupings()) {
     const int groupLeft = group.getPosition();
     const int groupRight =
       voice
@@ -306,7 +306,7 @@ std::vector<const IrregularGrouping*> ScoreLocation::getSelectedIrregularGroupin
   return groups;
 }
 
-std::ostream& operator<<(std::ostream& os, const ScoreLocation& location)
+std::ostream& operator<<(std::ostream& os, ScoreLocation const& location)
 {
   os << "System: " << location.getSystemIndex() + 1;
   os << ", Staff: " << location.getStaffIndex() + 1;

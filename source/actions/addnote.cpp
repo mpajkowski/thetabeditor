@@ -19,7 +19,7 @@
 
 #include <score/staff.h>
 
-AddNote::AddNote(const ScoreLocation& location, const Note& note, Position::DurationType duration)
+AddNote::AddNote(ScoreLocation const& location, Note const& note, Position::DurationType duration)
   : QUndoCommand(QObject::tr("Add Note"))
   , myLocation(location)
   , myNote(note)

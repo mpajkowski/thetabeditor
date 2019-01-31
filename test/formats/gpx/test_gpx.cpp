@@ -27,7 +27,7 @@ TEST_CASE("Formats/GpxImport/Text", "")
   GpxImporter importer;
   importer.load(AppInfo::getAbsolutePath("data/text.gpx"), score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
 
   REQUIRE(system.getTextItems().size() == 1);
   REQUIRE(system.getTextItems()[0].getPosition() == 9);

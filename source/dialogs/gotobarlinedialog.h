@@ -31,7 +31,7 @@ class Score;
 class GoToBarlineDialog : public QDialog
 {
 public:
-  explicit GoToBarlineDialog(QWidget* parent, const Score& score);
+  explicit GoToBarlineDialog(QWidget* parent, Score const& score);
   ~GoToBarlineDialog();
 
   /// Returns the location of the selected barline.

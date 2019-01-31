@@ -20,16 +20,16 @@
 #include <iostream>
 #include <score/score.h>
 
-DirectionIndex::DirectionIndex(const Score& score)
+DirectionIndex::DirectionIndex(Score const& score)
   : myScore(score)
   , myActiveSymbol(DirectionSymbol::ActiveNone)
 {
   int i = 0;
-  for (const System& system : score.getSystems()) {
-    for (const Direction& direction : system.getDirections()) {
+  for (System const& system : score.getSystems()) {
+    for (Direction const& direction : system.getDirections()) {
       const SystemLocation location(i, direction.getPosition());
 
-      for (const DirectionSymbol& symbol : direction.getSymbols()) {
+      for (DirectionSymbol const& symbol : direction.getSymbols()) {
         myDirections.insert(std::make_pair(location, symbol));
         mySymbolLocations.insert(std::make_pair(symbol.getSymbolType(), location));
       }
@@ -43,7 +43,7 @@ DirectionIndex::DirectionIndex(const Score& score)
 /// active symbol and repeat number.
 /// If the direction's activation symbol is None, it will always be able to
 /// activate regardless of the currently active symbol.
-static bool shouldPerformDirection(const DirectionSymbol& symbol,
+static bool shouldPerformDirection(DirectionSymbol const& symbol,
                                    DirectionSymbol::ActiveSymbolType activeSymbol,
                                    int activeRepeat)
 {
@@ -53,8 +53,8 @@ static bool shouldPerformDirection(const DirectionSymbol& symbol,
          (symbol.getRepeatNumber() == 0 || symbol.getRepeatNumber() == activeRepeat);
 }
 
-SystemLocation DirectionIndex::performDirection(const SystemLocation& prevLocation,
-                                                const SystemLocation& currentLocation,
+SystemLocation DirectionIndex::performDirection(SystemLocation const& prevLocation,
+                                                SystemLocation const& currentLocation,
                                                 int activeRepeat)
 {
   SystemLocation newLocation = currentLocation;

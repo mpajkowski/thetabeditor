@@ -31,7 +31,7 @@
 const double CaretPainter::PEN_WIDTH = 0.75;
 const double CaretPainter::CARET_NOTE_SPACING = 6;
 
-CaretPainter::CaretPainter(const Caret& caret, const ViewOptions& view_options)
+CaretPainter::CaretPainter(Caret const& caret, ViewOptions const& view_options)
   : myCaret(caret)
   , myViewOptions(view_options)
   , myCaretConnection(caret.subscribeToChanges([=]() { onLocationChanged(); }))
@@ -44,7 +44,7 @@ void CaretPainter::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWi
     return;
   }
 
-  const ScoreLocation& location = myCaret.getLocation();
+  ScoreLocation const& location = myCaret.getLocation();
   const bool hasFocus = scene()->views().first()->hasFocus();
 
   // Set color.
@@ -115,12 +115,12 @@ QRectF CaretPainter::boundingRect() const
     return QRectF();
 }
 
-void CaretPainter::addSystemRect(const QRectF& rect)
+void CaretPainter::addSystemRect(QRectF const& rect)
 {
   mySystemRects.push_back(rect);
 }
 
-void CaretPainter::setSystemRect(int index, const QRectF& rect)
+void CaretPainter::setSystemRect(int index, QRectF const& rect)
 {
   mySystemRects.at(index) = rect;
 }
@@ -144,11 +144,11 @@ boost::signals2::connection CaretPainter::subscribeToMovement(
 
 void CaretPainter::onLocationChanged()
 {
-  const ScoreLocation& location = myCaret.getLocation();
+  ScoreLocation const& location = myCaret.getLocation();
   if (location.getScore().getSystems().empty())
     return;
 
-  const System& system = location.getSystem();
+  System const& system = location.getSystem();
   if (system.getStaves().empty())
     return;
 

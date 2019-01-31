@@ -15,7 +15,7 @@ class GoToRehearsalSignDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit GoToRehearsalSignDialog(QWidget* parent, const Score& score);
+  explicit GoToRehearsalSignDialog(QWidget* parent, Score const& score);
   ~GoToRehearsalSignDialog();
 
   /// Returns the location of the selected rehearsal sign.
@@ -26,7 +26,7 @@ public slots:
 
 private:
   Ui::GoToRehearsalSignDialog* ui;
-  const Score& myScore;
+  Score const& myScore;
 };
 
 #endif

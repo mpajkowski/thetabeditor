@@ -46,7 +46,7 @@ std::vector<path> getDataDirs()
   q_paths.append(QString::fromStdString(AppInfo::getAbsolutePath("data")));
 
   std::vector<path> paths;
-  for (const QString& p : q_paths)
+  for (QString const& p : q_paths)
     paths.push_back(fromQString(p));
 
   return paths;
@@ -57,13 +57,13 @@ path getHomeDir()
   return fromQString(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
 }
 
-path fromQString(const QString& str)
+path fromQString(QString const& str)
 {
   boost::filesystem::detail::utf8_codecvt_facet utf8;
   return boost::filesystem::path(str.toStdString(), utf8);
 }
 
-QString toQString(const path& str)
+QString toQString(path const& str)
 {
   boost::filesystem::detail::utf8_codecvt_facet utf8;
   return QString::fromStdString(str.string(utf8));

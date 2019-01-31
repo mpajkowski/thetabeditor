@@ -29,7 +29,7 @@ class CrashDialog : public QDialog
   Q_OBJECT
 
 public:
-  explicit CrashDialog(const QString& stacktrace, QWidget* parent = 0);
+  explicit CrashDialog(QString const& stacktrace, QWidget* parent = 0);
   ~CrashDialog();
 
 private slots:

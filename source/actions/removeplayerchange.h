@@ -25,7 +25,7 @@
 class RemovePlayerChange : public QUndoCommand
 {
 public:
-  RemovePlayerChange(const ScoreLocation& location);
+  RemovePlayerChange(ScoreLocation const& location);
 
   virtual void redo() override;
   virtual void undo() override;

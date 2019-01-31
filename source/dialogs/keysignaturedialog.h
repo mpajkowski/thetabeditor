@@ -30,7 +30,7 @@ class KeySignatureDialog : public QDialog
   Q_OBJECT
 
 public:
-  KeySignatureDialog(QWidget* parent, const KeySignature& currentKey);
+  KeySignatureDialog(QWidget* parent, KeySignature const& currentKey);
   ~KeySignatureDialog();
 
   KeySignature getNewKey() const;

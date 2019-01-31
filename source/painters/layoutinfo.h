@@ -71,14 +71,14 @@ public:
   SymbolGroup(SymbolType symbol,
               int leftPosition,
               int rightPosition,
-              const Voice& voice,
+              Voice const& voice,
               double width,
               int height);
 
   SymbolType getSymbolType() const;
   int getLeftPosition() const;
   int getRightPosition() const;
-  const Voice& getVoice() const;
+  Voice const& getVoice() const;
   double getWidth() const;
   int getHeight() const;
 
@@ -99,7 +99,7 @@ private:
 
 struct LayoutInfo
 {
-  LayoutInfo(const Score& score, const System& system, int systemIndex, const Staff& staff, int staffIndex);
+  LayoutInfo(Score const& score, System const& system, int systemIndex, Staff const& staff, int staffIndex);
 
   int getStringCount() const;
 
@@ -155,9 +155,9 @@ struct LayoutInfo
     return (xmin + ((xmax - (xmin + width)) / 2) + 1);
   }
 
-  static double getWidth(const KeySignature& key);
-  static double getWidth(const TimeSignature& time);
-  static double getWidth(const Barline& bar);
+  static double getWidth(KeySignature const& key);
+  static double getWidth(TimeSignature const& time);
+  static double getWidth(Barline const& bar);
 
   double getTabStaffBelowSpacing() const;
   const std::vector<SymbolGroup>& getTabStaffBelowSymbols() const;
@@ -208,8 +208,8 @@ private:
   /// Returns the largest height of any symbol group.
   static int getMaxHeight(const std::vector<SymbolGroup>& groups);
 
-  const System& mySystem;
-  const Staff& myStaff;
+  System const& mySystem;
+  Staff const& myStaff;
   int myLineSpacing;
   double myPositionSpacing;
   int myNumPositions;

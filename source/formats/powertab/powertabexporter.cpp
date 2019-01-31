@@ -28,7 +28,7 @@ PowerTabExporter::PowerTabExporter()
   : FileFormatExporter(getPowerTabFileFormat())
 {}
 
-void PowerTabExporter::save(const boost::filesystem::path& filename, const Score& score)
+void PowerTabExporter::save(const boost::filesystem::path& filename, Score const& score)
 {
   // Use gzip to compress the resulting data.
   boost::filesystem::ofstream file(filename, std::ios::out | std::ios::binary);

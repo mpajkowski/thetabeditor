@@ -36,10 +36,10 @@ public:
   void findTunings(int numStrings, std::vector<const Tuning*>& tunings) const;
 
   /// Adds a new tuning to the tuning dictionary.
-  void addTuning(const Tuning& tuning);
+  void addTuning(Tuning const& tuning);
 
   /// Removes the specified tuning from the dictionary.
-  void removeTuning(const Tuning& tuning);
+  void removeTuning(Tuning const& tuning);
 
 private:
   /// Loads the tuning dictionary from a file.

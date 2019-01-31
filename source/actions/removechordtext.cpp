@@ -20,7 +20,7 @@
 #include <score/system.h>
 #include <score/utils.h>
 
-RemoveChordText::RemoveChordText(const ScoreLocation& location)
+RemoveChordText::RemoveChordText(ScoreLocation const& location)
   : QUndoCommand(QObject::tr("Remove Chord Text"))
   , myLocation(location)
   , myOriginalChord(

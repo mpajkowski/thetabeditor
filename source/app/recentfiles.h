@@ -33,15 +33,15 @@ public:
   ~RecentFiles();
 
   /// Adds a file to the recent documents list.
-  void add(const QString& fileName);
+  void add(QString const& fileName);
 
 signals:
-  void fileSelected(const QString& fileName);
+  void fileSelected(QString const& fileName);
 
 private slots:
   /// Clears the recent files list.
   void clear();
-  void handleFileSelection(const QString& fileName);
+  void handleFileSelection(QString const& fileName);
 
 private:
   void updateMenu();

@@ -36,7 +36,7 @@ public:
                  Note* note,
                  uint32_t voice,
                  Position::ShiftType direction,
-                 const Tuning& tuning);
+                 Tuning const& tuning);
   void undo();
   void redo();
 
@@ -46,7 +46,7 @@ private:
   Position* position;
   Note* note;
   const bool shiftUp;
-  const Tuning& tuning;
+  Tuning const& tuning;
 
   Note* prevNote;
   Note* nextNote;

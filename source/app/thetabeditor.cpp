@@ -201,7 +201,7 @@ TheTabEditor::TheTabEditor()
 
 TheTabEditor::~TheTabEditor() {}
 
-void TheTabEditor::openFiles(const QStringList& files)
+void TheTabEditor::openFiles(QStringList const& files)
 {
   for (auto& filename : files)
     openFile(filename);
@@ -267,7 +267,7 @@ void TheTabEditor::switchTab(int index)
   myDocumentManager->setCurrentDocumentIndex(index);
 
   if (index != -1) {
-    const Document& doc = myDocumentManager->getCurrentDocument();
+    Document const& doc = myDocumentManager->getCurrentDocument();
     myMixer->reset(doc.getScore());
     myPlaybackWidget->reset(doc);
     updateLocationLabel();
@@ -325,7 +325,7 @@ bool TheTabEditor::closeCurrentTab()
 
 bool TheTabEditor::saveFile()
 {
-  const Document& doc = myDocumentManager->getCurrentDocument();
+  Document const& doc = myDocumentManager->getCurrentDocument();
   if (!doc.hasFilename())
     return saveFileAs();
 
@@ -529,7 +529,7 @@ void TheTabEditor::startStopPlayback(bool from_measure_start)
     myPlaybackWidget->setPlaybackMode(true);
     enableEditing(false);
 
-    const ScoreLocation& location = getLocation();
+    ScoreLocation const& location = getLocation();
     myMidiPlayer.reset(new MidiPlayer(*mySettingsManager, location, myPlaybackWidget->getPlaybackSpeed()));
 
     connect(myMidiPlayer.get(), SIGNAL(playbackSystemChanged(int)), this, SLOT(moveCaretToSystem(int)));
@@ -540,7 +540,7 @@ void TheTabEditor::startStopPlayback(bool from_measure_start)
             myMidiPlayer.get(),
             &MidiPlayer::changePlaybackSpeed);
 
-    connect(myMidiPlayer.get(), &MidiPlayer::error, this, [=](const QString& msg) {
+    connect(myMidiPlayer.get(), &MidiPlayer::error, this, [=](QString const& msg) {
       QMessageBox::critical(this, tr("Midi Error"), msg);
     });
 
@@ -818,7 +818,7 @@ void TheTabEditor::insertStaffAfter()
 
 void TheTabEditor::removeCurrentStaff()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
   myUndoManager->push(new RemoveStaff(location), location.getSystemIndex());
 }
 
@@ -912,7 +912,7 @@ void TheTabEditor::removeDot()
 void TheTabEditor::editTiedNote()
 {
   ScoreLocation& location = getLocation();
-  const Voice& voice = location.getVoice();
+  Voice const& voice = location.getVoice();
 
   // If at an empty position, try to insert a new note that's tied to the
   // previous note.
@@ -936,7 +936,7 @@ void TheTabEditor::editTiedNote()
       std::vector<Position*> positions = location.getSelectedPositions();
       // Check that all selected notes can be tied.
       for (const Position* pos : positions) {
-        for (const Note& note : pos->getNotes()) {
+        for (Note const& note : pos->getNotes()) {
           if (!VoiceUtils::canTieNote(voice, pos->getPosition(), note)) {
             myTieCommand->setChecked(false);
             return;
@@ -993,14 +993,14 @@ void TheTabEditor::addRest()
 
 void TheTabEditor::editMultiBarRest()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
 
   if (location.getPosition() && location.getPosition()->hasMultiBarRest()) {
     myUndoManager->push(new RemovePosition(location, tr("Remove Multi-Bar Rest")), location.getSystemIndex());
   } else {
     // Verify that the bar is empty.
     {
-      const System& system = location.getSystem();
+      System const& system = location.getSystem();
       const Barline* prevBar = system.getPreviousBarline(location.getPositionIndex());
       if (!prevBar)
         prevBar = &system.getBarlines().front();
@@ -1029,7 +1029,7 @@ void TheTabEditor::editMultiBarRest()
 
 void TheTabEditor::editRehearsalSign()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
   const Barline* barline = location.getBarline();
   Q_ASSERT(barline);
 
@@ -1048,7 +1048,7 @@ void TheTabEditor::editRehearsalSign()
 
 void TheTabEditor::editTempoMarker()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
   const TempoMarker* marker =
     ScoreUtils::findByPosition(location.getSystem().getTempoMarkers(), location.getPositionIndex());
 
@@ -1068,7 +1068,7 @@ void TheTabEditor::editTempoMarker()
 
 void TheTabEditor::editAlterationOfPace()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
   const TempoMarker* marker =
     ScoreUtils::findByPosition(location.getSystem().getTempoMarkers(), location.getPositionIndex());
 
@@ -1112,7 +1112,7 @@ void TheTabEditor::editBarlineFromCaret()
 
 void TheTabEditor::editMusicalDirection()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
   const Direction* direction =
     ScoreUtils::findByPosition(location.getSystem().getDirections(), location.getPositionIndex());
 
@@ -1171,7 +1171,7 @@ void TheTabEditor::editDynamic()
 void TheTabEditor::editHammerPull()
 {
   ScoreLocation& location = getLocation();
-  const Voice& voice = location.getVoice();
+  Voice const& voice = location.getVoice();
   const int position = location.getPositionIndex();
   const Note* note = location.getNote();
   if (!note)
@@ -1203,7 +1203,7 @@ void TheTabEditor::editArtificialHarmonic()
 
 void TheTabEditor::editTappedHarmonic()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
   const Note* note = location.getNote();
   Q_ASSERT(note);
 
@@ -1220,7 +1220,7 @@ void TheTabEditor::editTappedHarmonic()
 
 void TheTabEditor::editBend()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
   const Note* note = location.getNote();
   Q_ASSERT(note);
 
@@ -1237,7 +1237,7 @@ void TheTabEditor::editBend()
 
 void TheTabEditor::editTrill()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
   const Note* note = location.getNote();
   Q_ASSERT(note);
 
@@ -1254,7 +1254,7 @@ void TheTabEditor::editTrill()
 
 void TheTabEditor::editLeftHandFingering()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
   const Note* note = location.getNote();
   Q_ASSERT(note);
 
@@ -1289,7 +1289,7 @@ void TheTabEditor::addPlayerCommon(bool drummer)
   // Create a unique name for the player.
   {
     std::vector<std::string> names;
-    boost::range::transform(score.getPlayers(), std::back_inserter(names), [](const Player& player) {
+    boost::range::transform(score.getPlayers(), std::back_inserter(names), [](Player const& player) {
       return player.getDescription();
     });
 
@@ -1321,7 +1321,7 @@ void TheTabEditor::addPlayerCommon(bool drummer)
 
 void TheTabEditor::editPlayerChange()
 {
-  const ScoreLocation& location = getLocation();
+  ScoreLocation const& location = getLocation();
 
   // Note that adding/removing a player change affects multiple systems,
   // since the standard notation will need to be updated if the new player
@@ -1342,7 +1342,7 @@ void TheTabEditor::editPlayerChange()
   }
 }
 
-void TheTabEditor::editPlayer(int playerIndex, const Player& player, bool undoable)
+void TheTabEditor::editPlayer(int playerIndex, Player const& player, bool undoable)
 {
   ScoreLocation& location = getLocation();
 
@@ -1434,7 +1434,7 @@ void TheTabEditor::closeEvent(QCloseEvent* event)
 void TheTabEditor::dragEnterEvent(QDragEnterEvent* event)
 {
   if (event->mimeData()->hasUrls()) {
-    for (const QUrl& url : event->mimeData()->urls()) {
+    for (QUrl const& url : event->mimeData()->urls()) {
       if (!url.isLocalFile())
         return;
     }
@@ -1446,7 +1446,7 @@ void TheTabEditor::dragEnterEvent(QDragEnterEvent* event)
 void TheTabEditor::dropEvent(QDropEvent* event)
 {
   Q_ASSERT(event->mimeData()->hasUrls());
-  for (const QUrl& url : event->mimeData()->urls())
+  for (QUrl const& url : event->mimeData()->urls())
     openFile(url.toLocalFile());
 }
 
@@ -1467,7 +1467,7 @@ void TheTabEditor::updateWindowTitle()
 
   if (myDocumentManager->hasOpenDocuments()) {
     if (myDocumentManager->getCurrentDocument().hasFilename()) {
-      const Document& doc = myDocumentManager->getCurrentDocument();
+      Document const& doc = myDocumentManager->getCurrentDocument();
       const QString path = Paths::toQString(doc.getFilename());
       name = QFileInfo(path).fileName();
     } else
@@ -2053,13 +2053,13 @@ void TheTabEditor::createMixer()
   addDockWidget(Qt::BottomDockWidgetArea, myMixerDockWidget);
 
   myPlayerEditPubSub.subscribe(
-    [=](int index, const Player& player, bool undoable) { editPlayer(index, player, undoable); });
+    [=](int index, Player const& player, bool undoable) { editPlayer(index, player, undoable); });
   myPlayerRemovePubSub.subscribe([=](int index) { removePlayer(index); });
 }
 
 Command* TheTabEditor::createCommandWrapper(QAction* action,
-                                            const QString& id,
-                                            const QKeySequence& defaultShortcut,
+                                            QString const& id,
+                                            QKeySequence const& defaultShortcut,
                                             QObject* parent)
 {
   Command* command = new Command(action->text(), id, defaultShortcut, parent);
@@ -2074,8 +2074,8 @@ Command* TheTabEditor::createCommandWrapper(QAction* action,
 }
 
 void TheTabEditor::createNoteDurationCommand(Command*& command,
-                                             const QString& menuName,
-                                             const QString& commandName,
+                                             QString const& menuName,
+                                             QString const& commandName,
                                              Position::DurationType durationType)
 {
   command = new Command(menuName, commandName, QKeySequence(), this);
@@ -2085,8 +2085,8 @@ void TheTabEditor::createNoteDurationCommand(Command*& command,
 }
 
 void TheTabEditor::createRestDurationCommand(Command*& command,
-                                             const QString& menuName,
-                                             const QString& commandName,
+                                             QString const& menuName,
+                                             QString const& commandName,
                                              Position::DurationType durationType)
 {
   command = new Command(menuName, commandName, QKeySequence(), this);
@@ -2096,9 +2096,9 @@ void TheTabEditor::createRestDurationCommand(Command*& command,
 }
 
 void TheTabEditor::createNotePropertyCommand(Command*& command,
-                                             const QString& menuName,
-                                             const QString& commandName,
-                                             const QKeySequence& shortcut,
+                                             QString const& menuName,
+                                             QString const& commandName,
+                                             QKeySequence const& shortcut,
                                              Note::SimpleProperty property)
 {
   command = new Command(menuName, commandName, shortcut, this);
@@ -2107,9 +2107,9 @@ void TheTabEditor::createNotePropertyCommand(Command*& command,
 }
 
 void TheTabEditor::createPositionPropertyCommand(Command*& command,
-                                                 const QString& menuName,
-                                                 const QString& commandName,
-                                                 const QKeySequence& shortcut,
+                                                 QString const& menuName,
+                                                 QString const& commandName,
+                                                 QKeySequence const& shortcut,
                                                  Position::SimpleProperty property)
 {
   command = new Command(menuName, commandName, shortcut, this);
@@ -2383,7 +2383,7 @@ void TheTabEditor::createTabArea()
   myPlaybackWidget->setEnabled(false);
 }
 
-void TheTabEditor::setPreviousDirectory(const QString& fileName)
+void TheTabEditor::setPreviousDirectory(QString const& fileName)
 {
   QFileInfo fileInfo(fileName);
   myPreviousDirectory = fileInfo.absolutePath();
@@ -2411,7 +2411,7 @@ void TheTabEditor::setupNewTab()
 
   // Connect the signals for mouse clicks on time signatures, barlines, etc.
   // to the appropriate event handlers.
-  scorearea->getClickPubSub()->subscribe([=](ClickType type, const ScoreLocation& location) {
+  scorearea->getClickPubSub()->subscribe([=](ClickType type, ScoreLocation const& location) {
     switch (type) {
       case ClickType::Barline:
         editBarline(location);
@@ -2500,15 +2500,15 @@ void TheTabEditor::updateCommands()
     return;
 
   ScoreLocation location = getLocation();
-  const Score& score = location.getScore();
+  Score const& score = location.getScore();
   if (score.getSystems().empty())
     return;
 
-  const System& system = location.getSystem();
+  System const& system = location.getSystem();
   if (system.getStaves().empty())
     return;
 
-  const Staff& staff = location.getStaff();
+  Staff const& staff = location.getStaff();
   const Position* pos = location.getPosition();
   const int position = location.getPositionIndex();
   const Note* note = location.getNote();
@@ -2777,7 +2777,7 @@ void TheTabEditor::updateLocationLabel()
   myPlaybackWidget->updateLocationLabel(boost::lexical_cast<std::string>(getCaret().getLocation()));
 }
 
-void TheTabEditor::editKeySignature(const ScoreLocation& keyLocation)
+void TheTabEditor::editKeySignature(ScoreLocation const& keyLocation)
 {
   ScoreLocation location(getLocation());
   location.setSystemIndex(keyLocation.getSystemIndex());
@@ -2792,7 +2792,7 @@ void TheTabEditor::editKeySignature(const ScoreLocation& keyLocation)
   }
 }
 
-void TheTabEditor::editTimeSignature(const ScoreLocation& timeLocation)
+void TheTabEditor::editTimeSignature(ScoreLocation const& timeLocation)
 {
   ScoreLocation location(getLocation());
   location.setSystemIndex(timeLocation.getSystemIndex());
@@ -2808,7 +2808,7 @@ void TheTabEditor::editTimeSignature(const ScoreLocation& timeLocation)
   }
 }
 
-void TheTabEditor::editBarline(const ScoreLocation& barLocation)
+void TheTabEditor::editBarline(ScoreLocation const& barLocation)
 {
   ScoreLocation location(getLocation());
   location.setSystemIndex(barLocation.getSystemIndex());
@@ -2841,7 +2841,7 @@ void TheTabEditor::editClef(int system, int staff)
   location.setSystemIndex(system);
   location.setStaffIndex(staff);
 
-  const Staff& currentStaff = location.getStaff();
+  Staff const& currentStaff = location.getStaff();
   Staff::ClefType newClef =
     currentStaff.getClefType() == Staff::TrebleClef ? Staff::BassClef : Staff::TrebleClef;
 
@@ -2905,7 +2905,7 @@ void TheTabEditor::insertStaff(int index)
 {
   StaffDialog dialog(this);
 
-  const Staff& current_staff = getLocation().getStaff();
+  Staff const& current_staff = getLocation().getStaff();
   dialog.setStringCount(current_staff.getStringCount());
 
   if (dialog.exec() == QDialog::Accepted) {
@@ -2925,7 +2925,7 @@ void TheTabEditor::editStaff(int system, int staff)
 
   StaffDialog dialog(this);
 
-  const Staff& currentStaff = location.getStaff();
+  Staff const& currentStaff = location.getStaff();
   dialog.setStringCount(currentStaff.getStringCount());
   dialog.setClefType(currentStaff.getClefType());
 

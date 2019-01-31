@@ -26,7 +26,7 @@
 class EditStaff : public QUndoCommand
 {
 public:
-  EditStaff(const ScoreLocation& location, Staff::ClefType clef, int strings);
+  EditStaff(ScoreLocation const& location, Staff::ClefType clef, int strings);
 
   virtual void redo() override;
   virtual void undo() override;

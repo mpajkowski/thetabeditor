@@ -51,7 +51,7 @@ FilterRuleWidget::FilterRuleWidget(QWidget* parent)
 
 FilterRuleWidget::~FilterRuleWidget() {}
 
-void FilterRuleWidget::update(const FilterRule& rule)
+void FilterRuleWidget::update(FilterRule const& rule)
 {
   ui->subjectComboBox->setCurrentIndex(rule.getSubject());
   ui->stackedWidget->setCurrentIndex(rule.getSubject());

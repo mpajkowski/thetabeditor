@@ -36,7 +36,7 @@ TEST_CASE("Actions/EditTimeSignature", "")
 
   action.redo();
   {
-    const System& system = score.getSystems()[0];
+    System const& system = score.getSystems()[0];
     REQUIRE_FALSE(system.getBarlines()[0].getTimeSignature() == newTime);
     REQUIRE(system.getBarlines()[1].getTimeSignature() == newTime);
     REQUIRE(system.getBarlines()[2].getTimeSignature() == newTime);
@@ -45,7 +45,7 @@ TEST_CASE("Actions/EditTimeSignature", "")
 
   action.undo();
   {
-    const System& system = score.getSystems()[0];
+    System const& system = score.getSystems()[0];
     REQUIRE_FALSE(system.getBarlines()[1].getTimeSignature() == newTime);
     REQUIRE_FALSE(system.getBarlines()[2].getTimeSignature() == newTime);
   }

@@ -19,7 +19,7 @@
 
 #include <score/system.h>
 
-AddPlayerChange::AddPlayerChange(const ScoreLocation& location, const PlayerChange& change)
+AddPlayerChange::AddPlayerChange(ScoreLocation const& location, PlayerChange const& change)
   : QUndoCommand(QObject::tr("Add Player Change"))
   , myLocation(location)
   , myPlayerChange(change)

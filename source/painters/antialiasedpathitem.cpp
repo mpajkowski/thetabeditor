@@ -19,7 +19,7 @@
 
 #include <QPainter>
 
-AntialiasedPathItem::AntialiasedPathItem(const QPainterPath& path)
+AntialiasedPathItem::AntialiasedPathItem(QPainterPath const& path)
   : QGraphicsPathItem(path)
 {}
 

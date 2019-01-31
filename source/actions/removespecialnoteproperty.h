@@ -32,11 +32,11 @@ public:
   typedef std::function<void(Note*)> Clearer;
   typedef std::function<void(Note*, T)> Setter;
 
-  RemoveSpecialNoteProperty(const ScoreLocation& location,
-                            const QString& text,
-                            const T& currentValue,
-                            const Clearer& clearer,
-                            const Setter& setter)
+  RemoveSpecialNoteProperty(ScoreLocation const& location,
+                            QString const& text,
+                            T const& currentValue,
+                            Clearer const& clearer,
+                            Setter const& setter)
     : QUndoCommand(text)
     , myLocation(location)
     , myOriginalValue(currentValue)
@@ -58,7 +58,7 @@ private:
 class RemoveTappedHarmonic : public RemoveSpecialNoteProperty<int>
 {
 public:
-  RemoveTappedHarmonic(const ScoreLocation& location)
+  RemoveTappedHarmonic(ScoreLocation const& location)
     : RemoveSpecialNoteProperty<int>(location,
                                      QObject::tr("Remove Tapped Harmonic"),
                                      location.getNote()->getTappedHarmonicFret(),
@@ -70,7 +70,7 @@ public:
 class RemoveTrill : public RemoveSpecialNoteProperty<int>
 {
 public:
-  RemoveTrill(const ScoreLocation& location)
+  RemoveTrill(ScoreLocation const& location)
     : RemoveSpecialNoteProperty<int>(location,
                                      QObject::tr("Remove Trill"),
                                      location.getNote()->getTrilledFret(),
@@ -82,7 +82,7 @@ public:
 class RemoveArtificialHarmonic : public RemoveSpecialNoteProperty<ArtificialHarmonic>
 {
 public:
-  RemoveArtificialHarmonic(const ScoreLocation& location)
+  RemoveArtificialHarmonic(ScoreLocation const& location)
     : RemoveSpecialNoteProperty<ArtificialHarmonic>(location,
                                                     QObject::tr("Remove Artificial Harmonic"),
                                                     location.getNote()->getArtificialHarmonic(),
@@ -94,7 +94,7 @@ public:
 class RemoveBend : public RemoveSpecialNoteProperty<Bend>
 {
 public:
-  RemoveBend(const ScoreLocation& location)
+  RemoveBend(ScoreLocation const& location)
     : RemoveSpecialNoteProperty<Bend>(location,
                                       QObject::tr("Remove Bend"),
                                       location.getNote()->getBend(),
@@ -106,7 +106,7 @@ public:
 class RemoveLeftHandFingering : public RemoveSpecialNoteProperty<LeftHandFingering>
 {
 public:
-  RemoveLeftHandFingering(const ScoreLocation& location)
+  RemoveLeftHandFingering(ScoreLocation const& location)
     : RemoveSpecialNoteProperty<LeftHandFingering>(location,
                                                    QObject::tr("Remove Left Hand Fingering"),
                                                    location.getNote()->getLeftHandFingering(),

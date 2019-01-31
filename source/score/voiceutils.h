@@ -29,39 +29,39 @@ class Voice;
 
 namespace VoiceUtils {
 /// Finds the corresponding voice in a following (or preceding) system.
-const Voice* getAdjacentVoice(const ScoreLocation& location, int offset);
+const Voice* getAdjacentVoice(ScoreLocation const& location, int offset);
 
 /// Returns the next position in the staff, if it exists.
-const Position* getNextPosition(const Voice& voice, int position);
+const Position* getNextPosition(Voice const& voice, int position);
 
 /// Returns the previous position in the staff, if it exists.
-const Position* getPreviousPosition(const Voice& voice, int position);
+const Position* getPreviousPosition(Voice const& voice, int position);
 
 /// Finds the next note in the staff on the given string. Optionally, the next
 /// system can be checked.
-const Note* getNextNote(const Voice& voice, int position, int string, const Voice* nextVoice = nullptr);
+const Note* getNextNote(Voice const& voice, int position, int string, const Voice* nextVoice = nullptr);
 
 /// Finds the previous note in the staff on the given string.
-const Note* getPreviousNote(const Voice& voice, int position, int string, const Voice* prevVoice = nullptr);
+const Note* getPreviousNote(Voice const& voice, int position, int string, const Voice* prevVoice = nullptr);
 
 /// Determines whether the specified note can be tied to the previous note.
 /// The previous position must have a note at the same string and fret.
-bool canTieNote(const Voice& voice, int position, const Note& note);
+bool canTieNote(Voice const& voice, int position, Note const& note);
 
 /// Determines whether the specified note can have a hammeron or pulloff.
 /// The next position must have a note at the same string and a different fret.
-bool canHammerOnOrPullOff(const Voice& voice, int position, const Note& note);
+bool canHammerOnOrPullOff(Voice const& voice, int position, Note const& note);
 
 /// Determines whether the position contains a note with a hammeron.
-bool hasNoteWithHammerOn(const Voice& voice, const Position& pos);
+bool hasNoteWithHammerOn(Voice const& voice, Position const& pos);
 
 /// Finds all irregular groups that overlap with the given range of positions.
-std::vector<const IrregularGrouping*> getIrregularGroupsInRange(const Voice& voice, int left, int right);
+std::vector<const IrregularGrouping*> getIrregularGroupsInRange(Voice const& voice, int left, int right);
 
 /// Returns the note duration, including dots, irregular groupings, etc.
 /// This does not include tempo, and the durations are relative to a
 /// quarter note (i.e. a quarter note is 1, eighth note is 1/2, etc).
-boost::rational<int> getDurationTime(const Voice& voice, const Position& pos);
+boost::rational<int> getDurationTime(Voice const& voice, Position const& pos);
 } // namespace VoiceUtils
 
 #endif

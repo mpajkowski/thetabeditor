@@ -20,7 +20,7 @@
 #include <score/barline.h>
 #include <score/score.h>
 
-EditKeySignature::EditKeySignature(const ScoreLocation& location, const KeySignature& newKey)
+EditKeySignature::EditKeySignature(ScoreLocation const& location, KeySignature const& newKey)
   : QUndoCommand(QObject::tr("Edit Key Signature"))
   , myLocation(location)
   , myNewKey(newKey)
@@ -39,7 +39,7 @@ void EditKeySignature::undo()
   updateFollowingKeySignatures(myNewKey, myOldKey);
 }
 
-void EditKeySignature::updateFollowingKeySignatures(const KeySignature& oldKey, const KeySignature& newKey)
+void EditKeySignature::updateFollowingKeySignatures(KeySignature const& oldKey, KeySignature const& newKey)
 {
   Score& score = myLocation.getScore();
   const size_t start_system_index = myLocation.getSystemIndex();
@@ -50,7 +50,7 @@ void EditKeySignature::updateFollowingKeySignatures(const KeySignature& oldKey, 
         continue;
       }
 
-      const KeySignature& currentKey = bar.getKeySignature();
+      KeySignature const& currentKey = bar.getKeySignature();
       if (currentKey.getKeyType() == oldKey.getKeyType() &&
           currentKey.getNumAccidentals() == oldKey.getNumAccidentals() &&
           currentKey.usesSharps() == oldKey.usesSharps()) {

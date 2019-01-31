@@ -52,7 +52,7 @@ public:
   ~TheTabEditor();
 
   /// Opens the given list of files.
-  void openFiles(const QStringList& files);
+  void openFiles(QStringList const& files);
 
 private slots:
   /// Creates a new (blank) document.
@@ -251,7 +251,7 @@ private slots:
   /// Adds or removes a player change at the current location.
   void editPlayerChange();
   /// Edits the properties of a player.
-  void editPlayer(int playerIndex, const Player& player, bool undoable);
+  void editPlayer(int playerIndex, Player const& player, bool undoable);
   /// Removes the specified player.
   void removePlayer(int index);
   /// Shows a dialog to view or edit the tuning dictionary.
@@ -294,39 +294,39 @@ private:
   /// Helper function to create a wrapper around QAction that supports
   /// customizable shortcuts.
   static Command* createCommandWrapper(QAction* action,
-                                       const QString& id,
-                                       const QKeySequence& defaultShortcut,
+                                       QString const& id,
+                                       QKeySequence const& defaultShortcut,
                                        QObject* parent);
   /// Helper function to create a note duration command.
   void createNoteDurationCommand(Command*& command,
-                                 const QString& menuName,
-                                 const QString& commandName,
+                                 QString const& menuName,
+                                 QString const& commandName,
                                  Position::DurationType durationType);
   /// Helper function to create a rest duration command.
   void createRestDurationCommand(Command*& command,
-                                 const QString& menuName,
-                                 const QString& commandName,
+                                 QString const& menuName,
+                                 QString const& commandName,
                                  Position::DurationType durationType);
   /// Helper function to create a command for toggling a simple note
   /// property.
   void createNotePropertyCommand(Command*& command,
-                                 const QString& menuName,
-                                 const QString& commandName,
-                                 const QKeySequence& shortcut,
+                                 QString const& menuName,
+                                 QString const& commandName,
+                                 QKeySequence const& shortcut,
                                  Note::SimpleProperty property);
   /// Helper function to create a command for toggling a simple position
   /// property.
   void createPositionPropertyCommand(Command*& command,
-                                     const QString& menuName,
-                                     const QString& commandName,
-                                     const QKeySequence& shortcut,
+                                     QString const& menuName,
+                                     QString const& commandName,
+                                     QKeySequence const& shortcut,
                                      Position::SimpleProperty property);
   /// Set up the menus for the application.
   void createMenus();
   /// Create the tab widget and score area.
   void createTabArea();
   /// Updates the last directory that a file was opened from.
-  void setPreviousDirectory(const QString& fileName);
+  void setPreviousDirectory(QString const& fileName);
   /// Sets up the UI for the current document after it has been opened.
   void setupNewTab();
   /// Updates whether menu items are enabled, checked, etc. depending on the
@@ -358,11 +358,11 @@ private:
   void editRest(Position::DurationType duration);
 
   /// Edits the key signature at the given location.
-  void editKeySignature(const ScoreLocation& keyLocation);
+  void editKeySignature(ScoreLocation const& keyLocation);
   /// Edits the time signature at the given location.
-  void editTimeSignature(const ScoreLocation& timeLocation);
+  void editTimeSignature(ScoreLocation const& timeLocation);
   /// Edits the barline at the given location.
-  void editBarline(const ScoreLocation& barLocation);
+  void editBarline(ScoreLocation const& barLocation);
   /// Edits the clef at the given location.
   void editClef(int system, int staff);
 

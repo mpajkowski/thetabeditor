@@ -30,8 +30,8 @@ class Staff;
 class StaffPainter : public QGraphicsItem
 {
 public:
-  StaffPainter(const LayoutConstPtr& layout,
-               const ScoreLocation& location,
+  StaffPainter(LayoutConstPtr const& layout,
+               ScoreLocation const& location,
                const std::shared_ptr<ClickPubSub>& pubsub);
 
   virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) override;

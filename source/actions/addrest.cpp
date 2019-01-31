@@ -19,7 +19,7 @@
 
 #include <score/voice.h>
 
-AddRest::AddRest(const ScoreLocation& location, Position::DurationType duration)
+AddRest::AddRest(ScoreLocation const& location, Position::DurationType duration)
   : QUndoCommand(QObject::tr("Add Rest"))
   , myLocation(location)
   , myDuration(duration)

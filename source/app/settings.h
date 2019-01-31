@@ -39,21 +39,21 @@ template<>
 struct SettingValueConverter<Tuning>
 {
   static Tuning from(const SettingsTree::SettingValue& v);
-  static SettingsTree::SettingValue to(const Tuning& t);
+  static SettingsTree::SettingValue to(Tuning const& t);
 };
 
 template<>
 struct SettingValueConverter<QByteArray>
 {
   static QByteArray from(const SettingsTree::SettingValue& v);
-  static SettingsTree::SettingValue to(const QByteArray& array);
+  static SettingsTree::SettingValue to(QByteArray const& array);
 };
 
 template<>
 struct SettingValueConverter<QKeySequence>
 {
   static QKeySequence from(const SettingsTree::SettingValue& v);
-  static SettingsTree::SettingValue to(const QKeySequence& seq);
+  static SettingsTree::SettingValue to(QKeySequence const& seq);
 };
 
 #endif

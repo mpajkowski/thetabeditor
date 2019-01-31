@@ -56,11 +56,11 @@ public:
 private:
   typedef rapidjson::GenericValue<rapidjson::UTF8<>> JSONValue;
 
-  struct ValueVisitor : public boost::static_visitor<const JSONValue&>
+  struct ValueVisitor : public boost::static_visitor<JSONValue const&>
   {
-    const JSONValue& operator()(const JSONValue::ConstMemberIterator& it) const { return it->value; }
+    JSONValue const& operator()(const JSONValue::ConstMemberIterator& it) const { return it->value; }
 
-    const JSONValue& operator()(const JSONValue::ConstValueIterator& it) const { return *it; }
+    JSONValue const& operator()(const JSONValue::ConstValueIterator& it) const { return *it; }
   };
 
   struct NameVisitor : public boost::static_visitor<std::string>
@@ -94,7 +94,7 @@ private:
     return myIterators.top().apply_visitor(visitor);
   }
 
-  const JSONValue& value() const
+  JSONValue const& value() const
   {
     ValueVisitor visitor;
     return myIterators.top().apply_visitor(visitor);
@@ -102,7 +102,7 @@ private:
 
   inline void read(int& val);
   inline void read(int8_t& val);
-  inline void read(unsigned int& val);
+  inline void read(int unsigned& val);
   inline void read(uint8_t& val);
   inline void read(bool& val);
   inline void read(std::string& str);
@@ -165,7 +165,7 @@ public:
   ~OutputArchive();
 
   template<typename T>
-  void operator()(const std::string& name, const T& obj)
+  void operator()(const std::string& name, T const& obj)
   {
     write(name);
     write(obj);
@@ -195,13 +195,13 @@ private:
   inline void write(const boost::gregorian::date& date);
 
   template<typename T>
-  typename std::enable_if<std::is_enum<T>::value>::type write(const T& val)
+  typename std::enable_if<std::is_enum<T>::value>::type write(T const& val)
   {
     myStream.Int(static_cast<int>(val));
   }
 
   template<typename T>
-  typename std::enable_if<std::is_class<T>::value>::type write(const T& obj)
+  typename std::enable_if<std::is_class<T>::value>::type write(T const& obj)
   {
     myStream.StartObject();
     const_cast<T&>(obj).serialize(*this, myVersion);
@@ -214,7 +214,7 @@ private:
 };
 
 template<typename T>
-void save(std::ostream& output, const std::string& name, const T& obj)
+void save(std::ostream& output, const std::string& name, T const& obj)
 {
   OutputArchive ar(output, FileVersion::LATEST_VERSION);
   ar(name, obj);
@@ -233,7 +233,7 @@ void InputArchive::read(int8_t& val)
   val = static_cast<int8_t>(int_val);
 }
 
-void InputArchive::read(unsigned int& val)
+void InputArchive::read(int unsigned& val)
 {
   val = value().GetUint();
 }
@@ -353,7 +353,7 @@ template<typename T>
 void OutputArchive::write(const std::vector<T>& vec)
 {
   myStream.StartArray();
-  for (const T& obj : vec)
+  for (T const& obj : vec)
     write(obj);
   myStream.EndArray();
 }
@@ -363,7 +363,7 @@ void OutputArchive::write(const std::map<K, V, C>& map)
 {
   myStream.StartObject();
 
-  for (const auto& pair : map)
+  for (auto const& pair : map)
     (*this)(std::to_string(pair.first), pair.second);
 
   myStream.EndObject();

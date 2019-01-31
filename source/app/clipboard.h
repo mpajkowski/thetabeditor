@@ -25,7 +25,7 @@ class UndoManager;
 namespace Clipboard {
 
 /// Stores the selected data on the clipboard.
-void copySelection(const ScoreLocation& location);
+void copySelection(ScoreLocation const& location);
 
 /// Pastes notes from the clipboard at the current position.
 void paste(QWidget* parent, UndoManager& undoManager, ScoreLocation& location);

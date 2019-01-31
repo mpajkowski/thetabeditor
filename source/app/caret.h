@@ -27,10 +27,10 @@ class ViewOptions;
 class Caret
 {
 public:
-  Caret(Score& score, const ViewOptions& options);
+  Caret(Score& score, ViewOptions const& options);
 
   ScoreLocation& getLocation();
-  const ScoreLocation& getLocation() const;
+  ScoreLocation const& getLocation() const;
 
   /// Returns whether the caret is in playback mode.
   bool isInPlaybackMode() const;
@@ -77,7 +77,7 @@ public:
   void moveToPrevBar();
 
   /// Moves to the specified location.
-  void moveToLocation(const ScoreLocation& location);
+  void moveToLocation(ScoreLocation const& location);
 
   /// Ensures that the caret is still at a valid position.
   void moveToValidPosition();
@@ -95,7 +95,7 @@ private:
   int getLastSystemIndex() const;
 
   ScoreLocation myLocation;
-  const ViewOptions& myViewOptions;
+  ViewOptions const& myViewOptions;
   bool myInPlaybackMode;
 
   /// Send out signals to subscribers whenever the location changes.

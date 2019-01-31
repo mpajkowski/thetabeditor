@@ -32,12 +32,12 @@ using SettingMap = SettingsTree::SettingMap;
 struct IsMap : public boost::static_visitor<bool>
 {
   template<typename T>
-  bool operator()(const T&) const
+  bool operator()(T const&) const
   {
     return false;
   }
 
-  bool operator()(const SettingMap&) const { return true; }
+  bool operator()(SettingMap const&) const { return true; }
 };
 
 struct Inserter : public boost::static_visitor<>
@@ -85,18 +85,18 @@ struct Finder : public boost::static_visitor<boost::optional<SettingValue>>
   }
 
   template<typename T>
-  boost::optional<SettingValue> operator()(const T&) const
+  boost::optional<SettingValue> operator()(T const&) const
   {
     return boost::none;
   }
 
-  boost::optional<SettingValue> operator()(const SettingMap& map) const
+  boost::optional<SettingValue> operator()(SettingMap const& map) const
   {
     auto it = map.find(myComponents[myIndex]);
     if (it == map.end())
       return boost::none;
 
-    const SettingValue& value = it->second;
+    SettingValue const& value = it->second;
     if (myIndex == myComponents.size() - 1)
       return value;
     else {
@@ -191,7 +191,7 @@ struct JSONSerializer : public boost::static_visitor<void>
     myWriter.String(s.c_str(), static_cast<rapidjson::SizeType>(s.length()));
   }
 
-  void operator()(const SettingList& list)
+  void operator()(SettingList const& list)
   {
     myWriter.StartArray();
     for (auto&& value : list)
@@ -199,7 +199,7 @@ struct JSONSerializer : public boost::static_visitor<void>
     myWriter.EndArray();
   }
 
-  void operator()(const SettingMap& map)
+  void operator()(SettingMap const& map)
   {
     myWriter.StartObject();
 
@@ -228,7 +228,7 @@ SettingsTree::SettingsTree()
   : myTree(SettingMap())
 {}
 
-void SettingsTree::setImpl(const std::string& key, const SettingValue& value)
+void SettingsTree::setImpl(const std::string& key, SettingValue const& value)
 {
   Inserter inserter(key, value);
   boost::apply_visitor(inserter, myTree);

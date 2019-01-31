@@ -26,9 +26,9 @@
 class RemoveNoteProperty : public QUndoCommand
 {
 public:
-  RemoveNoteProperty(const ScoreLocation& location,
+  RemoveNoteProperty(ScoreLocation const& location,
                      Note::SimpleProperty property,
-                     const QString& description);
+                     QString const& description);
 
   virtual void redo() override;
   virtual void undo() override;

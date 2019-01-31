@@ -19,7 +19,7 @@
 
 #include <score/score.h>
 
-EditPlayer::EditPlayer(Score& score, int playerIndex, const Player& player)
+EditPlayer::EditPlayer(Score& score, int playerIndex, Player const& player)
   : QUndoCommand(QObject::tr("Edit Player"))
   , myScore(score)
   , myPlayerIndex(playerIndex)
@@ -38,7 +38,7 @@ void EditPlayer::redo()
         myOriginalChanges.push_back(change);
 
         for (unsigned int i = 0; i < system.getStaves().size(); ++i) {
-          for (const ActivePlayer& activePlayer : change.getActivePlayers(i)) {
+          for (ActivePlayer const& activePlayer : change.getActivePlayers(i)) {
             if (activePlayer.getPlayerNumber() == myPlayerIndex)
               change.removeActivePlayer(i, activePlayer);
           }

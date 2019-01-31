@@ -23,9 +23,9 @@
 #include <painters/musicfont.h>
 #include <score/keysignature.h>
 
-KeySignaturePainter::KeySignaturePainter(const LayoutConstPtr& layout,
-                                         const KeySignature& key,
-                                         const ScoreLocation& location,
+KeySignaturePainter::KeySignaturePainter(LayoutConstPtr const& layout,
+                                         KeySignature const& key,
+                                         ScoreLocation const& location,
                                          const std::shared_ptr<ClickPubSub>& pubsub)
   : myLayout(layout)
   , myKeySignature(key)

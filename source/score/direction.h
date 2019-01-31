@@ -60,7 +60,7 @@ public:
   DirectionSymbol();
   DirectionSymbol(SymbolType type, ActiveSymbolType activeType = ActiveNone, int repeatNumber = 0);
 
-  bool operator==(const DirectionSymbol& other) const;
+  bool operator==(DirectionSymbol const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -87,7 +87,7 @@ public:
   Direction();
   explicit Direction(int position);
 
-  bool operator==(const Direction& other) const;
+  bool operator==(Direction const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -103,7 +103,7 @@ public:
   boost::iterator_range<SymbolConstIterator> getSymbols() const;
 
   /// Adds a new symbol to the direction.
-  void insertSymbol(const DirectionSymbol& symbol);
+  void insertSymbol(DirectionSymbol const& symbol);
   /// Removes a symbol from the direction.
   void removeSymbol(int index);
 

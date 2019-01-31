@@ -32,7 +32,7 @@ Position::Position(int position, DurationType duration)
   , myMultiBarRestCount(0)
 {}
 
-bool Position::operator==(const Position& other) const
+bool Position::operator==(Position const& other) const
 {
   return myPosition == other.myPosition && myDurationType == other.myDurationType &&
          mySimpleProperties == other.mySimpleProperties && myMultiBarRestCount == other.myMultiBarRestCount &&
@@ -151,24 +151,24 @@ boost::iterator_range<Position::NoteConstIterator> Position::getNotes() const
   return boost::make_iterator_range(myNotes);
 }
 
-void Position::insertNote(const Note& note)
+void Position::insertNote(Note const& note)
 {
   myNotes.push_back(note);
 
   // Sort notes by string.
-  std::sort(myNotes.begin(), myNotes.end(), [](const Note& note1, const Note& note2) {
+  std::sort(myNotes.begin(), myNotes.end(), [](Note const& note1, Note const& note2) {
     return note1.getString() < note2.getString();
   });
 }
 
-void Position::removeNote(const Note& note)
+void Position::removeNote(Note const& note)
 {
-  removeNotes([=](const Note& other) { return other == note; });
+  removeNotes([=](Note const& other) { return other == note; });
 }
 
-const Note* Utils::findByString(const Position& pos, int string)
+const Note* Utils::findByString(Position const& pos, int string)
 {
-  for (const Note& note : pos.getNotes()) {
+  for (Note const& note : pos.getNotes()) {
     if (note.getString() == string)
       return &note;
   }
@@ -176,9 +176,9 @@ const Note* Utils::findByString(const Position& pos, int string)
   return nullptr;
 }
 
-bool Utils::hasNoteWithTappedHarmonic(const Position& pos)
+bool Utils::hasNoteWithTappedHarmonic(Position const& pos)
 {
-  for (const Note& note : pos.getNotes()) {
+  for (Note const& note : pos.getNotes()) {
     if (note.hasTappedHarmonic())
       return true;
   }
@@ -186,9 +186,9 @@ bool Utils::hasNoteWithTappedHarmonic(const Position& pos)
   return false;
 }
 
-bool Utils::hasNoteWithProperty(const Position& pos, Note::SimpleProperty property)
+bool Utils::hasNoteWithProperty(Position const& pos, Note::SimpleProperty property)
 {
-  for (const Note& note : pos.getNotes()) {
+  for (Note const& note : pos.getNotes()) {
     if (note.hasProperty(property))
       return true;
   }
@@ -196,9 +196,9 @@ bool Utils::hasNoteWithProperty(const Position& pos, Note::SimpleProperty proper
   return false;
 }
 
-bool Utils::hasNoteWithTrill(const Position& pos)
+bool Utils::hasNoteWithTrill(Position const& pos)
 {
-  for (const Note& note : pos.getNotes()) {
+  for (Note const& note : pos.getNotes()) {
     if (note.hasTrill())
       return true;
   }
@@ -206,9 +206,9 @@ bool Utils::hasNoteWithTrill(const Position& pos)
   return false;
 }
 
-bool Utils::hasNoteWithBend(const Position& pos)
+bool Utils::hasNoteWithBend(Position const& pos)
 {
-  for (const Note& note : pos.getNotes()) {
+  for (Note const& note : pos.getNotes()) {
     if (note.hasBend())
       return true;
   }
@@ -216,9 +216,9 @@ bool Utils::hasNoteWithBend(const Position& pos)
   return false;
 }
 
-bool Utils::hasNoteWithArtificialHarmonic(const Position& pos)
+bool Utils::hasNoteWithArtificialHarmonic(Position const& pos)
 {
-  for (const Note& note : pos.getNotes()) {
+  for (Note const& note : pos.getNotes()) {
     if (note.hasArtificialHarmonic())
       return true;
   }

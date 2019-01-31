@@ -52,7 +52,7 @@ public:
 
   System();
 
-  bool operator==(const System& other) const;
+  bool operator==(System const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -63,8 +63,8 @@ public:
   boost::iterator_range<StaffConstIterator> getStaves() const;
 
   /// Adds a new staff to the system.
-  void insertStaff(const Staff& staff);
-  void insertStaff(const Staff& staff, int index);
+  void insertStaff(Staff const& staff);
+  void insertStaff(Staff const& staff, int index);
   /// Removes the specified staff from the system.
   void removeStaff(int index);
 
@@ -74,9 +74,9 @@ public:
   boost::iterator_range<BarlineConstIterator> getBarlines() const;
 
   /// Adds a new barline to the system.
-  void insertBarline(const Barline& barline);
+  void insertBarline(Barline const& barline);
   /// Removes the specified barline from the system.
-  void removeBarline(const Barline& barline);
+  void removeBarline(Barline const& barline);
 
   /// Returns the last barline before the given position.
   const Barline* getPreviousBarline(int position) const;
@@ -90,9 +90,9 @@ public:
   boost::iterator_range<TempoMarkerConstIterator> getTempoMarkers() const;
 
   /// Adds a new tempo marker to the system.
-  void insertTempoMarker(const TempoMarker& marker);
+  void insertTempoMarker(TempoMarker const& marker);
   /// Removes the specified tempo marker from the system.
-  void removeTempoMarker(const TempoMarker& marker);
+  void removeTempoMarker(TempoMarker const& marker);
 
   /// Returns the set of alternate endings in the system.
   boost::iterator_range<AlternateEndingIterator> getAlternateEndings();
@@ -100,9 +100,9 @@ public:
   boost::iterator_range<AlternateEndingConstIterator> getAlternateEndings() const;
 
   /// Adds a new alternate ending to the system.
-  void insertAlternateEnding(const AlternateEnding& ending);
+  void insertAlternateEnding(AlternateEnding const& ending);
   /// Removes the specified alternate ending from the system.
-  void removeAlternateEnding(const AlternateEnding& ending);
+  void removeAlternateEnding(AlternateEnding const& ending);
 
   /// Returns the set of musical directions in the system.
   boost::iterator_range<DirectionIterator> getDirections();
@@ -110,9 +110,9 @@ public:
   boost::iterator_range<DirectionConstIterator> getDirections() const;
 
   /// Adds a new musical direction to the system.
-  void insertDirection(const Direction& direction);
+  void insertDirection(Direction const& direction);
   /// Removes the specified musical direction from the system.
-  void removeDirection(const Direction& direction);
+  void removeDirection(Direction const& direction);
 
   /// Returns the set of player changes in the system.
   boost::iterator_range<PlayerChangeIterator> getPlayerChanges();
@@ -120,9 +120,9 @@ public:
   boost::iterator_range<PlayerChangeConstIterator> getPlayerChanges() const;
 
   /// Adds a new player change to the system.
-  void insertPlayerChange(const PlayerChange& change);
+  void insertPlayerChange(PlayerChange const& change);
   /// Removes the specified player change from the system.
-  void removePlayerChange(const PlayerChange& change);
+  void removePlayerChange(PlayerChange const& change);
 
   /// Returns the set of chord symbols in the system.
   boost::iterator_range<ChordTextIterator> getChords();
@@ -130,9 +130,9 @@ public:
   boost::iterator_range<ChordTextConstIterator> getChords() const;
 
   /// Adds a new chord symbol to the system.
-  void insertChord(const ChordText& chord);
+  void insertChord(ChordText const& chord);
   /// Removes the specified chord symbol from the system.
-  void removeChord(const ChordText& chord);
+  void removeChord(ChordText const& chord);
 
   /// Returns the set of text items in the system.
   boost::iterator_range<TextItemIterator> getTextItems();
@@ -140,9 +140,9 @@ public:
   boost::iterator_range<TextItemConstIterator> getTextItems() const;
 
   /// Adds a new text item to the system.
-  void insertTextItem(const TextItem& text);
+  void insertTextItem(TextItem const& text);
   /// Removes the specified text item from the system.
-  void removeTextItem(const TextItem& text);
+  void removeTextItem(TextItem const& text);
 
 private:
   std::vector<Staff> myStaves;

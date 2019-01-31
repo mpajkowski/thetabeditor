@@ -44,7 +44,7 @@ class ScoreArea : public QGraphicsView
 public:
   explicit ScoreArea(QWidget* parent);
 
-  void renderDocument(const Document& document);
+  void renderDocument(Document const& document);
 
   void refreshZoom();
 
@@ -65,7 +65,7 @@ private:
   void adjustScroll();
 
   Scene myScene;
-  boost::optional<const Document&> myDocument;
+  boost::optional<Document const&> myDocument;
   QGraphicsItem* myScoreInfoBlock;
   QList<QGraphicsItem*> myRenderedSystems;
   CaretPainter* myCaretPainter;

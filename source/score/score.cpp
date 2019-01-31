@@ -24,18 +24,18 @@ Score::Score()
   : myLineSpacing(9)
 {}
 
-bool Score::operator==(const Score& other) const
+bool Score::operator==(Score const& other) const
 {
   return myScoreInfo == other.myScoreInfo && mySystems == other.mySystems && myPlayers == other.myPlayers &&
          myLineSpacing == other.myLineSpacing && myViewFilters == other.myViewFilters;
 }
 
-const ScoreInfo& Score::getScoreInfo() const
+ScoreInfo const& Score::getScoreInfo() const
 {
   return myScoreInfo;
 }
 
-void Score::setScoreInfo(const ScoreInfo& info)
+void Score::setScoreInfo(ScoreInfo const& info)
 {
   myScoreInfo = info;
 }
@@ -50,7 +50,7 @@ boost::iterator_range<Score::SystemConstIterator> Score::getSystems() const
   return boost::make_iterator_range(mySystems);
 }
 
-void Score::insertSystem(const System& system, int index)
+void Score::insertSystem(System const& system, int index)
 {
   if (index < 0)
     mySystems.push_back(system);
@@ -73,12 +73,12 @@ boost::iterator_range<Score::PlayerConstIterator> Score::getPlayers() const
   return boost::make_iterator_range(myPlayers);
 }
 
-void Score::insertPlayer(const Player& player)
+void Score::insertPlayer(Player const& player)
 {
   myPlayers.push_back(player);
 }
 
-void Score::insertPlayer(const Player& player, int index)
+void Score::insertPlayer(Player const& player, int index)
 {
   myPlayers.insert(myPlayers.begin() + index, player);
 }
@@ -98,7 +98,7 @@ boost::iterator_range<Score::ViewFilterConstIterator> Score::getViewFilters() co
   return boost::make_iterator_range(myViewFilters);
 }
 
-void Score::insertViewFilter(const ViewFilter& filter)
+void Score::insertViewFilter(ViewFilter const& filter)
 {
   myViewFilters.push_back(filter);
 }
@@ -121,16 +121,16 @@ void Score::setLineSpacing(int value)
   myLineSpacing = value;
 }
 
-const PlayerChange* ScoreUtils::getCurrentPlayers(const Score& score, int systemIndex, int positionIndex)
+const PlayerChange* ScoreUtils::getCurrentPlayers(Score const& score, int systemIndex, int positionIndex)
 {
   const PlayerChange* lastChange = nullptr;
 
   int i = 0;
-  for (const System& system : score.getSystems()) {
+  for (System const& system : score.getSystems()) {
     if (i > systemIndex)
       break;
 
-    for (const PlayerChange& change : system.getPlayerChanges()) {
+    for (PlayerChange const& change : system.getPlayerChanges()) {
       if (i < systemIndex || (i == systemIndex && change.getPosition() <= positionIndex)) {
         lastChange = &change;
       }

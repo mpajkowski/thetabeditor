@@ -24,16 +24,16 @@
 
 namespace VoiceUtils {
 
-const Voice* getAdjacentVoice(const ScoreLocation& location, int offset)
+const Voice* getAdjacentVoice(ScoreLocation const& location, int offset)
 {
   const int systemIndex = location.getSystemIndex() + offset;
   const int staffIndex = location.getStaffIndex();
   const int voiceIndex = location.getVoiceIndex();
 
   if (systemIndex >= 0 && systemIndex < location.getScore().getSystems().size()) {
-    const System& nextSystem = location.getScore().getSystems()[systemIndex];
+    System const& nextSystem = location.getScore().getSystems()[systemIndex];
     if (staffIndex < nextSystem.getStaves().size()) {
-      const Staff& nextStaff = nextSystem.getStaves()[staffIndex];
+      Staff const& nextStaff = nextSystem.getStaves()[staffIndex];
       return &nextStaff.getVoices()[voiceIndex];
     }
   }
@@ -41,9 +41,9 @@ const Voice* getAdjacentVoice(const ScoreLocation& location, int offset)
   return nullptr;
 }
 
-const Position* getNextPosition(const Voice& voice, int position)
+const Position* getNextPosition(Voice const& voice, int position)
 {
-  for (const Position& pos : voice.getPositions()) {
+  for (Position const& pos : voice.getPositions()) {
     if (pos.getPosition() > position)
       return &pos;
   }
@@ -51,9 +51,9 @@ const Position* getNextPosition(const Voice& voice, int position)
   return nullptr;
 }
 
-const Position* getPreviousPosition(const Voice& voice, int position)
+const Position* getPreviousPosition(Voice const& voice, int position)
 {
-  for (const Position& pos : boost::adaptors::reverse(voice.getPositions())) {
+  for (Position const& pos : boost::adaptors::reverse(voice.getPositions())) {
     if (pos.getPosition() < position)
       return &pos;
   }
@@ -61,7 +61,7 @@ const Position* getPreviousPosition(const Voice& voice, int position)
   return nullptr;
 }
 
-const Note* getNextNote(const Voice& voice, int position, int string, const Voice* nextVoice)
+const Note* getNextNote(Voice const& voice, int position, int string, const Voice* nextVoice)
 {
   const Position* nextPos = getNextPosition(voice, position);
   if (!nextPos && nextVoice)
@@ -69,7 +69,7 @@ const Note* getNextNote(const Voice& voice, int position, int string, const Voic
   return nextPos ? Utils::findByString(*nextPos, string) : nullptr;
 }
 
-const Note* getPreviousNote(const Voice& voice, int position, int string, const Voice* prevVoice)
+const Note* getPreviousNote(Voice const& voice, int position, int string, const Voice* prevVoice)
 {
   const Position* prevPos = getPreviousPosition(voice, position);
   if (!prevPos && prevVoice)
@@ -77,21 +77,21 @@ const Note* getPreviousNote(const Voice& voice, int position, int string, const 
   return prevPos ? Utils::findByString(*prevPos, string) : nullptr;
 }
 
-bool canTieNote(const Voice& voice, int position, const Note& note)
+bool canTieNote(Voice const& voice, int position, Note const& note)
 {
   const Note* prevNote = getPreviousNote(voice, position, note.getString());
   return prevNote && prevNote->getFretNumber() == note.getFretNumber();
 }
 
-bool canHammerOnOrPullOff(const Voice& voice, int position, const Note& note)
+bool canHammerOnOrPullOff(Voice const& voice, int position, Note const& note)
 {
   const Note* nextNote = getNextNote(voice, position, note.getString());
   return nextNote && nextNote->getFretNumber() != note.getFretNumber();
 }
 
-bool hasNoteWithHammerOn(const Voice& voice, const Position& pos)
+bool hasNoteWithHammerOn(Voice const& voice, Position const& pos)
 {
-  for (const Note& note : pos.getNotes()) {
+  for (Note const& note : pos.getNotes()) {
     if (note.hasProperty(Note::HammerOnOrPullOff)) {
       const Note* nextNote = getNextNote(voice, pos.getPosition(), note.getString());
       return nextNote && nextNote->getFretNumber() > note.getFretNumber();
@@ -101,11 +101,11 @@ bool hasNoteWithHammerOn(const Voice& voice, const Position& pos)
   return false;
 }
 
-std::vector<const IrregularGrouping*> getIrregularGroupsInRange(const Voice& voice, int left, int right)
+std::vector<const IrregularGrouping*> getIrregularGroupsInRange(Voice const& voice, int left, int right)
 {
   std::vector<const IrregularGrouping*> groups;
 
-  for (const IrregularGrouping& group : voice.getIrregularGroupings()) {
+  for (IrregularGrouping const& group : voice.getIrregularGroupings()) {
     const int groupLeft = group.getPosition();
     const int groupRight =
       voice
@@ -120,7 +120,7 @@ std::vector<const IrregularGrouping*> getIrregularGroupsInRange(const Voice& voi
   return groups;
 }
 
-boost::rational<int> getDurationTime(const Voice& voice, const Position& pos)
+boost::rational<int> getDurationTime(Voice const& voice, Position const& pos)
 {
   if (pos.hasProperty(Position::Acciaccatura))
     return 0;

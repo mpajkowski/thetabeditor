@@ -21,12 +21,12 @@ ChordText::ChordText()
   : myPosition(0)
 {}
 
-ChordText::ChordText(int position, const ChordName& name)
+ChordText::ChordText(int position, ChordName const& name)
   : myPosition(position)
   , myChordName(name)
 {}
 
-bool ChordText::operator==(const ChordText& other) const
+bool ChordText::operator==(ChordText const& other) const
 {
   return myPosition == other.myPosition && myChordName == other.myChordName;
 }
@@ -41,12 +41,12 @@ void ChordText::setPosition(int position)
   myPosition = position;
 }
 
-const ChordName& ChordText::getChordName() const
+ChordName const& ChordText::getChordName() const
 {
   return myChordName;
 }
 
-void ChordText::setChordName(const ChordName& name)
+void ChordText::setChordName(ChordName const& name)
 {
   myChordName = name;
 }

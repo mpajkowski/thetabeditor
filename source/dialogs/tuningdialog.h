@@ -33,7 +33,7 @@ class TuningDialog : public QDialog
   Q_OBJECT
 
 public:
-  TuningDialog(QWidget* parent, const Tuning& currentTuning, const TuningDictionary& dictionary);
+  TuningDialog(QWidget* parent, Tuning const& currentTuning, TuningDictionary const& dictionary);
   ~TuningDialog();
 
   Tuning getTuning() const;
@@ -57,12 +57,12 @@ private slots:
 
 private:
   Ui::TuningDialog* ui;
-  const TuningDictionary& myDictionary;
+  TuningDictionary const& myDictionary;
 
   QStringList myNoteNames;
   std::vector<QComboBox*> myStringSelectors;
 
-  void initStringSelectors(const Tuning& currentTuning);
+  void initStringSelectors(Tuning const& currentTuning);
 
   /// Generates a list of note names, to be used for selecting the pitch
   /// of a string.

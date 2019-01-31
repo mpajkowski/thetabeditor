@@ -33,7 +33,7 @@ class Voice;
 class ScoreLocation
 {
 public:
-  explicit ScoreLocation(const Score& score,
+  explicit ScoreLocation(Score const& score,
                          int system = 0,
                          int staff = 0,
                          int position = 0,
@@ -47,12 +47,12 @@ public:
                          int string = 0);
 
   Score& getScore();
-  const Score& getScore() const;
+  Score const& getScore() const;
 
   int getSystemIndex() const;
   void setSystemIndex(int system);
 
-  const System& getSystem() const;
+  System const& getSystem() const;
   System& getSystem();
 
   const Barline* getBarline() const;
@@ -62,7 +62,7 @@ public:
   int getStaffIndex() const;
   void setStaffIndex(int staff);
 
-  const Staff& getStaff() const;
+  Staff const& getStaff() const;
   Staff& getStaff();
 
   int getPositionIndex() const;
@@ -79,7 +79,7 @@ public:
   std::vector<Position*> getSelectedPositions();
   std::vector<const Position*> getSelectedPositions() const;
 
-  const Voice& getVoice() const;
+  Voice const& getVoice() const;
   Voice& getVoice();
   int getVoiceIndex() const;
   void setVoiceIndex(int voice);
@@ -96,7 +96,7 @@ public:
   std::vector<Note*> getSelectedNotes();
 
 private:
-  const Score& myScore;
+  Score const& myScore;
   Score* myWriteableScore;
 
   int mySystemIndex;
@@ -109,6 +109,6 @@ private:
   int myString;
 };
 
-std::ostream& operator<<(std::ostream& os, const ScoreLocation& location);
+std::ostream& operator<<(std::ostream& os, ScoreLocation const& location);
 
 #endif

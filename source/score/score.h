@@ -39,17 +39,17 @@ public:
   typedef std::vector<ViewFilter>::const_iterator ViewFilterConstIterator;
 
   Score();
-  Score(const Score& other) = delete;
-  Score& operator=(const Score& other) = delete;
-  bool operator==(const Score& other) const;
+  Score(Score const& other) = delete;
+  Score& operator=(Score const& other) = delete;
+  bool operator==(Score const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
 
   /// Returns information about the score (e.g. title, author, etc.).
-  const ScoreInfo& getScoreInfo() const;
+  ScoreInfo const& getScoreInfo() const;
   /// Sets information about the score (e.g. title, author, etc.).
-  void setScoreInfo(const ScoreInfo& info);
+  void setScoreInfo(ScoreInfo const& info);
 
   /// Returns the set of systems in the score.
   boost::iterator_range<SystemIterator> getSystems();
@@ -57,7 +57,7 @@ public:
   boost::iterator_range<SystemConstIterator> getSystems() const;
 
   /// Adds a new system to the score, optionally at a specific index.
-  void insertSystem(const System& system, int index = -1);
+  void insertSystem(System const& system, int index = -1);
   /// Removes the specified system from the score.
   void removeSystem(int index);
 
@@ -67,8 +67,8 @@ public:
   boost::iterator_range<PlayerConstIterator> getPlayers() const;
 
   /// Adds a new player to the score.
-  void insertPlayer(const Player& player);
-  void insertPlayer(const Player& player, int index);
+  void insertPlayer(Player const& player);
+  void insertPlayer(Player const& player, int index);
   /// Removes the specified player from the score.
   void removePlayer(int index);
 
@@ -78,7 +78,7 @@ public:
   boost::iterator_range<ViewFilterConstIterator> getViewFilters() const;
 
   /// Adds a new filter to the score.
-  void insertViewFilter(const ViewFilter& filter);
+  void insertViewFilter(ViewFilter const& filter);
   /// Removes the specified filter from the score.
   void removeViewFilter(int index);
 
@@ -113,7 +113,7 @@ void Score::serialize(Archive& ar, const FileVersion version)
 
 namespace ScoreUtils {
 /// Get the current player change for the given position.
-const PlayerChange* getCurrentPlayers(const Score& score, int systemIndex, int positionIndex);
+const PlayerChange* getCurrentPlayers(Score const& score, int systemIndex, int positionIndex);
 
 /// Readjust the letters for the rehearsal signs in the score
 /// (i.e. assigning rehearsal signs the letters "A", "B", and so on).

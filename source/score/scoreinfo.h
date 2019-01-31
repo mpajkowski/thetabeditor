@@ -41,7 +41,7 @@ public:
 
     AudioReleaseInfo();
     AudioReleaseInfo(ReleaseType type, const std::string& title, int year, bool live);
-    bool operator==(const AudioReleaseInfo& other) const;
+    bool operator==(AudioReleaseInfo const& other) const;
 
     template<class Archive>
     void serialize(Archive& ar, const FileVersion /*version*/)
@@ -69,7 +69,7 @@ public:
   public:
     VideoReleaseInfo();
     VideoReleaseInfo(const std::string& title, bool live);
-    bool operator==(const VideoReleaseInfo& other) const;
+    bool operator==(VideoReleaseInfo const& other) const;
 
     template<class Archive>
     void serialize(Archive& ar, const FileVersion /*version*/)
@@ -91,7 +91,7 @@ public:
   public:
     BootlegInfo();
     BootlegInfo(const std::string& title, const boost::gregorian::date& date);
-    bool operator==(const BootlegInfo& other) const;
+    bool operator==(BootlegInfo const& other) const;
 
     template<class Archive>
     void serialize(Archive& ar, const FileVersion /*version*/)
@@ -113,7 +113,7 @@ public:
   public:
     AuthorInfo();
     AuthorInfo(const std::string& composer, const std::string& lyricist);
-    bool operator==(const AuthorInfo& other) const;
+    bool operator==(AuthorInfo const& other) const;
 
     template<class Archive>
     void serialize(Archive& ar, const FileVersion /*version*/)
@@ -131,7 +131,7 @@ public:
   };
 
   SongData();
-  bool operator==(const SongData& other) const;
+  bool operator==(SongData const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -143,22 +143,22 @@ public:
   const std::string& getArtist() const;
 
   bool isAudioRelease() const;
-  const AudioReleaseInfo& getAudioReleaseInfo() const;
-  void setAudioReleaseInfo(const AudioReleaseInfo& info);
+  AudioReleaseInfo const& getAudioReleaseInfo() const;
+  void setAudioReleaseInfo(AudioReleaseInfo const& info);
 
   bool isVideoRelease() const;
-  const VideoReleaseInfo& getVideoReleaseInfo() const;
-  void setVideoReleaseInfo(const VideoReleaseInfo& info);
+  VideoReleaseInfo const& getVideoReleaseInfo() const;
+  void setVideoReleaseInfo(VideoReleaseInfo const& info);
 
   bool isBootleg() const;
-  const BootlegInfo& getBootlegInfo() const;
-  void setBootlegInfo(const BootlegInfo& info);
+  BootlegInfo const& getBootlegInfo() const;
+  void setBootlegInfo(BootlegInfo const& info);
 
   bool isUnreleased() const;
   void setUnreleased();
 
-  void setAuthorInfo(const AuthorInfo& info);
-  const AuthorInfo& getAuthorInfo() const;
+  void setAuthorInfo(AuthorInfo const& info);
+  AuthorInfo const& getAuthorInfo() const;
   void setTraditionalAuthor();
   bool isTraditionalAuthor() const;
 
@@ -243,7 +243,7 @@ public:
 
   LessonData();
 
-  bool operator==(const LessonData& other) const;
+  bool operator==(LessonData const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -302,7 +302,7 @@ public:
 
   ScoreInfo();
 
-  bool operator==(const ScoreInfo& other) const;
+  bool operator==(ScoreInfo const& other) const;
 
   template<class Archive>
   void serialize(Archive& ar, const FileVersion version);
@@ -311,14 +311,14 @@ public:
   ScoreType getScoreType() const;
 
   /// Returns the song data (if the score type is a song).
-  const SongData& getSongData() const;
+  SongData const& getSongData() const;
   /// Set the song data (and change the score type to song).
-  void setSongData(const SongData& data);
+  void setSongData(SongData const& data);
 
   /// Returns the lesson data (if the score type is a lesson).
-  const LessonData& getLessonData() const;
+  LessonData const& getLessonData() const;
   /// Set the lesson data (and change the lesson type to song).
-  void setLessonData(const LessonData& data);
+  void setLessonData(LessonData const& data);
 
 private:
   boost::optional<SongData> mySongData;

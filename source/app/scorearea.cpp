@@ -47,13 +47,13 @@ ScoreArea::ScoreArea(QWidget* parent)
   setScene(&myScene);
 }
 
-void ScoreArea::renderDocument(const Document& document)
+void ScoreArea::renderDocument(Document const& document)
 {
   myScene.clear();
   myRenderedSystems.clear();
   myDocument = document;
 
-  const Score& score = document.getScore();
+  Score const& score = document.getScore();
 
   auto start = std::chrono::high_resolution_clock::now();
 
@@ -120,7 +120,7 @@ void ScoreArea::redrawSystem(int index)
   // Delete and remove the system from the scene.
   delete myRenderedSystems.takeAt(index);
 
-  const Score& score = myDocument->getScore();
+  Score const& score = myDocument->getScore();
   SystemRenderer render(this, score, myDocument->getViewOptions());
   QGraphicsItem* newSystem = render(score.getSystems()[index], index);
 

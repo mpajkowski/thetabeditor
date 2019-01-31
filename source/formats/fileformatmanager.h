@@ -32,7 +32,7 @@ class SettingsManager;
 class FileFormatManager
 {
 public:
-  FileFormatManager(const SettingsManager& settings_manager);
+  FileFormatManager(SettingsManager const& settings_manager);
 
   /// Returns the file format corresponding to the given extension.
   boost::optional<FileFormat> findFormat(const std::string& extension) const;
@@ -43,14 +43,14 @@ public:
 
   /// Imports a file into the given score.
   /// @throws std::exception
-  void importFile(Score& score, const boost::filesystem::path& filename, const FileFormat& format);
+  void importFile(Score& score, const boost::filesystem::path& filename, FileFormat const& format);
 
   /// Returns a correctly formatted file filter for a Qt file dialog.
   std::string exportFileFilter() const;
 
   /// Exports the given score to a file.
   /// @throws std::exception
-  void exportFile(const Score& score, const boost::filesystem::path& filename, const FileFormat& format);
+  void exportFile(Score const& score, const boost::filesystem::path& filename, FileFormat const& format);
 
 private:
   template<typename Importer>

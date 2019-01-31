@@ -110,7 +110,7 @@ private:
   void readBarlineType(const pugi::xml_node& masterBar, Barline& barline);
   void readKeySignature(const pugi::xml_node& masterBar, KeySignature& key);
   void readTimeSignature(const pugi::xml_node& masterBar, TimeSignature& timeSignature);
-  Note convertNote(int noteId, Position& position, const Tuning& tuning) const;
+  Note convertNote(int noteId, Position& position, Tuning const& tuning) const;
 
   pugi::xml_document myXmlData;
   pugi::xml_node myFile;

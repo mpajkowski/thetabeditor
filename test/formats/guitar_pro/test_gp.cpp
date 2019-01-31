@@ -32,7 +32,7 @@ TEST_CASE("Formats/GuitarPro/Barlines", "")
   GuitarProImporter importer;
   loadTest(importer, "data/barlines.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
   auto barlines = system.getBarlines();
 
   REQUIRE(barlines.size() == 6);
@@ -51,11 +51,11 @@ TEST_CASE("Formats/GuitarPro/RehearsalSigns", "")
   GuitarProImporter importer;
   loadTest(importer, "data/rehearsal_signs.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
   auto barlines = system.getBarlines();
 
-  const Barline& barline1 = barlines[2];
-  const Barline& barline2 = barlines[3];
+  Barline const& barline1 = barlines[2];
+  Barline const& barline2 = barlines[3];
 
   REQUIRE(barline1.hasRehearsalSign());
   REQUIRE(barline1.getRehearsalSign().getDescription() == "Chorus");
@@ -71,7 +71,7 @@ TEST_CASE("Formats/GuitarPro/KeySignatures", "")
   GuitarProImporter importer;
   loadTest(importer, "data/keys.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
   auto barlines = system.getBarlines();
 
   REQUIRE(barlines[0].getKeySignature().getKeyType() == KeySignature::Major);
@@ -102,7 +102,7 @@ TEST_CASE("Formats/GuitarPro/TimeSignatures", "")
   GuitarProImporter importer;
   loadTest(importer, "data/time_signatures.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
   auto barlines = system.getBarlines();
 
   REQUIRE(barlines[0].getTimeSignature().getBeatsPerMeasure() == 3);
@@ -133,7 +133,7 @@ TEST_CASE("Formats/GuitarPro/AlternateEndings", "")
   GuitarProImporter importer;
   loadTest(importer, "data/alt_endings.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
   auto endings = system.getAlternateEndings();
 
   REQUIRE(endings.size() == 2);
@@ -150,7 +150,7 @@ TEST_CASE("Formats/GuitarPro/Text", "")
   GuitarProImporter importer;
   loadTest(importer, "data/text.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
   auto texts = system.getTextItems();
 
   REQUIRE(texts.size() == 2);
@@ -164,7 +164,7 @@ TEST_CASE("Formats/GuitarPro/Positions", "")
   GuitarProImporter importer;
   loadTest(importer, "data/positions.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
   auto positions = system.getStaves()[0].getVoices()[0].getPositions();
   REQUIRE(positions.size() == 11);
 
@@ -207,7 +207,7 @@ TEST_CASE("Formats/GuitarPro/Notes", "")
   GuitarProImporter importer;
   loadTest(importer, "data/notes.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
   auto positions = system.getStaves()[0].getVoices()[0].getPositions();
   REQUIRE(positions.size() == 16);
 
@@ -235,7 +235,7 @@ TEST_CASE("Formats/GuitarPro/Tempos", "")
   GuitarProImporter importer;
   loadTest(importer, "data/tempos.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
 
   REQUIRE(system.getTempoMarkers().size() == 2);
   REQUIRE(system.getTempoMarkers()[1].getBeatsPerMinute() == 110);
@@ -247,7 +247,7 @@ TEST_CASE("Formats/GuitarPro/GraceNotes", "")
   GuitarProImporter importer;
   loadTest(importer, "data/gracenote.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
   auto positions = system.getStaves()[0].getVoices()[0].getPositions();
 
   REQUIRE(positions[1].hasProperty(Position::Acciaccatura));
@@ -273,7 +273,7 @@ TEST_CASE("Formats/GuitarPro/IrregularGroups", "")
   GuitarProImporter importer;
   loadTest(importer, "data/irregular.gp5", score);
 
-  const System& system = score.getSystems()[0];
+  System const& system = score.getSystems()[0];
   auto groups = system.getStaves()[0].getVoices()[0].getIrregularGroupings();
 
   REQUIRE(groups.size() == 3);

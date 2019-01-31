@@ -43,7 +43,7 @@ static const uint8_t theStatusByteMask = ~theChannelMask;
 
 MidiEvent::MidiEvent(int ticks,
                      std::vector<uint8_t> data,
-                     const SystemLocation& location,
+                     SystemLocation const& location,
                      int player,
                      int instrument)
   : myTicks(ticks)
@@ -94,13 +94,13 @@ MidiEvent MidiEvent::noteOn(int ticks,
                             uint8_t channel,
                             uint8_t pitch,
                             uint8_t velocity,
-                            const SystemLocation& location)
+                            SystemLocation const& location)
 {
   return MidiEvent(
     ticks, { static_cast<uint8_t>(StatusByte::NoteOn + channel), pitch, velocity }, location, -1, -1);
 }
 
-MidiEvent MidiEvent::noteOff(int ticks, uint8_t channel, uint8_t pitch, const SystemLocation& location)
+MidiEvent MidiEvent::noteOff(int ticks, uint8_t channel, uint8_t pitch, SystemLocation const& location)
 {
   return MidiEvent(
     ticks, { static_cast<uint8_t>(StatusByte::NoteOff + channel), pitch, 127 }, location, -1, -1);
@@ -148,7 +148,7 @@ MidiEvent MidiEvent::pitchWheel(int ticks, uint8_t channel, uint8_t amount)
     ticks, { static_cast<uint8_t>(StatusByte::PitchWheel + channel), 0, amount }, SystemLocation(), -1, -1);
 }
 
-MidiEvent MidiEvent::positionChange(int ticks, const SystemLocation& location)
+MidiEvent MidiEvent::positionChange(int ticks, SystemLocation const& location)
 {
   return MidiEvent(ticks, { StatusByte::SysEx, theSysExManufacturerId, theSysExMsgEnd }, location, -1, -1);
 }

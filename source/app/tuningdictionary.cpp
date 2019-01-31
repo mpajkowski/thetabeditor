@@ -74,19 +74,19 @@ void TuningDictionary::findTunings(int numStrings, std::vector<Tuning*>& tunings
 void TuningDictionary::findTunings(int numStrings, std::vector<const Tuning*>& tunings) const
 {
   ensureLoaded();
-  for (const Tuning& tuning : myTunings) {
+  for (Tuning const& tuning : myTunings) {
     if (tuning.getStringCount() == numStrings)
       tunings.push_back(&tuning);
   }
 }
 
-void TuningDictionary::addTuning(const Tuning& tuning)
+void TuningDictionary::addTuning(Tuning const& tuning)
 {
   ensureLoaded();
   myTunings.push_back(tuning);
 }
 
-void TuningDictionary::removeTuning(const Tuning& tuning)
+void TuningDictionary::removeTuning(Tuning const& tuning)
 {
   ensureLoaded();
   myTunings.erase(std::remove(myTunings.begin(), myTunings.end(), tuning));

@@ -19,7 +19,7 @@
 
 #include <score/score.h>
 
-ViewFilterPresenter::ViewFilterPresenter(ViewFilterView& view, const Score& score)
+ViewFilterPresenter::ViewFilterPresenter(ViewFilterView& view, Score const& score)
   : myView(view)
   , myFilters(score.getViewFilters().begin(), score.getViewFilters().end())
 {
@@ -89,7 +89,7 @@ void ViewFilterPresenter::removeRule(int index)
   updateView();
 }
 
-void ViewFilterPresenter::editRule(int index, const FilterRule& rule)
+void ViewFilterPresenter::editRule(int index, FilterRule const& rule)
 {
   myFilters[*mySelection].getRules()[index] = rule;
   updateView();

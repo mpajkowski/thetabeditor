@@ -35,23 +35,23 @@ public:
   using PathType = boost::filesystem::path;
 
   Document();
-  Document(const Document&) = delete;
-  Document& operator=(const Document&) = delete;
+  Document(Document const&) = delete;
+  Document& operator=(Document const&) = delete;
 
   bool hasFilename() const;
-  const PathType& getFilename() const;
-  void setFilename(const PathType& filename);
+  PathType const& getFilename() const;
+  void setFilename(PathType const& filename);
 
-  const Score& getScore() const;
+  Score const& getScore() const;
   Score& getScore();
 
-  const ViewOptions& getViewOptions() const { return myViewOptions; }
+  ViewOptions const& getViewOptions() const { return myViewOptions; }
   ViewOptions& getViewOptions() { return myViewOptions; }
 
   /// Ensure that e.g. the active view filter is valid.
   void validateViewOptions();
 
-  const Caret& getCaret() const;
+  Caret const& getCaret() const;
   Caret& getCaret();
 
 private:
@@ -70,7 +70,7 @@ public:
   /// Add a new, blank document.
   Document& addDocument();
   /// Add a new document, and initialize it with a staff, player, etc.
-  Document& addDefaultDocument(const SettingsManager& settings_manager);
+  Document& addDefaultDocument(SettingsManager const& settings_manager);
 
   Document& getCurrentDocument();
   Document& getDocument(int i);

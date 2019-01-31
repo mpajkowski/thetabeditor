@@ -24,7 +24,7 @@ FileFormat::FileFormat(const std::string& name, const std::vector<std::string>& 
   , myFileExtensions(fileExtensions)
 {}
 
-bool FileFormat::operator==(const FileFormat& format) const
+bool FileFormat::operator==(FileFormat const& format) const
 {
   return myName == format.myName && myFileExtensions == format.myFileExtensions;
 }
@@ -52,7 +52,7 @@ bool FileFormat::contains(const std::string& extension) const
   return std::find(myFileExtensions.begin(), myFileExtensions.end(), extension) != myFileExtensions.end();
 }
 
-FileFormatImporter::FileFormatImporter(const FileFormat& format)
+FileFormatImporter::FileFormatImporter(FileFormat const& format)
   : myFormat(format)
 {}
 
@@ -67,7 +67,7 @@ FileFormatException::FileFormatException(const std::string& error)
   : std::runtime_error(error)
 {}
 
-FileFormatExporter::FileFormatExporter(const FileFormat& format)
+FileFormatExporter::FileFormatExporter(FileFormat const& format)
   : myFormat(format)
 {}
 
