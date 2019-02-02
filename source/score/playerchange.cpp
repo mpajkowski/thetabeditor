@@ -21,27 +21,20 @@
 
 ActivePlayer::ActivePlayer()
   : myPlayerNumber(-1)
-  , myInstrumentNumber(-1)
 {}
 
-ActivePlayer::ActivePlayer(int player, int instrument)
+ActivePlayer::ActivePlayer(int player)
   : myPlayerNumber(player)
-  , myInstrumentNumber(instrument)
 {}
 
 bool ActivePlayer::operator==(ActivePlayer const& other) const
 {
-  return myPlayerNumber == other.myPlayerNumber && myInstrumentNumber == other.myInstrumentNumber;
+  return myPlayerNumber == other.myPlayerNumber;
 }
 
 int ActivePlayer::getPlayerNumber() const
 {
   return myPlayerNumber;
-}
-
-int ActivePlayer::getInstrumentNumber() const
-{
-  return myInstrumentNumber;
 }
 
 PlayerChange::PlayerChange()

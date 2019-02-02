@@ -51,7 +51,7 @@ Document& DocumentManager::addDefaultDocument(SettingsManager const& settings_ma
   system.insertStaff(Staff(player.getTuning().getStringCount()));
 
   PlayerChange initialPlayers;
-  initialPlayers.insertActivePlayer(0, ActivePlayer(0, 0));
+  initialPlayers.insertActivePlayer(0, ActivePlayer(0));
   system.insertPlayerChange(initialPlayers);
 
   TempoMarker tempo;

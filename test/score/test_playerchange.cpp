@@ -23,13 +23,13 @@
 TEST_CASE("Score/PlayerChange/ActivePlayers", "")
 {
   PlayerChange change;
-  ActivePlayer player(3, 2);
+  ActivePlayer player(3);
 
   change.insertActivePlayer(1, player);
   REQUIRE(change.getActivePlayers(0).empty());
   REQUIRE(change.getActivePlayers(1).size() == 1);
 
-  change.removeActivePlayer(1, ActivePlayer(3, 2));
+  change.removeActivePlayer(1, ActivePlayer(3));
   REQUIRE(change.getActivePlayers(1).empty());
 }
 
@@ -37,9 +37,9 @@ TEST_CASE("Score/PlayerChange/Serialization", "")
 {
   PlayerChange change;
   change.setPosition(42);
-  change.insertActivePlayer(1, ActivePlayer(3, 2));
-  change.insertActivePlayer(1, ActivePlayer(1, 2));
-  change.insertActivePlayer(2, ActivePlayer(4, 3));
+  change.insertActivePlayer(1, ActivePlayer(3));
+  change.insertActivePlayer(1, ActivePlayer(1));
+  change.insertActivePlayer(2, ActivePlayer(4));
 
   Serialization::test("player_change", change);
 }

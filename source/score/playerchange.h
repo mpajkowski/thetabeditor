@@ -28,7 +28,7 @@ class ActivePlayer
 {
 public:
   ActivePlayer();
-  ActivePlayer(int player, int instrument);
+  ActivePlayer(int player);
 
   bool operator==(ActivePlayer const& other) const;
 
@@ -37,12 +37,9 @@ public:
 
   /// Returns the zero-based identifier of the player.
   int getPlayerNumber() const;
-  /// Returns the zero-based identifier of the instrument.
-  int getInstrumentNumber() const;
 
 private:
   int myPlayerNumber;
-  int myInstrumentNumber;
 };
 
 class PlayerChange
@@ -79,7 +76,6 @@ template<class Archive>
 void ActivePlayer::serialize(Archive& ar, const FileVersion /*version*/)
 {
   ar("player", myPlayerNumber);
-  ar("instrument", myInstrumentNumber);
 }
 
 template<class Archive>

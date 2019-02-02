@@ -50,8 +50,8 @@ TEST_CASE("Actions/EditTuning", "")
   player2.setDescription("Player 2");
 
   PlayerChange change;
-  change.insertActivePlayer(0, ActivePlayer(0, 0));
-  change.insertActivePlayer(0, ActivePlayer(1, 0));
+  change.insertActivePlayer(0, ActivePlayer(0));
+  change.insertActivePlayer(0, ActivePlayer(1));
   System system;
   system.insertPlayerChange(change);
   system.insertStaff(Staff());

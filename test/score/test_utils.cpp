@@ -39,7 +39,7 @@ TEST_CASE("Score/Utils/GetCurrentPlayers", "")
   System system;
   PlayerChange change;
   change.setPosition(7);
-  change.insertActivePlayer(0, ActivePlayer(1, 2));
+  change.insertActivePlayer(0, ActivePlayer(1));
   system.insertPlayerChange(change);
   score.insertSystem(system);
 

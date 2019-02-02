@@ -81,7 +81,7 @@ PlayerChange PlayerChangeDialog::getPlayerChange() const
     const int staff = myStaffComboBoxes[i]->itemData(myStaffComboBoxes[i]->currentIndex()).toInt();
     if (staff >= 0) {
       change.insertActivePlayer(staff,
-                                ActivePlayer(static_cast<int>(i), static_cast<int>(i)));
+                                ActivePlayer(static_cast<int>(i)));
     }
   }
 

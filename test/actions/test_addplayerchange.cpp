@@ -27,7 +27,7 @@ TEST_CASE("Actions/AddPlayerChange", "")
   System system;
   score.insertSystem(system);
   PlayerChange change;
-  change.insertActivePlayer(1, ActivePlayer(0, 2));
+  change.insertActivePlayer(1, ActivePlayer(0));
 
   AddPlayerChange action(ScoreLocation(score, 0, 0, 3), change);
 

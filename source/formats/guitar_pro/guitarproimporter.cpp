@@ -289,7 +289,7 @@ void GuitarProImporter::convertScore(const Gp::Document& doc, Score& score)
     // Set up an initial player change.
     PlayerChange change;
     for (unsigned int i = 0; i < score.getPlayers().size(); ++i)
-      change.insertActivePlayer(i, ActivePlayer(i, i));
+      change.insertActivePlayer(i, ActivePlayer(i));
     system.insertPlayerChange(change);
   }
 

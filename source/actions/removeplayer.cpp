@@ -44,7 +44,7 @@ void RemovePlayer::redo()
             // Shift player numbers.
             if (activePlayer.getPlayerNumber() > myPlayerIndex) {
               change.insertActivePlayer(
-                i, ActivePlayer(activePlayer.getPlayerNumber() - 1, activePlayer.getInstrumentNumber()));
+                i, ActivePlayer(activePlayer.getPlayerNumber() - 1));
             }
           }
         }
