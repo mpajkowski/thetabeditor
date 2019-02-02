@@ -7,7 +7,9 @@ add_subdirectory( formats )
 add_subdirectory( midi )
 add_subdirectory( painters )
 add_subdirectory( score )
+add_subdirectory( score_proto )
 add_subdirectory( widgets )
 add_subdirectory( util )
 
 add_subdirectory( build )
+

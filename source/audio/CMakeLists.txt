@@ -23,6 +23,7 @@ theta_library(
     MOC_HEADERS ${moc_headers}
     DEPENDS
         thetascore
+        thetascore_proto
         Qt5::Core
         rtmidi
 )

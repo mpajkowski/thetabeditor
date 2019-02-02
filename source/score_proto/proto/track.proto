@@ -1,0 +1,15 @@
+syntax = "proto3";
+package score_proto;
+
+import "tuning.proto";
+
+message Track
+{
+  int32 id = 1;
+  string description = 2;
+  uint32 maxVolume = 3;
+  uint32 pan = 4;
+  Tuning tuning = 5;
+  uint32 midiPreset = 6;
+  bool isPercussion = 7;
+}

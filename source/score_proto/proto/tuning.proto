@@ -1,0 +1,9 @@
+syntax = "proto3";
+package score_proto;
+
+message Tuning
+{
+  string name = 1;
+  repeated uint32 notes = 2;
+  uint32 capo = 3;
+}
