@@ -453,7 +453,7 @@ static void mergePlayerChanges(ScoreLocation& dest_loc,
     // Merge in data from only the active staves.
     if (guitar_change) {
       for (int i = 0; i < num_guitar_staves; ++i) {
-        for (ActivePlayer const& player : guitar_change->getActivePlayers(i)) {
+        for (auto player : guitar_change->getActivePlayers(i)) {
           change.insertActivePlayer(i, player);
         }
       }
@@ -463,10 +463,9 @@ static void mergePlayerChanges(ScoreLocation& dest_loc,
     // staff/player/instrument numbers.
     if (bass_change) {
       for (unsigned int i = 0; i < bass_loc.getSystem().getStaves().size(); ++i) {
-        for (ActivePlayer const& player : bass_change->getActivePlayers(i)) {
+        for (auto player : bass_change->getActivePlayers(i)) {
           change.insertActivePlayer(num_guitar_staves + i,
-                                    ActivePlayer(static_cast<int>(guitar_loc.getScore().getPlayers().size()) +
-                                                 player.getPlayerNumber()));
+                                    guitar_loc.getScore().getPlayers().size() + player);
         }
       }
     }

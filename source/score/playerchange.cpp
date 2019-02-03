@@ -19,24 +19,6 @@
 
 #include <algorithm>
 
-ActivePlayer::ActivePlayer()
-  : myPlayerNumber(-1)
-{}
-
-ActivePlayer::ActivePlayer(int player)
-  : myPlayerNumber(player)
-{}
-
-bool ActivePlayer::operator==(ActivePlayer const& other) const
-{
-  return myPlayerNumber == other.myPlayerNumber;
-}
-
-int ActivePlayer::getPlayerNumber() const
-{
-  return myPlayerNumber;
-}
-
 PlayerChange::PlayerChange()
   : myPosition(0)
 {}
@@ -60,21 +42,21 @@ void PlayerChange::setPosition(int position)
   myPosition = position;
 }
 
-std::vector<ActivePlayer> PlayerChange::getActivePlayers(int staff) const
+std::vector<int> PlayerChange::getActivePlayers(int staff) const
 {
   if (myActivePlayers.find(staff) != myActivePlayers.end())
     return myActivePlayers.find(staff)->second;
   else
-    return std::vector<ActivePlayer>();
+    return {};
 }
 
-void PlayerChange::insertActivePlayer(int staff, ActivePlayer const& player)
+void PlayerChange::insertActivePlayer(int staff, int player)
 {
   myActivePlayers[staff].push_back(player);
 }
 
-void PlayerChange::removeActivePlayer(int staff, ActivePlayer const& player)
+void PlayerChange::removeActivePlayer(int staff, int player)
 {
-  std::vector<ActivePlayer>& playerList = myActivePlayers[staff];
+  auto& playerList = myActivePlayers[staff];
   playerList.erase(std::remove(playerList.begin(), playerList.end(), player), playerList.end());
 }

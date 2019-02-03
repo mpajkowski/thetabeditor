@@ -55,7 +55,7 @@ void EditStaff::redo()
 
     // Clear out all active players in this staff.
     for (PlayerChange& change : system.getPlayerChanges()) {
-      for (ActivePlayer const& p : change.getActivePlayers(staff_index))
+      for (auto p : change.getActivePlayers(staff_index))
         change.removeActivePlayer(staff_index, p);
     }
 

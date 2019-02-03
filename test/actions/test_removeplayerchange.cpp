@@ -26,7 +26,7 @@ TEST_CASE("Actions/RemovePlayerChange", "")
   Score score;
   System system;
   PlayerChange change(5);
-  change.insertActivePlayer(1, ActivePlayer(0));
+  change.insertActivePlayer(1, 0);
   system.insertPlayerChange(change);
   score.insertSystem(system);
 

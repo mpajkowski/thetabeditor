@@ -723,7 +723,7 @@ void SystemRenderer::drawLegato(Staff const& staff, LayoutInfo const& layout)
 void SystemRenderer::drawPlayerChanges(System const& system, int staffIndex, LayoutInfo const& layout)
 {
   for (PlayerChange const& change : system.getPlayerChanges()) {
-    const std::vector<ActivePlayer> activePlayers = change.getActivePlayers(staffIndex);
+    const std::vector<int> activePlayers = change.getActivePlayers(staffIndex);
 
     QString description;
     if (!activePlayers.empty()) {
@@ -731,7 +731,7 @@ void SystemRenderer::drawPlayerChanges(System const& system, int staffIndex, Lay
         if (i != 0)
           description += ", ";
 
-        const int player_index = activePlayers[i].getPlayerNumber();
+        const int player_index = activePlayers[i];
         description += QString::fromStdString(myScore.getPlayers()[player_index].getDescription());
       }
     } else

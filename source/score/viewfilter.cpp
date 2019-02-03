@@ -59,7 +59,7 @@ bool FilterRule::accept(Score const& score, int system_index, int staff_index) c
 
   bool has_active_players = false;
   for (const PlayerChange* change : player_changes) {
-    for (ActivePlayer const& player : change->getActivePlayers(staff_index)) {
+    for (auto player : change->getActivePlayers(staff_index)) {
       has_active_players = true;
 
       if (accept(score, player))
@@ -71,9 +71,9 @@ bool FilterRule::accept(Score const& score, int system_index, int staff_index) c
   return !has_active_players;
 }
 
-bool FilterRule::accept(Score const& score, ActivePlayer const& p) const
+bool FilterRule::accept(Score const& score, int p) const
 {
-  Player const& player = score.getPlayers()[p.getPlayerNumber()];
+  auto player = score.getPlayers()[p];
 
   switch (mySubject) {
     case PLAYER_NAME:

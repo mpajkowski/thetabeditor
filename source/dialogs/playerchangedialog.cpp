@@ -52,10 +52,10 @@ PlayerChangeDialog::PlayerChangeDialog(QWidget* parent,
   // Initialize the dialog with the current staff/instrument for each player.
   if (currentPlayers) {
     for (unsigned int staff = 0; staff < system.getStaves().size(); ++staff) {
-      std::vector<ActivePlayer> players = currentPlayers->getActivePlayers(staff);
+      auto players = currentPlayers->getActivePlayers(staff);
 
-      for (ActivePlayer const& player : players) {
-        const int i = player.getPlayerNumber();
+      for (auto player : players) {
+        const int i = player;
         const int idx = myStaffComboBoxes.at(i)->findData(staff);
         myStaffComboBoxes.at(i)->setCurrentIndex(idx < 0 ? 0 : idx);
       }
@@ -80,8 +80,7 @@ PlayerChange PlayerChangeDialog::getPlayerChange() const
 
     const int staff = myStaffComboBoxes[i]->itemData(myStaffComboBoxes[i]->currentIndex()).toInt();
     if (staff >= 0) {
-      change.insertActivePlayer(staff,
-                                ActivePlayer(static_cast<int>(i)));
+      change.insertActivePlayer(staff, i);
     }
   }
 

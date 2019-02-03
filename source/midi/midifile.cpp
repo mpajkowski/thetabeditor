@@ -63,11 +63,6 @@ static int getChannel(int player)
   return player;
 }
 
-static int getChannel(ActivePlayer const& player)
-{
-  return getChannel(player.getPlayerNumber());
-}
-
 static bool findPositionChange(MidiEventList& event_list,
                                int ticks,
                                bool record_position_changes,
@@ -541,26 +536,27 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
     const PlayerChange* current_players = ScoreUtils::findByPosition(system.getPlayerChanges(), position);
 
     if (current_players) {
-      for (ActivePlayer const& player : current_players->getActivePlayers(staff_index)) {
-        Player const& p = score.getPlayers()[player.getPlayerNumber()];
+      for (auto player : current_players->getActivePlayers(staff_index)) {
+        auto& p = score.getPlayers()[player];
 
-        tracks[player.getPlayerNumber()].append(
-          MidiEvent::programChange(current_tick, getChannel(player), p.getMidiPreset()));
+        tracks[player].append(MidiEvent::programChange(current_tick, getChannel(player), p.getMidiPreset()));
       }
     }
 
     if (!current_players) {
       current_players = ScoreUtils::getCurrentPlayers(score, system_index, position);
     }
-    std::vector<ActivePlayer> active_players;
+
+    std::vector<int> active_players;
+
     if (current_players)
       active_players = current_players->getActivePlayers(staff_index);
 
     // Handle dynamics.
     const Dynamic* dynamic = ScoreUtils::findByPosition(staff.getDynamics(), position);
     if (dynamic) {
-      for (ActivePlayer const& player : active_players) {
-        tracks[player.getPlayerNumber()].append(
+      for (auto player : active_players) {
+        tracks[player].append(
           MidiEvent::volumeChange(current_tick, getChannel(player), dynamic->getVolume()));
       }
     }
@@ -605,28 +601,27 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
       const uint8_t width =
         pos->hasProperty(Position::Vibrato) ? options.myVibratoStrength : options.myWideVibratoStrength;
 
-      for (ActivePlayer const& player : active_players) {
+      for (auto player : active_players) {
         const int channel = getChannel(player);
 
         // Add vibrato event, and an event to turn off the vibrato after
         // the note is done.
-        tracks[player.getPlayerNumber()].append(MidiEvent::modWheel(current_tick, channel, width));
+        tracks[player].append(MidiEvent::modWheel(current_tick, channel, width));
 
-        tracks[player.getPlayerNumber()].append(MidiEvent::modWheel(current_tick + duration, channel, 0));
+        tracks[player].append(MidiEvent::modWheel(current_tick + duration, channel, 0));
       }
     }
 
     // Let ring events (applied to all notes in the position).
     if (pos->hasProperty(Position::LetRing) && !let_ring_active) {
-      for (ActivePlayer const& player : active_players) {
-        tracks[player.getPlayerNumber()].append(MidiEvent::holdPedal(current_tick, getChannel(player), true));
+      for (auto player : active_players) {
+        tracks[player].append(MidiEvent::holdPedal(current_tick, getChannel(player), true));
       }
 
       let_ring_active = true;
     } else if (!pos->hasProperty(Position::LetRing) && let_ring_active) {
-      for (ActivePlayer const& player : active_players) {
-        tracks[player.getPlayerNumber()].append(
-          MidiEvent::holdPedal(current_tick, getChannel(player), false));
+      for (auto player : active_players) {
+        tracks[player].append(MidiEvent::holdPedal(current_tick, getChannel(player), false));
       }
 
       let_ring_active = false;
@@ -635,9 +630,8 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
     // bar.
     else if (let_ring_active &&
              (pos == &ScoreUtils::findInRange(voice.getPositions(), bar_start, bar_end).back())) {
-      for (ActivePlayer const& player : active_players) {
-        tracks[player.getPlayerNumber()].append(
-          MidiEvent::holdPedal(current_tick + duration, getChannel(player), false));
+      for (auto player : active_players) {
+        tracks[player].append(MidiEvent::holdPedal(current_tick + duration, getChannel(player), false));
       }
 
       let_ring_active = false;
@@ -655,17 +649,15 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
       // Pick a tuning from one of the active players.
       // TODO - should we handle cases where different tunings are used
       // by players in the same staff?
-      const int player_index = active_players.front().getPlayerNumber();
+      const int player_index = active_players.front();
       Tuning const& tuning = score.getPlayers()[player_index].getTuning();
       int pitch = getActualNotePitch(note, tuning);
       const Velocity velocity = getNoteVelocity(*pos, note);
 
       // If this note is not tied to the previous note, play the note.
       if (!note.hasProperty(Note::Tied)) {
-        for (ActivePlayer const& active_player : active_players) {
-          const int player_index = active_player.getPlayerNumber();
-
-          auto& player = score.getPlayers()[player_index];
+        for (auto active_player : active_players) {
+          auto& player = score.getPlayers()[active_player];
 
           if (!player.isPercussion()) {
             tracks[player_index].append(
@@ -727,9 +719,8 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
         }
 
         for (BendEventInfo const& event : bend_events) {
-          for (ActivePlayer const& player : active_players) {
-            tracks[player.getPlayerNumber()].append(
-              MidiEvent::pitchWheel(event.myTick, getChannel(player), event.myBendAmount));
+          for (auto player : active_players) {
+            tracks[player].append(MidiEvent::pitchWheel(event.myTick, getChannel(player), event.myBendAmount));
           }
         }
       }
@@ -750,18 +741,16 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
         for (int i = 0; i < num_notes; ++i) {
           const int tick = current_tick + i * trem_pick_duration;
 
-          for (ActivePlayer const& player : active_players) {
-            tracks[player.getPlayerNumber()].append(
-              MidiEvent::noteOff(tick, getChannel(player), pitch, system_location));
+          for (auto player : active_players) {
+            tracks[player].append(MidiEvent::noteOff(tick, getChannel(player), pitch, system_location));
           }
 
           // Alternate to the other pitch (this has no effect for
           // tremolo picking).
           std::swap(pitch, other_pitch);
 
-          for (ActivePlayer const& player : active_players) {
-            tracks[player.getPlayerNumber()].append(
-              MidiEvent::noteOn(tick, getChannel(player), pitch, velocity, system_location));
+          for (auto player : active_players) {
+            tracks[player].append(MidiEvent::noteOn(tick, getChannel(player), pitch, velocity, system_location));
           }
         }
       }
@@ -788,9 +777,8 @@ int MidiFile::addEventsForBar(std::vector<MidiEventList>& tracks,
 
         int note_length = boost::rational_cast<int>(duration * factor);
 
-        for (ActivePlayer const& player : active_players) {
-          tracks[player.getPlayerNumber()].append(
-            MidiEvent::noteOff(current_tick + note_length, getChannel(player), pitch, system_location));
+        for (auto player : active_players) {
+          tracks[player].append(MidiEvent::noteOff(current_tick + note_length, getChannel(player), pitch, system_location));
         }
       }
     }

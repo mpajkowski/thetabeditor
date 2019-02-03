@@ -50,8 +50,8 @@ TEST_CASE("Actions/EditTuning", "")
   player2.setDescription("Player 2");
 
   PlayerChange change;
-  change.insertActivePlayer(0, ActivePlayer(0));
-  change.insertActivePlayer(0, ActivePlayer(1));
+  change.insertActivePlayer(0, 0);
+  change.insertActivePlayer(0, 1);
   System system;
   system.insertPlayerChange(change);
   system.insertStaff(Staff());
@@ -73,7 +73,7 @@ TEST_CASE("Actions/EditTuning", "")
   action.redo();
   PlayerChange const& newChange = score.getSystems()[0].getPlayerChanges()[0];
   REQUIRE(newChange.getActivePlayers(0).size() == 1);
-  REQUIRE(newChange.getActivePlayers(0)[0].getPlayerNumber() == 1);
+  REQUIRE(newChange.getActivePlayers(0)[0] == 1);
 
   action.undo();
   PlayerChange const& reverted = score.getSystems()[0].getPlayerChanges()[0];

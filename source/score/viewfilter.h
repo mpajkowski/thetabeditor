@@ -25,7 +25,6 @@
 #include <string>
 #include <vector>
 
-class ActivePlayer;
 class Score;
 
 /// A rule for filtering which staves are viewable. For example, a rule might be
@@ -67,7 +66,7 @@ public:
   bool accept(Score const& score, int system_index, int staff_index) const;
 
 private:
-  bool accept(Score const& score, ActivePlayer const& player) const;
+  bool accept(Score const& score, int player) const;
 
   Subject mySubject;
   Operation myOperation;

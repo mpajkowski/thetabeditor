@@ -128,14 +128,14 @@ void StdNotationNote::getNotesInStaff(Score const& score,
         }
 
         // Find an active player so that we know what tuning to use.
-        std::vector<ActivePlayer> activePlayers;
+        std::vector<int> activePlayers;
         const PlayerChange* players = ScoreUtils::getCurrentPlayers(score, systemIndex, pos.getPosition());
         if (players)
           activePlayers = players->getActivePlayers(staffIndex);
 
         const Player* player = nullptr;
         if (!activePlayers.empty()) {
-          player = &score.getPlayers()[activePlayers.front().getPlayerNumber()];
+          player = &score.getPlayers()[activePlayers.front()];
         }
 
         double noteHeadWidth = 0;

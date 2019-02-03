@@ -22,26 +22,6 @@
 #include <map>
 #include <vector>
 
-/// An active player is a player that has an instrument assigned to them,
-/// and is also assigned to a staff.
-class ActivePlayer
-{
-public:
-  ActivePlayer();
-  ActivePlayer(int player);
-
-  bool operator==(ActivePlayer const& other) const;
-
-  template<class Archive>
-  void serialize(Archive& ar, const FileVersion version);
-
-  /// Returns the zero-based identifier of the player.
-  int getPlayerNumber() const;
-
-private:
-  int myPlayerNumber;
-};
-
 class PlayerChange
 {
 public:
@@ -59,24 +39,18 @@ public:
   void setPosition(int position);
 
   /// Returns the set of active players in the given staff.
-  std::vector<ActivePlayer> getActivePlayers(int staff) const;
+  std::vector<int> getActivePlayers(int staff) const;
 
   /// Adds a new active player to a staff.
-  void insertActivePlayer(int staff, ActivePlayer const& player);
+  void insertActivePlayer(int staff, int player);
   /// Removes an active player from a staff.
-  void removeActivePlayer(int staff, ActivePlayer const& player);
+  void removeActivePlayer(int staff, int player);
 
 private:
   int myPosition;
   /// For each staff, there can be multiple active players (or none).
-  std::map<int, std::vector<ActivePlayer>> myActivePlayers;
+  std::map<int, std::vector<int>> myActivePlayers;
 };
-
-template<class Archive>
-void ActivePlayer::serialize(Archive& ar, const FileVersion /*version*/)
-{
-  ar("player", myPlayerNumber);
-}
 
 template<class Archive>
 void PlayerChange::serialize(Archive& ar, const FileVersion /*version*/)

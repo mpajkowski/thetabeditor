@@ -27,7 +27,7 @@ TEST_CASE("Actions/AddPlayerChange", "")
   System system;
   score.insertSystem(system);
   PlayerChange change;
-  change.insertActivePlayer(1, ActivePlayer(0));
+  change.insertActivePlayer(1, 0);
 
   AddPlayerChange action(ScoreLocation(score, 0, 0, 3), change);
 
@@ -36,5 +36,5 @@ TEST_CASE("Actions/AddPlayerChange", "")
   REQUIRE(score.getSystems()[0].getPlayerChanges()[0].getPosition() == 3);
 
   action.undo();
-  REQUIRE(score.getSystems()[0].getPlayerChanges().size() == 0);
+  REQUIRE(score.getSystems()[0].getPlayerChanges().empty());
 }

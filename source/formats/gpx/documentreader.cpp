@@ -250,7 +250,7 @@ void Gpx::DocumentReader::readMasterBars(Score& score)
   // Set up an initial player change.
   PlayerChange change;
   for (unsigned int i = 0; i < score.getPlayers().size(); ++i)
-    change.insertActivePlayer(i, ActivePlayer(i));
+    change.insertActivePlayer(i, i);
   system.insertPlayerChange(change);
 
   int barIndex = 0;

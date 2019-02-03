@@ -38,8 +38,8 @@ void EditPlayer::redo()
         myOriginalChanges.push_back(change);
 
         for (unsigned int i = 0; i < system.getStaves().size(); ++i) {
-          for (ActivePlayer const& activePlayer : change.getActivePlayers(i)) {
-            if (activePlayer.getPlayerNumber() == myPlayerIndex)
+          for (auto activePlayer : change.getActivePlayers(i)) {
+            if (activePlayer == myPlayerIndex)
               change.removeActivePlayer(i, activePlayer);
           }
         }
